@@ -32,6 +32,7 @@ const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
     const classes = useStyles();
     const advantages = JSON.parse(review.advantages);
     const flaws = JSON.parse(review.flaws);
+    console.log(advantages);
     return(
         <>
             <div className="review p-2">
@@ -61,7 +62,7 @@ const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
                     <div className="review__advantages flex flex-1 min-w-200">
                         <ThumbUpIcon className="mr-10"/>
                         <div className="flex-col">
-                            {advantages.map((el, i) => <div key={i}>{el}</div>)}
+                            {advantages.advantages.map((el, i) => <div key={i}>{el}</div>)}
                         </div>
                     </div>
                     }
@@ -69,7 +70,7 @@ const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
                     <div className="review__flaws flex flex-1 min-w-200">
                         <ThumbDownIcon className="mr-10"/>
                         <div className="flex-col">
-                            {flaws.map((el, i) => <div key={i}>{el}</div>)}
+                            {flaws.flaws.map((el, i) => <div key={i}>{el}</div>)}
                         </div>
                     </div>
                     }
