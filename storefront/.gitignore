@@ -1,0 +1,18 @@
+.*
+!.storybook
+!.gitignore
+!.babelrc
+!.plop
+!.jest
+!.linguirc
+!.prettierrc
+dist
+node_modules
+src/locales/_build
+
+# Ignores compiled TypeScript files
+src/**/*.js
+src/*.js
+src/**/*.map
+src/*.map
+*.js.map

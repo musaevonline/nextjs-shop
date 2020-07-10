@@ -1,0 +1,16 @@
+@import "src/globalStyles/scss/variables";
+
+.payment-method-form, .shipping-method-form{
+  &__description{
+    color: $gray-dark;
+    font-size: $small-font-size;
+    margin-left: 30px;
+    padding: 10px;
+    background: #f8f8f8;
+    border-left: 4px solid #c2c2c2;
+    border-radius: 5px;
+  }
+  .expansion-panel-header{
+    height: 40px;
+  }
+}

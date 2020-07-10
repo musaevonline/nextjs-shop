@@ -1,0 +1,37 @@
+@import "src/globalStyles/scss/variables";
+
+.cart{
+  &__item{
+    position: relative;
+    &-delete-icon {
+      position: absolute;
+      right: 5px;
+      top: -5px;
+    }
+    &-price{
+      font-size: $small-font-size;
+      color: $gray-dark;
+    }
+    &-name{
+      min-width: 250px;
+    }
+    &-quantity{
+      font-size: $small-font-size;
+      color: $gray-dark;
+      display: flex;
+      align-items: center;
+      input{
+        width: 50px;
+        text-align: center;
+      }
+      input[type=number]::-webkit-inner-spin-button,
+      input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+   &__subtitle{
+    color: $gray-dark;
+  }
+}

@@ -1,0 +1,50 @@
+@import "src/globalStyles/scss/variables";
+
+.product-carousel{
+  .slider-frame{
+    margin-left: 80px !important;
+    @media (max-width: $small-screen) {
+      margin-left: 0 !important;
+    }
+  }
+  img{
+    object-fit: contain;
+    max-height: 400px;
+  }
+  .lazy-load-image-background{
+    display: flex !important;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    img{
+      max-width: 100%;
+    }
+  }
+  .carousel__thumbs{
+    @media (max-width: $small-screen) {
+      display: none;
+    }
+    .carousel__thumb{
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      transition: all .4s;
+      &--active{
+        box-shadow: 0 0 20px -6px rgba(0,0,0,1);
+        transform: scale(1.05);
+      }
+      img{
+        cursor: pointer;
+        max-width: 70px;
+      }
+    }
+  }
+  .slider-control-centerleft, .slider-control-centerright{
+    svg{
+      font-size: 4.8rem;
+      color: $white;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+    }
+  }
+}

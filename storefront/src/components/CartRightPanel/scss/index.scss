@@ -1,0 +1,45 @@
+@import "src/globalStyles/scss/variables";
+
+.cart-panel{
+  &__body{
+    padding: 5px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    max-width: 100%;
+    height: 100%;
+  }
+  &__header{
+    display: grid;
+    max-width: 100%;
+    grid-template-columns: 1fr 32px;
+    grid-column-gap: 10px;
+    align-items: center;
+    min-height: 50px;
+    border-bottom: 0.5px solid $primary-color;
+    &-title{
+      text-transform: uppercase;
+      font-weight: $bold-font-weight;
+      span{
+        text-transform: lowercase;
+        color: $gray-dark;
+        font-size: $small-font-size;
+      }
+    }
+  }
+  &__footer{
+    margin: 10px 0 20px 0;
+    border-top: 0.5px solid $primary-color;
+    padding-top: 10px;
+    min-height: 50px;
+    &-total{
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+      line-height: 20px;
+      text-transform: uppercase;
+      font-weight: $bold-font-weight;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@import "src/globalStyles/scss/variables";
+
+.home-carousel{
+  .carousel__control{
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity .5s;
+    svg{
+      font-size: 8rem;
+      color: $white;
+    }
+  }
+  &:hover .carousel__control{
+    opacity: 1;
+  }
+}

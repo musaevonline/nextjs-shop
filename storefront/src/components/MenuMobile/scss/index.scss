@@ -1,0 +1,11 @@
+@import "../../../globalStyles/scss/variables";
+
+.menu-mobile{
+  & > svg{
+    color: $primary-color;
+  }
+  &__body{
+    width: 400px;
+    max-width: 100%;
+  }
+}

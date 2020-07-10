@@ -1,0 +1,4477 @@
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+"""Anything"""
+scalar _Any
+
+union _Entity = User | Group | Address | ProductVariant | Product | ProductImage
+
+type _Service {
+  sdl: String
+}
+
+"""Create a new address for the customer."""
+type AccountAddressCreate {
+  """A user instance for which the address was created."""
+  user: User
+  accountErrors: [AccountError!]!
+  address: Address
+}
+
+"""Delete an address of the logged-in user."""
+type AccountAddressDelete {
+  """A user instance for which the address was deleted."""
+  user: User
+  accountErrors: [AccountError!]!
+  address: Address
+}
+
+"""Updates an address of the logged-in user."""
+type AccountAddressUpdate {
+  """A user object for which the address was edited."""
+  user: User
+  accountErrors: [AccountError!]!
+  address: Address
+}
+
+"""Remove user account."""
+type AccountDelete {
+  accountErrors: [AccountError!]!
+  user: User
+}
+
+type AccountError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: AccountErrorCode!
+}
+
+"""An enumeration."""
+enum AccountErrorCode {
+  ACTIVATE_OWN_ACCOUNT
+  ACTIVATE_SUPERUSER_ACCOUNT
+  ASSIGN_NON_STAFF_MEMBER
+  DEACTIVATE_OWN_ACCOUNT
+  DEACTIVATE_SUPERUSER_ACCOUNT
+  DELETE_NON_STAFF_USER
+  DELETE_OWN_ACCOUNT
+  DELETE_STAFF_ACCOUNT
+  DELETE_SUPERUSER_ACCOUNT
+  GRAPHQL_ERROR
+  INVALID
+  INVALID_PASSWORD
+  INVALID_CREDENTIALS
+  NOT_FOUND
+  PASSWORD_ENTIRELY_NUMERIC
+  PASSWORD_TOO_COMMON
+  PASSWORD_TOO_SHORT
+  PASSWORD_TOO_SIMILAR
+  REQUIRED
+  UNIQUE
+}
+
+input AccountInput {
+  """Given name."""
+  firstName: String
+
+  """Family name."""
+  lastName: String
+
+  """Shipping address of the customer."""
+  defaultShippingAddress: AddressInput
+}
+
+"""Register a new user."""
+type AccountRegister {
+  """Informs whether users need to confirm their email address."""
+  requiresConfirmation: Boolean
+  accountErrors: [AccountError!]!
+  user: User
+}
+
+input AccountRegisterInput {
+  """The email address of the user."""
+  email: String!
+
+  """Password."""
+  password: String!
+
+  """Base of frontend URL that will be needed to create confirmation URL."""
+  redirectUrl: String
+}
+
+"""Sends an email with the account removal link for the logged-in user."""
+type AccountRequestDeletion {
+  accountErrors: [AccountError!]!
+}
+
+"""Sets a default address for the authenticated user."""
+type AccountSetDefaultAddress {
+  """An updated user instance."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
+"""Updates the account of the logged-in user."""
+type AccountUpdate {
+  accountErrors: [AccountError!]!
+  user: User
+}
+
+"""Represents user address data."""
+type Address implements Node {
+  """The ID of the object."""
+  id: ID!
+  firstName: String!
+  lastName: String!
+  companyName: String!
+  streetAddress1: String!
+  streetAddress2: String!
+  city: String!
+  cityArea: String!
+  postalCode: String!
+
+  """Shop's default country."""
+  country: CountryDisplay!
+  countryArea: String!
+  phone: String!
+
+  """Address is user's default shipping address."""
+  isDefaultShippingAddress: Boolean
+}
+
+input AddressInput {
+  """Given name."""
+  firstName: String
+
+  """Family name."""
+  lastName: String
+
+  """Company or organization."""
+  companyName: String
+
+  """Address."""
+  streetAddress1: String
+
+  """Address."""
+  streetAddress2: String
+
+  """City."""
+  city: String
+
+  """District."""
+  cityArea: String
+
+  """Postal code."""
+  postalCode: String
+
+  """Country."""
+  country: CountryCode
+
+  """State or province."""
+  countryArea: String
+
+  """Phone number."""
+  phone: String
+}
+
+"""An enumeration."""
+enum AddressTypeEnum {
+  BILLING
+  SHIPPING
+}
+
+"""
+Custom attribute of a product. Attributes can be assigned to products and variants at the product type level.
+"""
+type Attribute implements Node {
+  """The ID of the object."""
+  id: ID!
+  productTypes(before: String, after: String, first: Int, last: Int): ProductTypeCountableConnection!
+  productVariantTypes(before: String, after: String, first: Int, last: Int): ProductTypeCountableConnection!
+
+  """The input type to use for entering attribute values in the dashboard."""
+  inputType: AttributeInputTypeEnum
+
+  """Name of an attribute displayed in the interface."""
+  name: String
+
+  """Internal representation of an attribute name."""
+  slug: String
+
+  """List of attribute's values."""
+  values: [AttributeValue]
+
+  """Whether the attribute requires values to be passed or not."""
+  valueRequired: Boolean!
+
+  """Whether the attribute should be visible or not in storefront."""
+  visibleInStorefront: Boolean!
+
+  """Whether the attribute can be filtered in storefront."""
+  filterableInStorefront: Boolean!
+
+  """Whether the attribute can be filtered in dashboard."""
+  filterableInDashboard: Boolean!
+
+  """Whether the attribute can be displayed in the admin product list."""
+  availableInGrid: Boolean!
+
+  """
+  The position of the attribute in the storefront navigation (0 by default).
+  """
+  storefrontSearchPosition: Int!
+}
+
+type AttributeCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [AttributeCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type AttributeCountableEdge {
+  """The item at the end of the edge."""
+  node: Attribute!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Creates an attribute."""
+type AttributeCreate {
+  attribute: Attribute
+  productErrors: [ProductError!]!
+}
+
+input AttributeCreateInput {
+  """The input type to use for entering attribute values in the dashboard."""
+  inputType: AttributeInputTypeEnum
+
+  """Name of an attribute displayed in the interface."""
+  name: String!
+
+  """Internal representation of an attribute name."""
+  slug: String
+
+  """List of attribute's values."""
+  values: [AttributeValueCreateInput]
+
+  """Whether the attribute requires values to be passed or not."""
+  valueRequired: Boolean
+
+  """Whether the attribute is for variants only."""
+  isVariantOnly: Boolean
+
+  """Whether the attribute should be visible or not in storefront."""
+  visibleInStorefront: Boolean
+
+  """Whether the attribute can be filtered in storefront."""
+  filterableInStorefront: Boolean
+
+  """Whether the attribute can be filtered in dashboard."""
+  filterableInDashboard: Boolean
+
+  """
+  The position of the attribute in the storefront navigation (0 by default).
+  """
+  storefrontSearchPosition: Int
+
+  """Whether the attribute can be displayed in the admin product list."""
+  availableInGrid: Boolean
+}
+
+"""Deletes an attribute."""
+type AttributeDelete {
+  productErrors: [ProductError!]!
+  attribute: Attribute
+}
+
+input AttributeFilterInput {
+  valueRequired: Boolean
+  isVariantOnly: Boolean
+  visibleInStorefront: Boolean
+  filterableInStorefront: Boolean
+  filterableInDashboard: Boolean
+  availableInGrid: Boolean
+  search: String
+  ids: [ID]
+  inCategory: ID
+}
+
+input AttributeInput {
+  """Internal representation of an attribute name."""
+  slug: String!
+
+  """Internal representation of a value (unique per attribute)."""
+  values: [String]
+}
+
+"""An enumeration."""
+enum AttributeInputTypeEnum {
+  DROPDOWN
+  MULTISELECT
+}
+
+enum AttributeSortField {
+  """Sort attributes by name"""
+  NAME
+
+  """Sort attributes by slug"""
+  SLUG
+
+  """Sort attributes by the value required flag"""
+  VALUE_REQUIRED
+
+  """Sort attributes by the variant only flag"""
+  IS_VARIANT_ONLY
+
+  """Sort attributes by visibility in the storefront"""
+  VISIBLE_IN_STOREFRONT
+
+  """Sort attributes by the filterable in storefront flag"""
+  FILTERABLE_IN_STOREFRONT
+
+  """Sort attributes by the filterable in dashboard flag"""
+  FILTERABLE_IN_DASHBOARD
+
+  """Sort attributes by their position in storefront"""
+  STOREFRONT_SEARCH_POSITION
+
+  """
+  Sort attributes based on whether they can be displayed or not in a product grid.
+  """
+  AVAILABLE_IN_GRID
+}
+
+input AttributeSortingInput {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """Sort attributes by the selected field."""
+  field: AttributeSortField!
+}
+
+"""Updates attribute."""
+type AttributeUpdate {
+  attribute: Attribute
+  productErrors: [ProductError!]!
+}
+
+input AttributeUpdateInput {
+  """Name of an attribute displayed in the interface."""
+  name: String
+
+  """Internal representation of an attribute name."""
+  slug: String
+
+  """IDs of values to be removed from this attribute."""
+  removeValues: [ID]
+
+  """New values to be created for this attribute."""
+  addValues: [AttributeValueCreateInput]
+
+  """Whether the attribute requires values to be passed or not."""
+  valueRequired: Boolean
+
+  """Whether the attribute is for variants only."""
+  isVariantOnly: Boolean
+
+  """Whether the attribute should be visible or not in storefront."""
+  visibleInStorefront: Boolean
+
+  """Whether the attribute can be filtered in storefront."""
+  filterableInStorefront: Boolean
+
+  """Whether the attribute can be filtered in dashboard."""
+  filterableInDashboard: Boolean
+
+  """
+  The position of the attribute in the storefront navigation (0 by default).
+  """
+  storefrontSearchPosition: Int
+
+  """Whether the attribute can be displayed in the admin product list."""
+  availableInGrid: Boolean
+}
+
+"""Represents a value of an attribute."""
+type AttributeValue implements Node {
+  """The ID of the object."""
+  id: ID!
+
+  """Name of a value displayed in the interface."""
+  name: String
+
+  """Internal representation of a value (unique per attribute)."""
+  slug: String
+
+  """Type of value (used only when `value` field is set)."""
+  type: AttributeValueType @deprecated(reason: "Use the `inputType` field to determine the type of attribute's value. This field will be removed after 2020-07-31.")
+
+  """The input type to use for entering attribute values in the dashboard."""
+  inputType: AttributeInputTypeEnum
+}
+
+"""Creates a value for an attribute."""
+type AttributeValueCreate {
+  """The updated attribute."""
+  attribute: Attribute
+  productErrors: [ProductError!]!
+  attributeValue: AttributeValue
+}
+
+input AttributeValueCreateInput {
+  """Name of a value displayed in the interface."""
+  name: String!
+}
+
+"""Deletes a value of an attribute."""
+type AttributeValueDelete {
+  """The updated attribute."""
+  attribute: Attribute
+  productErrors: [ProductError!]!
+  attributeValue: AttributeValue
+}
+
+enum AttributeValueType {
+  COLOR
+  GRADIENT
+  URL
+  STRING
+}
+
+"""Updates value of an attribute."""
+type AttributeValueUpdate {
+  """The updated attribute."""
+  attribute: Attribute
+  productErrors: [ProductError!]!
+  attributeValue: AttributeValue
+}
+
+type BulkProductError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: ProductErrorCode!
+
+  """Index of an input list item that caused the error."""
+  index: Int
+}
+
+type BulkStockError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: ProductErrorCode!
+
+  """Index of an input list item that caused the error."""
+  index: Int
+}
+
+"""
+Represents a single category of products. Categories allow to organize products
+in a tree-hierarchies which can be used for navigation in the storefront.
+"""
+type Category implements Node & DjangoPkInterface {
+  """The ID of the object."""
+  id: ID!
+  name: String!
+  slug: String!
+  description: String!
+  descriptionJson: JSONString!
+  parent: Category
+  level: Int!
+
+  """Primary key"""
+  pk: ID
+
+  """List of ancestors of the category."""
+  ancestors(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): CategoryCountableConnection
+
+  """List of products in the category."""
+  products(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductCountableConnection
+
+  """List of children of the category."""
+  children(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): CategoryCountableConnection
+  backgroundImage(
+    """Size of the image."""
+    size: Int
+  ): Image
+}
+
+"""Deletes categories."""
+type CategoryBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  productErrors: [ProductError!]!
+}
+
+type CategoryCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [CategoryCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type CategoryCountableEdge {
+  """The item at the end of the edge."""
+  node: Category!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Creates a new category."""
+type CategoryCreate {
+  productErrors: [ProductError!]!
+  category: Category
+}
+
+"""Deletes a category."""
+type CategoryDelete {
+  productErrors: [ProductError!]!
+  category: Category
+}
+
+input CategoryFilterInput {
+  search: String
+  ids: [ID]
+}
+
+input CategoryInput {
+  """Category description (HTML/text)."""
+  description: String
+
+  """Category description (JSON)."""
+  descriptionJson: JSONString
+
+  """Category name."""
+  name: String
+
+  """Category slug."""
+  slug: String
+
+  """Background image file."""
+  backgroundImage: Upload
+
+  """Alt text for an image."""
+  backgroundImageAlt: String
+}
+
+enum CategorySortField {
+  """Sort categories by name."""
+  NAME
+
+  """Sort categories by product count."""
+  PRODUCT_COUNT
+
+  """Sort categories by subcategory count."""
+  SUBCATEGORY_COUNT
+}
+
+input CategorySortingInput {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """Sort categories by the selected field."""
+  field: CategorySortField!
+}
+
+"""Updates a category."""
+type CategoryUpdate {
+  productErrors: [ProductError!]!
+  category: Category
+}
+
+"""Checkout object."""
+type Checkout implements Node {
+  created: DateTime!
+  lastChange: DateTime!
+  user: User
+  token: UUID!
+  quantity: Int!
+  shippingAddress: Address
+  shippingMethod: ShippingMethod
+  note: String!
+
+  """The ID of the object."""
+  id: ID!
+
+  """Shipping methods that can be used with this order."""
+  availableShippingMethods: [ShippingMethod]
+
+  """Email of a customer."""
+  email: String!
+
+  """Returns True, if checkout requires shipping."""
+  isShippingRequired: Boolean!
+
+  """
+  A list of checkout lines, each containing information about an item in the checkout.
+  """
+  lines: [CheckoutLine]
+
+  """The price of the shipping, with all the taxes included."""
+  shippingPrice: TaxedMoney
+
+  """The price of the checkout before shipping, with taxes included."""
+  subtotalPrice: TaxedMoney
+
+  """
+  The sum of the the checkout line prices, with all the taxes,shipping costs, and discounts included.
+  """
+  totalPrice: TaxedMoney
+}
+
+"""
+Completes the checkout. As a result a new order is created and a payment charge
+is made. This action requires a successful payment before it can be performed.
+In case additional confirmation step as 3D secure is required confirmationNeeded
+flag will be set to True and no order created until payment is confirmed with
+second call of this mutation.
+"""
+type CheckoutComplete {
+  """Placed order."""
+  order: Order
+
+  """
+  Set to true if payment needs to be confirmed before checkout is complete.
+  """
+  confirmationNeeded: Boolean!
+  checkoutErrors: [CheckoutError!]!
+}
+
+type CheckoutCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [CheckoutCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type CheckoutCountableEdge {
+  """The item at the end of the edge."""
+  node: Checkout!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Create a new checkout."""
+type CheckoutCreate {
+  """
+  Whether the checkout was created or the current active one was returned. Refer
+  to checkoutLinesAdd and checkoutLinesUpdate to merge a cart with an active checkout.
+  """
+  created: Boolean
+  checkoutErrors: [CheckoutError!]!
+  checkout: Checkout
+}
+
+input CheckoutCreateInput {
+  """
+  A list of checkout lines, each containing information about an item in the checkout.
+  """
+  lines: [CheckoutLineInput]!
+
+  """The customer's email address."""
+  email: String
+
+  """
+  The mailing address to where the checkout will be shipped. Note: the address
+  will be ignored if the checkout doesn't contain shippable items.
+  """
+  shippingAddress: AddressInput
+}
+
+"""Sets the customer as the owner of the checkout."""
+type CheckoutCustomerAttach {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+"""Removes the user assigned as the owner of the checkout."""
+type CheckoutCustomerDetach {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+"""Updates email address in the existing checkout object."""
+type CheckoutEmailUpdate {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+type CheckoutError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: CheckoutErrorCode!
+}
+
+"""An enumeration."""
+enum CheckoutErrorCode {
+  BILLING_ADDRESS_NOT_SET
+  CHECKOUT_NOT_FULLY_PAID
+  GRAPHQL_ERROR
+  INSUFFICIENT_STOCK
+  INVALID
+  INVALID_SHIPPING_METHOD
+  NOT_FOUND
+  PAYMENT_ERROR
+  QUANTITY_GREATER_THAN_LIMIT
+  REQUIRED
+  SHIPPING_ADDRESS_NOT_SET
+  SHIPPING_METHOD_NOT_APPLICABLE
+  SHIPPING_METHOD_NOT_SET
+  SHIPPING_NOT_REQUIRED
+  TAX_ERROR
+  UNIQUE
+  VOUCHER_NOT_APPLICABLE
+  ZERO_QUANTITY
+}
+
+"""Represents an item in the checkout."""
+type CheckoutLine implements Node {
+  """The ID of the object."""
+  id: ID!
+  variant: ProductVariant!
+  quantity: Int!
+
+  """The sum of the checkout line price, taxes and discounts."""
+  totalPrice: TaxedMoney
+
+  """Indicates whether the item need to be delivered."""
+  requiresShipping: Boolean
+}
+
+type CheckoutLineCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [CheckoutLineCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type CheckoutLineCountableEdge {
+  """The item at the end of the edge."""
+  node: CheckoutLine!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Deletes a CheckoutLine."""
+type CheckoutLineDelete {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+input CheckoutLineInput {
+  """The number of items purchased."""
+  quantity: Int!
+
+  """ID of the product variant."""
+  variantId: ID!
+}
+
+"""Adds a checkout line to the existing checkout."""
+type CheckoutLinesAdd {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+"""Updates checkout line in the existing checkout."""
+type CheckoutLinesUpdate {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+"""Create a new payment for given checkout."""
+type CheckoutPaymentCreate {
+  """Related checkout object."""
+  checkout: Checkout
+
+  """A newly created payment."""
+  payment: Payment
+  paymentErrors: [PaymentError!]!
+}
+
+"""Update shipping address in the existing checkout."""
+type CheckoutShippingAddressUpdate {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+"""Updates the shipping address of the checkout."""
+type CheckoutShippingMethodUpdate {
+  """An updated checkout."""
+  checkout: Checkout
+  checkoutErrors: [CheckoutError!]!
+}
+
+"""Confirm user account with token sent by email during registration."""
+type ConfirmAccount {
+  """An activated user account."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
+"""Confirm the email change of the logged-in user."""
+type ConfirmEmailChange {
+  """A user instance with a new email."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
+"""An enumeration."""
+enum CountryCode {
+  AF
+  AL
+  DZ
+  AD
+  AO
+  AI
+  AQ
+  AR
+  AM
+  AW
+  AU
+  AT
+  AZ
+  BH
+  BD
+  BB
+  BY
+  BE
+  BZ
+  BJ
+  BT
+  BO
+  BW
+  BR
+  BN
+  BG
+  BI
+  KH
+  CM
+  CA
+  TD
+  CL
+  CN
+  CO
+  CG
+  HR
+  CU
+  CW
+  CY
+  CZ
+  DK
+  DJ
+  DM
+  EC
+  EG
+  SV
+  ER
+  EE
+  SZ
+  ET
+  FJ
+  FI
+  FR
+  GA
+  GM
+  GE
+  DE
+  GH
+  GI
+  GR
+  GL
+  GD
+  GP
+  GU
+  GT
+  GG
+  GN
+  GY
+  HT
+  HN
+  HK
+  HU
+  IS
+  IN
+  ID
+  IR
+  IQ
+  IE
+  IL
+  IT
+  JM
+  JP
+  JE
+  JO
+  KZ
+  KE
+  KI
+  KW
+  KG
+  LA
+  LV
+  LB
+  LS
+  LR
+  LY
+  LI
+  LT
+  LU
+  MO
+  MG
+  MW
+  MY
+  MV
+  ML
+  MT
+  MQ
+  MR
+  MU
+  YT
+  MX
+  MD
+  MC
+  MN
+  ME
+  MS
+  MA
+  MZ
+  MM
+  NA
+  NR
+  NP
+  NL
+  NI
+  NE
+  NG
+  NU
+  MK
+  NO
+  OM
+  PK
+  PW
+  PA
+  PY
+  PE
+  PH
+  PN
+  PL
+  PT
+  QA
+  RE
+  RO
+  RU
+  RW
+  WS
+  SN
+  RS
+  SG
+  SK
+  SI
+  SO
+  ES
+  SD
+  SR
+  SE
+  CH
+  SY
+  TW
+  TJ
+  TZ
+  TH
+  TG
+  TK
+  TO
+  TN
+  TR
+  TM
+  TV
+  UG
+  UA
+  UY
+  UZ
+  VU
+  VE
+  VN
+  YE
+  ZM
+  ZW
+  AX
+  AS
+  BS
+  BM
+  BV
+  KY
+  CF
+  CX
+  KM
+  CK
+  DO
+  GQ
+  FO
+  GF
+  PF
+  VA
+  IM
+  KP
+  KR
+  MH
+  NC
+  NZ
+  NF
+  SA
+  SC
+  SB
+  ZA
+  SS
+  GB
+  EH
+  AG
+  BA
+  TF
+  MP
+  TT
+  AE
+  US
+  WF
+  TC
+  UM
+  IO
+  HM
+  GS
+  VG
+  VI
+  MF
+  SX
+  SJ
+  FK
+  CD
+  FM
+  CC
+  SH
+  SM
+  PS
+  BQ
+  BF
+  CV
+  CR
+  GW
+  PR
+  BL
+  LC
+  SL
+  LK
+  TL
+  PG
+  KN
+  PM
+  VC
+  ST
+  CI
+}
+
+type CountryDisplay {
+  """Country code."""
+  code: String!
+
+  """Country name."""
+  country: String!
+}
+
+"""
+Mutation that authenticates a user and returns token and user data.
+It overrides the default graphql_jwt.ObtainJSONWebToken to wrap potential
+authentication errorsAddressCreate in our Error type, which is consistent to how the rest of
+the mutation works.
+"""
+type CreateToken {
+  token: String
+  errors: [Error!]! @deprecated(reason: "Use typed errorsAddressCreate with error codes. This field will be removed after 2020-07-31.")
+
+  """List of errorsAddressCreate that occurred executing the mutation."""
+  accountErrors: [AccountError!]!
+
+  """A user instance."""
+  user: User
+}
+
+type CreditCard {
+  """Card brand."""
+  brand: String!
+
+  """The host name of the domain."""
+  firstDigits: String!
+
+  """Last 4 digits of the card number."""
+  lastDigits: String!
+
+  """Two-digit number representing the card’s expiration month."""
+  expMonth: Int!
+
+  """Four-digit number representing the card’s expiration year."""
+  expYear: Int!
+}
+
+"""
+The `Date` scalar type represents a Date
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar Date
+
+input DateRangeInput {
+  """Start date."""
+  gte: Date
+
+  """End date."""
+  lte: Date
+}
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""
+Custom Decimal implementation.
+Returns Decimal as a float in the API,
+parses float to the Decimal on the way back.
+"""
+scalar Decimal
+
+"""Debugging information for the current query."""
+type DjangoDebug {
+  """Executed SQL queries for this API query."""
+  sql: [DjangoDebugSQL]
+}
+
+"""Represents a single database query made to a Django managed DB."""
+type DjangoDebugSQL {
+  """The type of database being used (e.g. postrgesql, mysql, sqlite)."""
+  vendor: String!
+
+  """The Django database alias (e.g. 'default')."""
+  alias: String!
+
+  """The actual SQL sent to this database."""
+  sql: String
+
+  """Duration of this database query in seconds."""
+  duration: Float!
+
+  """The raw SQL of this query, without params."""
+  rawSql: String!
+
+  """JSON encoded database query parameters."""
+  params: String!
+
+  """Start time of this database query."""
+  startTime: Float!
+
+  """Stop time of this database query."""
+  stopTime: Float!
+
+  """Whether this database query took more than 10 seconds."""
+  isSlow: Boolean!
+
+  """Whether this database query was a SELECT."""
+  isSelect: Boolean!
+
+  """Postgres transaction ID if available."""
+  transId: String
+
+  """Postgres transaction status if available."""
+  transStatus: String
+
+  """Postgres isolation level if available."""
+  isoLevel: String
+
+  """Postgres connection encoding if available."""
+  encoding: String
+}
+
+"""Exposes the Django model primary key"""
+interface DjangoPkInterface {
+  """Primary key"""
+  pk: ID
+}
+
+"""Represents shop's domain."""
+type Domain {
+  """The host name of the domain."""
+  host: String!
+
+  """Inform if SSL is enabled."""
+  sslEnabled: Boolean!
+
+  """Shop's absolute URL."""
+  url: String!
+}
+
+"""Completes creating an order."""
+type DraftOrderComplete {
+  """Completed order."""
+  order: Order
+  orderErrors: [OrderError!]!
+}
+
+"""Creates a new draft order."""
+type DraftOrderCreate {
+  orderErrors: [OrderError!]!
+  order: Order
+}
+
+input DraftOrderCreateInput {
+  user: ID
+
+  """Email address of the customer."""
+  userEmail: String
+
+  """Discount amount for the order."""
+  discount: Decimal
+
+  """Shipping address of the customer."""
+  shippingAddress: AddressInput
+
+  """ID of a selected shipping method."""
+  shippingMethod: ID
+
+  """A note from a customer. Visible by customers in the order summary."""
+  customerNote: String
+
+  """Variant line input consisting of variant ID and quantity of products."""
+  lines: [OrderLineCreateInput]
+}
+
+"""Deletes a draft order."""
+type DraftOrderDelete {
+  orderErrors: [OrderError!]!
+  order: Order
+}
+
+input DraftOrderInput {
+  user: ID
+
+  """Email address of the customer."""
+  userEmail: String
+
+  """Discount amount for the order."""
+  discount: Decimal
+
+  """Shipping address of the customer."""
+  shippingAddress: AddressInput
+
+  """ID of a selected shipping method."""
+  shippingMethod: ID
+
+  """A note from a customer. Visible by customers in the order summary."""
+  customerNote: String
+}
+
+"""Deletes an order line from a draft order."""
+type DraftOrderLineDelete {
+  """A related draft order."""
+  order: Order
+
+  """An order line that was deleted."""
+  orderLine: OrderLine
+  orderErrors: [OrderError!]!
+}
+
+"""Create order lines for a draft order."""
+type DraftOrderLinesCreate {
+  """A related draft order."""
+  order: Order
+
+  """List of newly added order lines."""
+  orderLines: [OrderLine!]
+  orderErrors: [OrderError!]!
+}
+
+"""Updates an order line of a draft order."""
+type DraftOrderLineUpdate {
+  """A related draft order."""
+  order: Order
+  orderErrors: [OrderError!]!
+  orderLine: OrderLine
+}
+
+"""Updates a draft order."""
+type DraftOrderUpdate {
+  orderErrors: [OrderError!]!
+  order: Order
+}
+
+"""Represents an error in the input of a mutation."""
+type Error {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+}
+
+"""
+The `GenericScalar` scalar type represents a generic
+GraphQL scalar value that could be:
+String, Boolean, Int, Float, List or Object.
+"""
+scalar GenericScalar
+
+"""Represents customers's geolocalization data."""
+type Geolocalization {
+  """Country of the user acquired by his IP address."""
+  country: CountryDisplay
+}
+
+"""Represents permission group data."""
+type Group implements Node {
+  """The ID of the object."""
+  id: ID!
+  name: String!
+
+  """List of group permissions"""
+  permissions: [Permission]
+
+  """List of group users"""
+  users: [User]
+
+  """
+  True, if the currently authenticated user has rights to manage a group.
+  """
+  userCanManage: Boolean!
+}
+
+type GroupCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [GroupCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type GroupCountableEdge {
+  """The item at the end of the edge."""
+  node: Group!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Represents an image."""
+type Image {
+  """The URL of the image."""
+  url: String!
+
+  """Alt text for an image."""
+  alt: String
+}
+
+"""
+Allows use of a JSON String for input / output from the GraphQL schema.
+
+Use of this type is *not recommended* as you lose the benefits of having a defined, static
+schema (one of the key benefits of GraphQL).
+"""
+scalar JSONString
+
+"""Represents amount of money in specific currency."""
+type Money {
+  """Currency code."""
+  currency: String!
+
+  """Amount of money."""
+  amount: Float!
+
+  """Money formatted according to the current locale."""
+  localized: String! @deprecated(reason: "Price formatting according to the current locale should be handled by the frontend client. This field will be removed after 2020-07-31.")
+}
+
+"""Represents a range of amounts of money."""
+type MoneyRange {
+  """Lower bound of a price range."""
+  start: Money
+
+  """Upper bound of a price range."""
+  stop: Money
+}
+
+type Mutation {
+  """Completes creating an order."""
+  draftOrderComplete(
+    """ID of the order that will be completed."""
+    id: ID!
+  ): DraftOrderComplete
+
+  """Creates a new draft order."""
+  draftOrderCreate(
+    """Fields required to create an order."""
+    input: DraftOrderCreateInput!
+  ): DraftOrderCreate
+
+  """Deletes a draft order."""
+  draftOrderDelete(
+    """ID of a draft order to delete."""
+    id: ID!
+  ): DraftOrderDelete
+
+  """Create order lines for a draft order."""
+  draftOrderLinesCreate(
+    """ID of the draft order to add the lines to."""
+    id: ID!
+
+    """Fields required to add order lines."""
+    input: [OrderLineCreateInput]!
+  ): DraftOrderLinesCreate
+
+  """Deletes an order line from a draft order."""
+  draftOrderLineDelete(
+    """ID of the order line to delete."""
+    id: ID!
+  ): DraftOrderLineDelete
+
+  """Updates an order line of a draft order."""
+  draftOrderLineUpdate(
+    """ID of the order line to update."""
+    id: ID!
+
+    """Fields required to update an order line."""
+    input: OrderLineInput!
+  ): DraftOrderLineUpdate
+
+  """Updates a draft order."""
+  draftOrderUpdate(
+    """ID of an order to update."""
+    id: ID!
+
+    """Fields required to update an order."""
+    input: DraftOrderInput!
+  ): DraftOrderUpdate
+
+  """Adds note to the order."""
+  orderAddNote(
+    """ID of the order to add a note for."""
+    order: ID!
+
+    """Fields required to create a note for the order."""
+    input: OrderAddNoteInput!
+  ): OrderAddNote
+
+  """Cancel an order."""
+  orderCancel(
+    """ID of the order to cancel."""
+    id: ID!
+  ): OrderCancel
+
+  """Capture an order."""
+  orderCapture(
+    """Amount of money to capture."""
+    amount: Decimal!
+
+    """ID of the order to capture."""
+    id: ID!
+  ): OrderCapture
+
+  """Mark order as manually paid."""
+  orderMarkAsPaid(
+    """ID of the order to mark paid."""
+    id: ID!
+  ): OrderMarkAsPaid
+
+  """Refund an order."""
+  orderRefund(
+    """Amount of money to refund."""
+    amount: Decimal!
+
+    """ID of the order to refund."""
+    id: ID!
+  ): OrderRefund
+
+  """Updates an order."""
+  orderUpdate(
+    """ID of an order to update."""
+    id: ID!
+
+    """Fields required to update an order."""
+    input: OrderUpdateInput!
+  ): OrderUpdate
+
+  """Updates a shipping method of the order."""
+  orderUpdateShipping(
+    """ID of the order to update a shipping method."""
+    order: ID!
+
+    """Fields required to change shipping method of the order."""
+    input: OrderUpdateShippingInput
+  ): OrderUpdateShipping
+
+  """Void an order."""
+  orderVoid(
+    """ID of the order to void."""
+    id: ID!
+  ): OrderVoid
+
+  """
+  Completes the checkout. As a result a new order is created and a payment
+  charge is made. This action requires a successful payment before it can be
+  performed. In case additional confirmation step as 3D secure is required
+  confirmationNeeded flag will be set to True and no order created until payment
+  is confirmed with second call of this mutation.
+  """
+  checkoutComplete(
+    """Checkout ID."""
+    checkoutId: ID!
+
+    """Payment method ID"""
+    paymentMethodId: ID!
+
+    """
+    URL of a view where users should be redirected to see the order details. URL in RFC 1808 format.
+    """
+    redirectUrl: String
+  ): CheckoutComplete
+
+  """Create a new checkout."""
+  checkoutCreate(
+    """Fields required to create checkout."""
+    input: CheckoutCreateInput!
+  ): CheckoutCreate
+
+  """Sets the customer as the owner of the checkout."""
+  checkoutCustomerAttach(
+    """ID of the checkout."""
+    checkoutId: ID!
+  ): CheckoutCustomerAttach
+
+  """Removes the user assigned as the owner of the checkout."""
+  checkoutCustomerDetach(
+    """Checkout ID."""
+    checkoutId: ID!
+  ): CheckoutCustomerDetach
+
+  """Updates email address in the existing checkout object."""
+  checkoutEmailUpdate(
+    """Checkout ID."""
+    checkoutId: ID
+
+    """email."""
+    email: String!
+  ): CheckoutEmailUpdate
+
+  """Adds a checkout line to the existing checkout."""
+  checkoutLinesAdd(
+    """The ID of the checkout."""
+    checkoutId: ID!
+
+    """
+    A list of checkout lines, each containing information about an item in the checkout.
+    """
+    lines: [CheckoutLineInput]!
+  ): CheckoutLinesAdd
+
+  """Deletes a CheckoutLine."""
+  checkoutLineDelete(
+    """The ID of the checkout."""
+    checkoutId: ID!
+
+    """ID of the checkout line to delete."""
+    lineId: ID
+
+    """ID of the checkout line variant to delete."""
+    variantId: ID
+  ): CheckoutLineDelete
+
+  """Updates checkout line in the existing checkout."""
+  checkoutLinesUpdate(
+    """The ID of the checkout."""
+    checkoutId: ID!
+
+    """
+    A list of checkout lines, each containing information about an item in the checkout.
+    """
+    lines: [CheckoutLineInput]!
+  ): CheckoutLinesUpdate
+
+  """Create a new payment for given checkout."""
+  checkoutPaymentCreate(
+    """Checkout ID."""
+    checkoutId: ID!
+
+    """Data required to create a new payment."""
+    input: PaymentInput!
+  ): CheckoutPaymentCreate
+
+  """Update shipping address in the existing checkout."""
+  checkoutShippingAddressUpdate(
+    """ID of the checkout."""
+    checkoutId: ID!
+
+    """The mailing address to where the checkout will be shipped."""
+    shippingAddress: AddressInput!
+  ): CheckoutShippingAddressUpdate
+
+  """Updates the shipping address of the checkout."""
+  checkoutShippingMethodUpdate(
+    """Checkout ID."""
+    checkoutId: ID
+
+    """Shipping method."""
+    shippingMethodId: ID!
+  ): CheckoutShippingMethodUpdate
+
+  """Captures the authorized payment amount."""
+  paymentCapture(
+    """Transaction amount."""
+    amount: Decimal
+
+    """Payment ID."""
+    paymentId: ID!
+  ): PaymentCapture
+
+  """Refunds the captured payment amount."""
+  paymentRefund(
+    """Transaction amount."""
+    amount: Decimal
+
+    """Payment ID."""
+    paymentId: ID!
+  ): PaymentRefund
+
+  """Voids the authorized payment."""
+  paymentVoid(
+    """Payment ID."""
+    paymentId: ID!
+  ): PaymentVoid
+
+  """Confirms payment in a two-step process like 3D secure"""
+  paymentSecureConfirm(
+    """Payment ID."""
+    paymentId: ID!
+  ): PaymentSecureConfirm
+
+  """Creates a new shipping price."""
+  shippingPriceCreate(
+    """Fields required to create a shipping price."""
+    input: ShippingPriceInput!
+  ): ShippingPriceCreate
+
+  """Deletes a shipping price."""
+  shippingPriceDelete(
+    """ID of a shipping price to delete."""
+    id: ID!
+  ): ShippingPriceDelete
+
+  """Deletes shipping prices."""
+  shippingPriceBulkDelete(
+    """List of shipping price IDs to delete."""
+    ids: [ID]!
+  ): ShippingPriceBulkDelete
+
+  """Updates a new shipping price."""
+  shippingPriceUpdate(
+    """ID of a shipping price to update."""
+    id: ID!
+
+    """Fields required to update a shipping price."""
+    input: ShippingPriceInput!
+  ): ShippingPriceUpdate
+
+  """Creates an attribute."""
+  attributeCreate(
+    """Fields required to create an attribute."""
+    input: AttributeCreateInput!
+  ): AttributeCreate
+
+  """Deletes an attribute."""
+  attributeDelete(
+    """ID of an attribute to delete."""
+    id: ID!
+  ): AttributeDelete
+
+  """Updates attribute."""
+  attributeUpdate(
+    """ID of an attribute to update."""
+    id: ID!
+
+    """Fields required to update an attribute."""
+    input: AttributeUpdateInput!
+  ): AttributeUpdate
+
+  """Creates a value for an attribute."""
+  attributeValueCreate(
+    """Attribute to which value will be assigned."""
+    attribute: ID!
+
+    """Fields required to create an AttributeValue."""
+    input: AttributeValueCreateInput!
+  ): AttributeValueCreate
+
+  """Deletes a value of an attribute."""
+  attributeValueDelete(
+    """ID of a value to delete."""
+    id: ID!
+  ): AttributeValueDelete
+
+  """Updates value of an attribute."""
+  attributeValueUpdate(
+    """ID of an AttributeValue to update."""
+    id: ID!
+
+    """Fields required to update an AttributeValue."""
+    input: AttributeValueCreateInput!
+  ): AttributeValueUpdate
+
+  """Creates a new category."""
+  categoryCreate(
+    """Fields required to create a category."""
+    input: CategoryInput!
+
+    """
+    ID of the parent category. If empty, category will be top level category.
+    """
+    parent: ID
+  ): CategoryCreate
+
+  """Deletes a category."""
+  categoryDelete(
+    """ID of a category to delete."""
+    id: ID!
+  ): CategoryDelete
+
+  """Deletes categories."""
+  categoryBulkDelete(
+    """List of category IDs to delete."""
+    ids: [ID]!
+  ): CategoryBulkDelete
+
+  """Updates a category."""
+  categoryUpdate(
+    """ID of a category to update."""
+    id: ID!
+
+    """Fields required to update a category."""
+    input: CategoryInput!
+  ): CategoryUpdate
+
+  """Creates a new product."""
+  productCreate(
+    """Fields required to create a product."""
+    input: ProductCreateInput!
+  ): ProductCreate
+
+  """Deletes a product."""
+  productDelete(
+    """ID of a product to delete."""
+    id: ID!
+  ): ProductDelete
+
+  """Deletes products."""
+  productBulkDelete(
+    """List of product IDs to delete."""
+    ids: [ID]!
+  ): ProductBulkDelete
+
+  """Publish products."""
+  productBulkPublish(
+    """List of products IDs to publish."""
+    ids: [ID]!
+
+    """Determine if products will be published or not."""
+    isPublished: Boolean!
+  ): ProductBulkPublish
+
+  """Updates an existing product."""
+  productUpdate(
+    """ID of a product to update."""
+    id: ID!
+
+    """Fields required to update a product."""
+    input: ProductInput!
+  ): ProductUpdate
+
+  """
+  Create a product image. This mutation must be sent as a `multipart` request.
+  More detailed specs of the upload format can be found here:
+  https://github.com/jaydenseric/graphql-multipart-request-spec
+  """
+  productImageCreate(
+    """Fields required to create a product image."""
+    input: ProductImageCreateInput!
+  ): ProductImageCreate
+
+  """Deletes a product image."""
+  productImageDelete(
+    """ID of a product image to delete."""
+    id: ID!
+  ): ProductImageDelete
+
+  """Deletes product images."""
+  productImageBulkDelete(
+    """List of product image IDs to delete."""
+    ids: [ID]!
+  ): ProductImageBulkDelete
+
+  """Changes ordering of the product image."""
+  productImageReorder(
+    """IDs of a product images in the desired order."""
+    imagesIds: [ID]!
+
+    """Id of product that images order will be altered."""
+    productId: ID!
+  ): ProductImageReorder
+
+  """Updates a product image."""
+  productImageUpdate(
+    """ID of a product image to update."""
+    id: ID!
+
+    """Fields required to update a product image."""
+    input: ProductImageUpdateInput!
+  ): ProductImageUpdate
+
+  """Creates a new product type."""
+  productTypeCreate(
+    """Fields required to create a product type."""
+    input: ProductTypeInput!
+  ): ProductTypeCreate
+
+  """Deletes a product type."""
+  productTypeDelete(
+    """ID of a product type to delete."""
+    id: ID!
+  ): ProductTypeDelete
+
+  """Deletes product types."""
+  productTypeBulkDelete(
+    """List of product type IDs to delete."""
+    ids: [ID]!
+  ): ProductTypeBulkDelete
+
+  """Updates an existing product type."""
+  productTypeUpdate(
+    """ID of a product type to update."""
+    id: ID!
+
+    """Fields required to update a product type."""
+    input: ProductTypeInput!
+  ): ProductTypeUpdate
+
+  """Creates a new variant for a product."""
+  productVariantCreate(
+    """Fields required to create a product variant."""
+    input: ProductVariantCreateInput!
+  ): ProductVariantCreate
+
+  """Deletes a product variant."""
+  productVariantDelete(
+    """ID of a product variant to delete."""
+    id: ID!
+  ): ProductVariantDelete
+
+  """Creates product variants for a given product."""
+  productVariantBulkCreate(
+    """ID of the product to create the variants for."""
+    product: ID!
+
+    """Input list of product variants to create."""
+    variants: [ProductVariantBulkCreateInput]!
+  ): ProductVariantBulkCreate
+
+  """Deletes product variants."""
+  productVariantBulkDelete(
+    """List of product variant IDs to delete."""
+    ids: [ID]!
+  ): ProductVariantBulkDelete
+
+  """Creates stocks for product variant."""
+  productVariantStocksCreate(
+    """Input list of stocks to create."""
+    stocks: [StockInput!]!
+
+    """ID of a product variant for which stocks will be created."""
+    variantId: ID!
+  ): ProductVariantStocksCreate
+
+  """Delete stocks from product variant."""
+  productVariantStocksDelete(
+    """ID of product variant for which stocks will be deleted."""
+    variantId: ID!
+    warehouseIds: [ID!]
+  ): ProductVariantStocksDelete
+
+  """Update stocks for product variant."""
+  productVariantStocksUpdate(
+    """Input list of stocks to create."""
+    stocks: [StockInput!]!
+
+    """ID of a product variant for which stocks will be created."""
+    variantId: ID!
+  ): ProductVariantStocksUpdate
+
+  """Updates an existing variant for product."""
+  productVariantUpdate(
+    """ID of a product variant to update."""
+    id: ID!
+
+    """Fields required to update a product variant."""
+    input: ProductVariantInput!
+  ): ProductVariantUpdate
+
+  """Creates a new review for a product."""
+  productReviewCreate(
+    """Fields required to create a product review."""
+    input: ProductReviewCreateInput!
+  ): ProductReviewCreate
+
+  """Sends an email with the account password modification link."""
+  requestPasswordReset(
+    """Email of the user that will be used for password recovery."""
+    email: String!
+
+    """
+    URL of a view where users should be redirected to reset the password. URL in RFC 1808 format.
+    """
+    redirectUrl: String!
+  ): RequestPasswordReset
+
+  """Confirm user account with token sent by email during registration."""
+  confirmAccount(
+    """E-mail of the user performing account confirmation."""
+    email: String!
+
+    """A one-time token required to confirm the account."""
+    token: String!
+  ): ConfirmAccount
+
+  """
+  Sets the user's password from the token sent by email using the RequestPasswordReset mutation.
+  """
+  setPassword(
+    """A one-time token required to set the password."""
+    token: String!
+    email: String!
+    password: String!
+  ): SetPassword
+
+  """Change the password of the logged in user."""
+  passwordChange(
+    """New user password."""
+    newPassword: String!
+
+    """Current user password."""
+    oldPassword: String!
+  ): PasswordChange
+
+  """Request email change of the logged in user."""
+  requestEmailChange(
+    """New user email."""
+    newEmail: String!
+
+    """User password."""
+    password: String!
+
+    """
+    URL of a view where users should be redirected to update the email address. URL in RFC 1808 format.
+    """
+    redirectUrl: String!
+  ): RequestEmailChange
+
+  """Confirm the email change of the logged-in user."""
+  confirmEmailChange(
+    """A one-time token required to change the email."""
+    token: String!
+  ): ConfirmEmailChange
+
+  """Create a new address for the customer."""
+  accountAddressCreate(
+    """Fields required to create address."""
+    input: AddressInput!
+
+    """
+    A type of address. If provided, the new address will be automatically
+    assigned as the customer's default address of that type.
+    """
+    type: AddressTypeEnum
+  ): AccountAddressCreate
+
+  """Updates an address of the logged-in user."""
+  accountAddressUpdate(
+    """ID of the address to update."""
+    id: ID!
+
+    """Fields required to update the address."""
+    input: AddressInput!
+  ): AccountAddressUpdate
+
+  """Delete an address of the logged-in user."""
+  accountAddressDelete(
+    """ID of the address to delete."""
+    id: ID!
+  ): AccountAddressDelete
+
+  """Sets a default address for the authenticated user."""
+  accountSetDefaultAddress(
+    """ID of the address to set as default."""
+    id: ID!
+
+    """The type of address."""
+    type: AddressTypeEnum!
+  ): AccountSetDefaultAddress
+
+  """Register a new user."""
+  accountRegister(
+    """Fields required to create a user."""
+    input: AccountRegisterInput!
+  ): AccountRegister
+
+  """Updates the account of the logged-in user."""
+  accountUpdate(
+    """Fields required to update the account of the logged-in user."""
+    input: AccountInput!
+  ): AccountUpdate
+
+  """Sends an email with the account removal link for the logged-in user."""
+  accountRequestDeletion(
+    """
+    URL of a view where users should be redirected to delete their account. URL in RFC 1808 format.
+    """
+    redirectUrl: String!
+  ): AccountRequestDeletion
+
+  """Remove user account."""
+  accountDelete(
+    """
+    A one-time token required to remove account. Sent by email using AccountRequestDeletion mutation.
+    """
+    token: String!
+  ): AccountDelete
+
+  """
+  Mutation that authenticates a user and returns token and user data.
+  It overrides the default graphql_jwt.ObtainJSONWebToken to wrap potential
+  authentication errorsAddressCreate in our Error type, which is consistent to how the rest of
+  the mutation works.
+  """
+  tokenCreate(email: String!, password: String!): CreateToken
+  tokenRefresh(token: String!): Refresh
+
+  """Mutation that confirms if token is valid and also returns user data."""
+  tokenVerify(token: String!): VerifyToken
+}
+
+"""An object with an ID"""
+interface Node {
+  """The ID of the object."""
+  id: ID!
+}
+
+"""Represents an order in the shop."""
+type Order implements Node {
+  """The ID of the object."""
+  id: ID!
+  created: DateTime!
+  status: OrderStatus!
+  user: User
+  trackingClientId: String!
+  shippingAddress: Address
+  shippingMethod: ShippingMethod
+  shippingMethodName: String
+
+  """Total price of shipping."""
+  shippingPrice: TaxedMoney
+  token: String!
+  displayGrossPrices: Boolean!
+  customerNote: String!
+  weight: Weight
+
+  """List of order lines."""
+  lines: [OrderLine]!
+
+  """
+  List of actions that can be performed in the current state of an order.
+  """
+  actions: [OrderAction]!
+
+  """Shipping methods that can be used with this order."""
+  availableShippingMethods: [ShippingMethod]
+
+  """User-friendly number of an order."""
+  number: String
+
+  """Informs if an order is fully paid."""
+  isPaid: Boolean
+
+  """Internal payment status."""
+  paymentStatus: PaymentChargeStatusEnum
+
+  """User-friendly payment status."""
+  paymentStatusDisplay: String
+
+  """List of payments for the order."""
+  payments: [Payment]
+
+  """Total amount of the order."""
+  total: TaxedMoney
+
+  """The sum of line prices not including shipping."""
+  subtotal: TaxedMoney
+
+  """User-friendly order status."""
+  statusDisplay: String
+
+  """
+  Informs whether a draft order can be finalized(turned into a regular order).
+  """
+  canFinalize: Boolean!
+
+  """Amount authorized for the order."""
+  totalAuthorized: Money
+
+  """Amount captured by payment."""
+  totalCaptured: Money
+
+  """List of events associated with the order."""
+  events: [OrderEvent]
+
+  """The difference between the paid and the order total amount."""
+  totalBalance: Money!
+
+  """Email address of the customer."""
+  userEmail: String
+
+  """Returns True, if order requires shipping."""
+  isShippingRequired: Boolean!
+}
+
+enum OrderAction {
+  """Represents the capture action."""
+  CAPTURE
+
+  """Represents a mark-as-paid action."""
+  MARK_AS_PAID
+
+  """Represents a refund action."""
+  REFUND
+
+  """Represents a void action."""
+  VOID
+}
+
+"""Adds note to the order."""
+type OrderAddNote {
+  """Order with the note added."""
+  order: Order
+
+  """Order note created."""
+  event: OrderEvent
+  orderErrors: [OrderError!]!
+}
+
+input OrderAddNoteInput {
+  """Note message."""
+  message: String!
+}
+
+"""Cancel an order."""
+type OrderCancel {
+  """Canceled order."""
+  order: Order
+  orderErrors: [OrderError!]!
+}
+
+"""Capture an order."""
+type OrderCapture {
+  """Captured order."""
+  order: Order
+  orderErrors: [OrderError!]!
+}
+
+type OrderCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [OrderCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type OrderCountableEdge {
+  """The item at the end of the edge."""
+  node: Order!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum OrderDirection {
+  """Specifies an ascending sort order."""
+  ASC
+
+  """Specifies a descending sort order."""
+  DESC
+}
+
+input OrderDraftFilterInput {
+  customer: String
+  created: DateRangeInput
+  search: String
+}
+
+type OrderError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: OrderErrorCode!
+}
+
+"""An enumeration."""
+enum OrderErrorCode {
+  BILLING_ADDRESS_NOT_SET
+  SHIPPING_ADDRESS_NOT_SET
+  CANNOT_CANCEL_FULFILLMENT
+  CANNOT_CANCEL_ORDER
+  CANNOT_DELETE
+  CANNOT_REFUND
+  CAPTURE_INACTIVE_PAYMENT
+  NOT_EDITABLE
+  FULFILL_ORDER_LINE
+  GRAPHQL_ERROR
+  INVALID
+  NOT_FOUND
+  ORDER_NO_SHIPPING_ADDRESS
+  PAYMENT_ERROR
+  PAYMENT_MISSING
+  REQUIRED
+  SHIPPING_METHOD_NOT_APPLICABLE
+  SHIPPING_METHOD_REQUIRED
+  UNIQUE
+  VOID_INACTIVE_PAYMENT
+  ZERO_QUANTITY
+  INSUFFICIENT_STOCK
+  DUPLICATED_INPUT_ITEM
+}
+
+"""History log of the order."""
+type OrderEvent implements Node {
+  """The ID of the object."""
+  id: ID!
+
+  """Date when event happened at in ISO 8601 format."""
+  date: DateTime
+
+  """Order event type."""
+  type: OrderEventsEnum
+
+  """User who performed the action."""
+  user: User
+}
+
+type OrderEventCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [OrderEventCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type OrderEventCountableEdge {
+  """The item at the end of the edge."""
+  node: OrderEvent!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""An enumeration."""
+enum OrderEventsEnum {
+  DRAFT_CREATED
+  DRAFT_ADDED_PRODUCTS
+  DRAFT_REMOVED_PRODUCTS
+  PLACED
+  PLACED_FROM_DRAFT
+  OVERSOLD_ITEMS
+  CANCELED
+  ORDER_MARKED_AS_PAID
+  ORDER_FULLY_PAID
+  UPDATED_ADDRESS
+  EMAIL_SENT
+  PAYMENT_CAPTURED
+  PAYMENT_REFUNDED
+  PAYMENT_VOIDED
+  PAYMENT_FAILED
+  FULFILLMENT_CANCELED
+  FULFILLMENT_RESTOCKED_ITEMS
+  FULFILLMENT_FULFILLED_ITEMS
+  TRACKING_UPDATED
+  NOTE_ADDED
+  OTHER
+}
+
+input OrderFilterInput {
+  paymentStatus: [PaymentChargeStatusEnum]
+  status: [OrderStatusFilter]
+  customer: String
+  created: DateRangeInput
+  search: String
+}
+
+"""Represents order line of particular order."""
+type OrderLine implements Node {
+  """The ID of the object."""
+  id: ID!
+  productName: String!
+  variantName: String!
+  productSku: String!
+  isShippingRequired: Boolean!
+  quantity: Int!
+  quantityFulfilled: Int!
+  taxRate: Float!
+  productreview: ProductReview
+
+  """The main thumbnail for the ordered product."""
+  thumbnail(
+    """Size of thumbnail."""
+    size: Int
+  ): Image
+
+  """Price of the single item in the order line."""
+  unitPrice: TaxedMoney
+
+  """
+  A purchased product variant. Note: this field may be null if the variant has been removed from stock at all.
+  """
+  variant: ProductVariant
+}
+
+input OrderLineCreateInput {
+  """Number of variant items ordered."""
+  quantity: Int!
+
+  """Product variant ID."""
+  variantId: ID!
+}
+
+input OrderLineInput {
+  """Number of variant items ordered."""
+  quantity: Int!
+}
+
+"""Mark order as manually paid."""
+type OrderMarkAsPaid {
+  """Order marked as paid."""
+  order: Order
+  orderErrors: [OrderError!]!
+}
+
+"""Refund an order."""
+type OrderRefund {
+  """A refunded order."""
+  order: Order
+  orderErrors: [OrderError!]!
+}
+
+enum OrderSortField {
+  NUMBER
+  CREATION_DATE
+  CUSTOMER
+  PAYMENT
+  FULFILLMENT_STATUS
+  TOTAL
+}
+
+input OrderSortingInput {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """Sort orders by the selected field."""
+  field: OrderSortField!
+}
+
+"""An enumeration."""
+enum OrderStatus {
+  """Draft"""
+  DRAFT
+
+  """Unfulfilled"""
+  UNFULFILLED
+
+  """Partially fulfilled"""
+  PARTIALLY_FULFILLED
+
+  """Fulfilled"""
+  FULFILLED
+
+  """Canceled"""
+  CANCELED
+}
+
+enum OrderStatusFilter {
+  READY_TO_FULFILL
+  READY_TO_CAPTURE
+  UNFULFILLED
+  PARTIALLY_FULFILLED
+  FULFILLED
+  CANCELED
+}
+
+"""Updates an order."""
+type OrderUpdate {
+  orderErrors: [OrderError!]!
+  order: Order
+}
+
+input OrderUpdateInput {
+  """Email address of the customer."""
+  userEmail: String
+
+  """Shipping address of the customer."""
+  shippingAddress: AddressInput
+}
+
+"""Updates a shipping method of the order."""
+type OrderUpdateShipping {
+  """Order with updated shipping method."""
+  order: Order
+  orderErrors: [OrderError!]!
+}
+
+input OrderUpdateShippingInput {
+  """ID of the selected shipping method."""
+  shippingMethod: ID
+}
+
+"""Void an order."""
+type OrderVoid {
+  """A voided order."""
+  order: Order
+  orderErrors: [OrderError!]!
+}
+
+"""
+The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.
+"""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""Change the password of the logged in user."""
+type PasswordChange {
+  """A user instance with a new password."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
+"""Represents a payment of a given type."""
+type Payment implements Node {
+  """The ID of the object."""
+  id: ID!
+  gateway: String!
+  isActive: Boolean!
+  created: DateTime!
+  modified: DateTime!
+  token: String!
+  checkout: Checkout
+  order: Order
+  billingEmail: String!
+  customerIpAddress: String
+  extraData: String!
+  paymentMethod: PaymentMethod
+
+  """Internal payment status."""
+  chargeStatus: PaymentChargeStatusEnum!
+
+  """
+  List of actions that can be performed in the current state of a payment.
+  """
+  actions: [OrderAction]!
+
+  """Total amount of the payment."""
+  total: Money
+
+  """Total amount captured for this payment."""
+  capturedAmount: Money
+
+  """Customer billing address."""
+  billingAddress: Address
+
+  """List of all transactions within this payment."""
+  transactions: [Transaction]
+
+  """Maximum amount of money that can be captured."""
+  availableCaptureAmount: Money
+
+  """Maximum amount of money that can be refunded."""
+  availableRefundAmount: Money
+
+  """The details of the card used for this payment."""
+  creditCard: CreditCard
+}
+
+"""Captures the authorized payment amount."""
+type PaymentCapture {
+  """Updated payment."""
+  payment: Payment
+  paymentErrors: [PaymentError!]!
+}
+
+"""An enumeration."""
+enum PaymentChargeStatusEnum {
+  NOT_CHARGED
+  PARTIALLY_CHARGED
+  FULLY_CHARGED
+  PARTIALLY_REFUNDED
+  FULLY_REFUNDED
+}
+
+type PaymentCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [PaymentCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type PaymentCountableEdge {
+  """The item at the end of the edge."""
+  node: Payment!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type PaymentError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: PaymentErrorCode!
+}
+
+"""An enumeration."""
+enum PaymentErrorCode {
+  BILLING_ADDRESS_NOT_SET
+  GRAPHQL_ERROR
+  INVALID
+  NOT_FOUND
+  PARTIAL_PAYMENT_NOT_ALLOWED
+  PAYMENT_ERROR
+  REQUIRED
+  UNIQUE
+}
+
+input PaymentInput {
+  """
+  Client-side generated payment token, representing customer's billing data in a secure manner.
+  """
+  token: String!
+
+  """
+  Total amount of the transaction, including all taxes and discounts. If no
+  amount is provided, the checkout total will be used.
+  """
+  amount: Decimal
+
+  """
+  [Deprecated] Billing address. If empty, the billing address associated with
+  the checkout instance will be used. Use `checkoutCreate` or
+  `checkoutBillingAddressUpdate` mutations to set it. This field will be removed
+  after 2020-07-31.
+  """
+  billingAddress: AddressInput
+
+  """Payment method ID"""
+  paymentMethodId: ID!
+}
+
+"""Represents a payment method of a given type."""
+type PaymentMethod implements Node {
+  """The ID of the object."""
+  id: ID!
+  name: String!
+  baseUrl: String
+  description: String!
+}
+
+type PaymentMethodCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [PaymentMethodCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type PaymentMethodCountableEdge {
+  """The item at the end of the edge."""
+  node: PaymentMethod!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Refunds the captured payment amount."""
+type PaymentRefund {
+  """Updated payment."""
+  payment: Payment
+  paymentErrors: [PaymentError!]!
+}
+
+"""Confirms payment in a two-step process like 3D secure"""
+type PaymentSecureConfirm {
+  """Updated payment."""
+  payment: Payment
+  paymentErrors: [PaymentError!]!
+}
+
+"""Voids the authorized payment."""
+type PaymentVoid {
+  """Updated payment."""
+  payment: Payment
+  paymentErrors: [PaymentError!]!
+}
+
+"""Represents a permission object in a friendly form."""
+type Permission {
+  """Internal code for permission."""
+  code: PermissionEnum!
+
+  """Describe action(s) allowed to do by permission."""
+  name: String!
+}
+
+"""An enumeration."""
+enum PermissionEnum {
+  MANAGE_USERS
+  MANAGE_STAFF
+  MANAGE_APPS
+  MANAGE_DISCOUNTS
+  MANAGE_PLUGINS
+  MANAGE_GIFT_CARD
+  MANAGE_MENUS
+  MANAGE_ORDERS
+  MANAGE_PAGES
+  MANAGE_PRODUCTS
+  MANAGE_SHIPPING
+  MANAGE_SETTINGS
+  MANAGE_TRANSLATIONS
+  MANAGE_WEBHOOKS
+  MANAGE_CHECKOUTS
+}
+
+input PermissionGroupFilterInput {
+  search: String
+}
+
+enum PermissionGroupSortField {
+  """Sort permission group accounts by name."""
+  NAME
+}
+
+input PermissionGroupSortingInput {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """Sort permission group by the selected field."""
+  field: PermissionGroupSortField!
+}
+
+input PriceRangeInput {
+  """Price greater than or equal to."""
+  gte: Float
+
+  """Price less than or equal to."""
+  lte: Float
+}
+
+"""Represents product data."""
+type Product implements Node & DjangoPkInterface {
+  isPublished: Boolean!
+  productType: ProductType!
+  name: String!
+  slug: String!
+  description: String!
+  descriptionJson: JSONString!
+  category: Category
+  minimalVariantPrice: Money
+  unit: String
+
+  """The ID of the object."""
+  id: ID!
+
+  """Primary key"""
+  pk: ID
+
+  """List of variants for the product."""
+  variants: [ProductVariant]
+
+  """The main thumbnail for a product."""
+  thumbnail(
+    """Size of thumbnail."""
+    size: Int
+  ): Image
+
+  """List of images for the product."""
+  images: [ProductImage]
+
+  """Product price range"""
+  priceRange: MoneyRange
+
+  """Product variants stock status"""
+  stockStatus: String
+
+  """Product rating"""
+  rating: Rating
+
+  """List of the shop's product reviews."""
+  reviews(
+    """Filtering options for reviews."""
+    filter: ProductReviewFilterInput
+
+    """Sort reviews."""
+    sortBy: ProductReviewOrderField
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductReviewCountableConnection
+
+  """List of attributes assigned to this product."""
+  attributes: [SelectedAttribute!]!
+}
+
+"""Deletes products."""
+type ProductBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  productErrors: [ProductError!]!
+}
+
+"""Publish products."""
+type ProductBulkPublish {
+  """Returns how many objects were affected."""
+  count: Int!
+  productErrors: [ProductError!]!
+}
+
+type ProductCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [ProductCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type ProductCountableEdge {
+  """The item at the end of the edge."""
+  node: Product!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Creates a new product."""
+type ProductCreate {
+  productErrors: [ProductError!]!
+  product: Product
+}
+
+input ProductCreateInput {
+  """Publication date. ISO 8601 standard."""
+  publicationDate: Date
+
+  """ID of the product's category."""
+  category: ID
+
+  """Product description (HTML/text)."""
+  description: String
+
+  """Product description (JSON)."""
+  descriptionJson: JSONString
+
+  """Determines if product is visible to customers."""
+  isPublished: Boolean
+
+  """Product name."""
+  name: String
+
+  """Product slug."""
+  slug: String
+
+  """Product price."""
+  basePrice: Decimal
+
+  """
+  Stock keeping unit of a product. Note: this field is only used if a product doesn't use variants.
+  """
+  sku: String
+
+  """ID of the type that product belongs to."""
+  productType: ID!
+
+  """
+  Stocks of a product available for sale. Note: this field is only used if a product doesn't use variants.
+  """
+  stocks: [StockInput!]
+}
+
+"""Deletes a product."""
+type ProductDelete {
+  productErrors: [ProductError!]!
+  product: Product
+}
+
+type ProductError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: ProductErrorCode!
+}
+
+"""An enumeration."""
+enum ProductErrorCode {
+  ALREADY_EXISTS
+  GRAPHQL_ERROR
+  INVALID
+  NOT_PRODUCTS_IMAGE
+  NOT_FOUND
+  REQUIRED
+  UNIQUE
+}
+
+input ProductFilterInput {
+  isPublished: Boolean
+  productType: ID
+  search: String
+  productTypes: [ID]
+  categories: [ID]
+  attributes: [AttributeInput]
+  price: PriceRangeInput
+}
+
+"""Represents a product image."""
+type ProductImage implements Node {
+  """The ID of the object."""
+  id: ID!
+  sortOrder: Int
+  alt: String!
+
+  """The URL of the image."""
+  url(
+    """Size of the image."""
+    size: Int
+  ): String!
+}
+
+"""Deletes product images."""
+type ProductImageBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  productErrors: [ProductError!]!
+}
+
+"""
+Create a product image. This mutation must be sent as a `multipart` request.
+More detailed specs of the upload format can be found here:
+https://github.com/jaydenseric/graphql-multipart-request-spec
+"""
+type ProductImageCreate {
+  product: Product
+  image: ProductImage
+  productErrors: [ProductError!]!
+}
+
+input ProductImageCreateInput {
+  """Alt text for an image."""
+  alt: String
+
+  """Represents an image file in a multipart request."""
+  image: Upload!
+
+  """ID of an product."""
+  product: ID!
+}
+
+"""Deletes a product image."""
+type ProductImageDelete {
+  product: Product
+  image: ProductImage
+  productErrors: [ProductError!]!
+}
+
+"""Changes ordering of the product image."""
+type ProductImageReorder {
+  product: Product
+  images: [ProductImage]
+  productErrors: [ProductError!]!
+}
+
+"""Updates a product image."""
+type ProductImageUpdate {
+  product: Product
+  image: ProductImage
+  productErrors: [ProductError!]!
+}
+
+input ProductImageUpdateInput {
+  """Alt text for an image."""
+  alt: String
+}
+
+input ProductInput {
+  """Publication date. ISO 8601 standard."""
+  publicationDate: Date
+
+  """ID of the product's category."""
+  category: ID
+
+  """Product description (HTML/text)."""
+  description: String
+
+  """Product description (JSON)."""
+  descriptionJson: JSONString
+
+  """Determines if product is visible to customers."""
+  isPublished: Boolean
+
+  """Product name."""
+  name: String
+
+  """Product slug."""
+  slug: String
+
+  """Product price."""
+  basePrice: Decimal
+
+  """
+  Stock keeping unit of a product. Note: this field is only used if a product doesn't use variants.
+  """
+  sku: String
+}
+
+input ProductOrder {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """
+  Sort product by the selected attribute's values.
+  Note: this doesn't take translations into account yet.
+  """
+  attributeId: ID
+
+  """Sort products by the selected field."""
+  field: ProductOrderField
+}
+
+enum ProductOrderField {
+  """Sort products by name."""
+  NAME
+
+  """Sort products by update date."""
+  DATE
+
+  """Sort products by type."""
+  TYPE
+
+  """Sort products by publication status."""
+  PUBLISHED
+}
+
+"""Represents product review."""
+type ProductReview implements Node {
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  rating: ProductReviewRating!
+  title: String!
+  content: String!
+  advantages: JSONString!
+  flaws: JSONString!
+  status: ProductReviewStatus!
+  orderLine: OrderLine
+
+  """The ID of the object."""
+  id: ID!
+  userName: String
+
+  """The URL of the image."""
+  userAvatar(
+    """Size of the image."""
+    size: Int
+  ): String
+}
+
+type ProductReviewCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [ProductReviewCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type ProductReviewCountableEdge {
+  """The item at the end of the edge."""
+  node: ProductReview!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Creates a new review for a product."""
+type ProductReviewCreate {
+  productErrors: [ProductError!]!
+  productReview: ProductReview
+}
+
+input ProductReviewCreateInput {
+  """Rating of the review."""
+  rating: Int!
+
+  """Title of the review."""
+  title: String!
+
+  """Content of the review"""
+  content: String!
+
+  """Advantages of the review"""
+  advantages: JSONString
+
+  """Flaws of the review"""
+  flaws: JSONString
+
+  """Order line ID."""
+  orderLine: ID!
+}
+
+input ProductReviewFilterInput {
+  status: String
+  rating: String
+  createdAt: DateTime
+  product: ID
+}
+
+input ProductReviewOrder {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """Sort reviews by the selected field."""
+  field: ProductOrderField
+}
+
+enum ProductReviewOrderField {
+  DATE
+  STATUS
+}
+
+"""An enumeration."""
+enum ProductReviewRating {
+  """Terrible"""
+  A_1
+
+  """Poor"""
+  A_2
+
+  """Average"""
+  A_3
+
+  """Very Good"""
+  A_4
+
+  """Excellent"""
+  A_5
+}
+
+"""An enumeration."""
+enum ProductReviewStatus {
+  """in progress"""
+  IN_PROGRESS
+
+  """published"""
+  PUBLISHED
+
+  """canceled"""
+  CANCELED
+}
+
+"""
+Represents a type of product. It defines what attributes are available to products of this type.
+"""
+type ProductType implements Node & DjangoPkInterface {
+  """The ID of the object."""
+  id: ID!
+  name: String!
+  slug: String!
+  hasVariants: Boolean!
+  isShippingRequired: Boolean!
+  isDigital: Boolean!
+  weight: Weight
+
+  """Primary key"""
+  pk: ID
+
+  """List of products of this type."""
+  products(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductCountableConnection
+
+  """Variant attributes of that product type."""
+  variantAttributes: [Attribute]
+
+  """Product attributes of that product type."""
+  productAttributes: [Attribute]
+  availableAttributes(
+    filter: AttributeFilterInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): AttributeCountableConnection
+}
+
+"""Deletes product types."""
+type ProductTypeBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  productErrors: [ProductError!]!
+}
+
+type ProductTypeCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [ProductTypeCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type ProductTypeCountableEdge {
+  """The item at the end of the edge."""
+  node: ProductType!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Creates a new product type."""
+type ProductTypeCreate {
+  productErrors: [ProductError!]!
+  productType: ProductType
+}
+
+"""Deletes a product type."""
+type ProductTypeDelete {
+  productErrors: [ProductError!]!
+  productType: ProductType
+}
+
+enum ProductTypeEnum {
+  DIGITAL
+  SHIPPABLE
+}
+
+input ProductTypeFilterInput {
+  search: String
+  productType: ProductTypeEnum
+  ids: [ID]
+}
+
+input ProductTypeInput {
+  """Name of the product type."""
+  name: String
+
+  """Product type slug."""
+  slug: String
+
+  """
+  Determines if product of this type has multiple variants. This option mainly
+  simplifies product management in the dashboard. There is always at least one
+  variant created under the hood.
+  """
+  hasVariants: Boolean
+
+  """Determines if shipping is required for products of this variant."""
+  isShippingRequired: Boolean
+
+  """Determines if products are digital."""
+  isDigital: Boolean
+
+  """Weight of the Product Variant."""
+  weight: WeightScalar
+}
+
+enum ProductTypeSortField {
+  """Sort products by name."""
+  NAME
+
+  """Sort products by type."""
+  DIGITAL
+
+  """Sort products by shipping."""
+  SHIPPING_REQUIRED
+}
+
+input ProductTypeSortingInput {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """Sort product types by the selected field."""
+  field: ProductTypeSortField!
+}
+
+"""Updates an existing product type."""
+type ProductTypeUpdate {
+  productErrors: [ProductError!]!
+  productType: ProductType
+}
+
+"""Updates an existing product."""
+type ProductUpdate {
+  productErrors: [ProductError!]!
+  product: Product
+}
+
+"""Represents a version of a product such as different size or color."""
+type ProductVariant implements Node & DjangoPkInterface {
+  """The ID of the object."""
+  id: ID!
+  sku: String!
+  name: String!
+  product: Product!
+  weight: Weight
+
+  """Primary key"""
+  pk: ID
+
+  """
+  Override the base price of a product if necessary. A value of `null` indicates that the default product price is used.
+  """
+  priceOverride: Money
+
+  """Override the base price of a product."""
+  price: Money
+
+  """List of images for the product variant."""
+  images: [ProductImage]
+
+  """Cost price of the variant."""
+  costPrice: Money
+
+  """Stocks for the product variant."""
+  stocks: [Stock]
+
+  """List of attributes assigned to this variant."""
+  attributes: [SelectedAttribute!]!
+}
+
+"""Creates product variants for a given product."""
+type ProductVariantBulkCreate {
+  """Returns how many objects were created."""
+  count: Int!
+
+  """List of the created variants."""
+  productVariants: [ProductVariant!]!
+  bulkProductErrors: [BulkProductError!]!
+}
+
+input ProductVariantBulkCreateInput {
+  """Cost price of the variant."""
+  costPrice: Decimal
+
+  """Special price of the particular variant."""
+  priceOverride: Decimal
+
+  """Stock keeping unit."""
+  sku: String!
+
+  """Weight of the Product Variant."""
+  weight: WeightScalar
+
+  """Product variant name"""
+  name: String
+
+  """Stocks of a product available for sale."""
+  stocks: [StockInput!]
+}
+
+"""Deletes product variants."""
+type ProductVariantBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  productErrors: [ProductError!]!
+}
+
+type ProductVariantCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [ProductVariantCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type ProductVariantCountableEdge {
+  """The item at the end of the edge."""
+  node: ProductVariant!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Creates a new variant for a product."""
+type ProductVariantCreate {
+  productErrors: [ProductError!]!
+  productVariant: ProductVariant
+}
+
+input ProductVariantCreateInput {
+  """Cost price of the variant."""
+  costPrice: Decimal
+
+  """Special price of the particular variant."""
+  priceOverride: Decimal
+
+  """Stock keeping unit."""
+  sku: String
+
+  """Weight of the Product Variant."""
+  weight: WeightScalar
+
+  """Product variant name"""
+  name: String
+
+  """Product ID of which type is the variant."""
+  product: ID!
+
+  """Stocks of a product available for sale."""
+  stocks: [StockInput!]
+}
+
+"""Deletes a product variant."""
+type ProductVariantDelete {
+  productErrors: [ProductError!]!
+  productVariant: ProductVariant
+}
+
+input ProductVariantInput {
+  """Cost price of the variant."""
+  costPrice: Decimal
+
+  """Special price of the particular variant."""
+  priceOverride: Decimal
+
+  """Stock keeping unit."""
+  sku: String
+
+  """Weight of the Product Variant."""
+  weight: WeightScalar
+
+  """Product variant name"""
+  name: String
+}
+
+"""Creates stocks for product variant."""
+type ProductVariantStocksCreate {
+  """Updated product variant."""
+  productVariant: ProductVariant
+  bulkStockErrors: [BulkStockError!]!
+}
+
+"""Delete stocks from product variant."""
+type ProductVariantStocksDelete {
+  """Updated product variant."""
+  productVariant: ProductVariant
+  stockErrors: [StockError!]!
+}
+
+"""Update stocks for product variant."""
+type ProductVariantStocksUpdate {
+  """Updated product variant."""
+  productVariant: ProductVariant
+  bulkStockErrors: [BulkStockError!]!
+}
+
+"""Updates an existing variant for product."""
+type ProductVariantUpdate {
+  productErrors: [ProductError!]!
+  productVariant: ProductVariant
+}
+
+type Query {
+  """Return information about the shop."""
+  shop: Shop!
+
+  """
+  List of activity events to display on homepage (at the moment it only contains order-events).
+  """
+  homepageEvents(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): OrderEventCountableConnection
+
+  """Look up an order by ID."""
+  order(
+    """ID of an order."""
+    id: ID!
+  ): Order
+
+  """List of orders."""
+  orders(
+    """Sort orders."""
+    sortBy: OrderSortingInput
+
+    """Filtering options for orders."""
+    filter: OrderFilterInput
+
+    """
+    [Deprecated] Filter orders from a selected timespan. Use the `filter` field
+    instead. This field will be removed after 2020-07-31.
+    """
+    created: ReportingPeriod
+
+    """
+    [Deprecated] Filter order by status. Use the `filter` field instead. This field will be removed after 2020-07-31.
+    """
+    status: OrderStatusFilter
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): OrderCountableConnection
+
+  """List of draft orders."""
+  draftOrders(
+    """Sort draft orders."""
+    sortBy: OrderSortingInput
+
+    """Filtering options for draft orders."""
+    filter: OrderDraftFilterInput
+
+    """
+    [Deprecated] Filter draft orders from a selected timespan. Use the `filter`
+    field instead. This field will be removed after 2020-07-31.
+    """
+    created: ReportingPeriod
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): OrderCountableConnection
+
+  """Look up an order by token."""
+  orderByToken(
+    """The order's token."""
+    token: UUID!
+  ): Order
+
+  """Look up a checkout by token."""
+  checkout(
+    """The checkout's token."""
+    token: UUID
+  ): Checkout
+
+  """List of checkouts."""
+  checkouts(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): CheckoutCountableConnection
+
+  """Look up a checkout line by ID."""
+  checkoutLine(
+    """ID of the checkout line."""
+    id: ID
+  ): CheckoutLine
+
+  """List of checkout lines."""
+  checkoutLines(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): CheckoutLineCountableConnection
+
+  """Look up a payment by ID."""
+  payment(
+    """ID of the payment."""
+    id: ID!
+  ): Payment
+
+  """List of payments."""
+  payments(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): PaymentCountableConnection
+
+  """List of payment methods."""
+  paymentMethods(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): PaymentMethodCountableConnection
+
+  """Look up a shipping zone by ID."""
+  shippingMethod(
+    """ID of the shipping zone."""
+    id: ID!
+  ): ShippingMethod
+
+  """List of the shop's shipping zones."""
+  shippingMethods(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ShippingMethodCountableConnection
+
+  """Look up a category by ID."""
+  category(
+    """ID of the category."""
+    id: ID!
+  ): Category
+
+  """List of the shop's categories."""
+  categories(
+    """Filtering options for categories."""
+    filter: CategoryFilterInput
+
+    """Sort categories."""
+    sortBy: CategorySortingInput
+
+    """Filter categories by the nesting level in the category tree."""
+    level: Int
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): CategoryCountableConnection
+
+  """Look up a product by ID."""
+  product(
+    """ID of the product."""
+    id: ID!
+  ): Product
+
+  """List of the shop's products."""
+  products(
+    """Filtering options for products."""
+    filter: ProductFilterInput
+
+    """Sort products."""
+    sortBy: ProductOrder
+
+    """Filter products by given IDs."""
+    ids: [ID]
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductCountableConnection
+
+  """Look up a product variant by ID."""
+  productVariant(
+    """ID of the product variant."""
+    id: ID!
+  ): ProductVariant
+
+  """List of product variants."""
+  productVariants(
+    """Filter product variants by given IDs."""
+    ids: [ID]
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductVariantCountableConnection
+
+  """Look up a product type by ID."""
+  productType(
+    """ID of the product type."""
+    id: ID!
+  ): ProductType
+
+  """List of the shop's product types."""
+  productTypes(
+    """Filtering options for product types."""
+    filter: ProductTypeFilterInput
+
+    """Sort product types."""
+    sortBy: ProductTypeSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductTypeCountableConnection
+
+  """Look up a stock by ID"""
+  stock(
+    """ID of an warehouse"""
+    id: ID!
+  ): Stock
+
+  """List of stocks."""
+  stocks(
+    filter: StockFilterInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): StockCountableConnection
+
+  """List of the shop's attributes."""
+  attributes(
+    """Filtering options for attributes."""
+    filter: AttributeFilterInput
+
+    """Sorting options for attributes."""
+    sortBy: AttributeSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): AttributeCountableConnection
+
+  """Look up an attribute by ID."""
+  attribute(
+    """ID of the attribute."""
+    id: ID!
+  ): Attribute
+
+  """Look up a product by ID."""
+  productReview(
+    """ID of the product review."""
+    id: ID!
+  ): ProductReview
+
+  """List of the shop's products."""
+  productReviews(
+    """Filtering options for product reviews."""
+    filter: ProductReviewFilterInput
+
+    """Sort product reviews."""
+    sortBy: ProductReviewOrder
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductReviewCountableConnection
+
+  """Return the currently authenticated user."""
+  me: User
+
+  """Look up an address by ID."""
+  address(
+    """ID of an address."""
+    id: ID!
+  ): Address
+
+  """List of permission groups."""
+  permissionGroups(
+    """Filtering options for permission groups."""
+    filter: PermissionGroupFilterInput
+
+    """Sort permission groups."""
+    sortBy: PermissionGroupSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): GroupCountableConnection
+
+  """Look up permission group by ID."""
+  permissionGroup(
+    """ID of the group."""
+    id: ID!
+  ): Group
+
+  """Look up a user by ID."""
+  user(
+    """ID of the user."""
+    id: ID!
+  ): User
+  _debug: DjangoDebug
+  _entities(representations: [_Any]): [_Entity]
+  _service: _Service
+}
+
+type Rating {
+  """Product avg rating"""
+  ratingAvg: Float
+
+  """Product rating count"""
+  count: Int
+}
+
+type Refresh {
+  token: String
+  payload: GenericScalar
+}
+
+enum ReportingPeriod {
+  TODAY
+  THIS_MONTH
+}
+
+"""Request email change of the logged in user."""
+type RequestEmailChange {
+  """A user instance."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
+"""Sends an email with the account password modification link."""
+type RequestPasswordReset {
+  accountErrors: [AccountError!]!
+}
+
+"""Represents a custom attribute."""
+type SelectedAttribute {
+  """Name of an attribute displayed in the interface."""
+  attribute: Attribute!
+
+  """Values of an attribute."""
+  values: [AttributeValue]!
+}
+
+"""
+Sets the user's password from the token sent by email using the RequestPasswordReset mutation.
+"""
+type SetPassword {
+  token: String
+  errors: [Error!]! @deprecated(reason: "Use typed errorsAddressCreate with error codes. This field will be removed after 2020-07-31.")
+
+  """List of errorsAddressCreate that occurred executing the mutation."""
+  accountErrors: [AccountError!]!
+
+  """A user instance."""
+  user: User
+}
+
+type ShippingError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: ShippingErrorCode!
+
+  """List of warehouse IDs which causes the error."""
+  warehouses: [ID!]
+}
+
+"""An enumeration."""
+enum ShippingErrorCode {
+  ALREADY_EXISTS
+  GRAPHQL_ERROR
+  INVALID
+  MAX_LESS_THAN_MIN
+  NOT_FOUND
+  REQUIRED
+  UNIQUE
+  DUPLICATED_INPUT_ITEM
+}
+
+"""
+Shipping method are the methods you'll use to get customer's orders to them. They are directly exposed to the customers.
+"""
+type ShippingMethod implements Node {
+  """The ID of the object."""
+  id: ID!
+  name: String!
+  price: Money
+  minimumOrderPrice: Money
+  maximumOrderPrice: Money
+  minimumOrderWeight: Weight
+  maximumOrderWeight: Weight
+  description: String!
+
+  """Type of the shipping method."""
+  type: ShippingMethodTypeEnum
+}
+
+type ShippingMethodCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [ShippingMethodCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type ShippingMethodCountableEdge {
+  """The item at the end of the edge."""
+  node: ShippingMethod!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""An enumeration."""
+enum ShippingMethodTypeEnum {
+  PRICE
+  WEIGHT
+}
+
+"""Deletes shipping prices."""
+type ShippingPriceBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  shippingErrors: [ShippingError!]!
+}
+
+"""Creates a new shipping price."""
+type ShippingPriceCreate {
+  shippingErrors: [ShippingError!]!
+  shippingMethod: ShippingMethod
+}
+
+"""Deletes a shipping price."""
+type ShippingPriceDelete {
+  """A shipping method to delete."""
+  shippingMethod: ShippingMethod
+  shippingErrors: [ShippingError!]!
+}
+
+input ShippingPriceInput {
+  """Name of the shipping method."""
+  name: String
+
+  """Shipping price of the shipping method."""
+  price: Decimal
+
+  """Minimum order price to use this shipping method."""
+  minimumOrderPrice: Decimal
+
+  """Maximum order price to use this shipping method."""
+  maximumOrderPrice: Decimal
+
+  """Minimum order weight to use this shipping method."""
+  minimumOrderWeight: WeightScalar
+
+  """Maximum order weight to use this shipping method."""
+  maximumOrderWeight: WeightScalar
+
+  """Shipping type: price or weight based."""
+  type: ShippingMethodTypeEnum
+}
+
+"""Updates a new shipping price."""
+type ShippingPriceUpdate {
+  shippingErrors: [ShippingError!]!
+  shippingMethod: ShippingMethod
+}
+
+"""
+Represents a shop resource containing general shop data and configuration.
+"""
+type Shop {
+  """Customer's geolocalization data."""
+  geolocalization: Geolocalization
+
+  """List of available currencies."""
+  currencies: [String]!
+
+  """Shop's default currency."""
+  defaultCurrency: String!
+
+  """Default shop's email sender's name."""
+  defaultMailSenderName: String
+
+  """Default shop's email sender's address."""
+  defaultMailSenderAddress: String
+
+  """Shop's description."""
+  description: String
+
+  """Shop's domain data."""
+  domain: Domain!
+
+  """Shop's name."""
+  name: String!
+
+  """List of available permissions."""
+  permissions: [Permission]!
+
+  """List of possible phone prefixes."""
+  phonePrefixes: [String]!
+
+  """Header text."""
+  headerText: String
+
+  """Include taxes in prices."""
+  includeTaxesInPrices: Boolean!
+
+  """Display prices with tax in store."""
+  displayGrossPrices: Boolean!
+
+  """Charge taxes on shipping."""
+  chargeTaxesOnShipping: Boolean!
+
+  """Enable inventory tracking."""
+  trackInventoryByDefault: Boolean
+
+  """Default weight unit."""
+  defaultWeightUnit: WeightUnitsEnum
+
+  """Company address."""
+  companyAddress: Address
+
+  """URL of a view where customers can set their password."""
+  customerSetPasswordUrl: String
+}
+
+"""Represents stock."""
+type Stock implements Node {
+  productVariant: ProductVariant!
+
+  """
+  Quantity of a product in the warehouse's possession, including the allocated stock that is waiting for shipment.
+  """
+  quantity: Int!
+
+  """The ID of the object."""
+  id: ID!
+
+  """Quantity of a product available for sale."""
+  stockQuantity: Int!
+
+  """Quantity allocated for orders"""
+  quantityAllocated: Int!
+}
+
+type StockCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [StockCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type StockCountableEdge {
+  """The item at the end of the edge."""
+  node: Stock!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type StockError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: StockErrorCode!
+}
+
+"""An enumeration."""
+enum StockErrorCode {
+  ALREADY_EXISTS
+  GRAPHQL_ERROR
+  INVALID
+  NOT_FOUND
+  REQUIRED
+  UNIQUE
+}
+
+input StockFilterInput {
+  quantity: Float
+  search: String
+}
+
+input StockInput {
+  """Quantity of items available for sell."""
+  quantity: Int
+}
+
+"""
+Represents a monetary value with taxes. In cases where taxes were not applied, net and gross values will be equal.
+"""
+type TaxedMoney {
+  """Currency code."""
+  currency: String!
+
+  """Amount of money including taxes."""
+  gross: Money!
+
+  """Amount of money without taxes."""
+  net: Money!
+
+  """Amount of taxes."""
+  tax: Money!
+}
+
+"""An object representing a single payment."""
+type Transaction implements Node {
+  """The ID of the object."""
+  id: ID!
+  created: DateTime!
+  payment: Payment!
+  token: String!
+  kind: TransactionKind!
+  isSuccess: Boolean!
+  error: TransactionError
+  gatewayResponse: JSONString!
+
+  """Total amount of the transaction."""
+  amount: Money
+}
+
+"""An enumeration."""
+enum TransactionError {
+  """incorrect_number"""
+  TRANSACTIONERROR_INCORRECT_NUMBER
+
+  """invalid_number"""
+  TRANSACTIONERROR_INVALID_NUMBER
+
+  """incorrect_cvv"""
+  TRANSACTIONERROR_INCORRECT_CVV
+
+  """invalid_cvv"""
+  TRANSACTIONERROR_INVALID_CVV
+
+  """incorrect_zip"""
+  TRANSACTIONERROR_INCORRECT_ZIP
+
+  """incorrect_address"""
+  TRANSACTIONERROR_INCORRECT_ADDRESS
+
+  """invalid_expiry_date"""
+  TRANSACTIONERROR_INVALID_EXPIRY_DATE
+
+  """expired"""
+  TRANSACTIONERROR_EXPIRED
+
+  """processing_error"""
+  TRANSACTIONERROR_PROCESSING_ERROR
+
+  """declined"""
+  TRANSACTIONERROR_DECLINED
+}
+
+"""An enumeration."""
+enum TransactionKind {
+  """Authorization"""
+  AUTH
+
+  """Refund"""
+  REFUND
+
+  """Capture"""
+  CAPTURE
+
+  """Void"""
+  VOID
+
+  """Confirm"""
+  CONFIRM
+}
+
+"""
+Variables of this type must be set to null in mutations. They will be replaced
+with a filename from a following multipart part containing a binary file. See:
+https://github.com/jaydenseric/graphql-multipart-request-spec.
+"""
+scalar Upload
+
+"""Represents user data."""
+type User implements Node & DjangoPkInterface {
+  """The ID of the object."""
+  id: ID!
+  lastLogin: DateTime
+  email: String!
+  firstName: String!
+  lastName: String!
+  isStaff: Boolean!
+  isActive: Boolean!
+
+  """A note about the customer."""
+  note: String
+  dateJoined: DateTime!
+  defaultShippingAddress: Address
+  reviews(before: String, after: String, first: Int, last: Int): ProductReviewCountableConnection!
+
+  """Primary key"""
+  pk: ID
+
+  """Returns the last open checkout of this user."""
+  checkout: Checkout
+
+  """List of all user's addresses."""
+  addresses: [Address]
+
+  """List of user's permissions."""
+  userPermissions: [UserPermission]
+
+  """List of user's permission groups."""
+  permissionGroups: [Group]
+  avatar(
+    """Size of the avatar."""
+    size: Int
+  ): Image
+}
+
+type UserPermission {
+  """Internal code for permission."""
+  code: PermissionEnum!
+
+  """Describe action(s) allowed to do by permission."""
+  name: String!
+
+  """List of user permission groups which contains this permission."""
+  sourcePermissionGroups(
+    """ID of user whose groups should be returned."""
+    userId: ID!
+  ): [Group!]
+}
+
+"""
+Leverages the internal Python implmeentation of UUID (uuid.UUID) to provide native UUID objects
+in fields, resolvers and input.
+"""
+scalar UUID
+
+"""Mutation that confirms if token is valid and also returns user data."""
+type VerifyToken {
+  payload: GenericScalar
+  user: User
+}
+
+"""Represents weight value in a specific weight unit."""
+type Weight {
+  """Weight unit."""
+  unit: String!
+
+  """Weight value."""
+  value: Float!
+}
+
+scalar WeightScalar
+
+"""An enumeration."""
+enum WeightUnitsEnum {
+  KG
+  LB
+  OZ
+  G
+}

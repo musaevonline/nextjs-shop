@@ -1,0 +1,33 @@
+@import "src/globalStyles/scss/variables";
+
+.news-card{
+  padding: 10px;
+  &__img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    overflow: hidden;
+    img{
+      max-width: 100%;
+    }
+  }
+  &__created{
+    margin: 10px 0;
+    span{
+      font-size: $small-font-size;
+      padding: 5px;
+      background-color: $primary-color;
+      color: $white;
+    }
+  }
+  &__title{
+    margin: 20px 0;
+
+  }
+  &__text{
+    svg{
+      color: $link-color-hover;
+    }
+  }
+}

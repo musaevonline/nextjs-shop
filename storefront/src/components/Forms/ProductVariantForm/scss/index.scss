@@ -1,0 +1,9 @@
+@import "src/globalStyles/scss/variables";
+
+.product-form{
+  .selected_first{
+    input, label {
+      color: $primary-color;
+    }
+  }
+}

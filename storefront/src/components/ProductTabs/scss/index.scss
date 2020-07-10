@@ -1,0 +1,7 @@
+@import "src/globalStyles/scss/variables";
+
+.product-tabs{
+  &__description{
+    font-size: $small-font-size;
+  }
+}

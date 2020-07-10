@@ -1,0 +1,135 @@
+version: '3.7'
+
+services:
+  api:
+    ports:
+      - 8000:8000
+    build:
+      context: ./stroylux
+      dockerfile: ./Dockerfile
+      args:
+        STATIC_URL: '/static/'
+    restart: unless-stopped
+    networks:
+      - stroylux-backend-tier
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./stroylux/main/:/app/main:Z
+      - ./stroylux/templates/:/app/templates:Z
+      # prevents overshadowing of build-time assets
+      - /app/main/static/assets
+      - /app/templates/templated_email/compiled
+      # shared volume between worker and api for media
+#      - stroylux-media:/app/media
+      - ./stroylux/media/:/app/media:Z
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file: ./stroylux/common.env
+    environment:
+#      - JAEGER_AGENT_HOST=jaeger
+      - STOREFRONT_URL=http://localhost:3000/
+#      - DASHBOARD_URL=http://localhost:9000/
+
+#  storefront:
+#    build:
+#      context: ./storefront
+#      dockerfile: ./Dockerfile.dev
+#    ports:
+#      - 3000:3000
+#    restart: unless-stopped
+#    volumes:
+#      - ./storefront/:/app:cached
+#      - /app/node_modules/
+#    command: npm start -- --host 0.0.0.0
+
+#  dashboard:
+#    build:
+#      context: ./saleor-dashboard
+#      dockerfile: ./Dockerfile.dev
+#    ports:
+#      - 9000:9000
+#    restart: unless-stopped
+#    volumes:
+#      - ./saleor-dashboard/:/app:cached
+#      - /app/node_modules/
+#    command: npm start -- --host 0.0.0.0
+
+  db:
+    image: library/postgres:11.7-alpine
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    networks:
+      - stroylux-backend-tier
+    volumes:
+      - stroylux-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=stroylux
+      - POSTGRES_PASSWORD=stroylux
+
+  redis:
+    image: library/redis:5.0-alpine
+    ports:
+      - 6379:6379
+    restart: unless-stopped
+    networks:
+      - stroylux-backend-tier
+    volumes:
+      - stroylux-redis:/data
+
+  worker:
+    build:
+      context: ./stroylux
+      dockerfile: ./Dockerfile
+      args:
+        STATIC_URL: '/static/'
+    command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=info
+    restart: unless-stopped
+    networks:
+      - stroylux-backend-tier
+    env_file: ./stroylux/common.env
+    depends_on:
+      - redis
+    volumes:
+      - ./stroylux/main/:/app/main:Z,cached
+      - ./stroylux/templates/:/app/templates:Z,cached
+      # prevents overshadowing of build-time assets
+      - /app/templates/templated_email/compiled
+      # shared volume between worker and api for media
+      - stroylux-media:/app/media
+
+#  mailhog:
+#    image: mailhog/mailhog:v1.0.0
+#    container_name: mailhog-stroylux
+#    networks:
+#      - stroylux-backend-tier
+#    ports:
+#      - 8025:8025
+#      - 1025:1025
+
+
+#  jaeger:
+#    image: jaegertracing/all-in-one
+#    ports:
+#      - "5775:5775/udp"
+#      - "6831:6831/udp"
+#      - "6832:6832/udp"
+#      - "5778:5778"
+#      - "16686:16686"
+#      - "14268:14268"
+#      - "9411:9411"
+#    restart: unless-stopped
+#    networks:
+#      - saleor-backend-tier
+
+volumes:
+  stroylux-db:
+    driver: local
+  stroylux-redis:
+    driver: local
+  stroylux-media:
+
+networks:
+  stroylux-backend-tier:
+    driver: bridge

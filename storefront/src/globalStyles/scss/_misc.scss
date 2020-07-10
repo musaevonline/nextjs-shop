@@ -1,0 +1,83 @@
+
+//@for $i from 1 through 10 {
+//  .m-#{$i}{
+//    margin: $i * $margin-pt;
+//  }
+//  .mt-#{$i}{
+//    margin-top: $i * $margin-pt;
+//  }
+//  .mb-#{$i}{
+//    margin-bottom: $i * $margin-pt;
+//  }
+//  .mr-#{$i}{
+//    margin-right: $i * $margin-pt;
+//  }
+//  .ml-#{$i}{
+//    margin-left: $i * $padding-pt;
+//  }
+//  .my-#{$i}{
+//    margin-top: $i * $padding-pt;
+//    margin-bottom: $i * $padding-pt;
+//  }
+//  .mx-#{$i}{
+//    margin-left: $i * $padding-pt;
+//    margin-right: $i * $padding-pt;
+//  }
+//
+//  .p-#{$i}{
+//    padding: $i * $padding-pt;
+//  }
+//  .pt-#{$i}{
+//    padding-top: $i * $padding-pt;
+//  }
+//  .pb-#{$i}{
+//    padding-bottom: $i * $padding-pt;
+//  }
+//  .pr-#{$i}{
+//    padding-right: $i * $padding-pt;
+//  }
+//  .pl-#{$i}{
+//    padding-left: $i * $padding-pt;
+//  }
+//  .py-#{$i}{
+//    padding-top: $i * $padding-pt;
+//    padding-bottom: $i * $padding-pt;
+//  }
+//  .px-#{$i}{
+//    padding-left: $i * $padding-pt;
+//    padding-right: $i * $padding-pt;
+//  }
+//}
+
+@for $i from 1 through 20 {
+  .max-w-#{$i*100/2}{
+    max-width: #{$i*100/2}px;
+  }
+  .min-w-#{$i*100/2}{
+    min-width: #{$i*100/2}px;
+  }
+  .max-h-#{$i*100/2}{
+    max-height: #{$i*100/2}px;
+  }
+  .min-h-#{$i*100/2}{
+    min-height: #{$i*100/2}px;
+  }
+  //.w-#{$i*100/2}{
+  //  width: #{$i*100/2}px;
+  //}
+  //.h-#{$i*100/2}{
+  //  height: #{$i*100/2}px;
+  //}
+}
+.w-full{
+  width: 100%;
+}
+.w-half{
+  width: 50%;
+}
+.max-w-full{
+  max-width: 100%;
+}
+.min-w-full{
+  min-width: 100%;
+}

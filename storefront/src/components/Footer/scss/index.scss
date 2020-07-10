@@ -1,0 +1,63 @@
+@import "src/globalStyles/scss/variables";
+
+
+.footer {
+  margin-top: 100px;
+  padding: 70px 20px 20px 20px;
+  color: $white;
+  background-color: $footer-background-color;
+  a{
+    font-size: $small-font-size;
+    color: #9595a0;
+  }
+  .social{
+    svg{
+      margin: 0 5px;
+      fill: $white;
+      transition: all .3s;
+      &:hover{
+        transform: scale(1.2);
+      }
+    }
+  }
+  &__links{
+    a{
+      line-height: 3.2rem;
+    }
+  }
+  .categories-group{
+    &__title{
+      margin-bottom: 10px;
+    }
+    &__list li{
+      margin-bottom: 10px;
+      a{
+        color: #9595a0;
+        font-size: $small-font-size;
+        &:hover{
+          color: #bbbbc6;
+        }
+      }
+    }
+  }
+  a:hover{
+    color: #bbbbc6;
+  }
+  .copyright-text{
+    margin-top: 50px;
+    font-size: $small-font-size;
+  }
+  .chevron-before:before{
+    content: "\27a3";
+    color: #A60B01;
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    top: -1px;
+    margin-right: 10px;
+    left: 0;
+    font-size: 14px;
+  }
+}
