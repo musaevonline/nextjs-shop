@@ -1,7 +1,10 @@
 import { stringify as stringifyQs } from "qs";
 
-export const passwordResetPath = "/reset-password/";
-export const passwordResetUrl = passwordResetPath;
+export const passwordForgotPath = "/forgot-password/";
+export const passwordForgotUrl = passwordForgotPath;
+
+// export const passwordResetPath = "/reset-password/";
+// export const passwordResetUrl = passwordResetPath;
 
 export const passwordResetSuccessPath = "/reset-password/success/";
 export const passwordResetSuccessUrl = passwordResetSuccessPath;

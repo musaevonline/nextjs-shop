@@ -54,12 +54,6 @@ export enum PermissionEnum {
   MANAGE_WEBHOOKS = "MANAGE_WEBHOOKS",
 }
 
-export interface AccountRegisterInput {
-  email: string;
-  password: string;
-  redirectUrl?: string | null;
-}
-
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

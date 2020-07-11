@@ -26,7 +26,7 @@ const NewPassword: React.FC<RouteComponentProps> = ({ location }) => {
 
   return (
     <SetPasswordMutation onCompleted={handleSetPassword}>
-      {(setPassword, setPasswordOpts) => {
+      {(setPassword, {loading, data}) => {
         const handleSubmit = (data: NewPasswordPageFormData) =>
           setPassword({
             variables: {
@@ -35,11 +35,10 @@ const NewPassword: React.FC<RouteComponentProps> = ({ location }) => {
               token: params.token
             }
           });
-
         return (
           <NewPasswordPage
-            errors={setPasswordOpts.data?.setPassword.accountErrors || []}
-            disabled={setPasswordOpts.loading}
+            errors={data?.setPassword.accountErrors || []}
+            disabled={loading}
             onSubmit={handleSubmit}
           />
         );

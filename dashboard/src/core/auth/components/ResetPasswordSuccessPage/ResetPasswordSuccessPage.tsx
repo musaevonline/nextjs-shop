@@ -5,44 +5,46 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(
-  {
-    submit: {
-      width: "100%"
+    {
+        submit: {
+            width: "100%"
+        }
+    },
+    {
+        name: "ResetPasswordSuccessPage"
     }
-  },
-  {
-    name: "ResetPasswordSuccessPage"
-  }
 );
 
 export interface ResetPasswordSuccessPageFormData {
-  email: string;
+    email: string;
 }
 export interface ResetPasswordSuccessPageProps {
-  onBack: () => void;
+    onBack: () => void;
 }
 
 const ResetPasswordSuccessPage: React.FC<ResetPasswordSuccessPageProps> = props => {
-  const { onBack } = props;
+    const { onBack } = props;
 
-  const classes = useStyles(props);
+    const classes = useStyles(props);
 
-  return (
-    <>
-      <Typography>
-        <FormattedMessage id="success_reset_password" defaultMessage="Success! In a few minutes you’ll receive a message with instructions on how to reset your password." />
-      </Typography>
-      <Button
-        className={classes.submit}
-        color="primary"
-        variant="contained"
-        onClick={onBack}
-        type="submit"
-      >
-        <FormattedMessage id="back_login" defaultMessage="Back to login" description="button" />
-      </Button>
-    </>
-  );
+    return (
+        <>
+            <Typography>
+                <FormattedMessage id="success_reset_password"
+                                  defaultMessage="Success! In a few minutes you’ll receive a message with instructions on how to reset your password." />
+            </Typography>
+            <div className="mt-10"/>
+            <Button
+                className={classes.submit}
+                color="primary"
+                variant="contained"
+                onClick={onBack}
+                type="button"
+            >
+                <FormattedMessage id="back_login" defaultMessage="Back to login" description="button" />
+            </Button>
+        </>
+    );
 };
 
 ResetPasswordSuccessPage.displayName = "ResetPasswordSuccessPage";

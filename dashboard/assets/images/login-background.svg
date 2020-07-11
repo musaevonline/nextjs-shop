@@ -95,10 +95,10 @@
 <stop stop-color="#412D79"/>
 <stop offset="1" stop-color="#1988BE"/>
 </linearGradient>
-<linearGradient id="paint6_linear" x1="-nan" y1="-nan" x2="-nan" y2="-nan" gradientUnits="userSpaceOnUse">
-<stop stop-color="white" stop-opacity="0"/>
-<stop offset="1" stop-color="white"/>
-</linearGradient>
+<!--<linearGradient id="paint6_linear" x1="-nan" y1="-nan" x2="-nan" y2="-nan" gradientUnits="userSpaceOnUse">-->
+<!--<stop stop-color="white" stop-opacity="0"/>-->
+<!--<stop offset="1" stop-color="white"/>-->
+<!--</linearGradient>-->
 <linearGradient id="paint7_linear" x1="125.822" y1="596.701" x2="165.997" y2="585.55" gradientUnits="userSpaceOnUse">
 <stop stop-color="white" stop-opacity="0"/>
 <stop offset="1" stop-color="#0DB3B1"/>
@@ -115,10 +115,10 @@
 <stop stop-color="white" stop-opacity="0"/>
 <stop offset="1" stop-color="#0DB3B1"/>
 </linearGradient>
-<linearGradient id="paint11_linear" x1="-nan" y1="-nan" x2="-nan" y2="-nan" gradientUnits="userSpaceOnUse">
-<stop stop-color="white" stop-opacity="0"/>
-<stop offset="1" stop-color="white"/>
-</linearGradient>
+<!--<linearGradient id="paint11_linear" x1="-nan" y1="-nan" x2="-nan" y2="-nan" gradientUnits="userSpaceOnUse">-->
+<!--<stop stop-color="white" stop-opacity="0"/>-->
+<!--<stop offset="1" stop-color="white"/>-->
+<!--</linearGradient>-->
 <linearGradient id="paint12_linear" x1="296.265" y1="512.615" x2="364.588" y2="359.948" gradientUnits="userSpaceOnUse">
 <stop stop-color="#160F4A" stop-opacity="0"/>
 <stop offset="1" stop-color="#0DB3B1"/>

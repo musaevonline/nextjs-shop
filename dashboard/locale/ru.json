@@ -2,6 +2,12 @@
   "dashboard": {
     "string": "Панель управления"
   },
+  "home": {
+    "string": "Главная"
+  },
+  "customers": {
+    "string": "Покупатели"
+  },
   "email": {
     "string": "E-mail"
   },
@@ -11,7 +17,94 @@
   "login": {
     "string": "Войти"
   },
+  "logout": {
+    "string": "Выйти"
+  },
   "reset_password": {
     "string": "Сбросить пароль"
+  },
+  "first_name": {
+    "string": "Имя"
+  },
+  "last_name": {
+    "string": "Фамилия"
+  },
+  "incorrect_password_username": {
+    "string": "Email и/или пароль не правильный. Попробуйте еще!"
+  },
+  "required_field": {
+    "string": "Обязательное поле"
+  },
+  "invalid_email": {
+    "string": "Не валидный email"
+  },
+  "miscellaneous": {
+    "string": "Разное"
+  },
+  "configurationMenuNavigation": {
+    "string": "Конфигурация Меню"
+  },
+  "navigation": {
+    "string": "Навигация"
+  },
+  "pages": {
+    "string": "Страницы"
+  },
+  "configurationMenuPages": {
+    "string": "Конфигурация страниц"
+  },
+  "account_settings": {
+    "string": "Настройки аккаунта"
+  },
+  "oops": {
+    "string": "Упс"
+  },
+  "missing": {
+    "string": "Что-то не так"
+  },
+  "page_not_found": {
+    "string": "Извините, страница не найдена"
+  },
+  "back_home": {
+    "string": "Вернуться на главную"
+  },
+  "forgot_password": {
+    "string": "Забыли Ваш пароль? Не волнуйтесь, мы сбросим его для вас."
+  },
+  "send_instructions": {
+    "string": "Отправить инструкцию"
+  },
+  "back_login": {
+    "string": "Вернуться на страницу авторизации"
+  },
+  "success_reset_password": {
+    "string": "Успех! Через несколько минут вы получите сообщение с инструкциями о том, как сбросить пароль."
+  },
+  "setup_new_password": {
+    "string": "Пожалуйста, установите новый пароль."
+  },
+  "new_password": {
+    "string": "Новый пароль"
+  },
+  "passwords_not_match": {
+    "string": "Пароли не совпадают"
+  },
+  "confirm_password": {
+    "string": "Подтвердите пароль"
+  },
+  "set_new_password": {
+    "string": "Установить новый пароль"
+  },
+  "user_not_found": {
+    "string": "Пользователь не найден в базе"
+  },
+  "invalid_value": {
+    "string": "Не валидное значение"
+  },
+  "invalid_token": {
+    "string": "Не валидный токен"
+  },
+  "min_length_8": {
+    "string": "Минимально значение 8 символов"
   }
 }

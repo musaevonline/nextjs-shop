@@ -1,7 +1,6 @@
 import gql from "graphql-tag";
 
 import {TypedMutation} from "@temp/mutations";
-import {SignUp, SignUpVariables} from "@temp/core/auth/types/SignUp";
 import {TokenAuth, TokenAuthVariables} from "@temp/core/auth/types/TokenAuth";
 import {VerifyToken, VerifyTokenVariables} from "@temp/core/auth/types/VerifyToken";
 import {RequestPasswordReset, RequestPasswordResetVariables} from "@temp/core/auth/types/RequestPasswordReset";
@@ -46,28 +45,6 @@ export const TypedVerifyTokenMutation = TypedMutation<
     VerifyToken,
     VerifyTokenVariables
     >(tokenVerifyMutation);
-
-export const signupMutation = gql`
-    ${fragmentUser}
-    mutation SignUp($input: AccountRegisterInput!) {
-        accountRegister(input: $input) {
-            accountErrors {
-                code
-                field
-                message
-            }
-            requiresConfirmation
-            user {
-                ...User
-            }
-        }
-    }
-`;
-
-export const TypedSignupMutation = TypedMutation<
-    SignUp,
-    SignUpVariables
-    >(signupMutation);
 
 export const requestPasswordReset = gql`
     mutation RequestPasswordReset($email: String!, $redirectUrl: String!) {

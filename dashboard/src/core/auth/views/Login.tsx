@@ -1,21 +1,23 @@
 import useNavigator from "@temp/hooks/useNavigator";
 import useUser from "@temp/hooks/useUser";
-import React from "react";
+import React, {useState} from "react";
 
-import LoginPage, { FormData } from "../components/LoginPage";
-import { passwordResetUrl } from "../urls";
+import LoginPage, { LoginFormData } from "../components/LoginPage";
+import {passwordForgotUrl} from "../urls";
+import {TokenAuth_tokenCreate_accountErrors} from "@temp/core/auth/types/TokenAuth";
 
 const LoginView: React.FC = () => {
   const navigate = useNavigator();
-  const { login, user, tokenAuthLoading } = useUser();
+  const [errors, setErrors] = useState<TokenAuth_tokenCreate_accountErrors[]>();
+  const { login, tokenAuthLoading } = useUser();
 
-  const handleSubmit = (data: FormData) => login(data.email, data.password, data.username);
+  const handleSubmit = (data: LoginFormData) => login(setErrors, data.email, data.password);
 
   return (
     <LoginPage
-      error={user === null}
+      errors={errors}
       disableLoginButton={tokenAuthLoading}
-      onPasswordRecovery={() => navigate(passwordResetUrl)}
+      onPasswordRecovery={() => navigate(passwordForgotUrl)}
       onSubmit={handleSubmit}
     />
   );

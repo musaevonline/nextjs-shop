@@ -5,14 +5,12 @@ import React from "react";
 import { useIntl } from "react-intl";
 import urlJoin from "url-join";
 
-import ResetPasswordPage, {
-  ResetPasswordPageFormData
-} from "../components/ResetPasswordPage";
 import { RequestPasswordResetMutation } from "../mutations";
 import { RequestPasswordReset } from "../types/RequestPasswordReset";
 import { newPasswordUrl, passwordResetSuccessUrl } from "../urls";
+import ForgotPasswordPage, {ForgotPasswordPageFormData} from "@temp/core/auth/components/ForgotPasswordPage";
 
-const ResetPasswordView: React.FC = () => {
+const ForgotPasswordView: React.FC = () => {
   const [error, setError] = React.useState<string>();
   const navigate = useNavigator();
   const intl = useIntl();
@@ -23,10 +21,7 @@ const ResetPasswordView: React.FC = () => {
     } else {
       if (data.requestPasswordReset.accountErrors.find(err => err.field === "email")) {
         setError(
-          intl.formatMessage({
-            defaultMessage:
-              "Provided email address does not exist in our database."
-          })
+          intl.formatMessage(commonMessages.emailDoesNotExist)
         );
       } else {
         setError(intl.formatMessage(commonMessages.somethingWentWrong));
@@ -37,7 +32,7 @@ const ResetPasswordView: React.FC = () => {
   return (
     <RequestPasswordResetMutation onCompleted={handleRequestPasswordReset}>
       {(requestPasswordReset, requestPasswordResetOpts) => {
-        const handleSubmit = (data: ResetPasswordPageFormData) =>
+        const handleSubmit = (data: ForgotPasswordPageFormData) =>
           requestPasswordReset({
             variables: {
               email: data.email,
@@ -50,7 +45,7 @@ const ResetPasswordView: React.FC = () => {
           });
 
         return (
-          <ResetPasswordPage
+          <ForgotPasswordPage
             disabled={requestPasswordResetOpts.loading}
             error={error}
             onSubmit={handleSubmit}
@@ -60,5 +55,5 @@ const ResetPasswordView: React.FC = () => {
     </RequestPasswordResetMutation>
   );
 };
-ResetPasswordView.displayName = "ResetPasswordView";
-export default ResetPasswordView;
+ForgotPasswordView.displayName = "ForgotPasswordView";
+export default ForgotPasswordView;

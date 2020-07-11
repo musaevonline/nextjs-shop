@@ -15,6 +15,7 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
   return [
     {
       label: intl.formatMessage({
+        id: "miscellaneous",
         defaultMessage: "Miscellaneous"
       }),
       menuItems: [

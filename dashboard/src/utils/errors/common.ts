@@ -9,6 +9,10 @@ const commonErrorMessages = defineMessages({
     id: 'invalid_value',
     defaultMessage: "Invalid value"
   },
+  invalidToken: {
+    id: 'invalid_token',
+    defaultMessage: "Invalid token"
+  },
   unknownError: {
     id: 'unknown_error',
     defaultMessage: "Unknown error"

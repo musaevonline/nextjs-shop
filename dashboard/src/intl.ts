@@ -17,6 +17,10 @@ export const commonMessages = defineMessages({
     id:'password',
     defaultMessage: "Password"
   },
+  newPassword: {
+    id:'new_password',
+    defaultMessage: "New password"
+  },
   endDate: {
     id:'end_date',
     defaultMessage: "End Date"
@@ -41,11 +45,6 @@ export const commonMessages = defineMessages({
     id:'no',
     defaultMessage: "No"
   },
-  optionalField: {
-    id:'optional',
-    defaultMessage: "Optional",
-    description: "field is optional"
-  },
   properties: {
     id:'properties',
     defaultMessage: "Properties"
@@ -53,10 +52,6 @@ export const commonMessages = defineMessages({
   readOnly: {
     id:'readonly',
     defaultMessage: "Saleor runs in read-only mode. Changes not saved."
-  },
-  requiredField: {
-    id:'required_field',
-    defaultMessage: "This field is required"
   },
   savedChanges: {
     id:'save_changes',
@@ -94,8 +89,55 @@ export const commonMessages = defineMessages({
   yes: {
     id:'yes',
     defaultMessage: "Yes"
+  },
+  login: {
+    id: 'login',
+    defaultMessage: 'Login'
+  },
+  resetPassword: {
+    id: 'reset_password',
+    defaultMessage: 'Reset password'
+  },
+  confirmPassword: {
+    id: 'confirm_password',
+    defaultMessage: 'Confirm password'
+  },
+  emailDoesNotExist: {
+    id: 'email_does_not_exist',
+    defaultMessage: 'Provided email address does not exist in our database.'
   }
 });
+export const formMessages = defineMessages({
+  optionalField: {
+    id:'optional',
+    defaultMessage: "Optional",
+    description: "field is optional"
+  },
+  requiredField: {
+    id:'required_field',
+    defaultMessage: "This field is required"
+  },
+  invalidEmail: {
+    id:'invalid_email',
+    defaultMessage: "Email is invalid"
+  },
+  incorrectPasswordUsername: {
+    id:'incorrect_password_username',
+    defaultMessage: "Sorry, your email and/or password are incorrect. Please try again."
+  },
+  passwordsNotMatch: {
+    id:'passwords_not_match',
+    defaultMessage: "Passwords not match"
+  },
+  setNewPassword: {
+    id:'set_new_password',
+    defaultMessage: "Set new password"
+  },
+  minLength8: {
+    id:'min_length_8',
+    defaultMessage: "Too short! Min length is 8"
+  }
+})
 
 export const buttonMessages = defineMessages({
   accept: {
@@ -201,6 +243,6 @@ export const sectionNames = defineMessages({
 
 export function translateBoolean(value: boolean, intl: IntlShape): string {
   return value
-    ? intl.formatMessage(commonMessages.yes)
-    : intl.formatMessage(commonMessages.no);
+      ? intl.formatMessage(commonMessages.yes)
+      : intl.formatMessage(commonMessages.no);
 }

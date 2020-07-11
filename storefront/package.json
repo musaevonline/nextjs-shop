@@ -174,10 +174,10 @@
   },
   "scripts": {
     "test": "jest --runInBand --config .jest/config.json",
-    "start": "cross-env NODE_ENV=develop API_URI=http://localhost:8000/graphql/ webpack-dev-server --history-api-fallback --watch --mode development",
+    "start": "cross-env NODE_ENV=develop webpack-dev-server --history-api-fallback --watch --mode development",
     "start:worker": "npm run start -- --service-worker",
-    "build": "cross-env NODE_ENV=production API_URI=http://localhost:8000/graphql/ webpack -p",
-    "watch": "cross-env NODE_ENV=development API_URI=http://localhost:8000/graphql/ webpack --mode development --watch -w",
+    "build": "cross-env NODE_ENV=production webpack -p",
+    "watch": "cross-env NODE_ENV=development webpack --mode development --watch -w",
     "codegen": "apollo codegen:generate --target=typescript types",
     "codegen-watch": "npm run codegen -- --watch",
     "tslint": "tslint 'src/**/*.ts?(x)'",

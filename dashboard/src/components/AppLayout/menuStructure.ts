@@ -1,6 +1,5 @@
 import customerIcon from "@assets/images/menu-customers-icon.svg";
 import homeIcon from "@assets/images/menu-home-icon.svg";
-import translationIcon from "@assets/images/menu-translation-icon.svg";
 import { sectionNames } from "@temp/intl";
 import { IntlShape } from "react-intl";
 
@@ -37,14 +36,6 @@ function createMenuStructure(intl: IntlShape): IMenuItem[] {
       //     url: saleListUrl()
       //   },
       // ]
-    },
-
-    {
-      ariaLabel: "translations",
-      icon: translationIcon,
-      label: intl.formatMessage(sectionNames.translations),
-      permission: PermissionEnum.MANAGE_TRANSLATIONS,
-      url: 'languages/'
     }
   ];
 }

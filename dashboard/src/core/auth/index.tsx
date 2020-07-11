@@ -3,23 +3,20 @@ import { Route, Switch } from "react-router-dom";
 
 import Layout from "./components/Layout";
 // import LoginLoading from "./components/LoginLoading";
-// import {
-//   newPasswordPath,
-//   passwordResetPath,
-//   passwordResetSuccessPath
-// } from "./urls";
 import LoginView from "./views/Login";
 import {User} from "@sdk/fragments/types/User";
-// import NewPassword from "./views/NewPassword";
-// import ResetPassword from "./views/ResetPassword";
-// import ResetPasswordSuccess from "./views/ResetPasswordSuccess";
+import {TokenAuth_tokenCreate_accountErrors} from "@temp/core/auth/types/TokenAuth";
+import {newPasswordPath, passwordForgotPath, passwordResetSuccessPath} from "@temp/core/auth/urls";
+import ForgotPasswordView from "@temp/core/auth/views/ForgotPassword";
+import NewPassword from "@temp/core/auth/views/NewPassword";
+import ResetPasswordSuccessView from "@temp/core/auth/views/ResetPasswordSuccess";
 
 interface UserContext {
-  login: (email: string, password: string, username: string) => void;
+  login: (setErrors:(errors:TokenAuth_tokenCreate_accountErrors[]) => void, email: string, password: string) => void;
   loginByToken: (token: string, user: User) => void;
   logout: () => void;
   tokenAuthLoading: boolean;
-  // tokenRefresh: () => Promise<void>;
+  tokenRefresh: () => Promise<void>;
   tokenVerifyLoading: boolean;
   user?: User;
 }
@@ -29,7 +26,7 @@ export const UserContext = React.createContext<UserContext>({
   loginByToken: undefined,
   logout: undefined,
   tokenAuthLoading: false,
-  // tokenRefresh: undefined,
+  tokenRefresh: undefined,
   tokenVerifyLoading: false
 });
 
@@ -40,13 +37,9 @@ interface AuthRouterProps {
 const AuthRouter: React.FC<AuthRouterProps> = ({ hasToken }) => (
   <Layout>
     <Switch>
-      {/*<Route path={passwordResetSuccessPath} component={ResetPasswordSuccess} />*/}
-      {/*<Route path={passwordResetPath} component={ResetPassword} />*/}
-      {/*{!hasToken ? (*/}
-      {/*  <Route path={newPasswordPath} component={NewPassword} />*/}
-      {/*) : (*/}
-      {/*  <LoginLoading />*/}
-      {/*)}*/}
+      <Route path={passwordResetSuccessPath} component={ResetPasswordSuccessView} />
+      <Route path={passwordForgotPath} component={ForgotPasswordView} />
+      <Route path={newPasswordPath} component={NewPassword} />
       <Route component={LoginView} />
     </Switch>
   </Layout>

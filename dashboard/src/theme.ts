@@ -112,6 +112,12 @@ export default (colors: IThemeColors): Theme =>
             borderBottom: `1px solid ${colors.divider}`
           }
         },
+        MuiFormControl:{
+          marginNormal:{
+            marginTop: 4,
+            marginBottom: 4
+          }
+        },
         MuiFormControlLabel: {
           label: {
             marginLeft: 4
@@ -497,7 +503,12 @@ export default (colors: IThemeColors): Theme =>
       },
       props: {
         MuiFormControl: {
-          variant: "filled"
+          variant: "outlined"
+        },
+        MuiTextField: {
+          variant: "outlined",
+          margin: "normal",
+          fullWidth: true
         }
       },
       shadows: [
