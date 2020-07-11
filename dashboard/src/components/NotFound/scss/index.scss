@@ -1,0 +1,42 @@
+@import "../../../globalStyles/scss/variables.scss";
+
+.not-found-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 1rem 0.5rem;
+
+  &__header {
+    font-size: 24rem;
+    font-weight: 900;
+    line-height: 100%;
+    padding-bottom: 20px;
+
+    @media (max-width: 756px) {
+      font-size: 14.5rem;
+    }
+  }
+
+  &__ruler {
+    min-width: 50px;
+    width: 30rem;
+    height: 2px;
+    margin: 0.5rem auto 0.5rem * 3 auto;
+  }
+
+  &__message {
+    @media (max-width: 60rem) {
+      p {
+        display: inline;
+      }
+    }
+  }
+
+  &__button {
+    margin: 1rem auto;
+    width: 40rem;
+    max-width: 88%;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "dashboard": {
+    "string": "Панель управления"
+  },
+  "email": {
+    "string": "E-mail"
+  },
+  "password": {
+    "string": "Пароль"
+  },
+  "login": {
+    "string": "Войти"
+  },
+  "reset_password": {
+    "string": "Сбросить пароль"
+  }
+}

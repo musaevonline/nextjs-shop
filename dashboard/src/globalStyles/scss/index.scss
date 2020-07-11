@@ -1,0 +1,29 @@
+@import url("~reset-css");
+
+@import "./variables";
+//@import "~tailwindcss/base";
+@import "~tailwindcss/components";
+@import "~tailwindcss/utilities";
+
+
+html {
+  font-size: 62.5%; /* 62.5% of 16px = 10px */
+}
+body, footer {
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  color: $base-font-color;
+
+  * {
+    box-sizing: border-box;
+    outline: none;
+  }
+
+  #root {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+}
+

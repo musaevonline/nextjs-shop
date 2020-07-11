@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "jsx": "react",
+    "lib": ["es2017", "dom", "esnext"],
+    "sourceMap": true,
+    "target": "es6",
+    "noUnusedLocals": true,
+//    "noImplicitAny": true,
+//    "noImplicitThis": true,
+//    "strictNullChecks": true,
+    "types": ["webpack-env"],
+    "paths": {
+      "@temp/*": ["./src/*"],
+      "@sdk/*": ["./src/@sdk/*"],
+      "@images/*": ["./src/images/*"],
+      "@locale/*": ["locale/*"],
+      "@assets/*": ["assets/*"],
+      "images/*": ["./src/images/*"]
+    },
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules"]
+}
