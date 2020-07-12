@@ -106,5 +106,86 @@
   },
   "min_length_8": {
     "string": "Минимально значение 8 символов"
+  },
+  "products": {
+    "string": "Продукты"
+  },
+  "catalog": {
+    "string": "Каталог"
+  },
+  "create_product": {
+    "string": "Создать продукт"
+  },
+  "search_products": {
+    "string": "Поиск продуктов"
+  },
+  "all_products": {
+    "string": "Все продукты"
+  },
+  "custom_filter": {
+    "string": "Пользовательский фильтр"
+  },
+  "save_search": {
+    "string": "Сохранить поиск"
+  },
+  "delete_search": {
+    "string": "Удалить поиск"
+  },
+  "delete": {
+    "string": "Удалить"
+  },
+  "delete_tab_text": {
+    "string": "Вы уверены, что хотите удалить {name} поиска?"
+  },
+  "back": {
+    "string": "Назад"
+  },
+  "save": {
+    "string": "Сохранить"
+  },
+  "save_custom_search": {
+    "string": "Сохранить поиск"
+  },
+  "search_name": {
+    "string": "Название"
+  },
+  "error": {
+    "string": "Ошибка"
+  },
+  "problem": {
+    "string": "Проблема"
+  },
+  "dont_worry": {
+    "string": "Не волнуйтесь, все будет хорошо"
+  },
+  "product_name": {
+    "string": "Название"
+  },
+  "product_type": {
+    "string": "Тип"
+  },
+  "product_status": {
+    "string": "Опубликован"
+  },
+  "price": {
+    "string": "Цена"
+  },
+  "selected_items": {
+    "string": "Выбрано {number}"
+  },
+  "number_of_rows": {
+    "string": "Количество на странице"
+  },
+  "published": {
+    "string": "Опубликован"
+  },
+  "unpublish": {
+    "string": "Не опубликован"
+  },
+  "not_published": {
+    "string": "Не опубликован"
+  },
+  "no_products_found": {
+    "string": "Продукты не найдены"
   }
 }

@@ -94,9 +94,9 @@ export default (colors: IThemeColors): Theme =>
         },
         MuiDialogContent: {
           root: {
-            "& label": {
-              overflowX: "hidden"
-            },
+            // "& label": {
+            //   overflowX: "hidden"
+            // },
             padding: 24
           }
         },
@@ -206,7 +206,7 @@ export default (colors: IThemeColors): Theme =>
           },
           shrink: {
             // Negates x0.75 scale
-            width: "133%"
+            // width: "133%"
           }
         },
         MuiList: {
@@ -409,12 +409,12 @@ export default (colors: IThemeColors): Theme =>
         },
         MuiTableCell: {
           body: {
-            fontSize: "1rem",
+            // fontSize: "1rem",
             paddingBottom: 8,
             paddingTop: 8
           },
           head: {
-            fontSize: "1rem"
+            // fontSize: "1rem"
           },
           paddingCheckbox: {
             "&:first-child": {

@@ -72,3 +72,40 @@ export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
 export function createHref(url: string) {
   return urlJoin(APP_MOUNT_URI, url);
 }
+export function findValueInEnum<TEnum extends object>(
+  needle: string,
+  haystack: TEnum
+): TEnum[keyof TEnum] {
+  const match = Object.entries(haystack).find(([_, value]) => value === needle);
+
+  if (!match) {
+    throw new Error(`Value ${needle} not found in enum`);
+  }
+
+  return (needle as unknown) as TEnum[keyof TEnum];
+}
+
+export function parseBoolean(a: string, defaultValue: boolean): boolean {
+  if (a === undefined) {
+    return defaultValue;
+  }
+  return a === "true";
+}
+
+export function renderCollection<T>(
+  collection: T[],
+  renderItem: (
+    item: T | undefined,
+    index: number | undefined,
+    collection: T[]
+  ) => any,
+  renderEmpty?: (collection: T[]) => any
+) {
+  if (collection === undefined) {
+    return renderItem(undefined, undefined, collection);
+  }
+  if (collection.length === 0) {
+    return !!renderEmpty ? renderEmpty(collection) : null;
+  }
+  return collection.map(renderItem);
+}

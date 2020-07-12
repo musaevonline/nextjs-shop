@@ -44,7 +44,7 @@ def tracing_wrapper(execute, sql, params, many, context):
 
 
 class GraphQLView(View):
-    # This class is our implementation of `graphene_django.views.GraphQLView`,
+    # This class is our implementation of `graphene_django.sections.GraphQLView`,
     # which was extended to support the following features:
     # - Playground as default the API explorer (see
     # https://github.com/prisma/graphql-playground)

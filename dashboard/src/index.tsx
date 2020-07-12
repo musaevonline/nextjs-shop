@@ -10,7 +10,7 @@ import { createUploadLink } from "apollo-upload-client";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
 import { render } from "react-dom";
-import { BrowserRouter} from "react-router-dom";
+import {BrowserRouter, Route} from "react-router-dom";
 import { getAuthToken, removeAuthToken } from "./core/auth";
 import { isJwtError } from "./core/auth/errors";
 import { DateProvider } from "./components/Date";
@@ -20,6 +20,7 @@ import ThemeProvider from "./components/Theme";
 import { API_URI, APP_MOUNT_URI } from "./core/config";
 import AppStateProvider from "./containers/AppState";
 import {Routes} from "@temp/app";
+import { QueryParamProvider } from 'use-query-params';
 
 interface ResponseError extends ErrorResponse {
   networkError?: Error & {
@@ -88,11 +89,13 @@ const App: React.FC = () => {
           <ThemeProvider isDefaultDark={isDark}>
             <DateProvider>
               <LocaleProvider>
-                <MessageManager>
-                  <AppStateProvider>
-                    <Routes />
-                  </AppStateProvider>
-                </MessageManager>
+                <QueryParamProvider ReactRouterRoute={Route}>
+                  <MessageManager>
+                    <AppStateProvider>
+                      <Routes />
+                    </AppStateProvider>
+                  </MessageManager>
+                </QueryParamProvider>
               </LocaleProvider>
             </DateProvider>
           </ThemeProvider>

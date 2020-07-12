@@ -10,6 +10,7 @@ import useAppState from "./hooks/useAppState";
 import useUser from "./hooks/useUser";
 import { commonMessages } from "./intl";
 import { maybe, RequireAtLeastOne } from "./misc";
+import gql from "graphql-tag";
 
 export interface LoadMore<TData, TVariables> {
   loadMore: (
@@ -160,11 +161,11 @@ export function TypedQuery<TData, TVariables>(
   };
 }
 
-// export const pageInfoFragment = gql`
-//   fragment PageInfoFragment on PageInfo {
-//     endCursor
-//     hasNextPage
-//     hasPreviousPage
-//     startCursor
-//   }
-// `;
+export const pageInfoFragment = gql`
+  fragment PageInfoFragment on PageInfo {
+    endCursor
+    hasNextPage
+    hasPreviousPage
+    startCursor
+  }
+`;

@@ -36,6 +36,19 @@ export enum AccountErrorCode {
 /**
  * An enumeration.
  */
+export enum AttributeInputTypeEnum {
+  DROPDOWN = "DROPDOWN",
+  MULTISELECT = "MULTISELECT",
+}
+
+export enum OrderDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+/**
+ * An enumeration.
+ */
 export enum PermissionEnum {
   MANAGE_APPS = "MANAGE_APPS",
   MANAGE_CHECKOUTS = "MANAGE_CHECKOUTS",
@@ -52,6 +65,39 @@ export enum PermissionEnum {
   MANAGE_TRANSLATIONS = "MANAGE_TRANSLATIONS",
   MANAGE_USERS = "MANAGE_USERS",
   MANAGE_WEBHOOKS = "MANAGE_WEBHOOKS",
+}
+
+export enum ProductOrderField {
+  DATE = "DATE",
+  NAME = "NAME",
+  PUBLISHED = "PUBLISHED",
+  TYPE = "TYPE",
+}
+
+export interface AttributeInput {
+  slug: string;
+  values?: (string | null)[] | null;
+}
+
+export interface PriceRangeInput {
+  gte?: number | null;
+  lte?: number | null;
+}
+
+export interface ProductFilterInput {
+  isPublished?: boolean | null;
+  productType?: string | null;
+  search?: string | null;
+  productTypes?: (string | null)[] | null;
+  categories?: (string | null)[] | null;
+  attributes?: (AttributeInput | null)[] | null;
+  price?: PriceRangeInput | null;
+}
+
+export interface ProductOrder {
+  direction: OrderDirection;
+  attributeId?: string | null;
+  field?: ProductOrderField | null;
 }
 
 //==============================================================

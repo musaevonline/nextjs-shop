@@ -10,10 +10,12 @@ import AppLayout from "@temp/components/AppLayout";
 import {ErrorBoundary} from "react-error-boundary";
 import {Route, Switch} from "react-router-dom";
 import SectionRoute from "@temp/core/auth/components/SectionRoute";
-import {HomePage} from "@temp/views/Home";
+import {HomePage} from "@temp/sections/Home";
 import NotFound from "@temp/components/NotFound";
 import LoginLoading from "@temp/core/auth/components/LoginLoading";
 import Auth from "@temp/core/auth";
+import {productListPath} from "@temp/sections/products/urls";
+import ProductsSectionComponent from "@temp/sections/products";
 
 const Routes: React.FC = () => {
   const intl = useIntl();
@@ -57,6 +59,7 @@ const Routes: React.FC = () => {
                     >
                       <Switch>
                         <SectionRoute exact path="/" component={HomePage} />
+                        <SectionRoute exact path={productListPath} component={ProductsSectionComponent} />
                         {/*<SectionRoute*/}
                         {/*  permissions={[PermissionEnum.MANAGE_PRODUCTS]}*/}
                         {/*  path="/products"*/}

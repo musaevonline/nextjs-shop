@@ -6,7 +6,9 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from graphene import relay
 from graphene_federation import key
+from graphql import GraphQLError
 
+from main.product.availability import is_product_in_stock
 from ..sorters import ProductReviewOrderField
 from main.graphql.core.connection import DjangoPkInterface
 from main.graphql.core.fields import PrefetchingConnectionField, FilterInputConnectionField
@@ -21,6 +23,7 @@ from main.product.templatetags.product_images import get_thumbnail, get_product_
 from ..filters import ProductReviewFilterInput, AttributeFilterInput
 from ..resolvers import resolve_attributes
 from .attributes import SelectedAttribute, Attribute
+from ...utils import get_database_id
 
 
 def resolve_attribute_list(
@@ -199,6 +202,14 @@ class Product(CountableDjangoObjectType):
         required=True,
         description="List of attributes assigned to this product.",
     )
+    image_by_id = graphene.Field(
+        lambda: ProductImage,
+        id=graphene.Argument(graphene.ID, description="ID of a product image."),
+        description="Get a single product image by ID.",
+    )
+    is_available = graphene.Boolean(
+        description="Whether the product is in stock and visible or not."
+    )
 
     class Meta:
         description = "Represents product data."
@@ -213,7 +224,8 @@ class Product(CountableDjangoObjectType):
             'minimal_variant_price',
             'product_type',
             'category',
-            'unit'
+            'unit',
+            'publication_date'
         ]
 
     @staticmethod
@@ -251,6 +263,19 @@ class Product(CountableDjangoObjectType):
     @staticmethod
     def resolve_attributes(root: models.Product, info):
         return resolve_attribute_list(root, user=info.context.user)
+
+    @staticmethod
+    def resolve_image_by_id(root: models.Product, info, id):
+        pk = get_database_id(info, id, ProductImage)
+        try:
+            return root.images.get(pk=pk)
+        except models.ProductImage.DoesNotExist:
+            raise GraphQLError("Product image not found.")
+
+    @staticmethod
+    def resolve_is_available(root: models.Product, info):
+        in_stock = is_product_in_stock(root)
+        return root.is_visible and in_stock
 
 
 class ProductType(CountableDjangoObjectType):

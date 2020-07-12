@@ -73,7 +73,7 @@ def create_payment(
 ) -> Payment:
     """Create a payment instance.
     This method is responsible for creating payment instances that works for
-    both Django views and GraphQL mutations.
+    both Django sections and GraphQL mutations.
     """
 
     if extra_data is None:

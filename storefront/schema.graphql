@@ -2833,6 +2833,7 @@ input PriceRangeInput {
 
 """Represents product data."""
 type Product implements Node & DjangoPkInterface {
+  publicationDate: Date
   isPublished: Boolean!
   productType: ProductType!
   name: String!
@@ -2893,6 +2894,15 @@ type Product implements Node & DjangoPkInterface {
 
   """List of attributes assigned to this product."""
   attributes: [SelectedAttribute!]!
+
+  """Get a single product image by ID."""
+  imageById(
+    """ID of a product image."""
+    id: ID
+  ): ProductImage
+
+  """Whether the product is in stock and visible or not."""
+  isAvailable: Boolean
 }
 
 """Deletes products."""

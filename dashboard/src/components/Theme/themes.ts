@@ -101,6 +101,6 @@ export const light: IThemeColors = {
   },
   paperBorder: "#EAEAEA",
   primary: "#06847B",
-  secondary: "#21125E",
+  secondary: "#15eaff",
   theme: "light"
 };

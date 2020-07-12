@@ -30,7 +30,8 @@ const useStyles = makeStyles(theme => ({
         link: {
             color: theme.palette.primary.main,
             cursor: "pointer",
-            textAlign: "center"
+            textAlign: "center",
+            marginTop: 10
         },
         loginButton: {
             width: 140
