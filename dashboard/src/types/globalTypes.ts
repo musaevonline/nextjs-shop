@@ -41,6 +41,12 @@ export enum AttributeInputTypeEnum {
   MULTISELECT = "MULTISELECT",
 }
 
+export enum CategorySortField {
+  NAME = "NAME",
+  PRODUCT_COUNT = "PRODUCT_COUNT",
+  SUBCATEGORY_COUNT = "SUBCATEGORY_COUNT",
+}
+
 export enum OrderDirection {
   ASC = "ASC",
   DESC = "DESC",
@@ -67,6 +73,19 @@ export enum PermissionEnum {
   MANAGE_WEBHOOKS = "MANAGE_WEBHOOKS",
 }
 
+/**
+ * An enumeration.
+ */
+export enum ProductErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  NOT_PRODUCTS_IMAGE = "NOT_PRODUCTS_IMAGE",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
 export enum ProductOrderField {
   DATE = "DATE",
   NAME = "NAME",
@@ -77,6 +96,25 @@ export enum ProductOrderField {
 export interface AttributeInput {
   slug: string;
   values?: (string | null)[] | null;
+}
+
+export interface CategoryFilterInput {
+  search?: string | null;
+  ids?: (string | null)[] | null;
+}
+
+export interface CategoryInput {
+  description?: string | null;
+  descriptionJson?: any | null;
+  name?: string | null;
+  slug?: string | null;
+  backgroundImage?: any | null;
+  backgroundImageAlt?: string | null;
+}
+
+export interface CategorySortingInput {
+  direction: OrderDirection;
+  field: CategorySortField;
 }
 
 export interface PriceRangeInput {
@@ -98,6 +136,19 @@ export interface ProductOrder {
   direction: OrderDirection;
   attributeId?: string | null;
   field?: ProductOrderField | null;
+}
+
+export interface ProductVariantBulkCreateInput {
+  costPrice?: any | null;
+  priceOverride?: any | null;
+  sku: string;
+  weight?: any | null;
+  name?: string | null;
+  stocks?: StockInput[] | null;
+}
+
+export interface StockInput {
+  quantity?: number | null;
 }
 
 //==============================================================

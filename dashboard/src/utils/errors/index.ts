@@ -22,3 +22,5 @@ export function getFormErrors<TField extends string, TError extends UserError>(
     return errs;
   }, ({} as unknown) as Record<TField, TError>);
 }
+
+export { default as getProductErrorMessage } from "./product";

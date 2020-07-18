@@ -61,6 +61,16 @@ export const productFragment = gql`
     minimalVariantPrice {
       ...Money
     }
+    priceRange{
+      start{
+        amount
+        currency
+      }
+      stop{
+        amount
+        currency
+      }
+    }
     productType {
       id
       name

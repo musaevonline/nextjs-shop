@@ -1,4 +1,4 @@
-import { defineMessages, IntlShape } from "react-intl";
+import {defineMessages, IntlShape} from "react-intl";
 
 export const commonMessages = defineMessages({
   dashboard: {
@@ -8,6 +8,28 @@ export const commonMessages = defineMessages({
   description: {
     id:'description',
     defaultMessage: "Description"
+  },
+  categoryCreated: {
+    id:'category_created',
+    defaultMessage: "Category created"
+  },
+  createNewCategory: {
+    id: "create_new_category",
+    defaultMessage: "Create New Category",
+    description: "page header"
+  },
+  deleteCategoriesTitle: {
+    id:'delete_categories_title',
+    defaultMessage: "Delete categories"
+  },
+  categoryDeleted: {
+    id: "category_deleted",
+    defaultMessage: "Category deleted"
+  },
+  productsInCategory: {
+    id: "products_in_category",
+    defaultMessage: "Products in {categoryName}",
+    description: "header"
   },
   email: {
     id:'email',
@@ -33,7 +55,7 @@ export const commonMessages = defineMessages({
     id:'first_name',
     defaultMessage: "First Name"
   },
-  generalInformations: {
+  generalInformation: {
     id:'general_info',
     defaultMessage: "General Informations"
   },
@@ -110,9 +132,18 @@ export const commonMessages = defineMessages({
     id: "search_products",
     defaultMessage: "Search Products..."
   },
+  search:{
+    id: "search",
+    defaultMessage: "Search..."
+  },
   allProducts:{
     id: "all_products",
     defaultMessage: "All Products",
+    description: "tab name"
+  },
+  all:{
+    id: "all",
+    defaultMessage: "All",
     description: "tab name"
   },
   customFilter:{
@@ -180,6 +211,68 @@ export const commonMessages = defineMessages({
   noProductsFound:{
     id: "no_products_found",
     defaultMessage: "No products Found"
+  },
+  noFound:{
+    id: "no_found",
+    defaultMessage: "No Found"
+  },
+  delete:{
+    id: "delete",
+    defaultMessage: "Delete"
+  },
+  name: {
+    id: "name",
+    defaultMessage: "Name",
+    description: "table col"
+  },
+  subcategories:{
+    id: "subcategories",
+    defaultMessage: "Subcategories"
+  },
+  numberOfProducts:{
+    id: "number_of_products",
+    defaultMessage:"No. of Products",
+    description:"number of products"
+  },
+  sureDeleteCategory:{
+    id: "sure_delete_category",
+    defaultMessage: "Are you sure you want to delete {categoryName}?",
+    description:"are you sure?"
+  },
+  rememberDeleteAssignedProducts:{
+    id: "remember_delete_assigned_products",
+    defaultMessage: "Remember this will also delete all products assigned to this category."
+  },
+  deleteCategories:{
+    id: "delete_categories",
+    defaultMessage: "{counter,plural,one{Are you sure you want to delete this category?} other{Are you sure you want to delete {displayQuantity} categories?}}"
+  },
+  deleteProducts:{
+    id: "delete_products",
+    defaultMessage: "{counter,plural,one{Are you sure you want to delete this product?} other{Are you sure you want to delete {displayQuantity} products?}}"
+  },
+  deleteProductsTitle:{
+    id: "delete_products_title",
+    defaultMessage: "Delete Products"
+  },
+  backgroundImgTitle:{
+    id: "background_img_title",
+    defaultMessage: "Background Image (optional)",
+    description: "section header"
+  },
+  dropHere:{
+    id: "drop_here",
+    defaultMessage:"Drop here to upload",
+    description:"image upload"
+  },
+  addImageLinkTitle: {
+    id: "add_image_lin_title",
+    defaultMessage: "Add image link",
+    description: "dialog title"
+  },
+  invalidContent: {
+    id: "invalid_content",
+    defaultMessage: "Invalid content"
   }
 });
 export const formMessages = defineMessages({
@@ -216,6 +309,25 @@ export const formMessages = defineMessages({
     id: "search_name",
     defaultMessage: "Search Name",
     description: "save search tab"
+  },
+  categoryName: {
+    id: "category_name",
+    defaultMessage: "Category Name",
+    description: "field name"
+  },
+  categoryDescription: {
+    id: "category_description",
+    defaultMessage: "Category Description",
+    description: "field name"
+  },
+  urlLinked: {
+    id: "url_linked",
+    defaultMessage: "URL Linked",
+    description: "field name"
+  },
+  imageUrl: {
+    id: "image_url",
+    defaultMessage: "Image URL"
   }
 })
 
@@ -299,6 +411,46 @@ export const buttonMessages = defineMessages({
     id: "create_product",
     defaultMessage: "Create Product",
     description: "button"
+  },
+  createCategory: {
+    id: "create_category",
+    defaultMessage: "Create Category",
+    description: "button"
+  },
+  createSubcategory: {
+    id: "create_subcategory",
+    defaultMessage: "Create Subcategory",
+    description: "button"
+  },
+  addProduct: {
+    id: "add_product",
+    defaultMessage: "Add product",
+    description: "button"
+  },
+  logout: {
+    id: "logout",
+    defaultMessage: "Logout",
+    description: "button"
+  },
+  accountSettings: {
+    id:"account_settings",
+    defaultMessage:"Account Settings",
+    description:"button"
+  },
+  backHome:{
+    id:"back_home",
+    defaultMessage:"Back to home",
+    description:"button"
+  },
+  replace:{
+    id:"replace",
+    defaultMessage:"Replace",
+    description:"button"
+  },
+  addOrEditLink:{
+    id:"add_or_edit_link",
+    defaultMessage:"Add or Edit link",
+    description:"button"
   }
 });
 
@@ -339,10 +491,10 @@ export const sectionNames = defineMessages({
     defaultMessage: "Products",
     description: "products section name"
   },
-  translations: {
-    id:'translations',
-    defaultMessage: "Translations",
-    description: "translations section name"
+  categories: {
+    id:'categories',
+    defaultMessage: "Categories",
+    description: "categories section name"
   },
 });
 

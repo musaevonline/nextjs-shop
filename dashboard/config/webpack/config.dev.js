@@ -7,12 +7,12 @@ const webpack = require('webpack');
 module.exports = ({ sourceDir, distDir }) => {
 
   return {
-    watch: true,
-    watchOptions: {
-      aggregateTimeout: 200,
-      poll: 500,
-      ignored: /node_modules/
-    },
+    // watch: true,
+    // watchOptions: {
+    //   aggregateTimeout: 200,
+    //   poll: 500,
+    //   ignored: /node_modules/
+    // },
     output: {
       filename: "js/[name].js",
     },

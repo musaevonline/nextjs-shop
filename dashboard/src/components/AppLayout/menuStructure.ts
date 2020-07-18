@@ -6,6 +6,7 @@ import { IntlShape } from "react-intl";
 
 import { PermissionEnum } from "../../types/globalTypes";
 import {productListUrl} from "@temp/sections/products/urls";
+import {categoryListUrl} from "@temp/sections/categories/urls";
 
 export interface IMenuItem {
   ariaLabel: string;
@@ -32,11 +33,11 @@ function createMenuStructure(intl: IntlShape): IMenuItem[] {
           label: intl.formatMessage(sectionNames.products),
           url: productListUrl()
         },
-        // {
-        //   ariaLabel: "categories",
-        //   label: intl.formatMessage(sectionNames.categories),
-        //   url: categoryListUrl()
-        // }
+        {
+          ariaLabel: "categories",
+          label: intl.formatMessage(sectionNames.categories),
+          url: categoryListUrl()
+        }
       ],
       icon: catalogIcon,
       label: intl.formatMessage(sectionNames.catalog),

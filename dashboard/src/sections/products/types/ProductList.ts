@@ -29,6 +29,42 @@ export interface ProductList_products_edges_node_minimalVariantPrice {
   currency: string;
 }
 
+export interface ProductList_products_edges_node_priceRange_start {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface ProductList_products_edges_node_priceRange_stop {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface ProductList_products_edges_node_priceRange {
+  __typename: "MoneyRange";
+  /**
+   * Lower bound of a price range.
+   */
+  start: ProductList_products_edges_node_priceRange_start | null;
+  /**
+   * Upper bound of a price range.
+   */
+  stop: ProductList_products_edges_node_priceRange_stop | null;
+}
+
 export interface ProductList_products_edges_node_productType {
   __typename: "ProductType";
   /**
@@ -87,6 +123,10 @@ export interface ProductList_products_edges_node {
   isAvailable: boolean | null;
   isPublished: boolean;
   minimalVariantPrice: ProductList_products_edges_node_minimalVariantPrice | null;
+  /**
+   * Product price range
+   */
+  priceRange: ProductList_products_edges_node_priceRange | null;
   productType: ProductList_products_edges_node_productType;
   /**
    * List of attributes assigned to this product.

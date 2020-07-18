@@ -110,17 +110,26 @@
   "products": {
     "string": "Продукты"
   },
+  "categories": {
+    "string": "Категории"
+  },
   "catalog": {
     "string": "Каталог"
   },
   "create_product": {
     "string": "Создать продукт"
   },
+  "create_category": {
+    "string": "Создать категорию"
+  },
   "search_products": {
     "string": "Поиск продуктов"
   },
   "all_products": {
     "string": "Все продукты"
+  },
+  "all": {
+    "string": "Все"
   },
   "custom_filter": {
     "string": "Пользовательский фильтр"
@@ -148,6 +157,9 @@
   },
   "search_name": {
     "string": "Название"
+  },
+  "search": {
+    "string": "Поиск..."
   },
   "error": {
     "string": "Ошибка"
@@ -187,5 +199,86 @@
   },
   "no_products_found": {
     "string": "Продукты не найдены"
+  },
+  "name": {
+    "string": "Название"
+  },
+  "subcategories": {
+    "string": "Подкатегории"
+  },
+  "number_of_products": {
+    "string": "Продукты"
+  },
+  "no_found": {
+    "string": "Не найдено"
+  },
+  "delete_categories_title": {
+    "string": "Удалить категории"
+  },
+  "delete_products_title": {
+    "string": "Удалить продукты"
+  },
+  "general_info": {
+    "string": "Основная информация"
+  },
+  "category_name": {
+    "string": "Название категории"
+  },
+  "category_description": {
+    "string": "Описание категории"
+  },
+  "background_img_title": {
+    "string": "Изображение"
+  },
+  "upload_image": {
+    "string": "Загрузить изображение"
+  },
+  "create_subcategory": {
+    "string": "Создать подкатегорию"
+  },
+  "drop_here": {
+    "string": "Перетяните сюда"
+  },
+  "products_in_category": {
+    "string": "Продуктов в категории"
+  },
+  "add_product": {
+    "string": "Добавить продукт"
+  },
+  "url_linked": {
+    "string": "URL"
+  },
+  "add_or_edit_link": {
+    "string": "Добавить или изменить URL"
+  },
+  "cancel": {
+    "string": "Отмена"
+  },
+  "edit": {
+    "string": "Изменить"
+  },
+  "something_went_wrong": {
+    "string": "Что-то пошло не так!"
+  },
+  "description": {
+    "string": "Описание"
+  },
+  "optional": {
+    "string": "Опционально"
+  },
+  "create_new_category": {
+    "string": "Создать категорию"
+  },
+  "category_created": {
+    "string": "Категория создана"
+  },
+  "delete_categories": {
+    "string": "Вы уверены что хотите удалить выбранные категории?"
+  },
+  "remember_delete_assigned_products": {
+    "string": "Помните, что при этом также будут удалены все товары, входящие в эту категорию."
+  },
+  "save_changes": {
+    "string": "Сохранено"
   }
 }

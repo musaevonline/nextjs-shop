@@ -56,7 +56,6 @@ const ProductListPage:React.FC<{
     const { updateListSettings, settings } = useListSettings<ProductListColumns>(
         ListViews.PRODUCT_LIST
     );
-
     const paginationState = createPaginationState(settings.rowNumber, params);
     const sort = getSortQueryVariables(params);
     const queryVariables = React.useMemo<ProductListVariables>(
@@ -74,16 +73,16 @@ const ProductListPage:React.FC<{
     const currentTab = params.activeTab || 0;
 
     const onAll = () => {
-        changeUrlParams({activeTab: 0, action: null, query: ""});
+        changeUrlParams({activeTab: 0, action: null, query: "", after: '', before: ''});
     }
     const onTabSave = () => {
         changeUrlParams({action: DIALOG_ACTIONS.saveSearch})
     };
     const onTabChange = (tab: number) => {
-        changeUrlParams({activeTab: tab, ...productListTabs[tab-1].data});
+        changeUrlParams({activeTab: tab, ...productListTabs[tab-1].data, after: '', before: ''});
     };
     const onTabDelete = tab => {
-        changeUrlParams({action: DIALOG_ACTIONS.deleteSearch})
+        changeUrlParams({action: DIALOG_ACTIONS.deleteSearch, after: '', before: ''})
     };
 
     const onSearchChange = q => {
@@ -130,6 +129,12 @@ const ProductListPage:React.FC<{
         changeUrlParams({action});
     }
 
+    const onSort = (sort: ProductListUrlSortField) => {
+        console.log(sort);
+        const asc = params.sort === sort ? !params.asc : true;
+        changeUrlParams({sort, asc});
+    }
+
     return(
         <AvailableInGridAttributesQuery
             variables={{ first: 6, ids: filterColumnIds(settings.columns) }}
@@ -171,9 +176,7 @@ const ProductListPage:React.FC<{
                                                      asc: params.asc,
                                                      sort: params.sort
                                                  }}
-                                                 onSort={(data) => {
-                                                     console.log('onSort')
-                                                 }}
+                                                 onSort={onSort}
                                                  gridAttributes={maybe(
                                                      () =>
                                                          attributes.data.availableInGrid.edges.map(

@@ -35,6 +35,7 @@ import createMenuStructure from "./menuStructure";
 import ResponsiveDrawer from "./ResponsiveDrawer";
 import ThemeSwitch from "./ThemeSwitch";
 import {createConfigurationMenu} from "@temp/configuration";
+import {buttonMessages} from "@temp/intl";
 
 const useStyles = makeStyles(
     theme => ({
@@ -494,21 +495,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                                                                             className={classes.userMenuItem}
                                                                             onClick={handleViewerProfile}
                                                                         >
-                                                                            <FormattedMessage
-                                                                                id="account_settings"
-                                                                                defaultMessage="Account Settings"
-                                                                                description="button"
-                                                                            />
+                                                                            <FormattedMessage {...buttonMessages.accountSettings}/>
                                                                         </MenuItem>
                                                                         <MenuItem
                                                                             className={classes.userMenuItem}
                                                                             onClick={handleLogout}
                                                                         >
-                                                                            <FormattedMessage
-                                                                                id="logout"
-                                                                                defaultMessage="Log out"
-                                                                                description="button"
-                                                                            />
+                                                                            <FormattedMessage {...buttonMessages.logout}/>
                                                                         </MenuItem>
                                                                     </Menu>
                                                                 </ClickAwayListener>

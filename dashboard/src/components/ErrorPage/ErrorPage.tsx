@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import React from "react";
 import SVG from "react-inlinesvg";
 import { FormattedMessage } from "react-intl";
+import {buttonMessages} from "@temp/intl";
 
 export interface ErrorPageProps {
     onBack: () => void;
@@ -87,11 +88,7 @@ const ErrorPage: React.FC<ErrorPageProps> = props => {
                             variant="contained"
                             onClick={onBack}
                         >
-                            <FormattedMessage
-                                id="back_home"
-                                defaultMessage="Back to home"
-                                description="button"
-                            />
+                            <FormattedMessage {...buttonMessages.backHome}/>
                         </Button>
                     </div>
                 </div>

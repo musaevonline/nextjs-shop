@@ -11,7 +11,9 @@ const View:React.FC = () => {
         asc: BooleanParam,
         activeTab: NumberParam,
         action: StringParam,
-        query: StringParam
+        query: StringParam,
+        after: StringParam,
+        before: StringParam
     });
 
     const changeUrlParams = useCallback((params: ProductListUrlQueryParams) => {

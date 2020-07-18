@@ -94,11 +94,7 @@ const SearchBar: React.FC<SearchBarProps> = props => {
                         color="primary"
                         onClick={onTabSave}
                     >
-                        <FormattedMessage
-                            id="save_search"
-                            defaultMessage="Save Search"
-                            description="button"
-                        />
+                        <FormattedMessage {...commonMessages.saveSearch}/>
                     </Button>
                 ) : (
                     displayTabAction === "delete" && (
@@ -107,11 +103,7 @@ const SearchBar: React.FC<SearchBarProps> = props => {
                             color="primary"
                             onClick={onTabDelete}
                         >
-                            <FormattedMessage
-                                id="delete_search"
-                                defaultMessage="Delete Search"
-                                description="button"
-                            />
+                            <FormattedMessage {...commonMessages.deleteSearch}/>
                         </Button>
                     )
                 ))}

@@ -1,5 +1,5 @@
 // import Navigator from "@temp/components/Navigator";
-
+import { hot } from "react-hot-loader";
 import { defaultDataIdFromObject, InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
@@ -80,7 +80,7 @@ const apolloClient = new ApolloClient({
   link: invalidTokenLink.concat(authLink.concat(link))
 });
 
-const App: React.FC = () => {
+const App: React.FC = hot(module)(() => {
   const isDark = localStorage.getItem("theme") === "true";
 
   return (
@@ -102,8 +102,15 @@ const App: React.FC = () => {
         </BrowserRouter>
       </ApolloProvider>
   );
-};
+});
 
 
+const startApp = async () => {
+  render(<App/>, document.querySelector("#root"));
+  // Hot Module Replacement API
+  if (module.hot) {
+    module.hot.accept();
+  }
+}
 
-render(<App />, document.querySelector("#root"));
+startApp();

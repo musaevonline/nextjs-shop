@@ -27,6 +27,42 @@ export interface ProductFragment_minimalVariantPrice {
   currency: string;
 }
 
+export interface ProductFragment_priceRange_start {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface ProductFragment_priceRange_stop {
+  __typename: "Money";
+  /**
+   * Amount of money.
+   */
+  amount: number;
+  /**
+   * Currency code.
+   */
+  currency: string;
+}
+
+export interface ProductFragment_priceRange {
+  __typename: "MoneyRange";
+  /**
+   * Lower bound of a price range.
+   */
+  start: ProductFragment_priceRange_start | null;
+  /**
+   * Upper bound of a price range.
+   */
+  stop: ProductFragment_priceRange_stop | null;
+}
+
 export interface ProductFragment_productType {
   __typename: "ProductType";
   /**
@@ -53,5 +89,9 @@ export interface ProductFragment {
   isAvailable: boolean | null;
   isPublished: boolean;
   minimalVariantPrice: ProductFragment_minimalVariantPrice | null;
+  /**
+   * Product price range
+   */
+  priceRange: ProductFragment_priceRange | null;
   productType: ProductFragment_productType;
 }

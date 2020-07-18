@@ -1,3 +1,5 @@
+import {ConfirmButtonTransitionState} from "@temp/components/ConfirmButton";
+
 export interface DialogProps {
   open: boolean;
   onClose: () => void;
@@ -78,3 +80,36 @@ export interface SortPage<TSortKey extends string> {
 export type BulkAction = Partial<{
   ids: string[];
 }>;
+
+export type Dialog<TDialog extends string> = Partial<{
+  action: TDialog;
+}>;
+
+export type SingleAction = Partial<{
+  id: string;
+}>;
+
+export type TabActionDialog = "save-search" | "delete-search";
+
+export interface MutationResultAdditionalProps {
+  status: ConfirmButtonTransitionState;
+}
+
+export type Filters<TFilters extends string> = Partial<
+  Record<TFilters, string>
+>;
+
+export type ActiveTab<TTab extends string = string> = Partial<{
+  activeTab: TTab;
+}>;
+
+export type TabListActions<
+  TToolbars extends string
+> = ListActionsWithoutToolbar &
+  Record<TToolbars, React.ReactNode | React.ReactNodeArray>;
+
+export interface PageListProps<TColumns extends string = string>
+  extends ListProps<TColumns> {
+  defaultSettings?: ListSettings<TColumns>;
+  onAdd: () => void;
+}

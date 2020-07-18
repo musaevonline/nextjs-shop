@@ -16,68 +16,71 @@ import LoginLoading from "@temp/core/auth/components/LoginLoading";
 import Auth from "@temp/core/auth";
 import {productListPath} from "@temp/sections/products/urls";
 import ProductsSectionComponent from "@temp/sections/products";
+import {categoryListPath} from "@temp/sections/categories/urls";
+import CategoriesSectionComponent from "@temp/sections/categories";
+import {PermissionEnum} from "@temp/types/globalTypes";
 
 const Routes: React.FC = () => {
-  const intl = useIntl();
-  const [, dispatchAppState] = useAppState();
-  function ErrorFallback({error, componentStack, resetErrorBoundary}) {
-    console.error('here', error);
-    return (
-        <div role="alert">
-          <p>Something went wrong:</p>
-          <pre>{error.message}</pre>
-          <pre>{componentStack}</pre>
-          <button onClick={resetErrorBoundary}>Try again</button>
-        </div>
-    )
-  }
+    const intl = useIntl();
+    const [, dispatchAppState] = useAppState();
+    function ErrorFallback({error, componentStack, resetErrorBoundary}) {
+        console.error('here', error);
+        return (
+            <div role="alert">
+                <p>Something went wrong:</p>
+                <pre>{error.message}</pre>
+                <pre>{componentStack}</pre>
+                <button onClick={resetErrorBoundary}>Try again</button>
+            </div>
+        )
+    }
 
-  return (
-      <>
-        <WindowTitle title={intl.formatMessage(commonMessages.dashboard)} />
-        <AuthProvider>
-          {({
-              hasToken,
-              isAuthenticated,
-              tokenAuthLoading,
-              tokenVerifyLoading,
-              user
-            }) =>
-              isAuthenticated && !tokenAuthLoading && !tokenVerifyLoading ? (
-                  <AppLayout>
-                    {/*<Navigator />*/}
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallback}
-                        onError={() =>
-                            dispatchAppState({
-                              payload: {
-                                error: "unhandled"
-                              },
-                              type: "displayError"
-                            })
-                        }
-                    >
-                      <Switch>
-                        <SectionRoute exact path="/" component={HomePage} />
-                        <SectionRoute exact path={productListPath} component={ProductsSectionComponent} />
-                        {/*<SectionRoute*/}
-                        {/*  permissions={[PermissionEnum.MANAGE_PRODUCTS]}*/}
-                        {/*  path="/products"*/}
-                        {/*  component={ProductSection}*/}
-                        {/*/>*/}
-                        <Route component={NotFound} />
-                      </Switch>
-                    </ErrorBoundary>
-                  </AppLayout>
-              ) : hasToken && tokenVerifyLoading ? (
-                  <LoginLoading />
-              ) : (
-                  <Auth hasToken={hasToken} />
-              )
-          }
-        </AuthProvider>
-      </>
-  );
+    return (
+        <>
+            <WindowTitle title={intl.formatMessage(commonMessages.dashboard)} />
+            <AuthProvider>
+                {({
+                      hasToken,
+                      isAuthenticated,
+                      tokenAuthLoading,
+                      tokenVerifyLoading,
+                      user
+                  }) =>
+                    isAuthenticated && !tokenAuthLoading && !tokenVerifyLoading ? (
+                        <AppLayout>
+                            {/*<Navigator />*/}
+                            <ErrorBoundary
+                                FallbackComponent={ErrorFallback}
+                                onError={() =>
+                                    dispatchAppState({
+                                        payload: {
+                                            error: "unhandled"
+                                        },
+                                        type: "displayError"
+                                    })
+                                }
+                            >
+                                <Switch>
+                                    <SectionRoute exact path="/" component={HomePage} />
+                                    <SectionRoute path={productListPath}
+                                                  permissions={[PermissionEnum.MANAGE_PRODUCTS]}
+                                                  component={ProductsSectionComponent} />
+                                    <SectionRoute path={categoryListPath}
+                                                  permissions={[PermissionEnum.MANAGE_PRODUCTS]}
+                                                  component={CategoriesSectionComponent} />
+                                    <Route component={NotFound} />
+                                </Switch>
+                            </ErrorBoundary>
+                        </AppLayout>
+                    ) : hasToken && tokenVerifyLoading ? (
+                        <LoginLoading />
+                    ) : (
+                        <Auth hasToken={hasToken} />
+                    )
+                }
+            </AuthProvider>
+        </>
+    );
 };
 
 export default Routes;
