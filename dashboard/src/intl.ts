@@ -273,6 +273,11 @@ export const commonMessages = defineMessages({
   invalidContent: {
     id: "invalid_content",
     defaultMessage: "Invalid content"
+  },
+  unpublishProductsTitle: {
+    id:'unpublish_products_title',
+    defaultMessage: "Unpublish products",
+    description: "modal title"
   }
 });
 export const formMessages = defineMessages({
@@ -495,7 +500,7 @@ export const sectionNames = defineMessages({
     id:'categories',
     defaultMessage: "Categories",
     description: "categories section name"
-  },
+  }
 });
 
 export function translateBoolean(value: boolean, intl: IntlShape): string {

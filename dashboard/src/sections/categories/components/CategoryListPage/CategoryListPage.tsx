@@ -15,6 +15,7 @@ import usePaginator, {createPaginationState} from "@temp/hooks/usePaginator";
 import useNavigator from "@temp/hooks/useNavigator";
 import useBulkActions from "@temp/hooks/useBulkActions";
 import {
+    categoryAddUrl,
     categoryListUrl, CategoryListUrlDialog,
     CategoryListUrlQueryParams,
     CategoryListUrlSortField,
@@ -25,6 +26,13 @@ import {getCategorySortQueryVariables} from "@temp/sections/categories/views/Cat
 import {useRootCategoriesQuery} from "@temp/sections/categories/queries";
 import CategoryList from "@temp/sections/categories/components/CategoryList";
 import createDialogActionHandlers from "@temp/utils/handlers/dialogActionHandlers";
+import {Link} from "react-router-dom";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import ActionDialog from "@temp/components/ActionDialog";
+import {CategoryBulkDelete} from "@temp/sections/categories/types/CategoryBulkDelete";
+import {useCategoryBulkDeleteMutation} from "@temp/sections/categories/mutations";
 
 const CATEGORY_LIST_TABS= 'categoryListTabs';
 
@@ -73,15 +81,21 @@ const CategoryListPage:React.FC<{
         }),
         [params, settings.rowNumber]
     );
-    const { data, loading } = useRootCategoriesQuery({
+    const { data, loading, refetch } = useRootCategoriesQuery({
         displayLoader: true,
         variables: queryVariables
     });
+
     const tabs = productListTabs;
     const currentTab = params.activeTab || "0";
 
     const onAll = () => {
-        changeUrlParams({activeTab: '0', action: null, query: "", after: '', before: ''});
+        changeUrlParams({activeTab: '0',
+            action: null,
+            query: "",
+            after: '',
+            before: ''
+        });
     }
     const onTabSave = () => {
         openModal('save-search');
@@ -123,7 +137,6 @@ const CategoryListPage:React.FC<{
     };
 
     const onSort = (sort: CategoryListUrlSortField) => {
-        console.log(sort);
         const asc = params.sort === sort ? !params.asc : true;
         changeUrlParams({sort, asc});
     }
@@ -132,10 +145,28 @@ const CategoryListPage:React.FC<{
         paginationState,
         params
     );
+
+    const handleCategoryBulkDelete = (data: CategoryBulkDelete) => {
+        if (data.categoryBulkDelete.errors.length === 0) {
+            navigate(categoryListUrl(), true);
+            refetch();
+            reset();
+        }
+    };
+
+    const [
+        categoryBulkDelete,
+        categoryBulkDeleteOpts
+    ] = useCategoryBulkDeleteMutation({
+        onCompleted: handleCategoryBulkDelete
+    });
+
     return (
         <>
             <PageHeader title={intl.formatMessage(sectionNames.categories)}>
                 <Button
+                    component={Link}
+                    to={categoryAddUrl()}
                     color="primary"
                     variant="contained"
                     data-tc="add-product"
@@ -174,7 +205,7 @@ const CategoryListPage:React.FC<{
                               onRowClick={id => () => navigate(categoryUrl(id))}
                               toolbar={
                                   <>
-                                      <Button
+                                      <IconButton
                                           color="primary"
                                           onClick={() =>
                                               openModal("delete", {
@@ -182,8 +213,8 @@ const CategoryListPage:React.FC<{
                                               })
                                           }
                                       >
-                                          <FormattedMessage {...commonMessages.delete}/>
-                                      </Button>
+                                          <DeleteIcon />
+                                      </IconButton>
                                   </>
                               }
                               isChecked={isSelected}
@@ -194,6 +225,41 @@ const CategoryListPage:React.FC<{
                               isRoot={true}
                 />
             </Card>
+            <ActionDialog
+                confirmButtonState={categoryBulkDeleteOpts.status}
+                onClose={() =>
+                    navigate(
+                        categoryListUrl({
+                            ...params,
+                            action: undefined,
+                            ids: undefined
+                        })
+                    )
+                }
+                onConfirm={() =>
+                    categoryBulkDelete({
+                        variables: {
+                            ids: listElements
+                        }
+                    })
+                }
+                open={params.action === "delete"}
+                title={intl.formatMessage(commonMessages.deleteCategoriesTitle)}
+                variant="delete"
+            >
+                <DialogContentText>
+                    <FormattedMessage
+                        {...commonMessages.deleteCategories}
+                        values={{
+                            counter: maybe(() => listElements.length),
+                            displayQuantity: <strong>{maybe(() => params.ids.length)}</strong>
+                        }}
+                    />
+                </DialogContentText>
+                <DialogContentText>
+                    <FormattedMessage {...commonMessages.rememberDeleteAssignedProducts} />
+                </DialogContentText>
+            </ActionDialog>
             <SaveFilterTabDialog
                 open={params.action === DIALOG_ACTIONS.saveSearch}
                 confirmButtonState="default"

@@ -6,6 +6,19 @@ import {VariantDelete, VariantDeleteVariables} from "@temp/sections/products/typ
 import {ProductImageDelete, ProductImageDeleteVariables} from "@temp/sections/products/types/ProductImageDelete";
 import {productBulkDelete, productBulkDeleteVariables} from "@temp/sections/products/types/productBulkDelete";
 import {productBulkPublish, productBulkPublishVariables} from "@temp/sections/products/types/productBulkPublish";
+import {fragmentVariant, productFragmentDetails} from "@temp/sections/products/queries";
+import {VariantCreate, VariantCreateVariables} from "@temp/sections/products/types/VariantCreate";
+import {ProductCreate, ProductCreateVariables} from "@temp/sections/products/types/ProductCreate";
+import {ProductUpdate, ProductUpdateVariables} from "@temp/sections/products/types/ProductUpdate";
+import {SimpleProductUpdate, SimpleProductUpdateVariables} from "@temp/sections/products/types/SimpleProductUpdate";
+import {ProductImageCreate, ProductImageCreateVariables} from "@temp/sections/products/types/ProductImageCreate";
+import {
+    ProductVariantBulkDelete,
+    ProductVariantBulkDeleteVariables
+} from "@temp/sections/products/types/ProductVariantBulkDelete";
+import {VariantUpdate, VariantUpdateVariables} from "@temp/sections/products/types/VariantUpdate";
+import {VariantImageUnassign, VariantImageUnassignVariables} from "@temp/sections/products/types/VariantImageUnassign";
+import {VariantImageAssign, VariantImageAssignVariables} from "@temp/sections/products/types/VariantImageAssign";
 
 export const bulkProductErrorFragment = gql`
   fragment BulkProductErrorFragment on BulkProductError {
@@ -19,6 +32,20 @@ export const productErrorFragment = gql`
     field
     code
     message
+  }
+`;
+
+const bulkStockErrorFragment = gql`
+  fragment BulkStockErrorFragment on BulkStockError {
+    code
+    field
+    index
+  }
+`;
+const stockErrorFragment = gql`
+  fragment StockErrorFragment on StockError {
+    code
+    field
   }
 `;
 
@@ -64,6 +91,25 @@ export const TypedProductImagesReorder = TypedMutation<
   ProductImageReorder,
   ProductImageReorderVariables
 >(productImagesReorder);
+
+export const variantCreateMutation = gql`
+  ${fragmentVariant}
+  ${productErrorFragment}
+  mutation VariantCreate($input: ProductVariantCreateInput!) {
+    productVariantCreate(input: $input) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+  }
+`;
+export const TypedVariantCreateMutation = TypedMutation<
+  VariantCreate,
+  VariantCreateVariables
+>(variantCreateMutation);
 
 
 export const variantDeleteMutation = gql`
@@ -148,3 +194,320 @@ export const ProductVariantBulkCreateMutation = gql`
     }
   }
 `;
+
+export const productCreateMutation = gql`
+  ${productErrorFragment}
+  ${productFragmentDetails}
+  mutation ProductCreate(
+    $attributes: [AttributeValueInput]
+    $publicationDate: Date
+    $category: ID!
+    $description: String
+    $isPublished: Boolean!
+    $name: String!
+    $basePrice: Decimal
+    $productType: ID!
+    $sku: String
+    $stocks: [StockInput!]!
+  ) {
+    productCreate(
+      input: {
+        attributes: $attributes
+        publicationDate: $publicationDate
+        category: $category
+        description: $description
+        isPublished: $isPublished
+        name: $name
+        basePrice: $basePrice
+        productType: $productType
+        sku: $sku
+        stocks: $stocks
+      }
+    ) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      product {
+        ...Product
+      }
+    }
+  }
+`;
+export const TypedProductCreateMutation = TypedMutation<
+  ProductCreate,
+  ProductCreateVariables
+>(productCreateMutation);
+
+
+export const productUpdateMutation = gql`
+  ${productErrorFragment}
+  ${productFragmentDetails}
+  mutation ProductUpdate(
+    $id: ID!
+    $attributes: [AttributeValueInput]
+    $publicationDate: Date
+    $category: ID
+    $description: String
+    $isPublished: Boolean!
+    $name: String
+    $basePrice: Decimal
+  ) {
+    productUpdate(
+      id: $id
+      input: {
+        attributes: $attributes
+        publicationDate: $publicationDate
+        category: $category
+        description: $description
+        isPublished: $isPublished
+        name: $name
+        basePrice: $basePrice
+      }
+    ) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      product {
+        ...Product
+      }
+    }
+  }
+`;
+export const TypedProductUpdateMutation = TypedMutation<
+  ProductUpdate,
+  ProductUpdateVariables
+>(productUpdateMutation);
+
+
+export const simpleProductUpdateMutation = gql`
+  ${bulkStockErrorFragment}
+  ${productErrorFragment}
+  ${productFragmentDetails}
+  ${stockErrorFragment}
+  ${fragmentVariant}
+  mutation SimpleProductUpdate(
+    $id: ID!
+    $attributes: [AttributeValueInput]
+    $publicationDate: Date
+    $category: ID
+    $description: String
+    $isPublished: Boolean!
+    $name: String
+    $basePrice: Decimal
+    $productVariantId: ID!
+    $productVariantInput: ProductVariantInput!
+    $addStocks: [StockInput!]!
+    $deleteStocks: [ID!]!
+    $updateStocks: [StockInput!]!
+  ) {
+    productUpdate(
+      id: $id
+      input: {
+        attributes: $attributes
+        publicationDate: $publicationDate
+        category: $category
+        description: $description
+        isPublished: $isPublished
+        name: $name
+        basePrice: $basePrice
+      }
+    ) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      product {
+        ...Product
+      }
+    }
+    productVariantUpdate(id: $productVariantId, input: $productVariantInput) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+    productVariantStocksCreate(
+      stocks: $addStocks
+      variantId: $productVariantId
+    ) {
+      errors: bulkStockErrors {
+        ...BulkStockErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+    productVariantStocksDelete(
+      warehouseIds: $deleteStocks
+      variantId: $productVariantId
+    ) {
+      errors: stockErrors {
+        ...StockErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+    productVariantStocksUpdate(
+      stocks: $updateStocks
+      variantId: $productVariantId
+    ) {
+      errors: bulkStockErrors {
+        ...BulkStockErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+  }
+`;
+export const TypedSimpleProductUpdateMutation = TypedMutation<
+  SimpleProductUpdate,
+  SimpleProductUpdateVariables
+>(simpleProductUpdateMutation);
+
+
+export const productImageCreateMutation = gql`
+  ${productErrorFragment}
+  ${productFragmentDetails}
+  mutation ProductImageCreate($product: ID!, $image: Upload!, $alt: String) {
+    productImageCreate(input: { alt: $alt, image: $image, product: $product }) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      product {
+        ...Product
+      }
+    }
+  }
+`;
+export const TypedProductImageCreateMutation = TypedMutation<
+  ProductImageCreate,
+  ProductImageCreateVariables
+>(productImageCreateMutation);
+
+
+
+export const variantImageAssignMutation = gql`
+  ${fragmentVariant}
+  ${productErrorFragment}
+  mutation VariantImageAssign($variantId: ID!, $imageId: ID!) {
+    variantImageAssign(variantId: $variantId, imageId: $imageId) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+  }
+`;
+export const TypedVariantImageAssignMutation = TypedMutation<
+  VariantImageAssign,
+  VariantImageAssignVariables
+>(variantImageAssignMutation);
+
+
+export const variantImageUnassignMutation = gql`
+  ${fragmentVariant}
+  ${productErrorFragment}
+  mutation VariantImageUnassign($variantId: ID!, $imageId: ID!) {
+    variantImageUnassign(variantId: $variantId, imageId: $imageId) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+  }
+`;
+export const TypedVariantImageUnassignMutation = TypedMutation<
+  VariantImageUnassign,
+  VariantImageUnassignVariables
+>(variantImageUnassignMutation);
+
+export const ProductVariantBulkDeleteMutation = gql`
+  ${productErrorFragment}
+  mutation ProductVariantBulkDelete($ids: [ID!]!) {
+    productVariantBulkDelete(ids: $ids) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+    }
+  }
+`;
+export const TypedProductVariantBulkDeleteMutation = TypedMutation<
+  ProductVariantBulkDelete,
+  ProductVariantBulkDeleteVariables
+>(ProductVariantBulkDeleteMutation);
+
+
+export const variantUpdateMutation = gql`
+  ${bulkStockErrorFragment}
+  ${fragmentVariant}
+  ${productErrorFragment}
+  mutation VariantUpdate(
+    $addStocks: [StockInput!]!
+    $removeStocks: [ID!]!
+    $id: ID!
+    $attributes: [AttributeValueInput]
+    $costPrice: Decimal
+    $priceOverride: Decimal
+    $sku: String
+    $stocks: [StockInput!]!
+  ) {
+    productVariantUpdate(
+      id: $id
+      input: {
+        attributes: $attributes
+        costPrice: $costPrice
+        priceOverride: $priceOverride
+        sku: $sku
+      }
+    ) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+    productVariantStocksUpdate(stocks: $stocks, variantId: $id) {
+      errors: bulkStockErrors {
+        ...BulkStockErrorFragment
+      }
+      productVariant {
+        ...ProductVariant
+      }
+    }
+    productVariantStocksCreate(stocks: $addStocks, variantId: $id) {
+      errors: bulkStockErrors {
+        ...BulkStockErrorFragment
+      }
+      productVariant {
+        id
+        stocks {
+          ...StockFragment
+        }
+      }
+    }
+    productVariantStocksDelete(warehouseIds: $removeStocks, variantId: $id) {
+      errors: stockErrors {
+        code
+        field
+      }
+      productVariant {
+        id
+        stocks {
+          ...StockFragment
+        }
+      }
+    }
+  }
+`;
+export const TypedVariantUpdateMutation = TypedMutation<
+  VariantUpdate,
+  VariantUpdateVariables
+>(variantUpdateMutation);

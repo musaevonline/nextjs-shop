@@ -8,16 +8,23 @@ from main.core.permissions import ProductPermissions
 from main.graphql.core.mutations import ModelMutation, ModelDeleteMutation, ModelBulkDeleteMutation, BaseMutation
 from main.graphql.core.scalars import Decimal, WeightScalar
 from main.graphql.core.types.common import ProductError, BulkProductError, BulkStockError, StockError
-from main.graphql.product.mutations.product import StockInput
-from main.graphql.product.types import ProductVariant
-from main.graphql.product.utils import create_stocks
+from main.graphql.product.mutations.product import StockInput, AttributeAssignmentMixin, T_INPUT_MAP, \
+    AttributeValueInput
+from main.graphql.product.types import ProductVariant, ProductImage
+from main.graphql.product.utils import create_stocks, get_used_attribute_values_for_variant, \
+    get_used_variants_attribute_values
 from main.product import models
 from main.product.error_codes import ProductErrorCode
-from main.product.models import Stock
+from main.product.models import Stock, AssignedVariantAttribute
 from main.product.tasks import update_product_minimal_variant_price_task
 
 
 class ProductVariantInput(graphene.InputObjectType):
+    attributes = graphene.List(
+        AttributeValueInput,
+        required=False,
+        description="List of attributes specific to this variant.",
+    )
     cost_price = Decimal(description="Cost price of the variant.")
     price_override = Decimal(description="Special price of the particular variant.")
     sku = graphene.String(description="Stock keeping unit.")
@@ -52,6 +59,31 @@ class ProductVariantCreate(ModelMutation):
         error_type_field = "product_errors"
 
     @classmethod
+    def clean_attributes(
+            cls, attributes: dict, product_type: models.ProductType
+    ) -> T_INPUT_MAP:
+        attributes_qs = product_type.variant_attributes
+        attributes = AttributeAssignmentMixin.clean_input(
+            attributes, attributes_qs, is_variant=True
+        )
+        return attributes
+
+    @classmethod
+    def validate_duplicated_attribute_values(
+            cls, attributes, used_attribute_values, instance=None
+    ):
+        attribute_values = defaultdict(list)
+        for attribute in attributes:
+            attribute_values[attribute.id].extend(attribute.values)
+        if attribute_values in used_attribute_values:
+            raise ValidationError(
+                "Duplicated attribute values for product variant.",
+                ProductErrorCode.DUPLICATED_INPUT_ITEM,
+            )
+        else:
+            used_attribute_values.append(attribute_values)
+
+    @classmethod
     def clean_input(
             cls, info, instance: models.ProductVariant, data: dict, input_cls=None
     ):
@@ -82,6 +114,34 @@ class ProductVariantCreate(ModelMutation):
                     }
                 )
             cleaned_input["price_override_amount"] = price_override
+
+        attributes = cleaned_input.get("attributes")
+        if attributes:
+            if instance.product_id is not None:
+                # If the variant is getting updated,
+                # simply retrieve the associated product type
+                product_type = instance.product.product_type
+                used_attribute_values = get_used_variants_attribute_values(
+                    instance.product
+                )
+            else:
+                # If the variant is getting created, no product type is associated yet,
+                # retrieve it from the required "product" input field
+                product_type = cleaned_input["product"].product_type
+                used_attribute_values = get_used_variants_attribute_values(
+                    cleaned_input["product"]
+                )
+
+            try:
+                cls.validate_duplicated_attribute_values(
+                    attributes, used_attribute_values, instance
+                )
+                cleaned_input["attributes"] = cls.clean_attributes(
+                    attributes, product_type
+                )
+            except ValidationError as exc:
+                raise ValidationError({"attributes": exc})
+        return cleaned_input
 
         return cleaned_input
 
@@ -115,6 +175,11 @@ class ProductVariantCreate(ModelMutation):
         stocks = cleaned_input.get("stocks")
         if stocks:
             cls.create_variant_stocks(instance, stocks)
+        attributes = cleaned_input.get("attributes")
+        if attributes:
+            AttributeAssignmentMixin.save(instance, attributes)
+            instance.name = generate_name_for_variant(instance)
+            instance.save(update_fields=["name"])
 
     @classmethod
     def create_variant_stocks(cls, variant, stocks):
@@ -136,6 +201,22 @@ class ProductVariantUpdate(ProductVariantCreate):
         permissions = (ProductPermissions.MANAGE_PRODUCTS,)
         error_type_class = ProductError
         error_type_field = "product_errors"
+
+    @classmethod
+    def validate_duplicated_attribute_values(
+            cls, attributes, used_attribute_values, instance=None
+    ):
+        # Check if the variant is getting updated,
+        # and the assigned attributes do not change
+        if instance.product_id is not None:
+            assigned_attributes = get_used_attribute_values_for_variant(instance)
+            input_attribute_values = defaultdict(list)
+            for attribute in attributes:
+                input_attribute_values[attribute.id].extend(attribute.values)
+            if input_attribute_values == assigned_attributes:
+                return
+        # if assigned attributes is getting updated run duplicated attribute validation
+        super().validate_duplicated_attribute_values(attributes, used_attribute_values)
 
 
 class ProductVariantDelete(ModelDeleteMutation):
@@ -167,8 +248,16 @@ class ProductVariantBulkCreateInput(ProductVariantInput):
     sku = graphene.String(required=True, description="Stock keeping unit.")
 
 
-def generate_name_for_variant(instance):
-    pass
+def generate_name_for_variant(variant: ProductVariant) -> str:
+    """Generate ProductVariant's name based on its attributes."""
+    attributes_display = []
+
+    for attribute_rel in variant.attributes.all():  # type: AssignedVariantAttribute
+        values_qs = attribute_rel.values.all()  # FIXME: this should be sorted
+        translated_values = [str(value.translated) for value in values_qs]
+        attributes_display.append(", ".join(translated_values))
+
+    return " / ".join(attributes_display)
 
 
 class ProductVariantBulkCreate(BaseMutation):
@@ -443,3 +532,91 @@ class ProductVariantStocksDelete(BaseMutation):
         variant = cls.get_node_or_error(info, data["variant_id"], only_type=ProductVariant)
         Stock.objects.filter(product_variant=variant).delete()
         return cls(product_variant=variant)
+
+
+class VariantImageAssign(BaseMutation):
+    product_variant = graphene.Field(ProductVariant)
+    image = graphene.Field(ProductImage)
+
+    class Arguments:
+        image_id = graphene.ID(
+            required=True, description="ID of a product image to assign to a variant."
+        )
+        variant_id = graphene.ID(required=True, description="ID of a product variant.")
+
+    class Meta:
+        description = "Assign an image to a product variant."
+        permissions = (ProductPermissions.MANAGE_PRODUCTS,)
+        error_type_class = ProductError
+        error_type_field = "product_errors"
+
+    @classmethod
+    def perform_mutation(cls, _root, info, image_id, variant_id):
+        image = cls.get_node_or_error(
+            info, image_id, field="image_id", only_type=ProductImage
+        )
+        variant = cls.get_node_or_error(
+            info, variant_id, field="variant_id", only_type=ProductVariant
+        )
+        if image and variant:
+            # check if the given image and variant can be matched together
+            image_belongs_to_product = variant.product.images.filter(
+                pk=image.pk
+            ).first()
+            if image_belongs_to_product:
+                image.variant_images.create(variant=variant)
+            else:
+                raise ValidationError(
+                    {
+                        "image_id": ValidationError(
+                            "This image doesn't belong to that product.",
+                            code=ProductErrorCode.NOT_PRODUCTS_IMAGE,
+                        )
+                    }
+                )
+        return VariantImageAssign(product_variant=variant, image=image)
+
+
+class VariantImageUnassign(BaseMutation):
+    product_variant = graphene.Field(ProductVariant)
+    image = graphene.Field(ProductImage)
+
+    class Arguments:
+        image_id = graphene.ID(
+            required=True,
+            description="ID of a product image to unassign from a variant.",
+        )
+        variant_id = graphene.ID(required=True, description="ID of a product variant.")
+
+    class Meta:
+        description = "Unassign an image from a product variant."
+        permissions = (ProductPermissions.MANAGE_PRODUCTS,)
+        error_type_class = ProductError
+        error_type_field = "product_errors"
+
+    @classmethod
+    def perform_mutation(cls, _root, info, image_id, variant_id):
+        image = cls.get_node_or_error(
+            info, image_id, field="image_id", only_type=ProductImage
+        )
+        variant = cls.get_node_or_error(
+            info, variant_id, field="variant_id", only_type=ProductVariant
+        )
+
+        try:
+            variant_image = models.VariantImage.objects.get(
+                image=image, variant=variant
+            )
+        except models.VariantImage.DoesNotExist:
+            raise ValidationError(
+                {
+                    "image_id": ValidationError(
+                        "Image is not assigned to this variant.",
+                        code=ProductErrorCode.NOT_PRODUCTS_IMAGE,
+                    )
+                }
+            )
+        else:
+            variant_image.delete()
+
+        return VariantImageUnassign(product_variant=variant, image=image)

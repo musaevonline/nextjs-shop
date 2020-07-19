@@ -124,6 +124,7 @@ export const productFragmentDetails = gql`
     ...ProductVariantAttributesFragment
     name
     descriptionJson
+    description
     category {
       id
       name

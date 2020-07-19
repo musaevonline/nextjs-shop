@@ -1,3 +1,4 @@
+import { MutationResult } from "react-apollo";
 import {ConfirmButtonTransitionState} from "@temp/components/ConfirmButton";
 
 export interface DialogProps {
@@ -112,4 +113,28 @@ export interface PageListProps<TColumns extends string = string>
   extends ListProps<TColumns> {
   defaultSettings?: ListSettings<TColumns>;
   onAdd: () => void;
+}
+export interface FetchMoreProps {
+  loading: boolean;
+  hasMore: boolean;
+  onFetchMore: () => void;
+}
+
+export interface UserError {
+  field: string | null;
+  message?: string;
+}
+
+export interface ReorderEvent {
+  oldIndex: number;
+  newIndex: number;
+}
+export type ReorderAction = (event: ReorderEvent) => void;
+
+export interface PartialMutationProviderOutput<
+  TData extends {} = {},
+  TVariables extends {} = {}
+> {
+  opts: MutationResult<TData> & MutationResultAdditionalProps;
+  mutate: (variables: TVariables) => void;
 }

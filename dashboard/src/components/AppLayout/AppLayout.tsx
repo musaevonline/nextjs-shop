@@ -151,11 +151,11 @@ const useStyles = makeStyles(
                 }
             },
             // background: theme.palette.secondary.main,
-            background: theme.palette.secondary.main,
+            // background: theme.palette.secondary.main,
             display: "block",
             height: 80,
             position: "relative",
-            borderBottom: "1px solid #cccccc"
+            // borderBottom: "1px solid #cccccc"
         },
         logoDark: {
             "& path": {

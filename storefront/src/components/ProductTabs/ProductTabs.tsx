@@ -62,7 +62,9 @@ const ProductTabs:React.FC<{
                         <TabPanel value={value} index={0} dir={theme.direction}>
                             <Card>
                                 <CardContent>
-                                    <div className="product-tabs__description text-small">{product.description}</div>
+                                    <div className="product-tabs__description text-small"
+                                         dangerouslySetInnerHTML={{__html: product.description}}
+                                    />
                                 </CardContent>
                             </Card>
                         </TabPanel>

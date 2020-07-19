@@ -273,12 +273,63 @@
     "string": "Категория создана"
   },
   "delete_categories": {
-    "string": "Вы уверены что хотите удалить выбранные категории?"
+    "string": "Вы уверены, что хотите удалить выбранные категории?"
   },
   "remember_delete_assigned_products": {
     "string": "Помните, что при этом также будут удалены все товары, входящие в эту категорию."
   },
   "save_changes": {
     "string": "Сохранено"
+  },
+  "sure_delete_category": {
+    "string": "Вы уверены, что хотите удалить категорию {categoryName}?"
+  },
+  "publish_this_products": {
+    "string": "{counter,plural,one{Вы уверены, что хотите опубликовать этот продукт?} other{Вы уверены, что хотите опубликовать эти {displayQuantity} продукты?}}"
+  },
+  "unpublish_products_title": {
+    "string": "Не опубликовать"
+  },
+  "sure_unpublish_products": {
+    "string": "{counter,plural,one{Вы уверены, что хотите отменить публикацию этого продукта?} other{Вы уверены, что хотите отменить публикацию {displayQuantity} продуктов?}}"
+  },
+  "confirm": {
+    "string": "Подтвердить"
+  },
+  "new_product": {
+    "string": "Новый продукт"
+  },
+  "will_be_visible_date": {
+    "string": "Будет опубликован"
+  },
+  "since_date": {
+    "string": "После"
+  },
+  "pricing": {
+    "string": "Ценообразование"
+  },
+  "orginize_product": {
+    "string": "Организовать продукт"
+  },
+  "visibility": {
+    "string": "Видимость"
+  },
+  "category": {
+    "string": "Категория"
+  },
+  "visible": {
+    "string": "Видимый"
+  },
+  "hidden": {
+    "string": "Скрытый"
+  },
+  "set_publication_date": {
+    "string": "Установить дату публикации"
+  },
+  "publish_on": {
+    "string": "Опубликовать с"
+  },
+  "product_created": {
+    "string": "Продукт создан"
   }
 }

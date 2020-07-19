@@ -257,6 +257,7 @@ export interface Product {
   productType: Product_productType;
   name: string;
   descriptionJson: any;
+  description: string;
   category: Product_category | null;
   minimalVariantPrice: Product_minimalVariantPrice | null;
   /**

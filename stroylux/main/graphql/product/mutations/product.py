@@ -1,21 +1,37 @@
 import graphene
-from typing import Union
+from typing import Union, Tuple, List, Iterable
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.db.models import QuerySet, Q
+from django.utils.text import slugify
+from graphql_relay import from_global_id
 
 from ....core.permissions import ProductPermissions
 from ....product import models
 from ....product.error_codes import ProductErrorCode
-from ..utils import create_stocks
+from ..utils import create_stocks, validate_attribute_input_for_product, validate_attribute_input_for_variant
 from ...core.mutations import ModelMutation, ModelDeleteMutation, ModelBulkDeleteMutation, BaseBulkMutation
 from ...core.scalars import Decimal
 from ...core.types.common import ProductError
 from ...core.utils import validate_slug_and_generate_if_needed
 from ....product.tasks import update_product_minimal_variant_price_task
+from ....product.utils.attributes import associate_attribute_values_to_instance
+
+class AttributeValueInput(graphene.InputObjectType):
+    id = graphene.ID(description="ID of the selected attribute.")
+    values = graphene.List(
+        graphene.String,
+        required=True,
+        description=(
+            "The value or slug of an attribute to resolve. "
+            "If the passed value is non-existent, it will be created."
+        ),
+    )
 
 
 class ProductInput(graphene.InputObjectType):
+    attributes = graphene.List(AttributeValueInput, description="List of attributes.")
     publication_date = graphene.types.datetime.Date(
         description="Publication date. ISO 8601 standard."
     )
@@ -57,6 +73,220 @@ class ProductCreateInput(ProductInput):
 
 
 T_INSTANCE = Union[models.Product, models.ProductVariant]
+T_INPUT_MAP = List[Tuple[models.Attribute, List[str]]]
+
+class AttributeAssignmentMixin:
+    """Handles cleaning of the attribute input and creating the proper relations.
+
+    1. You should first call ``clean_input``, to transform and attempt to resolve
+       the provided input into actual objects. It will then perform a few
+       checks to validate the operations supplied by the user are possible and allowed.
+    2. Once everything is ready and all your data is saved inside a transaction,
+       you shall call ``save`` with the cleaned input to build all the required
+       relations. Once the ``save`` call is done, you are safe from continuing working
+       or to commit the transaction.
+
+    Note: you shall never call ``save`` outside of a transaction and never before
+    the targeted instance owns a primary key. Failing to do so, the relations will
+    be unable to build or might only be partially built.
+    """
+
+    @classmethod
+    def _resolve_attribute_nodes(
+        cls,
+        qs: QuerySet,
+        *,
+        global_ids: List[str],
+        pks: Iterable[int],
+        slugs: Iterable[str],
+    ):
+        """Retrieve attributes nodes from given global IDs and/or slugs."""
+        qs = qs.filter(Q(pk__in=pks) | Q(slug__in=slugs))
+        nodes = list(qs)  # type: List[models.Attribute]
+
+        if not nodes:
+            raise ValidationError(
+                (
+                    f"Could not resolve to a node: ids={global_ids}"
+                    f" and slugs={list(slugs)}"
+                ),
+                code=ProductErrorCode.NOT_FOUND.value,
+            )
+
+        nodes_pk_list = set()
+        nodes_slug_list = set()
+        for node in nodes:
+            nodes_pk_list.add(node.pk)
+            nodes_slug_list.add(node.slug)
+
+        for pk, global_id in zip(pks, global_ids):
+            if pk not in nodes_pk_list:
+                raise ValidationError(
+                    f"Could not resolve {global_id!r} to Attribute",
+                    code=ProductErrorCode.NOT_FOUND.value,
+                )
+
+        for slug in slugs:
+            if slug not in nodes_slug_list:
+                raise ValidationError(
+                    f"Could not resolve slug {slug!r} to Attribute",
+                    code=ProductErrorCode.NOT_FOUND.value,
+                )
+
+        return nodes
+
+    @classmethod
+    def _resolve_attribute_global_id(cls, global_id: str) -> int:
+        """Resolve an Attribute global ID into an internal ID (int)."""
+        graphene_type, internal_id = from_global_id(global_id)  # type: str, str
+        if graphene_type != "Attribute":
+            raise ValidationError(
+                f"Must receive an Attribute id, got {graphene_type}.",
+                code=ProductErrorCode.INVALID.value,
+            )
+        if not internal_id.isnumeric():
+            raise ValidationError(
+                f"An invalid ID value was passed: {global_id}",
+                code=ProductErrorCode.INVALID.value,
+            )
+        return int(internal_id)
+
+    @classmethod
+    def _pre_save_values(cls, attribute: models.Attribute, values: List[str]):
+        """Lazy-retrieve or create the database objects from the supplied raw values."""
+        get_or_create = attribute.values.get_or_create
+        return tuple(
+            get_or_create(
+                attribute=attribute, slug=slugify(value), defaults={"name": value}
+            )[0]
+            for value in values
+        )
+
+    @classmethod
+    def _check_input_for_product(cls, cleaned_input: T_INPUT_MAP, qs: QuerySet):
+        """Check the cleaned attribute input for a product.
+
+        An Attribute queryset is supplied.
+
+        - ensure all required attributes are passed
+        - ensure the values are correct for a product
+        """
+        supplied_attribute_pk = []
+        for attribute, values in cleaned_input:
+            validate_attribute_input_for_product(attribute, values)
+            supplied_attribute_pk.append(attribute.pk)
+
+        # Asserts all required attributes are supplied
+        missing_required_filter = Q(value_required=True) & ~Q(
+            pk__in=supplied_attribute_pk
+        )
+
+        if qs.filter(missing_required_filter).exists():
+            raise ValidationError(
+                "All attributes flagged as having a value required must be supplied.",
+                code=ProductErrorCode.REQUIRED.value,
+            )
+
+    @classmethod
+    def _check_input_for_variant(cls, cleaned_input: T_INPUT_MAP, qs: QuerySet):
+        """Check the cleaned attribute input for a variant.
+
+        An Attribute queryset is supplied.
+
+        - ensure all attributes are passed
+        - ensure the values are correct for a variant
+        """
+        if len(cleaned_input) != qs.count():
+            raise ValidationError(
+                "All attributes must take a value", code=ProductErrorCode.REQUIRED.value
+            )
+
+        for attribute, values in cleaned_input:
+            validate_attribute_input_for_variant(attribute, values)
+
+    @classmethod
+    def _validate_input(
+        cls, cleaned_input: T_INPUT_MAP, attribute_qs, is_variant: bool
+    ):
+        """Check if no invalid operations were supplied.
+
+        :raises ValidationError: when an invalid operation was found.
+        """
+        if is_variant:
+            return cls._check_input_for_variant(cleaned_input, attribute_qs)
+        else:
+            return cls._check_input_for_product(cleaned_input, attribute_qs)
+
+    @classmethod
+    def clean_input(
+        cls, raw_input: dict, attributes_qs: QuerySet, is_variant: bool
+    ) -> T_INPUT_MAP:
+        """Resolve and prepare the input for further checks.
+
+        :param raw_input: The user's attributes input.
+        :param attributes_qs:
+            A queryset of attributes, the attribute values must be prefetched.
+            Prefetch is needed by ``_pre_save_values`` during save.
+        :param is_variant: Whether the input is for a variant or a product.
+
+        :raises ValidationError: contain the message.
+        :return: The resolved data
+        """
+
+        # Mapping to associate the input values back to the resolved attribute nodes
+        pks = {}
+        slugs = {}
+
+        # Temporary storage of the passed ID for error reporting
+        global_ids = []
+
+        for attribute_input in raw_input:
+            global_id = attribute_input.get("id")
+            slug = attribute_input.get("slug")
+            values = attribute_input["values"]
+
+            if global_id:
+                internal_id = cls._resolve_attribute_global_id(global_id)
+                global_ids.append(global_id)
+                pks[internal_id] = values
+            elif slug:
+                slugs[slug] = values
+            else:
+                raise ValidationError(
+                    "You must whether supply an ID or a slug",
+                    code=ProductErrorCode.REQUIRED.value,
+                )
+
+        attributes = cls._resolve_attribute_nodes(
+            attributes_qs, global_ids=global_ids, pks=pks.keys(), slugs=slugs.keys()
+        )
+        cleaned_input = []
+        for attribute in attributes:
+            key = pks.get(attribute.pk, None)
+
+            # Retrieve the primary key by slug if it
+            # was not resolved through a global ID but a slug
+            if key is None:
+                key = slugs[attribute.slug]
+
+            cleaned_input.append((attribute, key))
+        cls._validate_input(cleaned_input, attributes_qs, is_variant)
+        return cleaned_input
+
+    @classmethod
+    def save(cls, instance: T_INSTANCE, cleaned_input: T_INPUT_MAP):
+        """Save the cleaned input into the database against the given instance.
+
+        Note: this should always be ran inside a transaction.
+
+        :param instance: the product or variant to associate the attribute against.
+        :param cleaned_input: the cleaned user input (refer to clean_attributes)
+        """
+        for attribute, values in cleaned_input:
+            attribute_values = cls._pre_save_values(attribute, values)
+            associate_attribute_values_to_instance(
+                instance, attribute, *attribute_values
+            )
 
 
 class ProductCreate(ModelMutation):
@@ -73,8 +303,20 @@ class ProductCreate(ModelMutation):
         error_type_field = "product_errors"
 
     @classmethod
+    def clean_attributes(
+            cls, attributes: dict, product_type: models.ProductType
+    ) -> T_INPUT_MAP:
+        attributes_qs = product_type.product_attributes
+        attributes = AttributeAssignmentMixin.clean_input(
+            attributes, attributes_qs, is_variant=False
+        )
+        return attributes
+
+    @classmethod
     def clean_input(cls, info, instance, data):
         cleaned_input = super().clean_input(info, instance, data)
+
+        attributes = cleaned_input.get("attributes")
 
         product_type = (
             instance.product_type if instance.pk else cleaned_input.get("product_type")
@@ -101,7 +343,13 @@ class ProductCreate(ModelMutation):
             if instance.minimal_variant_price_amount is None:
                 # Set the default "minimal_variant_price" to the "price"
                 cleaned_input["minimal_variant_price_amount"] = price
-
+        if attributes and product_type:
+            try:
+                cleaned_input["attributes"] = cls.clean_attributes(
+                    attributes, product_type
+                )
+            except ValidationError as exc:
+                raise ValidationError({"attributes": exc})
         is_published = cleaned_input.get("is_published")
         category = cleaned_input.get("category")
         if not category and is_published:
@@ -152,7 +400,7 @@ class ProductCreate(ModelMutation):
 
         object_id = data.get("id")
         if object_id:
-            qs = cls.Meta.model.objects.all()
+            qs = models.Product.objects.all()
             return cls.get_node_or_error(info, object_id, only_type="Product", qs=qs)
 
         return super().get_instance(info, **data)

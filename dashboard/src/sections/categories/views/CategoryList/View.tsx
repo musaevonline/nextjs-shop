@@ -1,5 +1,5 @@
 import React, {useCallback} from "react";
-import {BooleanParam, NumberParam, StringParam, useQueryParams} from "use-query-params";
+import {BooleanParam, NumberParam, StringParam, useQueryParams, ArrayParam} from "use-query-params";
 import Container from "@temp/components/Container";
 import {CategoryListUrlQueryParams} from "@temp/sections/categories/urls";
 import {CategoryListPage} from "@temp/sections/categories/components/CategoryListPage";
@@ -13,12 +13,13 @@ const View:React.FC = () => {
         query: StringParam,
         after: StringParam,
         before: StringParam,
-        first: NumberParam
+        first: NumberParam,
+        ids: ArrayParam
     });
 
     const changeUrlParams = useCallback((params: CategoryListUrlQueryParams) => {
         setQuery(params, 'replaceIn');
-    }, []);
+    }, [setQuery]);
 
     return(
         <Container>

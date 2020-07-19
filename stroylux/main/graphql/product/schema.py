@@ -13,7 +13,7 @@ from .mutations.product_review import ProductReviewCreate
 from .mutations.product_type import ProductTypeCreate, ProductTypeDelete, ProductTypeBulkDelete, ProductTypeUpdate
 from .mutations.product_variant import ProductVariantCreate, ProductVariantDelete, ProductVariantBulkDelete, \
     ProductVariantUpdate, ProductVariantBulkCreate, ProductVariantStocksCreate, ProductVariantStocksDelete, \
-    ProductVariantStocksUpdate
+    ProductVariantStocksUpdate, VariantImageAssign, VariantImageUnassign
 from .resolvers import resolve_products, resolve_categories, resolve_product_variants, resolve_product_types, \
     resolve_attributes, resolve_product_reviews
 from .sorters import ProductOrder, CategorySortingInput, ProductTypeSortingInput, AttributeSortingInput, \
@@ -233,3 +233,6 @@ class ProductMutations(graphene.ObjectType):
     product_variant_update = ProductVariantUpdate.Field()
 
     product_review_create = ProductReviewCreate.Field()
+
+    variant_image_assign = VariantImageAssign.Field()
+    variant_image_unassign = VariantImageUnassign.Field()

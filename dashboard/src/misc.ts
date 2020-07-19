@@ -1,6 +1,7 @@
-import {MutationResult} from "react-apollo";
+import { MutationFunction, MutationResult } from "react-apollo";
 import urlJoin from "url-join";
 import {APP_MOUNT_URI} from "@temp/core/config";
+import {MutationResultAdditionalProps, PartialMutationProviderOutput} from "@temp/types";
 
 export function hasErrors(errorList: UserError[] | null): boolean {
   return !(
@@ -108,4 +109,21 @@ export function renderCollection<T>(
     return !!renderEmpty ? renderEmpty(collection) : null;
   }
   return collection.map(renderItem);
+}
+
+export function decimal(value: string | number) {
+  if (typeof value === "string") {
+    return value === "" ? null : value;
+  }
+  return value;
+}
+
+export function getMutationProviderData<TData, TVariables>(
+  mutateFn: MutationFunction<TData, TVariables>,
+  opts: MutationResult<TData> & MutationResultAdditionalProps
+): PartialMutationProviderOutput<TData, TVariables> {
+  return {
+    mutate: variables => mutateFn({ variables }),
+    opts
+  };
 }

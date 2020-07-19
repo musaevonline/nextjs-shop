@@ -5,7 +5,6 @@ function useListActions<TData>(
   compareFunc: (a: TData, b: TData) => boolean = (a, b) => a === b
 ) {
   const [listElements, setListElements] = useStateFromProps(initial);
-
   function isSelected(data: TData) {
     return !!listElements.find(listElement => compareFunc(listElement, data));
   }

@@ -475,6 +475,16 @@ type AttributeValueDelete {
   attributeValue: AttributeValue
 }
 
+input AttributeValueInput {
+  """ID of the selected attribute."""
+  id: ID
+
+  """
+  The value or slug of an attribute to resolve. If the passed value is non-existent, it will be created.
+  """
+  values: [String]!
+}
+
 enum AttributeValueType {
   COLOR
   GRADIENT
@@ -2046,6 +2056,24 @@ type Mutation {
     input: ProductReviewCreateInput!
   ): ProductReviewCreate
 
+  """Assign an image to a product variant."""
+  variantImageAssign(
+    """ID of a product image to assign to a variant."""
+    imageId: ID!
+
+    """ID of a product variant."""
+    variantId: ID!
+  ): VariantImageAssign
+
+  """Unassign an image from a product variant."""
+  variantImageUnassign(
+    """ID of a product image to unassign from a variant."""
+    imageId: ID!
+
+    """ID of a product variant."""
+    variantId: ID!
+  ): VariantImageUnassign
+
   """Sends an email with the account password modification link."""
   requestPasswordReset(
     """Email of the user that will be used for password recovery."""
@@ -2943,6 +2971,9 @@ type ProductCreate {
 }
 
 input ProductCreateInput {
+  """List of attributes."""
+  attributes: [AttributeValueInput]
+
   """Publication date. ISO 8601 standard."""
   publicationDate: Date
 
@@ -3092,6 +3123,9 @@ input ProductImageUpdateInput {
 }
 
 input ProductInput {
+  """List of attributes."""
+  attributes: [AttributeValueInput]
+
   """Publication date. ISO 8601 standard."""
   publicationDate: Date
 
@@ -3465,6 +3499,9 @@ type ProductVariantBulkCreate {
 }
 
 input ProductVariantBulkCreateInput {
+  """List of attributes specific to this variant."""
+  attributes: [AttributeValueInput]
+
   """Cost price of the variant."""
   costPrice: Decimal
 
@@ -3515,6 +3552,9 @@ type ProductVariantCreate {
 }
 
 input ProductVariantCreateInput {
+  """List of attributes specific to this variant."""
+  attributes: [AttributeValueInput]
+
   """Cost price of the variant."""
   costPrice: Decimal
 
@@ -3544,6 +3584,9 @@ type ProductVariantDelete {
 }
 
 input ProductVariantInput {
+  """List of attributes specific to this variant."""
+  attributes: [AttributeValueInput]
+
   """Cost price of the variant."""
   costPrice: Decimal
 
@@ -4460,6 +4503,20 @@ Leverages the internal Python implmeentation of UUID (uuid.UUID) to provide nati
 in fields, resolvers and input.
 """
 scalar UUID
+
+"""Assign an image to a product variant."""
+type VariantImageAssign {
+  productVariant: ProductVariant
+  image: ProductImage
+  productErrors: [ProductError!]!
+}
+
+"""Unassign an image from a product variant."""
+type VariantImageUnassign {
+  productVariant: ProductVariant
+  image: ProductImage
+  productErrors: [ProductError!]!
+}
 
 """Mutation that confirms if token is valid and also returns user data."""
 type VerifyToken {

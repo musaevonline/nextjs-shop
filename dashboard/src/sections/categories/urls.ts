@@ -21,14 +21,6 @@ export enum CategoryListUrlFiltersEnum {
 export type CategoryListUrlFilters = Filters<CategoryListUrlFiltersEnum>;
 export type CategoryListUrlDialog = "delete" | TabActionDialog;
 
-// export interface CategoryListUrlQueryParams extends PaginationState, BulkAction{
-//     sort?: CategoryListUrlSortField;
-//     asc?: boolean;
-//     activeTab?: number;
-//     action?: string;
-//     query?: string;
-// }
-
 export enum CategoryListUrlSortField {
   name = "name",
   product_count = "product_count",

@@ -93,9 +93,26 @@ export enum ProductOrderField {
   TYPE = "TYPE",
 }
 
+/**
+ * An enumeration.
+ */
+export enum StockErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
 export interface AttributeInput {
   slug: string;
   values?: (string | null)[] | null;
+}
+
+export interface AttributeValueInput {
+  id?: string | null;
+  values: (string | null)[];
 }
 
 export interface CategoryFilterInput {
@@ -139,12 +156,33 @@ export interface ProductOrder {
 }
 
 export interface ProductVariantBulkCreateInput {
+  attributes?: (AttributeValueInput | null)[] | null;
   costPrice?: any | null;
   priceOverride?: any | null;
   sku: string;
   weight?: any | null;
   name?: string | null;
   stocks?: StockInput[] | null;
+}
+
+export interface ProductVariantCreateInput {
+  attributes?: (AttributeValueInput | null)[] | null;
+  costPrice?: any | null;
+  priceOverride?: any | null;
+  sku?: string | null;
+  weight?: any | null;
+  name?: string | null;
+  product: string;
+  stocks?: StockInput[] | null;
+}
+
+export interface ProductVariantInput {
+  attributes?: (AttributeValueInput | null)[] | null;
+  costPrice?: any | null;
+  priceOverride?: any | null;
+  sku?: string | null;
+  weight?: any | null;
+  name?: string | null;
 }
 
 export interface StockInput {
