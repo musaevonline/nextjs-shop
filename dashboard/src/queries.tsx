@@ -1,8 +1,5 @@
-import { ApolloQueryResult } from "apollo-client";
 import { DocumentNode } from "graphql";
-// import gql from "graphql-tag";
 import React from "react";
-import { Query, QueryResult } from "react-apollo";
 import { useIntl } from "react-intl";
 
 import { isJwtError } from "./core/auth/errors";
@@ -10,7 +7,8 @@ import useAppState from "./hooks/useAppState";
 import useUser from "./hooks/useUser";
 import { commonMessages } from "./intl";
 import { maybe, RequireAtLeastOne } from "./misc";
-import gql from "graphql-tag";
+import {ApolloQueryResult, gql, QueryResult} from "@apollo/client";
+import {Query} from "@apollo/client/react/components";
 
 export interface LoadMore<TData, TVariables> {
   loadMore: (

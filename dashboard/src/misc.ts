@@ -1,4 +1,4 @@
-import { MutationFunction, MutationResult } from "react-apollo";
+import { MutationFunction, MutationResult } from "@apollo/client";
 import urlJoin from "url-join";
 import {APP_MOUNT_URI} from "@temp/core/config";
 import {MutationResultAdditionalProps, PartialMutationProviderOutput} from "@temp/types";

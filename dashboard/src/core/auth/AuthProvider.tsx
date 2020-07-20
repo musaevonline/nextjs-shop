@@ -1,5 +1,4 @@
 import React from "react";
-import {MutationFunction, MutationResult, useApolloClient} from "react-apollo";
 import { useIntl } from "react-intl";
 
 import { UserContext } from "./";
@@ -18,6 +17,7 @@ import {
 } from "./utils";
 import {User} from "@sdk/fragments/types/User";
 import useNavigator from "@temp/hooks/useNavigator";
+import {MutationFunction, MutationResult, useApolloClient} from "@apollo/client";
 
 interface AuthProviderOperationsProps {
   children: (props: {

@@ -1,5 +1,5 @@
 import makeQuery from "@temp/hooks/makeQuery";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 import { pageInfoFragment, TypedQuery } from "../../queries";
 import {

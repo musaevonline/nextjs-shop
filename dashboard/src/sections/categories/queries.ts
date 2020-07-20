@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from "@apollo/client";
 import {pageInfoFragment} from "@temp/queries";
 import makeQuery from "@temp/hooks/makeQuery";
 import {RootCategories} from "@temp/sections/categories/types/RootCategories";

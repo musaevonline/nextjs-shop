@@ -1,14 +1,7 @@
 // import Navigator from "@temp/components/Navigator";
 import { hot } from "react-hot-loader";
-import { defaultDataIdFromObject, InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloClient } from "apollo-client";
-import { ApolloLink } from "apollo-link";
-import { BatchHttpLink } from "apollo-link-batch-http";
-import { setContext } from "apollo-link-context";
-import { ErrorResponse, onError } from "apollo-link-error";
 import { createUploadLink } from "apollo-upload-client";
 import React from "react";
-import { ApolloProvider } from "react-apollo";
 import { render } from "react-dom";
 import {BrowserRouter, Route} from "react-router-dom";
 import { getAuthToken, removeAuthToken } from "./core/auth";
@@ -21,6 +14,10 @@ import { API_URI, APP_MOUNT_URI } from "./core/config";
 import AppStateProvider from "./containers/AppState";
 import {Routes} from "@temp/app";
 import { QueryParamProvider } from 'use-query-params';
+import {BatchHttpLink} from "@apollo/client/link/batch-http";
+import {ApolloClient, ApolloLink, ApolloProvider, defaultDataIdFromObject, InMemoryCache} from "@apollo/client";
+import {ErrorResponse, onError} from "@apollo/client/link/error";
+import {setContext} from "@apollo/client/link/context";
 
 interface ResponseError extends ErrorResponse {
   networkError?: Error & {

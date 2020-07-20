@@ -1,6 +1,6 @@
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import React from "react";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet";
 
 import Baseline from "../../Baseline";
 import createTheme from "../../theme";

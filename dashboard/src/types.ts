@@ -1,4 +1,4 @@
-import { MutationResult } from "react-apollo";
+import { MutationResult } from "@apollo/client";
 import {ConfirmButtonTransitionState} from "@temp/components/ConfirmButton";
 
 export interface DialogProps {

@@ -1,6 +1,6 @@
 import makeTopLevelSearch from "@temp/hooks/makeTopLevelSearch";
 import { pageInfoFragment } from "@temp/queries";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 import {
   SearchCategories,

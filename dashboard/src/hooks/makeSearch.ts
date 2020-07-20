@@ -1,9 +1,9 @@
 import { DocumentNode } from "graphql";
 import { useState } from "react";
-import { QueryResult } from "react-apollo";
 
 import makeQuery, { UseQueryResult } from "./makeQuery";
 import useDebounce from "./useDebounce";
+import {QueryResult} from "@apollo/client";
 
 export interface SearchVariables {
   after?: string;

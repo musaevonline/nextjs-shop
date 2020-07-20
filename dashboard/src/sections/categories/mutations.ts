@@ -1,5 +1,5 @@
 import makeMutation from "@temp/hooks/makeMutation";
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 import { categoryDetailsFragment } from "./queries";
 import {

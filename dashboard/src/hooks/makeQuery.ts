@@ -1,10 +1,9 @@
 import { isJwtError } from "@temp/core/auth/errors";
 import { commonMessages } from "@temp/intl";
 import { maybe, RequireAtLeastOne } from "@temp/misc";
-import { ApolloQueryResult } from "apollo-client";
 import { DocumentNode } from "graphql";
 import { useEffect } from "react";
-import { QueryResult, useQuery as useBaseQuery } from "react-apollo";
+import { QueryResult, useQuery as useBaseQuery, ApolloQueryResult } from "@apollo/client";
 import { useIntl } from "react-intl";
 
 import useAppState from "./useAppState";

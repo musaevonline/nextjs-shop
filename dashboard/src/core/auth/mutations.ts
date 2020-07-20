@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 import {TypedMutation} from "@temp/mutations";
 import {TokenAuth, TokenAuthVariables} from "@temp/core/auth/types/TokenAuth";

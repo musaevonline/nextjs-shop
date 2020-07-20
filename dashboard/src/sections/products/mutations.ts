@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import {TypedMutation} from "@temp/mutations";
 import {ProductDelete, ProductDeleteVariables} from "@temp/sections/products/types/ProductDelete";
 import {ProductImageReorder, ProductImageReorderVariables} from "@temp/sections/products/types/ProductImageReorder";

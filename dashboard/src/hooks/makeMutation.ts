@@ -2,17 +2,12 @@ import { isJwtError } from "@temp/core/auth/errors";
 import { commonMessages } from "@temp/intl";
 import { getMutationStatus, maybe } from "@temp/misc";
 import { MutationResultAdditionalProps } from "@temp/types";
-import { ApolloError } from "apollo-client";
 import { DocumentNode } from "graphql";
-import {
-  MutationFunction,
-  MutationResult,
-  useMutation as useBaseMutation
-} from "react-apollo";
 import { useIntl } from "react-intl";
 
 import useNotifier from "./useNotifier";
 import useUser from "./useUser";
+import {ApolloError, MutationFunction, MutationResult, useMutation as useBaseMutation} from "@apollo/client";
 
 export type UseMutation<TData, TVariables> = [
   MutationFunction<TData, TVariables>,

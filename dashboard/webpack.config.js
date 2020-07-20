@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const merge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 require("dotenv").config();
 
 const baseConfig = require("./config/webpack/config.base");
