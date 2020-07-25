@@ -129,14 +129,14 @@ const ProductStocks: React.FC<ProductStocksProps> = ({
       <Hr />
       <CardContent className={classes.quantityContainer}>
         <Typography>
-          <div className={classes.quantityHeader}>
+          <span className={classes.quantityHeader}>
             <span>
               <FormattedMessage id="quantity"
                 defaultMessage="Quantity"
                 description="header"
               />
             </span>
-          </div>
+          </span>
         </Typography>
       </CardContent>
       <Table>

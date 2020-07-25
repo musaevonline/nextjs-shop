@@ -5,10 +5,17 @@ import { parse as parseQs } from "qs";
 
 import {sectionNames} from "@temp/intl";
 import {WindowTitle} from "@temp/components/WindowTitle";
-import {productAddPath, productListPath, productPath, ProductUrlQueryParams} from "@temp/sections/products/urls";
+import {
+    productAddPath,
+    productListPath,
+    productPath,
+    ProductUrlQueryParams,
+    productVariantCreatorPath
+} from "@temp/sections/products/urls";
 import {ProductListView} from "@temp/sections/products/views/ProductList";
 import ProductCreateView from "@temp/sections/products/views/ProductCreateView";
 import {ProductUpdateView} from "@temp/sections/products/views/ProductUpdate";
+import {ProductVariantCreatorComponent} from "@temp/sections/products/views/ProductVariantCreator";
 
 const ProductUpdate: React.FC<RouteComponentProps<any>> = ({ match }) => {
   const qs = parseQs(location.search.substr(1));
@@ -22,6 +29,12 @@ const ProductUpdate: React.FC<RouteComponentProps<any>> = ({ match }) => {
   );
 };
 
+const ProductVariantCreator: React.FC<RouteComponentProps<{
+  id: string;
+}>> = ({ match }) => (
+  <ProductVariantCreatorComponent id={decodeURIComponent(match.params.id)} />
+);
+
 const ProductsSectionComponent = () => {
     const intl = useIntl();
 
@@ -31,6 +44,11 @@ const ProductsSectionComponent = () => {
             <Switch>
                 <Route exact path={productListPath} component={ProductListView} />
                 <Route exact path={productAddPath} component={ProductCreateView} />
+
+                <Route
+          path={productVariantCreatorPath(":id")}
+          component={ProductVariantCreator}
+        />
 
                 <Route path={productPath(":id")} component={ProductUpdate} />
             </Switch>

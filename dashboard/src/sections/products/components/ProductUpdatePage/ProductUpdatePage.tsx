@@ -41,14 +41,12 @@ import ProductAttributes, { ProductAttributeInput } from "../ProductAttributes";
 import ProductDetailsForm from "../ProductDetailsForm";
 import ProductImages from "../ProductImages";
 import ProductOrganization from "../ProductOrganization";
-import ProductPricing from "../ProductPricing";
 import ProductStocks, { ProductStockInput } from "../ProductStocks";
 import ProductVariants from "../ProductVariants";
 import {useFormik} from "formik";
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
-    basePrice: yup.number(),
     category: yup.string(),
     description: yup.string(),
     isPublished: yup.bool(),
@@ -146,14 +144,14 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
     const initialDescription = maybe<string>(() => product.description);
 
     const categories = getChoices(categoryChoiceList);
-    const currency = maybe(() => product.minimalVariantPrice.currency);
     const hasVariants = maybe(() => product.productType.hasVariants, false);
 
     const handleSubmit = (data: ProductUpdatePageFormData) => {
         const dataStocks = stocks.map(stock => stock.id);
-        const variantStocks = product.variants[0].stocks.map(
+        console.log(dataStocks);
+        const variantStocks = product.variants[0]?.stocks.map(
             stock => stock.id
-        );
+        ) || dataStocks;
         const stockDiff = diff(variantStocks, dataStocks);
 
         onSubmit({
@@ -237,14 +235,6 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
                                     onMultiChange={handleAttributeMultiChange}
                                 />
                             )}
-                            <CardSpacer />
-                            <ProductPricing
-                                currency={currency}
-                                data={form.values}
-                                disabled={disabled}
-                                errors={errors}
-                                onChange={form.handleChange}
-                            />
                             <CardSpacer />
                             {hasVariants ? (
                                 <ProductVariants

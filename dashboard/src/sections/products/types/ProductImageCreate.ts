@@ -12,8 +12,7 @@ import { ProductErrorCode, AttributeInputTypeEnum } from "./../../../types/globa
 export interface ProductImageCreate_productImageCreate_errors {
   __typename: "ProductError";
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -304,9 +303,7 @@ export interface ProductImageCreate_productImageCreate {
 
 export interface ProductImageCreate {
   /**
-   * Create a product image. This mutation must be sent as a `multipart` request.
-   * More detailed specs of the upload format can be found here:
-   * https: // github.com/jaydenseric/graphql-multipart-request-spec
+   * Create a product image. This mutation must be sent as a `multipart` request. More detailed specs of the upload format can be found here: https: // github.com/jaydenseric/graphql-multipart-request-spec
    */
   productImageCreate: ProductImageCreate_productImageCreate | null;
 }

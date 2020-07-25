@@ -1,3 +1,4 @@
+import React from "react";
 import { InputProps } from "@material-ui/core/Input";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -5,26 +6,27 @@ import useStateFromProps from "@temp/hooks/useStateFromProps";
 import { FetchMoreProps } from "@temp/types";
 import Downshift from "downshift";
 import { filter } from "fuzzaldrin";
-import React from "react";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import Debounce, { DebounceProps } from "../Debounce";
 import SingleAutocompleteSelectFieldContent, {
   SingleAutocompleteActionType,
   SingleAutocompleteChoiceType
 } from "./SingleAutocompleteSelectFieldContent";
+import {IconButton} from "@material-ui/core";
 
 const useStyles = makeStyles(
-  {
-    container: {
-      flexGrow: 1,
-      position: "relative"
-    }
-  },
-  { name: "SingleAutocompleteSelectField" }
+    {
+      container: {
+        flexGrow: 1,
+        position: "relative"
+      }
+    },
+    { name: "SingleAutocompleteSelectField" }
 );
 
 export interface SingleAutocompleteSelectFieldProps
-  extends Partial<FetchMoreProps> {
+    extends Partial<FetchMoreProps> {
   add?: SingleAutocompleteActionType;
   error?: boolean;
   name: string;
@@ -43,8 +45,8 @@ export interface SingleAutocompleteSelectFieldProps
 }
 
 const DebounceAutocomplete: React.ComponentType<DebounceProps<
-  string
->> = Debounce;
+    string
+    >> = Debounce;
 
 const SingleAutocompleteSelectFieldComponent: React.FC<SingleAutocompleteSelectFieldProps> = props => {
   const {
@@ -73,140 +75,138 @@ const SingleAutocompleteSelectFieldComponent: React.FC<SingleAutocompleteSelectF
   const [prevDisplayValue] = useStateFromProps(displayValue);
 
   const handleChange = item =>
-    onChange({
-      target: {
-        name,
-        value: item
-      }
-    } as any);
+      onChange({
+        target: {
+          name,
+          value: item
+        }
+      } as any);
 
   return (
-    <DebounceAutocomplete debounceFn={fetchChoices}>
-      {debounceFn => (
-        <Downshift
-          initialInputValue={displayValue}
-          itemToString={() => displayValue}
-          onInputValueChange={value => debounceFn(value)}
-          onSelect={handleChange}
-          selectedItem={value}
-        >
-          {({
-            getInputProps,
-            getItemProps,
-            isOpen,
-            inputValue,
-            selectedItem,
-            toggleMenu,
-            closeMenu,
-            highlightedIndex,
-            reset
-          }) => {
-            const isCustomValueSelected =
-              choices && selectedItem
-                ? choices.filter(c => c.value === selectedItem).length === 0
-                : false;
-            const hasInputValueChanged = prevDisplayValue !== displayValue;
+      <DebounceAutocomplete debounceFn={fetchChoices}>
+        {debounceFn => (
+            <Downshift
+                initialInputValue={displayValue || ''}
+                itemToString={() => displayValue || ''}
+                onInputValueChange={value => debounceFn(value || '')}
+                onSelect={handleChange}
+                selectedItem={value || ''}
+            >
+              {({
+                  getInputProps,
+                  getItemProps,
+                  isOpen,
+                  inputValue,
+                  selectedItem,
+                  toggleMenu,
+                  closeMenu,
+                  highlightedIndex,
+                  reset
+                }) => {
+                const isCustomValueSelected =
+                    choices && selectedItem
+                        ? choices.filter(c => c.value === selectedItem).length === 0
+                        : false;
+                const hasInputValueChanged = prevDisplayValue !== displayValue;
 
-            if (hasInputValueChanged) {
-              reset({ inputValue: displayValue });
-            }
+                if (hasInputValueChanged) {
+                  reset({ inputValue: displayValue });
+                }
 
-            const displayCustomValue =
-              inputValue &&
-              inputValue.length > 0 &&
-              allowCustomValues &&
-              !choices.find(
-                choice =>
-                  choice.label.toLowerCase() === inputValue.toLowerCase()
-              );
+                const displayCustomValue =
+                    inputValue &&
+                    inputValue.length > 0 &&
+                    allowCustomValues &&
+                    !choices.find(
+                        choice =>
+                            choice.label.toLowerCase() === inputValue.toLowerCase()
+                    );
 
-            return (
-              <div className={classes.container} {...rest}>
-                <TextField
-                  // InputProps={{
-                  //   ...InputProps,
-                  //   ...getInputProps({
-                  //     placeholder
-                  //   }),
-                  //   endAdornment: (
-                  //     <div>
-                  //       <ArrowDropdownIcon />
-                  //     </div>
-                  //   ),
-                  //   error,
-                  //   id: undefined,
-                  //   onBlur(){closeMenu()},
-                  //   onClick() {toggleMenu()}
-                  // }}
-                  onBlur={e => closeMenu()}
-                  onClick={e => toggleMenu()}
-                  error={error}
-                  disabled={disabled}
-                  helperText={helperText}
-                  label={label}
-                  fullWidth={true}
-                />
-                {isOpen && (!!inputValue || !!choices.length) && (
-                  <SingleAutocompleteSelectFieldContent
-                    add={
-                      !!add && {
-                        ...add,
-                        onClick: () => {
-                          add.onClick();
-                          closeMenu();
-                        }
-                      }
-                    }
-                    choices={choices}
-                    displayCustomValue={displayCustomValue}
-                    emptyOption={emptyOption}
-                    getItemProps={getItemProps}
-                    hasMore={hasMore}
-                    highlightedIndex={highlightedIndex}
-                    loading={loading}
-                    inputValue={inputValue}
-                    isCustomValueSelected={isCustomValueSelected}
-                    selectedItem={selectedItem}
-                    onFetchMore={onFetchMore}
-                  />
-                )}
-              </div>
-            );
-          }}
-        </Downshift>
-      )}
-    </DebounceAutocomplete>
+                return (
+                    <div className={classes.container} {...rest}>
+                      <TextField
+                          InputProps={{
+                            ...getInputProps({
+                              placeholder
+                            }) as any,
+                            endAdornment: (
+                              <IconButton size="small">
+                                <ArrowDropDownIcon />
+                              </IconButton>
+                            ),
+                            error,
+                            id: undefined,
+                            color: 'primary',
+                            onBlur(){closeMenu()},
+                            onClick() {toggleMenu()}
+                          }}
+                          error={error}
+                          disabled={disabled}
+                          helperText={helperText}
+                          label={label}
+                          fullWidth={true}
+                      />
+                      {isOpen && (!!inputValue || !!choices.length) && (
+                          <SingleAutocompleteSelectFieldContent
+                              add={
+                                !!add && {
+                                  ...add,
+                                  onClick: () => {
+                                    add.onClick();
+                                    closeMenu();
+                                  }
+                                }
+                              }
+                              choices={choices}
+                              displayCustomValue={displayCustomValue}
+                              emptyOption={emptyOption}
+                              getItemProps={getItemProps}
+                              hasMore={hasMore}
+                              highlightedIndex={highlightedIndex}
+                              loading={loading}
+                              inputValue={inputValue}
+                              isCustomValueSelected={isCustomValueSelected}
+                              selectedItem={selectedItem}
+                              onFetchMore={onFetchMore}
+                          />
+                      )}
+                    </div>
+                );
+              }}
+            </Downshift>
+        )}
+      </DebounceAutocomplete>
   );
 };
 
 const SingleAutocompleteSelectField: React.FC<SingleAutocompleteSelectFieldProps> = ({
-  choices,
-  fetchChoices,
-  ...rest
-}) => {
+                                                                                       choices,
+                                                                                       fetchChoices,
+                                                                                       ...rest
+                                                                                     }) => {
   const [query, setQuery] = React.useState("");
   if (fetchChoices) {
     return (
-      <DebounceAutocomplete debounceFn={fetchChoices}>
-        {debounceFn => (
-          <SingleAutocompleteSelectFieldComponent
-            choices={choices}
-            {...rest}
-            fetchChoices={debounceFn}
-          />
-        )}
-      </DebounceAutocomplete>
+        <DebounceAutocomplete debounceFn={fetchChoices}>
+          {debounceFn => (
+              <SingleAutocompleteSelectFieldComponent
+                  choices={choices}
+                  {...rest}
+                  fetchChoices={debounceFn}
+              />
+          )}
+        </DebounceAutocomplete>
     );
   }
 
   return (
-    <SingleAutocompleteSelectFieldComponent
-      fetchChoices={q => setQuery(q || "")}
-      choices={filter(choices, query, {
-        key: "label"
-      })}
-      {...rest}
-    />
+      <SingleAutocompleteSelectFieldComponent
+          fetchChoices={q => setQuery(q || "")}
+          choices={filter(choices, query, {
+            key: "label"
+          })}
+          {...rest}
+      />
   );
 };
 export default SingleAutocompleteSelectField;

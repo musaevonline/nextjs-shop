@@ -12,8 +12,7 @@ import { ProductVariantCreateInput, ProductErrorCode } from "./../../../types/gl
 export interface VariantCreate_productVariantCreate_errors {
   __typename: "ProductError";
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**

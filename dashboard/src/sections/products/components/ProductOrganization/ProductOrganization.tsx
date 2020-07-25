@@ -91,7 +91,7 @@ const ProductOrganization: React.FC<ProductOrganizationProps> = props => {
   return (
     <Card className={classes.card}>
       <CardTitle
-        title={intl.formatMessage({ id: 'orginize_product',
+        title={intl.formatMessage({ id: 'organize_product',
           defaultMessage: "Organize Product",
           description: "section header"
         })}

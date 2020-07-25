@@ -12,8 +12,7 @@ import { StockInput, AttributeValueInput, ProductErrorCode, StockErrorCode } fro
 export interface VariantUpdate_productVariantUpdate_errors {
   __typename: "ProductError";
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -259,8 +258,7 @@ export interface VariantUpdate_productVariantStocksUpdate_errors {
    */
   code: ProductErrorCode;
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -505,8 +503,7 @@ export interface VariantUpdate_productVariantStocksCreate_errors {
    */
   code: ProductErrorCode;
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -559,8 +556,7 @@ export interface VariantUpdate_productVariantStocksDelete_errors {
    */
   code: StockErrorCode;
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
 }

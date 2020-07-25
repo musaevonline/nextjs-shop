@@ -308,7 +308,7 @@
   "pricing": {
     "string": "Ценообразование"
   },
-  "orginize_product": {
+  "organize_product": {
     "string": "Организовать продукт"
   },
   "visibility": {
@@ -331,5 +331,89 @@
   },
   "product_created": {
     "string": "Продукт создан"
+  },
+  "sku": {
+    "string": "ИТП"
+  },
+  "configurable": {
+    "string": "Конфигурируемый"
+  },
+  "available_at_location": {
+    "string": "Доступно"
+  },
+  "all_stocks": {
+    "string": "Все"
+  },
+  "unavailable_in_all_locations": {
+    "string": "Недоступно"
+  },
+  "delete_product": {
+    "string": "Удалить продукт"
+  },
+  "will_be_visible": {
+    "string": "Будет скрыт"
+  },
+  "images": {
+    "string": "Изображения"
+  },
+  "attributes": {
+    "string": "Атрибуты"
+  },
+  "delete_product_variants": {
+    "string": "Удалить вариант"
+  },
+  "variants": {
+    "string": "Варианты"
+  },
+  "values": {
+    "string": "Значения"
+  },
+  "productStockHeader": {
+    "string": "Заголовок товара"
+  },
+  "quantity": {
+    "string": "Количество"
+  },
+  "quantity_available": {
+    "string": "Доступное количество"
+  },
+  "number_product_attributes": {
+    "string": "Атрибуты ({number})"
+  },
+  "create_variant": {
+    "string": "Создать вариант"
+  },
+  "inventory": {
+    "string": "Инвентарь"
+  },
+  "stock_available_at": {
+    "string": "Сток"
+  },
+  "stock_name": {
+    "string": "Название стока"
+  },
+  "variant": {
+    "string": "Вариант"
+  },
+  "product_stock": {
+    "string": "{stockQuantity,plural,one{{stockQuantity} доступно} other{{stockQuantity} доступно}}"
+  },
+  "not_stocked": {
+    "string": "Не доступно"
+  },
+  "value": {
+    "string": "Значение"
+  },
+  "none": {
+    "string": "Нет"
+  },
+  "add_new_value": {
+    "string": "Добавить новое значение: {value}"
+  },
+  "create_variants": {
+    "string": "Создать варианты"
+  },
+  "use_variants_for_products": {
+    "string": "Используйте варианты для продуктов, которые бывают разных версий, например, разных размеров или цветов"
   }
 }

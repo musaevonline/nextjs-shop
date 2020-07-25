@@ -12,8 +12,7 @@ import { AttributeValueInput, StockInput, ProductErrorCode, AttributeInputTypeEn
 export interface ProductCreate_productCreate_errors {
   __typename: "ProductError";
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -316,7 +315,6 @@ export interface ProductCreateVariables {
   description?: string | null;
   isPublished: boolean;
   name: string;
-  basePrice?: any | null;
   productType: string;
   sku?: string | null;
   stocks: StockInput[];

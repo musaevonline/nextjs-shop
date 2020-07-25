@@ -73,9 +73,13 @@ export default (colors: IThemeColors): Theme =>
             flexDirection: "row-reverse" as "row-reverse"
           }
         },
+
         MuiCardContent: {
           root: {
-            padding: "24px"
+            padding: "12px 24px",
+            '&:last-child': {
+              paddingBottom: 12
+            }
           }
         },
         MuiChip: {
@@ -178,7 +182,7 @@ export default (colors: IThemeColors): Theme =>
           formControl: {
             transform: "translate(0, 1.5px) scale(0.75)",
             transformOrigin: "top left" as "top left",
-            width: "100%"
+            width: "calc(100% - 14px)"
           },
           outlined: {
             "&$shrink": {
@@ -434,7 +438,7 @@ export default (colors: IThemeColors): Theme =>
               }
             },
             borderBottomColor: colors.paperBorder,
-            height: 56,
+            height: 40,
             padding: "4px 24px"
           }
         },

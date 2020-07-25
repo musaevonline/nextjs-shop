@@ -1,4 +1,3 @@
-import { decimal } from "@temp/misc";
 import { ProductUpdatePageSubmitData } from "../../components/ProductUpdatePage";
 import { ProductDetails_product } from "@temp/sections/products/types/ProductDetails";
 import { ProductImageCreateVariables } from "@temp/sections/products/types/ProductImageCreate";
@@ -20,7 +19,6 @@ export function createUpdateHandler(
         id: attribute.id,
         values: attribute.value[0] === "" ? [] : attribute.value
       })),
-      basePrice: decimal(data.basePrice),
       category: data.category,
       description: data.description,
       id: product.id,

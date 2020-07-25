@@ -7,7 +7,7 @@ import useProductTypeSearch from "@temp/searches/useProductTypeSearch";
 import React from "react";
 import { useIntl } from "react-intl";
 
-import { decimal, maybe } from "@temp/misc";
+import { maybe } from "@temp/misc";
 import ProductCreatePage, {
   ProductCreatePageSubmitData
 } from "../components/ProductCreatePage";
@@ -59,7 +59,6 @@ export const ProductCreateView: React.FC = () => {
                 id: attribute.id,
                 values: attribute.value
               })),
-              basePrice: decimal(formData.basePrice),
               category: formData.category,
               description: formData.description,
               isPublished: formData.isPublished,

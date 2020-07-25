@@ -16,6 +16,7 @@ import SVG from "react-inlinesvg";
 import { FormattedMessage } from "react-intl";
 
 import Hr from "../Hr";
+import {commonMessages} from "@temp/intl";
 
 const menuItemHeight = 46;
 const maxMenuItems = 5;
@@ -72,7 +73,7 @@ const useStyles = makeStyles(
     },
     content: {
       maxHeight: menuItemHeight * maxMenuItems + theme.spacing(2),
-      overflow: "scroll",
+      overflow: "auto",
       padding: 8
     },
     hide: {
@@ -178,7 +179,7 @@ const SingleAutocompleteSelectFieldContent: React.FC<SingleAutocompleteSelectFie
                 data-tc="singleautocomplete-select-option"
               >
                 <Typography color="textSecondary">
-                  <FormattedMessage defaultMessage="None" />
+                  <FormattedMessage id="none" defaultMessage="None" />
                 </Typography>
               </MenuItem>
             )}
@@ -207,7 +208,7 @@ const SingleAutocompleteSelectFieldContent: React.FC<SingleAutocompleteSelectFie
                 })}
                 data-tc="singleautocomplete-select-option"
               >
-                <FormattedMessage
+                <FormattedMessage id="add_new_value"
                   defaultMessage="Add new value: {value}"
                   description="add custom select input option"
                   values={{
@@ -258,7 +259,7 @@ const SingleAutocompleteSelectFieldContent: React.FC<SingleAutocompleteSelectFie
             component="div"
             data-tc="singleautocomplete-select-no-options"
           >
-            <FormattedMessage defaultMessage="No results found" />
+            <FormattedMessage {...commonMessages.noFound} />
           </MenuItem>
         )}
       </div>

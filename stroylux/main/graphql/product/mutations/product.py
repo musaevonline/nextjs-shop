@@ -43,7 +43,7 @@ class ProductInput(graphene.InputObjectType):
     )
     name = graphene.String(description="Product name.")
     slug = graphene.String(description="Product slug.")
-    base_price = Decimal(description="Product price.")
+    # base_price = Decimal(description="Product price.")
     sku = graphene.String(
         description=(
             "Stock keeping unit of a product. Note: this field is only used if "
@@ -329,20 +329,19 @@ class ProductCreate(ModelMutation):
         except ValidationError as error:
             error.code = ProductErrorCode.REQUIRED.value
             raise ValidationError({"slug": error})
-        price = data.get("base_price", data.get("price"))
-        if price is not None:
-            if price < 0:
-                raise ValidationError(
-                    {
-                        "basePrice": ValidationError(
-                            "Product base price cannot be lower than 0.",
-                            code=ProductErrorCode.INVALID,
-                        )
-                    }
-                )
-            if instance.minimal_variant_price_amount is None:
-                # Set the default "minimal_variant_price" to the "price"
-                cleaned_input["minimal_variant_price_amount"] = price
+        # price = data.get("base_price", data.get("price"))
+        # if price is not None:
+        #     if price < 0:
+        #         raise ValidationError(
+        #             {
+        #                 "basePrice": ValidationError(
+        #                     "Product base price cannot be lower than 0.",
+        #                     code=ProductErrorCode.INVALID,
+        #                 )
+        #             }
+        #         )
+        if instance.minimal_variant_price_amount is None:
+            cleaned_input["minimal_variant_price_amount"] = 0
         if attributes and product_type:
             try:
                 cleaned_input["attributes"] = cls.clean_attributes(
@@ -417,6 +416,9 @@ class ProductCreate(ModelMutation):
             stocks = cleaned_input.get("stocks")
             if stocks:
                 cls.create_variant_stocks(variant, stocks)
+        attributes = cleaned_input.get("attributes")
+        if attributes:
+            AttributeAssignmentMixin.save(instance, attributes)
 
     @classmethod
     def create_variant_stocks(cls, variant, stocks):
@@ -512,6 +514,10 @@ class ProductUpdate(ProductCreate):
             )
 
     @classmethod
+    def clean_input(cls, info, instance, data):
+        return super().clean_input(info, instance, data)
+
+    @classmethod
     @transaction.atomic
     def save(cls, info, instance, cleaned_input):
         instance.save()
@@ -525,3 +531,7 @@ class ProductUpdate(ProductCreate):
                 variant.save(update_fields=update_fields)
         # Recalculate the "minimal variant price"
         update_product_minimal_variant_price_task.delay(instance.pk)
+
+        attributes = cleaned_input.get("attributes")
+        if attributes:
+            AttributeAssignmentMixin.save(instance, attributes)

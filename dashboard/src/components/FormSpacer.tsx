@@ -4,7 +4,7 @@ import React from "react";
 const useStyles = makeStyles(
   theme => ({
     spacer: {
-      marginTop: theme.spacing(3)
+      marginTop: theme.spacing(1)
     }
   }),
   { name: "FormSpacer" }

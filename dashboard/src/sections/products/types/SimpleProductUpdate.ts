@@ -12,8 +12,7 @@ import { AttributeValueInput, ProductVariantInput, StockInput, ProductErrorCode,
 export interface SimpleProductUpdate_productUpdate_errors {
   __typename: "ProductError";
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -305,8 +304,7 @@ export interface SimpleProductUpdate_productUpdate {
 export interface SimpleProductUpdate_productVariantUpdate_errors {
   __typename: "ProductError";
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -552,8 +550,7 @@ export interface SimpleProductUpdate_productVariantStocksCreate_errors {
    */
   code: ProductErrorCode;
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -798,8 +795,7 @@ export interface SimpleProductUpdate_productVariantStocksDelete_errors {
    */
   code: StockErrorCode;
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
 }
@@ -1040,8 +1036,7 @@ export interface SimpleProductUpdate_productVariantStocksUpdate_errors {
    */
   code: ProductErrorCode;
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**
@@ -1310,7 +1305,6 @@ export interface SimpleProductUpdateVariables {
   description?: string | null;
   isPublished: boolean;
   name?: string | null;
-  basePrice?: any | null;
   productVariantId: string;
   productVariantInput: ProductVariantInput;
   addStocks: StockInput[];

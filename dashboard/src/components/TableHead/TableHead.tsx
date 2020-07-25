@@ -52,7 +52,7 @@ const useStyles = makeStyles(
     container: {
       alignItems: "center",
       display: "flex",
-      height: 47,
+      height: 30,
       marginRight: -theme.spacing(2)
     },
     dragRows: {

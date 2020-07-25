@@ -151,7 +151,6 @@ export function getChoices(nodes: Node[]): SingleAutocompleteChoiceType[] {
 }
 
 export interface ProductUpdatePageFormData {
-  basePrice: number;
   category: string | null;
   description: string;
   isPublished: boolean;
@@ -165,7 +164,6 @@ export function getProductUpdatePageFormData(
   variants: ProductDetails_product_variants[]
 ): ProductUpdatePageFormData {
   return {
-    basePrice: maybe(() => product.minimalVariantPrice.amount, 0),
     category: maybe(() => product.category.id, ""),
     description: maybe(() => JSON.parse(product.descriptionJson)),
     isPublished: maybe(() => product.isPublished, false),

@@ -2995,9 +2995,6 @@ input ProductCreateInput {
   """Product slug."""
   slug: String
 
-  """Product price."""
-  basePrice: Decimal
-
   """
   Stock keeping unit of a product. Note: this field is only used if a product doesn't use variants.
   """
@@ -3146,9 +3143,6 @@ input ProductInput {
 
   """Product slug."""
   slug: String
-
-  """Product price."""
-  basePrice: Decimal
 
   """
   Stock keeping unit of a product. Note: this field is only used if a product doesn't use variants.

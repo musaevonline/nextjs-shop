@@ -20,7 +20,7 @@ const useStyles = makeStyles(
     root: theme.mixins.gutters({
       alignItems: "center",
       display: "flex",
-      minHeight: 56
+      minHeight: 40
     }),
     title: {
       flex: 1,

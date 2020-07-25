@@ -19,6 +19,11 @@ import {
 import {VariantUpdate, VariantUpdateVariables} from "@temp/sections/products/types/VariantUpdate";
 import {VariantImageUnassign, VariantImageUnassignVariables} from "@temp/sections/products/types/VariantImageUnassign";
 import {VariantImageAssign, VariantImageAssignVariables} from "@temp/sections/products/types/VariantImageAssign";
+import {
+  ProductVariantBulkCreate,
+  ProductVariantBulkCreateVariables
+} from "@temp/sections/products/types/ProductVariantBulkCreate";
+import makeMutation from "@temp/hooks/makeMutation";
 
 export const bulkProductErrorFragment = gql`
   fragment BulkProductErrorFragment on BulkProductError {
@@ -195,6 +200,11 @@ export const ProductVariantBulkCreateMutation = gql`
   }
 `;
 
+export const useProductVariantBulkCreateMutation = makeMutation<
+  ProductVariantBulkCreate,
+  ProductVariantBulkCreateVariables
+>(ProductVariantBulkCreateMutation);
+
 export const productCreateMutation = gql`
   ${productErrorFragment}
   ${productFragmentDetails}
@@ -205,7 +215,6 @@ export const productCreateMutation = gql`
     $description: String
     $isPublished: Boolean!
     $name: String!
-    $basePrice: Decimal
     $productType: ID!
     $sku: String
     $stocks: [StockInput!]!
@@ -218,7 +227,6 @@ export const productCreateMutation = gql`
         description: $description
         isPublished: $isPublished
         name: $name
-        basePrice: $basePrice
         productType: $productType
         sku: $sku
         stocks: $stocks
@@ -250,7 +258,6 @@ export const productUpdateMutation = gql`
     $description: String
     $isPublished: Boolean!
     $name: String
-    $basePrice: Decimal
   ) {
     productUpdate(
       id: $id
@@ -261,7 +268,6 @@ export const productUpdateMutation = gql`
         description: $description
         isPublished: $isPublished
         name: $name
-        basePrice: $basePrice
       }
     ) {
       errors: productErrors {
@@ -293,7 +299,6 @@ export const simpleProductUpdateMutation = gql`
     $description: String
     $isPublished: Boolean!
     $name: String
-    $basePrice: Decimal
     $productVariantId: ID!
     $productVariantInput: ProductVariantInput!
     $addStocks: [StockInput!]!
@@ -309,7 +314,6 @@ export const simpleProductUpdateMutation = gql`
         description: $description
         isPublished: $isPublished
         name: $name
-        basePrice: $basePrice
       }
     ) {
       errors: productErrors {
