@@ -281,9 +281,9 @@ export const ProductUpdate: React.FC<ProductUpdateProps> = ({ id, params }) => {
                         defaultMessage="{counter,plural,one{Are you sure you want to delete this variant?} other{Are you sure you want to delete {displayQuantity} variants?}}"
                         description="dialog content"
                         values={{
-                          counter: maybe(() => params.ids.length),
+                          counter: maybe(() => listElements.length),
                           displayQuantity: (
-                            <strong>{maybe(() => params.ids.length)}</strong>
+                            <strong>{maybe(() => listElements.length)}</strong>
                           )
                         }}
                       />

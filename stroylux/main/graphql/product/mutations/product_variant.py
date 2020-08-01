@@ -10,12 +10,13 @@ from main.graphql.core.scalars import Decimal, WeightScalar
 from main.graphql.core.types.common import ProductError, BulkProductError, BulkStockError, StockError
 from main.graphql.product.mutations.product import StockInput, AttributeAssignmentMixin, T_INPUT_MAP, \
     AttributeValueInput
-from main.graphql.product.types import ProductVariant, ProductImage
+from main.graphql.product.types import ProductVariant, ProductImage, Stock
 from main.graphql.product.utils import create_stocks, get_used_attribute_values_for_variant, \
     get_used_variants_attribute_values
+from main.graphql.utils import get_database_id
 from main.product import models
 from main.product.error_codes import ProductErrorCode
-from main.product.models import Stock, AssignedVariantAttribute
+from main.product.models import AssignedVariantAttribute
 from main.product.tasks import update_product_minimal_variant_price_task
 
 
@@ -143,8 +144,6 @@ class ProductVariantCreate(ModelMutation):
                 raise ValidationError({"attributes": exc})
         return cleaned_input
 
-        return cleaned_input
-
     @classmethod
     def get_instance(cls, info, **data):
         """Prefetch related fields that are needed to process the mutation.
@@ -254,8 +253,8 @@ def generate_name_for_variant(variant: ProductVariant) -> str:
 
     for attribute_rel in variant.attributes.all():  # type: AssignedVariantAttribute
         values_qs = attribute_rel.values.all()  # FIXME: this should be sorted
-        translated_values = [str(value.translated) for value in values_qs]
-        attributes_display.append(", ".join(translated_values))
+        values = [str(value) for value in values_qs]
+        attributes_display.append(", ".join(values))
 
     return " / ".join(attributes_display)
 
@@ -324,6 +323,15 @@ class ProductVariantBulkCreate(BaseMutation):
                 )
             cleaned_input["price_override_amount"] = price_override_amount
 
+        attributes = cleaned_input.get("attributes")
+        if attributes:
+            try:
+                cleaned_input["attributes"] = ProductVariantCreate.clean_attributes(
+                    attributes, data["product_type"]
+                )
+            except ValidationError as exc:
+                exc.params = {"index": variant_index}
+                errors["attributes"] = exc
         return cleaned_input
 
     @classmethod
@@ -340,6 +348,11 @@ class ProductVariantBulkCreate(BaseMutation):
     @classmethod
     def save(cls, info, instance, cleaned_input):
         instance.save()
+        attributes = cleaned_input.get("attributes")
+        if attributes:
+            AttributeAssignmentMixin.save(instance, attributes)
+            instance.name = generate_name_for_variant(instance)
+            instance.save(update_fields=["name"])
 
     @classmethod
     def create_variants(cls, info, cleaned_inputs, product, errors):
@@ -501,12 +514,18 @@ class ProductVariantStocksUpdate(ProductVariantStocksCreate):
     def update_or_create_variant_stocks(cls, variant, stocks_data):
         stocks = []
         for stock_data in stocks_data:
-            stock, _ = Stock.objects.get_or_create(
-                product_variant=variant
-            )
+            if stock_data.get('id'):
+                pk = get_database_id(None, stock_data['id'], Stock)
+                stock = models.Stock.objects.filter(pk=pk).first()
+            else:
+                stock = models.Stock.objects.filter(
+                    product_variant=variant
+                ).first()
+            if not stock:
+                stock = models.Stock.objects.create(product_variant=variant)
             stock.quantity = stock_data["quantity"]
             stocks.append(stock)
-        Stock.objects.bulk_update(stocks, ["quantity"])
+        models.Stock.objects.bulk_update(stocks, ["quantity"])
 
 
 class ProductVariantStocksDelete(BaseMutation):
@@ -519,7 +538,7 @@ class ProductVariantStocksDelete(BaseMutation):
             required=True,
             description="ID of product variant for which stocks will be deleted.",
         )
-        warehouse_ids = graphene.List(graphene.NonNull(graphene.ID),)
+        stock_ids = graphene.List(graphene.NonNull(graphene.ID),)
 
     class Meta:
         description = "Delete stocks from product variant."
@@ -530,7 +549,8 @@ class ProductVariantStocksDelete(BaseMutation):
     @classmethod
     def perform_mutation(cls, root, info, **data):
         variant = cls.get_node_or_error(info, data["variant_id"], only_type=ProductVariant)
-        Stock.objects.filter(product_variant=variant).delete()
+        pks = [get_database_id(None, node_id, Stock) for node_id in data['stock_ids']]
+        models.Stock.objects.filter(product_variant=variant, pk__in=pks).delete()
         return cls(product_variant=variant)
 
 

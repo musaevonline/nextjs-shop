@@ -6,7 +6,7 @@ import {VariantDelete, VariantDeleteVariables} from "@temp/sections/products/typ
 import {ProductImageDelete, ProductImageDeleteVariables} from "@temp/sections/products/types/ProductImageDelete";
 import {productBulkDelete, productBulkDeleteVariables} from "@temp/sections/products/types/productBulkDelete";
 import {productBulkPublish, productBulkPublishVariables} from "@temp/sections/products/types/productBulkPublish";
-import {fragmentVariant, productFragmentDetails} from "@temp/sections/products/queries";
+import {fragmentProductImage, fragmentVariant, productFragmentDetails} from "@temp/sections/products/queries";
 import {VariantCreate, VariantCreateVariables} from "@temp/sections/products/types/VariantCreate";
 import {ProductCreate, ProductCreateVariables} from "@temp/sections/products/types/ProductCreate";
 import {ProductUpdate, ProductUpdateVariables} from "@temp/sections/products/types/ProductUpdate";
@@ -74,6 +74,7 @@ export const TypedProductDeleteMutation = TypedMutation<
 >(productDeleteMutation);
 
 export const productImagesReorder = gql`
+  ${fragmentProductImage}
   ${productErrorFragment}
   mutation ProductImageReorder($productId: ID!, $imagesIds: [ID]!) {
     productImageReorder(productId: $productId, imagesIds: $imagesIds) {
@@ -83,10 +84,7 @@ export const productImagesReorder = gql`
       product {
         id
         images {
-          id
-          alt
-          sortOrder
-          url
+         ...ProductImageFragment
         }
       }
     }
@@ -343,7 +341,7 @@ export const simpleProductUpdateMutation = gql`
       }
     }
     productVariantStocksDelete(
-      warehouseIds: $deleteStocks
+      stockIds: $deleteStocks
       variantId: $productVariantId
     ) {
       errors: stockErrors {
@@ -497,7 +495,7 @@ export const variantUpdateMutation = gql`
         }
       }
     }
-    productVariantStocksDelete(warehouseIds: $removeStocks, variantId: $id) {
+    productVariantStocksDelete(stockIds: $removeStocks, variantId: $id) {
       errors: stockErrors {
         code
         field

@@ -75,20 +75,20 @@ interface ProductCreatePageProps {
 }
 
 export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
-  currency,
-  disabled,
-  categories: categoryChoiceList,
-  errors,
-  fetchCategories,
-  fetchMoreCategories,
-  fetchMoreProductTypes,
-  header,
-  productTypes: productTypeChoiceList,
-  saveButtonBarState,
-  onBack,
-  fetchProductTypes,
-  onSubmit
-}: ProductCreatePageProps) => {
+                                                                      currency,
+                                                                      disabled,
+                                                                      categories: categoryChoiceList,
+                                                                      errors,
+                                                                      fetchCategories,
+                                                                      fetchMoreCategories,
+                                                                      fetchMoreProductTypes,
+                                                                      header,
+                                                                      productTypes: productTypeChoiceList,
+                                                                      saveButtonBarState,
+                                                                      onBack,
+                                                                      fetchProductTypes,
+                                                                      onSubmit
+                                                                    }: ProductCreatePageProps) => {
   const intl = useIntl();
   const localizeDate = useDateLocalize();
   // Form values
@@ -98,6 +98,7 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
     set: setAttributeData
   } = useFormset<ProductAttributeInputData>([]);
   const {
+    add: addStock,
     change: changeStockData,
     data: stocks,
     remove: removeStock
@@ -106,7 +107,7 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
   // Ensures that it will not change after component rerenders, because it
   // generates different block keys and it causes editor to lose its content.
   const initialDescription = React.useRef(
-    ''
+      ''
   );
   const initialData: FormData = {
     category: "",
@@ -122,8 +123,8 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
 
   // Display values
   const [selectedAttributes, setSelectedAttributes] = useStateFromProps<
-    ProductAttributeValueChoices[]
-  >([]);
+      ProductAttributeValueChoices[]
+      >([]);
 
   const [selectedCategory, setSelectedCategory] = useStateFromProps("");
 
@@ -133,143 +134,152 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
   const productTypes = getChoices(productTypeChoiceList);
 
   const handleSubmit = (data: FormData) =>
-    onSubmit({
-      attributes,
-      stocks,
-      ...data
-    });
+      onSubmit({
+        attributes,
+        stocks,
+        ...data
+      });
 
   return (
-    <Form onSubmit={handleSubmit} initial={initialData} confirmLeave>
-      {({ change, data, hasChanged, submit, triggerChange, toggleValue }) => {
-        const handleCategorySelect = createSingleAutocompleteSelectHandler(
-          change,
-          setSelectedCategory,
-          categories
-        );
-        const handleAttributeChange = createAttributeChangeHandler(
-          changeAttributeData,
-          setSelectedAttributes,
-          selectedAttributes,
-          attributes,
-          triggerChange
-        );
-        const handleAttributeMultiChange = createAttributeMultiChangeHandler(
-          changeAttributeData,
-          setSelectedAttributes,
-          selectedAttributes,
-          attributes,
-          triggerChange
-        );
+      <Form onSubmit={handleSubmit} initial={initialData} confirmLeave>
+        {({ change, data, hasChanged, submit, triggerChange, toggleValue }) => {
+          const handleCategorySelect = createSingleAutocompleteSelectHandler(
+              change,
+              setSelectedCategory,
+              categories
+          );
+          const handleAttributeChange = createAttributeChangeHandler(
+              changeAttributeData,
+              setSelectedAttributes,
+              selectedAttributes,
+              attributes,
+              triggerChange
+          );
+          const handleAttributeMultiChange = createAttributeMultiChangeHandler(
+              changeAttributeData,
+              setSelectedAttributes,
+              selectedAttributes,
+              attributes,
+              triggerChange
+          );
 
-        const handleProductTypeSelect = createProductTypeSelectHandler(
-          change,
-          setAttributeData,
-          setSelectedAttributes,
-          setProductType,
-          productTypeChoiceList
-        );
+          const handleProductTypeSelect = createProductTypeSelectHandler(
+              change,
+              setAttributeData,
+              setSelectedAttributes,
+              setProductType,
+              productTypeChoiceList
+          );
 
-        return (
-          <Container>
-            <AppHeader onBack={onBack}>
-              {intl.formatMessage(sectionNames.products)}
-            </AppHeader>
-            <PageHeader title={header} />
-            <Grid>
-              <div>
-                <ProductDetailsForm
-                  data={data}
-                  disabled={disabled}
-                  errors={errors}
-                  initialDescription={initialDescription.current}
-                  onChange={change}
-                />
-                <CardSpacer />
-                {attributes.length > 0 && (
-                  <ProductAttributes
-                    attributes={attributes}
-                    disabled={disabled}
-                    onChange={handleAttributeChange}
-                    onMultiChange={handleAttributeMultiChange}
-                  />
-                )}
-                <CardSpacer />
-                {!!productType && !productType.hasVariants && (
-                  <>
-                    <ProductStocks
-                      data={data}
-                      disabled={disabled}
-                      onFormDataChange={change}
-                      errors={errors}
-                      stocks={stocks}
-                      onChange={(id, value) => {
-                        triggerChange();
-                        changeStockData(id, value);
-                      }}
-                      onWarehouseStockDelete={id => {
-                        triggerChange();
-                        removeStock(id);
-                      }}
+          return (
+              <Container>
+                <AppHeader onBack={onBack}>
+                  {intl.formatMessage(sectionNames.products)}
+                </AppHeader>
+                <PageHeader title={header} />
+                <Grid>
+                  <div>
+                    <ProductDetailsForm
+                        data={data}
+                        disabled={disabled}
+                        errors={errors}
+                        initialDescription={initialDescription.current}
+                        onChange={change}
                     />
                     <CardSpacer />
-                  </>
-                )}
+                    {attributes.length > 0 && (
+                        <ProductAttributes
+                            attributes={attributes}
+                            disabled={disabled}
+                            onChange={handleAttributeChange}
+                            onMultiChange={handleAttributeMultiChange}
+                        />
+                    )}
+                    <CardSpacer />
+                    {!!productType && !productType.hasVariants && (
+                        <>
+                          <ProductStocks
+                              data={data}
+                              disabled={disabled}
+                              onFormDataChange={change}
+                              errors={errors}
+                              stocks={stocks}
+                              onStockAdd={id => {
+                                triggerChange();
+                                addStock({
+                                  data: null,
+                                  id,
+                                  label: id,
+                                  value: "0"
+                                });
+                              }}
+                              onChange={(id, value) => {
+                                triggerChange();
+                                changeStockData(id, value);
+                              }}
+                              onStockDelete={id => {
+                                triggerChange();
+                                removeStock(id);
+                              }}
+                          />
+                          <CardSpacer />
+                        </>
+                    )}
 
-              </div>
-              <div>
-                <ProductOrganization
-                  canChangeType={true}
-                  categories={categories}
-                  categoryInputDisplayValue={selectedCategory}
-                  data={data}
-                  disabled={disabled}
-                  errors={errors}
-                  fetchCategories={fetchCategories}
-                  fetchMoreCategories={fetchMoreCategories}
-                  fetchMoreProductTypes={fetchMoreProductTypes}
-                  fetchProductTypes={fetchProductTypes}
-                  productType={productType}
-                  productTypeInputDisplayValue={productType?.name || ""}
-                  productTypes={productTypes}
-                  onCategoryChange={handleCategorySelect}
-                  onProductTypeChange={handleProductTypeSelect}
+                  </div>
+                  <div>
+                    <ProductOrganization
+                        canChangeType={true}
+                        categories={categories}
+                        categoryInputDisplayValue={selectedCategory}
+                        data={data}
+                        disabled={disabled}
+                        errors={errors}
+                        fetchCategories={fetchCategories}
+                        fetchMoreCategories={fetchMoreCategories}
+                        fetchMoreProductTypes={fetchMoreProductTypes}
+                        fetchProductTypes={fetchProductTypes}
+                        productType={productType}
+                        productTypeInputDisplayValue={productType?.name || ""}
+                        productTypes={productTypes}
+                        onCategoryChange={handleCategorySelect}
+                        onProductTypeChange={handleProductTypeSelect}
+                    />
+                    <CardSpacer />
+                    <VisibilityCard
+                        data={data}
+                        errors={errors}
+                        disabled={disabled}
+                        hiddenMessage={intl.formatMessage({id: 'will_be_visible_date',
+                              defaultMessage: "will be visible from {date}",
+                              description: "product"
+                            },
+                            {
+                              date: localizeDate(data.publicationDate)
+                            }
+                        )}
+                        onChange={change}
+                        visibleMessage={intl.formatMessage({id: 'since_date',
+                              defaultMessage: "since {date}",
+                              description: "product"
+                            },
+                            {
+                              date: localizeDate(data.publicationDate)
+                            }
+                        )}
+                    />
+                  </div>
+                </Grid>
+                <SaveButtonBar
+                    onCancel={onBack}
+                    onSave={submit}
+                    state={saveButtonBarState}
+                    disabled={disabled || !onSubmit || !hasChanged}
                 />
-                <CardSpacer />
-                <VisibilityCard
-                  data={data}
-                  errors={errors}
-                  disabled={disabled}
-                  hiddenMessage={intl.formatMessage({id: 'will_be_visible_date',
-                      defaultMessage: "will be visible from {date}",
-                      description: "product"
-                    },
-                    {
-                      date: localizeDate(data.publicationDate)
-                    }
-                  )}
-                  onChange={change}
-                  visibleMessage={intl.formatMessage({id: 'since_date',
-                      defaultMessage: "since {date}",
-                      description: "product"
-                    },
-                    {
-                      date: localizeDate(data.publicationDate)
-                    }
-                  )}
-                />
-              </div>
-            </Grid>
-            <SaveButtonBar
-              onCancel={onBack}
-              onSave={submit}
-              state={saveButtonBarState}
-              disabled={disabled || !onSubmit || !hasChanged}
-            />
-          </Container>
-        );
-      }}
-    </Form>
+              </Container>
+          );
+        }}
+      </Form>
   );
 };
 ProductCreatePage.displayName = "ProductCreatePage";

@@ -70,11 +70,23 @@ function getAttributeValueChoices(
 function translateErrors(intl: IntlShape) {
   return {
     [ProductErrorCode.REQUIRED]: intl.formatMessage({
+      id: 'all_attributes_value',
       defaultMessage: "All attributes should have value",
       description: "product attribute error"
     }),
     [ProductErrorCode.UNIQUE]: intl.formatMessage({
+      id: 'variant_exist',
       defaultMessage: "This variant already exists",
+      description: "product attribute error"
+    }),
+    [ProductErrorCode.DUPLICATED_INPUT_ITEM]: intl.formatMessage({
+      id: 'duplicated_input',
+      defaultMessage: "Duplicated attribute values for product variant",
+      description: "product attribute error"
+    }),
+    [ProductErrorCode.INVALID]: intl.formatMessage({
+      id: 'duplicated_input',
+      defaultMessage: "Duplicated attribute values for product variant",
       description: "product attribute error"
     })
   };

@@ -85,13 +85,13 @@ function makeQuery<TData, TVariables>(
       extraVariables: RequireAtLeastOne<TVariables>
     ) =>
       queryData.fetchMore({
-        query,
-        updateQuery: (previousResults, { fetchMoreResult }) => {
-          if (!fetchMoreResult) {
-            return previousResults;
-          }
-          return mergeFunc(previousResults, fetchMoreResult);
-        },
+        // query,
+        // updateQuery: (previousResults, { fetchMoreResult }) => {
+        //   if (!fetchMoreResult) {
+        //     return previousResults;
+        //   }
+        //   return mergeFunc(previousResults, fetchMoreResult);
+        // },
         variables: { ...variables, ...extraVariables }
       });
 

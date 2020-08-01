@@ -9,6 +9,11 @@ class ProductErrorCode(Enum):
     NOT_FOUND = "not_found"
     REQUIRED = "required"
     UNIQUE = "unique"
+    ATTRIBUTE_ALREADY_ASSIGNED = "attribute_already_assigned"
+    ATTRIBUTE_CANNOT_BE_ASSIGNED = "attribute_cannot_be_assigned"
+    ATTRIBUTE_VARIANTS_DISABLED = "attribute_variants_disabled"
+    DUPLICATED_INPUT_ITEM = "duplicated_input_item"
+    VARIANT_NO_DIGITAL_CONTENT = "variant_no_digital_content"
 
 
 class StockErrorCode(str, Enum):

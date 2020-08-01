@@ -127,6 +127,7 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
         attributeInput
     );
     const {
+        add: addStock,
         change: changeStockData,
         data: stocks,
         remove: removeStock
@@ -148,7 +149,6 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
 
     const handleSubmit = (data: ProductUpdatePageFormData) => {
         const dataStocks = stocks.map(stock => stock.id);
-        console.log(dataStocks);
         const variantStocks = product.variants[0]?.stocks.map(
             stock => stock.id
         ) || dataStocks;
@@ -256,12 +256,21 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
                                     disabled={disabled}
                                     errors={errors}
                                     stocks={stocks}
+                                    onStockAdd={id => {
+                                        // triggerChange();
+                                        addStock({
+                                            data: null,
+                                            id,
+                                            label: id,
+                                            value: "0"
+                                        });
+                                    }}
                                     onChange={(id, value) => {
                                         triggerChange();
                                         changeStockData(id, value);
                                     }}
                                     onFormDataChange={(event => {form.handleChange(event as any)})}
-                                    onWarehouseStockDelete={id => {
+                                    onStockDelete={id => {
                                         triggerChange();
                                         removeStock(id);
                                     }}

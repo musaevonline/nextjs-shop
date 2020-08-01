@@ -36,7 +36,6 @@ export function update<TData>(
   compare: Compare<TData>
 ) {
   const index = list.findIndex(element => compare(data, element));
-
   return updateAtIndex(data, list, index);
 }
 

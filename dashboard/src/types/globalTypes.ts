@@ -78,12 +78,17 @@ export enum PermissionEnum {
  */
 export enum ProductErrorCode {
   ALREADY_EXISTS = "ALREADY_EXISTS",
+  ATTRIBUTE_ALREADY_ASSIGNED = "ATTRIBUTE_ALREADY_ASSIGNED",
+  ATTRIBUTE_CANNOT_BE_ASSIGNED = "ATTRIBUTE_CANNOT_BE_ASSIGNED",
+  ATTRIBUTE_VARIANTS_DISABLED = "ATTRIBUTE_VARIANTS_DISABLED",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
   GRAPHQL_ERROR = "GRAPHQL_ERROR",
   INVALID = "INVALID",
   NOT_FOUND = "NOT_FOUND",
   NOT_PRODUCTS_IMAGE = "NOT_PRODUCTS_IMAGE",
   REQUIRED = "REQUIRED",
   UNIQUE = "UNIQUE",
+  VARIANT_NO_DIGITAL_CONTENT = "VARIANT_NO_DIGITAL_CONTENT",
 }
 
 export enum ProductOrderField {
@@ -187,6 +192,7 @@ export interface ProductVariantInput {
 
 export interface StockInput {
   quantity?: number | null;
+  id?: string | null;
 }
 
 //==============================================================

@@ -34,7 +34,7 @@ export interface ProductVariantCreatorSummaryProps {
     ) => void;
     onVariantStockDataChange: (
         variantIndex: number,
-        warehouseId: string,
+        stockId: string,
         value: string
     ) => void;
     onVariantDelete: (variantIndex: number) => void;
@@ -102,7 +102,7 @@ const useStyles = makeStyles<
             display: "grid",
             gridTemplateColumns: props =>
                 `minmax(240px, auto) 170px repeat(${props.data.variants[0]?.stocks.length || 0}, 140px) 140px 64px`,
-            overflowX: "scroll",
+            overflowX: "auto",
             rowGap: theme.spacing() + "px"
         }
     }),
@@ -265,7 +265,7 @@ const ProductVariantCreatorSummary: React.FC<ProductVariantCreatorSummaryProps> 
                                             type: "number"
                                         }}
                                         fullWidth
-                                        value={stock.quantity}
+                                        value={stock.quantity || ''}
                                         onChange={event =>
                                             onVariantStockDataChange(
                                                 variantIndex,

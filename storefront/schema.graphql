@@ -2027,9 +2027,10 @@ type Mutation {
 
   """Delete stocks from product variant."""
   productVariantStocksDelete(
+    stockIds: [ID!]
+
     """ID of product variant for which stocks will be deleted."""
     variantId: ID!
-    warehouseIds: [ID!]
   ): ProductVariantStocksDelete
 
   """Update stocks for product variant."""
@@ -3038,6 +3039,11 @@ enum ProductErrorCode {
   NOT_FOUND
   REQUIRED
   UNIQUE
+  ATTRIBUTE_ALREADY_ASSIGNED
+  ATTRIBUTE_CANNOT_BE_ASSIGNED
+  ATTRIBUTE_VARIANTS_DISABLED
+  DUPLICATED_INPUT_ITEM
+  VARIANT_NO_DIGITAL_CONTENT
 }
 
 input ProductFilterInput {
@@ -4348,6 +4354,9 @@ input StockFilterInput {
 input StockInput {
   """Quantity of items available for sell."""
   quantity: Int
+
+  """Stock id"""
+  id: ID
 }
 
 """

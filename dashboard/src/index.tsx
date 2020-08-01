@@ -18,6 +18,7 @@ import {BatchHttpLink} from "@apollo/client/link/batch-http";
 import {ApolloClient, ApolloLink, ApolloProvider, defaultDataIdFromObject, InMemoryCache} from "@apollo/client";
 import {ErrorResponse, onError} from "@apollo/client/link/error";
 import {setContext} from "@apollo/client/link/context";
+import {relayStylePagination} from "@apollo/client/utilities";
 
 interface ResponseError extends ErrorResponse {
   networkError?: Error & {
@@ -68,6 +69,14 @@ const link = ApolloLink.split(
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache({
+    typePolicies:{
+      Query: {
+        fields: {
+          search: relayStylePagination(),
+          categories: relayStylePagination()
+        }
+      }
+    },
     dataIdFromObject: (obj: any) => {
       // We need to set manually shop's ID, since it is singleton and
       // API does not return its ID

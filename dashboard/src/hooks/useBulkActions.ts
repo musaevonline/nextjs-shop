@@ -1,7 +1,9 @@
 import { Node } from "../types";
+import _ from 'lodash';
 import useListActions from "./useListActions";
 
-function useBulkActions(initial: string[] = []) {
+function useBulkActions(initial: string[] | string = []) {
+
   const {
     add,
     isSelected,
@@ -10,7 +12,7 @@ function useBulkActions(initial: string[] = []) {
     reset,
     set,
     toggle
-  } = useListActions<string>(initial);
+  } = useListActions<string>(_.isArray(initial) ? initial : [initial]);
 
   function toggleAll(items: Node[], selected: number) {
     const allItems = items.map(item => item.id);

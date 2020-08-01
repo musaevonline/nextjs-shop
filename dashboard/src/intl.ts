@@ -333,6 +333,10 @@ export const formMessages = defineMessages({
   imageUrl: {
     id: "image_url",
     defaultMessage: "Image URL"
+  },
+  min0: {
+    id: "min0",
+    defaultMessage: "Min value is 0"
   }
 })
 

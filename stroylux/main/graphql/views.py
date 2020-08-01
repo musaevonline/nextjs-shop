@@ -61,7 +61,7 @@ class GraphQLView(View):
     HANDLED_EXCEPTIONS = (GraphQLError, PermissionDenied)
 
     def __init__(
-        self, schema=None, executor=None, middleware=None, root_value=None, backend=None
+            self, schema=None, executor=None, middleware=None, root_value=None, backend=None
     ):
         super().__init__()
         if schema is None:
@@ -153,14 +153,14 @@ class GraphQLView(View):
             return response
 
     def get_response(
-        self, request: HttpRequest, data: dict
+            self, request: HttpRequest, data: dict
     ) -> Tuple[Optional[Dict[str, List[Any]]], int]:
         execution_result = self.execute_graphql_request(request, data)
         status_code = 200
         if execution_result:
             response = {}
             if execution_result.errors:
-                response["errorsAddressCreate"] = [
+                response["errors"] = [
                     self.format_error(e) for e in execution_result.errors
                 ]
             if execution_result.invalid:
@@ -177,7 +177,7 @@ class GraphQLView(View):
         return self.root_value
 
     def parse_query(
-        self, query: str
+            self, query: str
     ) -> Tuple[Optional[GraphQLDocument], Optional[ExecutionResult]]:
         """Attempt to parse a query (mandatory) to a gql document object.
         If no query was given or query is not a string, it returns an error.
@@ -205,7 +205,7 @@ class GraphQLView(View):
 
     def execute_graphql_request(self, request: HttpRequest, data: dict):
         with ot.global_tracer().start_active_span(
-            operation_name="graphql_query"
+                operation_name="graphql_query"
         ) as scope:
             span = scope.span
             span.set_tag(ot_tags.COMPONENT, "graphql_query")
@@ -220,8 +220,8 @@ class GraphQLView(View):
                 span.log_kv(
                     {
                         "query": document.document_string[
-                            : settings.OPENTRACING_MAX_QUERY_LENGTH_LOG
-                        ]
+                                 : settings.OPENTRACING_MAX_QUERY_LENGTH_LOG
+                                 ]
                     }
                 )
 
@@ -299,7 +299,7 @@ class GraphQLView(View):
 
             if isinstance(exc, BaseException):
                 for line in traceback.format_exception(
-                    type(exc), exc, exc.__traceback__
+                        type(exc), exc, exc.__traceback__
                 ):
                     lines.extend(line.rstrip().splitlines())
             result["extensions"]["exception"]["stacktrace"] = lines

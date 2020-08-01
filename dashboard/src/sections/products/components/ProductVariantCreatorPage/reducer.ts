@@ -3,8 +3,7 @@ import {
   add,
   remove,
   removeAtIndex,
-  toggle,
-  update,
+  toggle, update,
   updateAtIndex
 } from "@temp/utils/lists";
 
@@ -323,7 +322,7 @@ function changeVariantStockData(
   variant.stocks = update(
     stock,
     variant.stocks,
-    (a, b) => a.quantity === b.quantity
+    (a, b) => !!a
   );
 
   return {

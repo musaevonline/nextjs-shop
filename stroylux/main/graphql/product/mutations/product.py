@@ -54,6 +54,7 @@ class ProductInput(graphene.InputObjectType):
 
 class StockInput(graphene.InputObjectType):
     quantity = graphene.Int(description="Quantity of items available for sell.")
+    id = graphene.ID(description="Stock id")
 
 
 class ProductCreateInput(ProductInput):
@@ -154,6 +155,7 @@ class AttributeAssignmentMixin:
     @classmethod
     def _pre_save_values(cls, attribute: models.Attribute, values: List[str]):
         """Lazy-retrieve or create the database objects from the supplied raw values."""
+        print(attribute)
         get_or_create = attribute.values.get_or_create
         return tuple(
             get_or_create(
