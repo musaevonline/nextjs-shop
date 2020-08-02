@@ -23,8 +23,8 @@ def generate_name_for_variant(variant: ProductVariant) -> str:
 
     for attribute_rel in variant.attributes.all():  # type: AssignedVariantAttribute
         values_qs = attribute_rel.values.all()  # FIXME: this should be sorted
-        translated_values = [str(value.translated) for value in values_qs]
-        attributes_display.append(", ".join(translated_values))
+        values = [str(value) for value in values_qs]
+        attributes_display.append(", ".join(values))
 
     return " / ".join(attributes_display)
 

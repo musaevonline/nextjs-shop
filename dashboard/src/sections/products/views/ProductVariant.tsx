@@ -78,7 +78,7 @@ export const ProductVariant: React.FC<ProductUpdateProps> = ({
 
         const handleDelete = () => {
           notify({
-            text: intl.formatMessage({
+            text: intl.formatMessage({ id: 'variant_removed',
               defaultMessage: "Variant removed"
             })
           });

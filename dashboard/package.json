@@ -73,6 +73,7 @@
     "recompose": "^0.30.0",
     "register-service-worker": "^1.7.1",
     "reset-css": "^5.0.1",
+    "slugify": "^1.4.5",
     "styled-components": "^5.1.1",
     "tailwindcss": "^1.5.1",
     "typeface-montserrat": "^0.0.75",

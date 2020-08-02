@@ -6,7 +6,7 @@ import { parse as parseQs } from "qs";
 import {sectionNames} from "@temp/intl";
 import {WindowTitle} from "@temp/components/WindowTitle";
 import {
-    productAddPath,
+    productAddPath, productImagePath, ProductImageUrlQueryParams,
     productListPath,
     productPath,
     ProductUrlQueryParams, productVariantAddPath,
@@ -18,6 +18,7 @@ import {ProductUpdateView} from "@temp/sections/products/views/ProductUpdate";
 import {ProductVariantCreatorComponent} from "@temp/sections/products/views/ProductVariantCreator";
 import ProductVariantCreateComponent from "./views/ProductVariantCreate";
 import ProductVariantComponent from "./views/ProductVariant";
+import ProductImageComponent from "./views/ProductImage";
 
 const ProductUpdate: React.FC<RouteComponentProps<any>> = ({ match }) => {
     const qs = parseQs(location.search.substr(1));
@@ -46,12 +47,28 @@ const ProductVariantCreate: React.FC<RouteComponentProps<any>> = ({
 );
 
 const ProductVariant: React.FC<RouteComponentProps<any>> = ({ match }) => {
+    const qs = parseQs(location.search.substr(1));
+    const params: ProductVariantEditUrlQueryParams = qs;
+
+    return (
+        <ProductVariantComponent
+            variantId={decodeURIComponent(match.params.variantId)}
+            productId={decodeURIComponent(match.params.productId)}
+            params={params}
+        />
+    );
+};
+
+const ProductImage: React.FC<RouteComponentProps<any>> = ({
+  location,
+  match
+}) => {
   const qs = parseQs(location.search.substr(1));
-  const params: ProductVariantEditUrlQueryParams = qs;
+  const params: ProductImageUrlQueryParams = qs;
 
   return (
-    <ProductVariantComponent
-      variantId={decodeURIComponent(match.params.variantId)}
+    <ProductImageComponent
+      imageId={decodeURIComponent(match.params.imageId)}
       productId={decodeURIComponent(match.params.productId)}
       params={params}
     />
@@ -80,6 +97,10 @@ const ProductsSectionComponent = () => {
                 <Route
                     path={productVariantEditPath(":productId", ":variantId")}
                     component={ProductVariant}
+                />
+                <Route
+                    path={productImagePath(":productId", ":imageId")}
+                    component={ProductImage}
                 />
 
                 <Route path={productPath(":id")} component={ProductUpdate} />

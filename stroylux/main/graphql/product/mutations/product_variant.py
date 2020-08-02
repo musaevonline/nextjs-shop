@@ -18,6 +18,7 @@ from main.product import models
 from main.product.error_codes import ProductErrorCode
 from main.product.models import AssignedVariantAttribute
 from main.product.tasks import update_product_minimal_variant_price_task
+from main.product.utils.attributes import generate_name_for_variant
 
 
 class ProductVariantInput(graphene.InputObjectType):
@@ -245,18 +246,6 @@ class ProductVariantBulkCreateInput(ProductVariantInput):
         required=False,
     )
     sku = graphene.String(required=True, description="Stock keeping unit.")
-
-
-def generate_name_for_variant(variant: ProductVariant) -> str:
-    """Generate ProductVariant's name based on its attributes."""
-    attributes_display = []
-
-    for attribute_rel in variant.attributes.all():  # type: AssignedVariantAttribute
-        values_qs = attribute_rel.values.all()  # FIXME: this should be sorted
-        values = [str(value) for value in values_qs]
-        attributes_display.append(", ".join(values))
-
-    return " / ".join(attributes_display)
 
 
 class ProductVariantBulkCreate(BaseMutation):

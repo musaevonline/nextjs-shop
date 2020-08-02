@@ -41,6 +41,30 @@ export enum AttributeInputTypeEnum {
   MULTISELECT = "MULTISELECT",
 }
 
+export enum AttributeSortField {
+  AVAILABLE_IN_GRID = "AVAILABLE_IN_GRID",
+  FILTERABLE_IN_DASHBOARD = "FILTERABLE_IN_DASHBOARD",
+  FILTERABLE_IN_STOREFRONT = "FILTERABLE_IN_STOREFRONT",
+  IS_VARIANT_ONLY = "IS_VARIANT_ONLY",
+  NAME = "NAME",
+  SLUG = "SLUG",
+  STOREFRONT_SEARCH_POSITION = "STOREFRONT_SEARCH_POSITION",
+  VALUE_REQUIRED = "VALUE_REQUIRED",
+  VISIBLE_IN_STOREFRONT = "VISIBLE_IN_STOREFRONT",
+}
+
+export enum AttributeTypeEnum {
+  PRODUCT = "PRODUCT",
+  VARIANT = "VARIANT",
+}
+
+export enum AttributeValueType {
+  COLOR = "COLOR",
+  GRADIENT = "GRADIENT",
+  STRING = "STRING",
+  URL = "URL",
+}
+
 export enum CategorySortField {
   NAME = "NAME",
   PRODUCT_COUNT = "PRODUCT_COUNT",
@@ -98,6 +122,17 @@ export enum ProductOrderField {
   TYPE = "TYPE",
 }
 
+export enum ProductTypeEnum {
+  DIGITAL = "DIGITAL",
+  SHIPPABLE = "SHIPPABLE",
+}
+
+export enum ProductTypeSortField {
+  DIGITAL = "DIGITAL",
+  NAME = "NAME",
+  SHIPPING_REQUIRED = "SHIPPING_REQUIRED",
+}
+
 /**
  * An enumeration.
  */
@@ -110,9 +145,73 @@ export enum StockErrorCode {
   UNIQUE = "UNIQUE",
 }
 
+/**
+ * An enumeration.
+ */
+export enum WeightUnitsEnum {
+  G = "G",
+  KG = "KG",
+  LB = "LB",
+  OZ = "OZ",
+}
+
+export interface AttributeAssignInput {
+  id: string;
+  type: AttributeTypeEnum;
+}
+
+export interface AttributeCreateInput {
+  inputType?: AttributeInputTypeEnum | null;
+  name: string;
+  slug?: string | null;
+  values?: (AttributeValueCreateInput | null)[] | null;
+  valueRequired?: boolean | null;
+  isVariantOnly?: boolean | null;
+  visibleInStorefront?: boolean | null;
+  filterableInStorefront?: boolean | null;
+  filterableInDashboard?: boolean | null;
+  storefrontSearchPosition?: number | null;
+  availableInGrid?: boolean | null;
+}
+
+export interface AttributeFilterInput {
+  valueRequired?: boolean | null;
+  isVariantOnly?: boolean | null;
+  visibleInStorefront?: boolean | null;
+  filterableInStorefront?: boolean | null;
+  filterableInDashboard?: boolean | null;
+  availableInGrid?: boolean | null;
+  search?: string | null;
+  ids?: (string | null)[] | null;
+  inCategory?: string | null;
+}
+
 export interface AttributeInput {
   slug: string;
   values?: (string | null)[] | null;
+}
+
+export interface AttributeSortingInput {
+  direction: OrderDirection;
+  field: AttributeSortField;
+}
+
+export interface AttributeUpdateInput {
+  name?: string | null;
+  slug?: string | null;
+  removeValues?: (string | null)[] | null;
+  addValues?: (AttributeValueCreateInput | null)[] | null;
+  valueRequired?: boolean | null;
+  isVariantOnly?: boolean | null;
+  visibleInStorefront?: boolean | null;
+  filterableInStorefront?: boolean | null;
+  filterableInDashboard?: boolean | null;
+  storefrontSearchPosition?: number | null;
+  availableInGrid?: boolean | null;
+}
+
+export interface AttributeValueCreateInput {
+  name: string;
 }
 
 export interface AttributeValueInput {
@@ -160,6 +259,28 @@ export interface ProductOrder {
   field?: ProductOrderField | null;
 }
 
+export interface ProductTypeFilterInput {
+  search?: string | null;
+  productType?: ProductTypeEnum | null;
+  ids?: (string | null)[] | null;
+}
+
+export interface ProductTypeInput {
+  name?: string | null;
+  slug?: string | null;
+  hasVariants?: boolean | null;
+  productAttributes?: (string | null)[] | null;
+  variantAttributes?: (string | null)[] | null;
+  isShippingRequired?: boolean | null;
+  isDigital?: boolean | null;
+  weight?: any | null;
+}
+
+export interface ProductTypeSortingInput {
+  direction: OrderDirection;
+  field: ProductTypeSortField;
+}
+
 export interface ProductVariantBulkCreateInput {
   attributes?: (AttributeValueInput | null)[] | null;
   costPrice?: any | null;
@@ -188,6 +309,11 @@ export interface ProductVariantInput {
   sku?: string | null;
   weight?: any | null;
   name?: string | null;
+}
+
+export interface ReorderInput {
+  id: string;
+  sortOrder?: number | null;
 }
 
 export interface StockInput {

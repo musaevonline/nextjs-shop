@@ -1,5 +1,6 @@
 import { MutationResult } from "@apollo/client";
 import {ConfirmButtonTransitionState} from "@temp/components/ConfirmButton";
+import {IFilter} from "@temp/components/Filter";
 
 export interface DialogProps {
   open: boolean;
@@ -137,4 +138,45 @@ export interface PartialMutationProviderOutput<
 > {
   opts: MutationResult<TData> & MutationResultAdditionalProps;
   mutate: (variables: TVariables) => void;
+}
+
+export interface SearchProps {
+  onSearchChange: (value: string) => void;
+}
+export interface SearchPageProps extends SearchProps {
+  initialSearch: string;
+}
+
+export interface FilterPageProps<TKeys extends string, TOpts extends object>
+  extends FilterProps<TKeys>,
+    SearchPageProps,
+    TabPageProps {
+  filterOpts: TOpts;
+}
+export interface FilterProps<TKeys extends string> {
+  currencySymbol: string;
+  onFilterChange: (filter: IFilter<TKeys>) => void;
+}
+export interface TabPageProps {
+  currentTab: number;
+  tabs: string[];
+  onAll: () => void;
+  onTabChange: (tab: number) => void;
+  onTabDelete: () => void;
+  onTabSave: () => void;
+}
+
+export type MinMax = Record<"min" | "max", string>;
+
+export type Search = Partial<{
+  query: string;
+}>;
+export interface FilterOpts<T> {
+  active: boolean;
+  value: T;
+}
+
+export enum ProductTypeConfigurable {
+  CONFIGURABLE = "CONFIGURABLE",
+  SIMPLE = "SIMPLE",
 }

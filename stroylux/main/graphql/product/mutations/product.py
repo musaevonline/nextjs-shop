@@ -1,22 +1,22 @@
-import graphene
 from typing import Union, Tuple, List, Iterable
 
+import graphene
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import QuerySet, Q
 from django.utils.text import slugify
 from graphql_relay import from_global_id
 
+from ..utils import create_stocks, validate_attribute_input_for_product, validate_attribute_input_for_variant
+from ...core.mutations import ModelMutation, ModelDeleteMutation, ModelBulkDeleteMutation, BaseBulkMutation
+from ...core.types.common import ProductError
+from ...core.utils import validate_slug_and_generate_if_needed
 from ....core.permissions import ProductPermissions
 from ....product import models
 from ....product.error_codes import ProductErrorCode
-from ..utils import create_stocks, validate_attribute_input_for_product, validate_attribute_input_for_variant
-from ...core.mutations import ModelMutation, ModelDeleteMutation, ModelBulkDeleteMutation, BaseBulkMutation
-from ...core.scalars import Decimal
-from ...core.types.common import ProductError
-from ...core.utils import validate_slug_and_generate_if_needed
 from ....product.tasks import update_product_minimal_variant_price_task
 from ....product.utils.attributes import associate_attribute_values_to_instance
+
 
 class AttributeValueInput(graphene.InputObjectType):
     id = graphene.ID(description="ID of the selected attribute.")

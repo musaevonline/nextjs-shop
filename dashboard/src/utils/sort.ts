@@ -3,6 +3,7 @@
 import { TableCellHeaderArrowDirection } from "../components/TableCellHeader";
 import { Sort } from "../types";
 import { OrderDirection } from "../types/globalTypes";
+import {findValueInEnum, parseBoolean} from "@temp/misc";
 
 export function getSortUrlVariables<TSortKey extends string>(
   field: TSortKey,
@@ -41,26 +42,27 @@ export function getSortParams<
 }
 
 // Appends Sort object to the querystring params
-// export function asSortParams<
-//   TParams extends Record<any, string>,
-//   TFields extends Record<any, string>
-// >(
-//   params: TParams,
-//   fields: TFields,
-//   defaultField?: keyof TFields,
-//   defaultOrder?: boolean
-// ): TParams & Sort {
-//   return {
-//     ...params,
-//     asc: parseBoolean(
-//       params.asc,
-//       defaultOrder === undefined ? true : defaultOrder
-//     ),
-//     sort: params.sort
-//       ? findValueInEnum(params.sort, fields)
-//       : defaultField || "name"
-//   };
-// }
+export function asSortParams<
+  TParams extends Record<any, string>,
+  TFields extends Record<any, string>
+>(
+  params: TParams,
+  fields: TFields,
+  defaultField?: keyof TFields,
+  defaultOrder?: boolean
+): TParams & Sort {
+  // @ts-ignore
+  return {
+    ...params,
+    asc: parseBoolean(
+      params.asc,
+      defaultOrder === undefined ? true : defaultOrder
+    ),
+    sort: params.sort
+      ? findValueInEnum(params.sort, fields)
+      : defaultField || "name"
+  };
+}
 
 interface SortingInput<T extends string> {
   direction: OrderDirection;

@@ -24,6 +24,7 @@ import {
   ProductVariantBulkCreateVariables
 } from "@temp/sections/products/types/ProductVariantBulkCreate";
 import makeMutation from "@temp/hooks/makeMutation";
+import {ProductImageUpdate, ProductImageUpdateVariables} from "@temp/sections/products/types/ProductImageUpdate";
 
 export const bulkProductErrorFragment = gql`
   fragment BulkProductErrorFragment on BulkProductError {
@@ -388,6 +389,25 @@ export const TypedProductImageCreateMutation = TypedMutation<
   ProductImageCreate,
   ProductImageCreateVariables
 >(productImageCreateMutation);
+
+export const productImageUpdateMutation = gql`
+  ${productErrorFragment}
+  ${productFragmentDetails}
+  mutation ProductImageUpdate($id: ID!, $alt: String!) {
+    productImageUpdate(id: $id, input: { alt: $alt }) {
+      errors: productErrors {
+        ...ProductErrorFragment
+      }
+      product {
+        ...Product
+      }
+    }
+  }
+`;
+export const TypedProductImageUpdateMutation = TypedMutation<
+  ProductImageUpdate,
+  ProductImageUpdateVariables
+>(productImageUpdateMutation);
 
 
 

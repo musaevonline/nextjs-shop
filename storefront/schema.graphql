@@ -262,6 +262,28 @@ type Attribute implements Node {
   storefrontSearchPosition: Int!
 }
 
+"""Assign attributes to a given product type."""
+type AttributeAssign {
+  """The updated product type."""
+  productType: ProductType
+  productErrors: [ProductAttributeError!]!
+}
+
+input AttributeAssignInput {
+  """The ID of the attribute to assign."""
+  id: ID!
+
+  """The attribute type to be assigned as."""
+  type: AttributeTypeEnum!
+}
+
+"""Deletes attributes."""
+type AttributeBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  productErrors: [ProductError!]!
+}
+
 type AttributeCountableConnection {
   """Pagination data for this connection."""
   pageInfo: PageInfo!
@@ -354,6 +376,13 @@ enum AttributeInputTypeEnum {
   MULTISELECT
 }
 
+"""Reorder the values of an attribute."""
+type AttributeReorderValues {
+  """Attribute from which values are reordered."""
+  attribute: Attribute
+  productErrors: [ProductError!]!
+}
+
 enum AttributeSortField {
   """Sort attributes by name"""
   NAME
@@ -391,6 +420,18 @@ input AttributeSortingInput {
 
   """Sort attributes by the selected field."""
   field: AttributeSortField!
+}
+
+enum AttributeTypeEnum {
+  PRODUCT
+  VARIANT
+}
+
+"""Un-assign attributes from a given product type."""
+type AttributeUnassign {
+  """The updated product type."""
+  productType: ProductType
+  productErrors: [ProductError!]!
 }
 
 """Updates attribute."""
@@ -1830,6 +1871,39 @@ type Mutation {
     input: AttributeUpdateInput!
   ): AttributeUpdate
 
+  """Deletes attributes."""
+  attributeBulkDelete(
+    """List of attribute IDs to delete."""
+    ids: [ID]!
+  ): AttributeBulkDelete
+
+  """Reorder the values of an attribute."""
+  attributeReorderValues(
+    """ID of an attribute."""
+    attributeId: ID!
+
+    """The list of reordering operations for given attribute values."""
+    moves: [ReorderInput]!
+  ): AttributeReorderValues
+
+  """Assign attributes to a given product type."""
+  attributeAssign(
+    """The operations to perform."""
+    operations: [AttributeAssignInput]!
+
+    """ID of the product type to assign the attributes into."""
+    productTypeId: ID!
+  ): AttributeAssign
+
+  """Un-assign attributes from a given product type."""
+  attributeUnassign(
+    """The IDs of the attributes to assign."""
+    attributeIds: [ID]!
+
+    """ID of the product type to assign the attributes into."""
+    productTypeId: ID!
+  ): AttributeUnassign
+
   """Creates a value for an attribute."""
   attributeValueCreate(
     """Attribute to which value will be assigned."""
@@ -1988,6 +2062,18 @@ type Mutation {
     """Fields required to update a product type."""
     input: ProductTypeInput!
   ): ProductTypeUpdate
+
+  """Reorder the attributes of a product type."""
+  productTypeReorderAttributes(
+    """The list of attribute reordering operations."""
+    moves: [ReorderInput]!
+
+    """ID of a product type."""
+    productTypeId: ID!
+
+    """The attribute type to reorder."""
+    type: AttributeTypeEnum!
+  ): ProductTypeReorderAttributes
 
   """Creates a new variant for a product."""
   productVariantCreate(
@@ -2934,6 +3020,23 @@ type Product implements Node & DjangoPkInterface {
   isAvailable: Boolean
 }
 
+type ProductAttributeError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: ProductErrorCode!
+
+  """List of attributes IDs which causes the error."""
+  attributes: [ID!]
+}
+
 """Deletes products."""
 type ProductBulkDelete {
   """Returns how many objects were affected."""
@@ -3414,6 +3517,14 @@ input ProductTypeInput {
   """
   hasVariants: Boolean
 
+  """List of attributes shared among all product variants."""
+  productAttributes: [ID]
+
+  """
+  List of attributes used to distinguish between different variants of a product.
+  """
+  variantAttributes: [ID]
+
   """Determines if shipping is required for products of this variant."""
   isShippingRequired: Boolean
 
@@ -3422,6 +3533,13 @@ input ProductTypeInput {
 
   """Weight of the Product Variant."""
   weight: WeightScalar
+}
+
+"""Reorder the attributes of a product type."""
+type ProductTypeReorderAttributes {
+  """Product type from which attributes are reordered."""
+  productType: ProductType
+  productErrors: [ProductError!]!
 }
 
 enum ProductTypeSortField {
@@ -4066,6 +4184,14 @@ type Rating {
 type Refresh {
   token: String
   payload: GenericScalar
+}
+
+input ReorderInput {
+  """The ID of the item to move."""
+  id: ID!
+
+  """The new relative sorting position of the item (from -inf to +inf)."""
+  sortOrder: Int
 }
 
 enum ReportingPeriod {

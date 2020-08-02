@@ -4,13 +4,15 @@ import graphene_django_optimizer
 from .filters import ProductFilterInput, CategoryFilterInput, ProductTypeFilterInput, StockFilterInput, \
     AttributeFilterInput, ProductReviewFilterInput
 from .mutations.attributes import AttributeCreate, AttributeDelete, AttributeUpdate, AttributeValueCreate, \
-    AttributeValueDelete, AttributeValueUpdate
+    AttributeValueDelete, AttributeValueUpdate, AttributeBulkDelete, AttributeReorderValues, AttributeAssign, \
+    AttributeUnassign
 from .mutations.category import CategoryCreate, CategoryDelete, CategoryBulkDelete, CategoryUpdate
 from .mutations.product import ProductCreate, ProductDelete, ProductBulkDelete, ProductBulkPublish, ProductUpdate
 from .mutations.product_image import ProductImageCreate, ProductImageDelete, ProductImageReorder, ProductImageUpdate, \
     ProductImageBulkDelete
 from .mutations.product_review import ProductReviewCreate
-from .mutations.product_type import ProductTypeCreate, ProductTypeDelete, ProductTypeBulkDelete, ProductTypeUpdate
+from .mutations.product_type import ProductTypeCreate, ProductTypeDelete, ProductTypeBulkDelete, ProductTypeUpdate, \
+    ProductTypeReorderAttributes
 from .mutations.product_variant import ProductVariantCreate, ProductVariantDelete, ProductVariantBulkDelete, \
     ProductVariantUpdate, ProductVariantBulkCreate, ProductVariantStocksCreate, ProductVariantStocksDelete, \
     ProductVariantStocksUpdate, VariantImageAssign, VariantImageUnassign
@@ -196,6 +198,10 @@ class ProductMutations(graphene.ObjectType):
     attribute_create = AttributeCreate.Field()
     attribute_delete = AttributeDelete.Field()
     attribute_update = AttributeUpdate.Field()
+    attribute_bulk_delete = AttributeBulkDelete.Field()
+    attribute_reorder_values = AttributeReorderValues.Field()
+    attribute_assign = AttributeAssign.Field()
+    attribute_unassign = AttributeUnassign.Field()
 
     attribute_value_create = AttributeValueCreate.Field()
     attribute_value_delete = AttributeValueDelete.Field()
@@ -222,6 +228,7 @@ class ProductMutations(graphene.ObjectType):
     product_type_delete = ProductTypeDelete.Field()
     product_type_bulk_delete = ProductTypeBulkDelete.Field()
     product_type_update = ProductTypeUpdate.Field()
+    product_type_reorder_attributes = ProductTypeReorderAttributes.Field()
 
     product_variant_create = ProductVariantCreate.Field()
     product_variant_delete = ProductVariantDelete.Field()

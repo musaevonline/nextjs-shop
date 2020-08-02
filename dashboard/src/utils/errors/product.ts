@@ -8,20 +8,25 @@ import commonErrorMessages from "./common";
 
 const messages = defineMessages({
   attributeAlreadyAssigned: {
+    id: 'attribute_has_already_exist',
     defaultMessage:
       "This attribute has already been assigned to this product type"
   },
   attributeCannotBeAssigned: {
+    id: 'attribute_cannot_be_assigned',
     defaultMessage: "This attribute cannot be assigned to this product type"
   },
   attributeVariantsDisabled: {
+    id: 'attribute_variants_disabled',
     defaultMessage: "Variants are disabled in this product type"
   },
   skuUnique: {
+    id: 'sku_unique',
     defaultMessage: "SKUs must be unique",
     description: "bulk variant create error"
   },
   variantNoDigitalContent: {
+    id: 'variant_no_digital_content',
     defaultMessage: "This variant does not have any digital content"
   }
 });
@@ -32,18 +37,18 @@ function getProductErrorMessage(
 ): string {
   if (err) {
     switch (err.code) {
-      // case ProductErrorCode.ATTRIBUTE_ALREADY_ASSIGNED:
-      //   return intl.formatMessage(messages.attributeAlreadyAssigned);
-      // case ProductErrorCode.ATTRIBUTE_CANNOT_BE_ASSIGNED:
-      //   return intl.formatMessage(messages.attributeCannotBeAssigned);
-      // case ProductErrorCode.ATTRIBUTE_VARIANTS_DISABLED:
-      //   return intl.formatMessage(messages.attributeVariantsDisabled);
+      case ProductErrorCode.ATTRIBUTE_ALREADY_ASSIGNED:
+        return intl.formatMessage(messages.attributeAlreadyAssigned);
+      case ProductErrorCode.ATTRIBUTE_CANNOT_BE_ASSIGNED:
+        return intl.formatMessage(messages.attributeCannotBeAssigned);
+      case ProductErrorCode.ATTRIBUTE_VARIANTS_DISABLED:
+        return intl.formatMessage(messages.attributeVariantsDisabled);
       case ProductErrorCode.GRAPHQL_ERROR:
         return intl.formatMessage(commonErrorMessages.graphqlError);
       case ProductErrorCode.REQUIRED:
         return intl.formatMessage(formMessages.requiredField);
-      // case ProductErrorCode.VARIANT_NO_DIGITAL_CONTENT:
-      //   return intl.formatMessage(messages.variantNoDigitalContent);
+      case ProductErrorCode.VARIANT_NO_DIGITAL_CONTENT:
+        return intl.formatMessage(messages.variantNoDigitalContent);
       case ProductErrorCode.INVALID:
         return intl.formatMessage(commonErrorMessages.invalid);
       default:

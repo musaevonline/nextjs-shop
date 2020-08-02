@@ -504,6 +504,16 @@ export const sectionNames = defineMessages({
     id:'categories',
     defaultMessage: "Categories",
     description: "categories section name"
+  },
+  attributes: {
+    id:'attributes',
+    defaultMessage: "Attributes",
+    description: "settings section name"
+  },
+  productTypes: {
+    id:'productTypes',
+    defaultMessage: "Product Types",
+    description: "settings section name"
   }
 });
 

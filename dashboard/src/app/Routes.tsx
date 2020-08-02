@@ -19,6 +19,12 @@ import ProductsSectionComponent from "@temp/sections/products";
 import {categoryListPath} from "@temp/sections/categories/urls";
 import CategoriesSectionComponent from "@temp/sections/categories";
 import {PermissionEnum} from "@temp/types/globalTypes";
+import ConfigurationSection, {createConfigurationMenu} from "@temp/configuration";
+import {hasPermission} from "@temp/core/auth/misc";
+import AttributeSection from "@temp/sections/attributes";
+import {attributeSection} from "@temp/sections/attributes/urls";
+import {productTypeListPath} from "@temp/sections/productTypes/urls";
+import ProductTypesSection from "@temp/sections/productTypes";
 
 const Routes: React.FC = () => {
     const intl = useIntl();
@@ -67,7 +73,30 @@ const Routes: React.FC = () => {
                                                   component={ProductsSectionComponent} />
                                     <SectionRoute path={categoryListPath}
                                                   permissions={[PermissionEnum.MANAGE_PRODUCTS]}
-                                                  component={CategoriesSectionComponent} />
+                                                  component={CategoriesSectionComponent}
+                                    />
+
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_PRODUCTS]}
+                                        path={attributeSection}
+                                        component={AttributeSection}
+                                    />
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_PRODUCTS]}
+                                        path={productTypeListPath}
+                                        component={ProductTypesSection}
+                                    />
+                                    {createConfigurationMenu(intl).filter(menu =>
+                                        menu.menuItems.map(item =>
+                                            hasPermission(item.permission, user)
+                                        )
+                                    ).length > 0 && (
+                                        <SectionRoute
+                                            exact
+                                            path="/configuration"
+                                            component={ConfigurationSection}
+                                        />
+                                    )}
                                     <Route component={NotFound} />
                                 </Switch>
                             </ErrorBoundary>
