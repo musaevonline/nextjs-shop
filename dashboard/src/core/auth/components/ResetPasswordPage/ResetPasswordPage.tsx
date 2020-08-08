@@ -2,10 +2,10 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Form from "@temp/components/Form";
 import { commonMessages } from "@temp/intl";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import {useFormik} from "formik";
 
 const useStyles = makeStyles(
     theme => ({
@@ -42,50 +42,55 @@ const ResetPasswordPage: React.FC<ResetPasswordPageProps> = props => {
     const classes = useStyles(props);
     const intl = useIntl();
 
+    const form = useFormik({
+        enableReinitialize: true,
+        initialValues: {email: ""},
+        onSubmit: values => {
+            onSubmit(values);
+        }
+    })
+
     return (
-        <Form initial={{ email: "" }} onSubmit={onSubmit}>
-            {({ change: handleChange, data, submit: handleSubmit }) => (
-                <>
-                    {!!error && (
-                        <div className={classes.panel}>
-                            <Typography variant="caption" className={classes.errorText}>
-                                {error}
-                            </Typography>
-                        </div>
-                    )}
-                    <Typography>
-                        <FormattedMessage id="forgot_password" defaultMessage="Forgot your password? Don't worry, we'll reset it for you." />
-                    </Typography>
-                    <TextField
-                        autoFocus
-                        disabled={disabled}
-                        fullWidth
-                        autoComplete="username"
-                        label={intl.formatMessage(commonMessages.email)}
-                        name="email"
-                        onChange={handleChange}
-                        value={data.email}
-                        inputProps={{
-                            "data-tc": "email"
-                        }}
+        <form onSubmit={form.handleSubmit}>
+            <>
+                {!!error && (
+                    <div className={classes.panel}>
+                        <Typography variant="caption" className={classes.errorText}>
+                            {error}
+                        </Typography>
+                    </div>
+                )}
+                <Typography>
+                    <FormattedMessage id="forgot_password" defaultMessage="Forgot your password? Don't worry, we'll reset it for you." />
+                </Typography>
+                <TextField
+                    autoFocus
+                    disabled={disabled}
+                    fullWidth
+                    autoComplete="username"
+                    label={intl.formatMessage(commonMessages.email)}
+                    name="email"
+                    onChange={form.handleChange}
+                    value={form.values.email}
+                    inputProps={{
+                        "data-tc": "email"
+                    }}
+                />
+                <Button
+                    className={classes.submit}
+                    color="primary"
+                    disabled={disabled}
+                    variant="contained"
+                    type="submit"
+                >
+                    <FormattedMessage
+                        id="send_instructions"
+                        defaultMessage="Send Instructions"
+                        description="password reset, button"
                     />
-                    <Button
-                        className={classes.submit}
-                        color="primary"
-                        disabled={disabled}
-                        variant="contained"
-                        onClick={handleSubmit}
-                        type="submit"
-                    >
-                        <FormattedMessage
-                            id="send_instructions"
-                            defaultMessage="Send Instructions"
-                            description="password reset, button"
-                        />
-                    </Button>
-                </>
-            )}
-        </Form>
+                </Button>
+            </>
+        </form>
     );
 };
 

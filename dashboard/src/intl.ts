@@ -514,6 +514,16 @@ export const sectionNames = defineMessages({
     id:'productTypes',
     defaultMessage: "Product Types",
     description: "settings section name"
+  },
+  staff: {
+    id:'staff',
+    defaultMessage: "Staff",
+    description: "settings section name"
+  },
+  permissionGroups: {
+    id:'permission_groups',
+    defaultMessage: "Permission groups",
+    description: "settings section name"
   }
 });
 

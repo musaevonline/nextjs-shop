@@ -135,20 +135,20 @@ class Shop(graphene.ObjectType):
 
     @staticmethod
     def resolve_include_taxes_in_prices(_, info):
-        return info.context.site.settings.include_taxes_in_prices
-
+        # return info.context.site.settings.include_taxes_in_prices
+        return True
     @staticmethod
     def resolve_display_gross_prices(_, info):
-        return info.context.site.settings.display_gross_prices
-
+        # return info.context.site.settings.display_gross_prices
+        return True
     @staticmethod
     def resolve_charge_taxes_on_shipping(_, info):
         return info.context.site.settings.charge_taxes_on_shipping
 
     @staticmethod
     def resolve_track_inventory_by_default(_, info):
-        return info.context.site.settings.track_inventory_by_default
-
+        # return info.context.site.settings.track_inventory_by_default
+        return True
     @staticmethod
     def resolve_default_weight_unit(_, info):
         return info.context.site.settings.default_weight_unit

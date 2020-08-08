@@ -4,7 +4,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import Form from "@temp/components/Form";
 import { FormSpacer } from "@temp/components/FormSpacer";
 import ListField from "@temp/components/ListField";
 import { buttonMessages } from "@temp/intl";
@@ -12,6 +11,7 @@ import { UserError } from "@temp/types";
 import { getFieldError } from "@temp/utils/errors";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import {useFormik} from "formik";
 
 export interface FormData {
   name: string;
@@ -51,10 +51,15 @@ const ProductTypeAttributeEditDialog: React.FC<ProductTypeAttributeEditDialogPro
     name: name || "",
     values: values || []
   };
+  const form = useFormik({
+    enableReinitialize: true,
+    initialValues: initialForm,
+    onSubmit: onConfirm
+  })
+
   return (
     <Dialog onClose={onClose} open={opened}>
-      <Form initial={initialForm} onSubmit={onConfirm}>
-        {({ change, data }) => (
+      <form onSubmit={form.handleSubmit}>
           <>
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
@@ -67,8 +72,8 @@ const ProductTypeAttributeEditDialog: React.FC<ProductTypeAttributeEditDialogPro
                 })}
                 helperText={getFieldError(errors, "name")?.message}
                 name="name"
-                value={data.name}
-                onChange={change}
+                value={form.values.name}
+                onChange={form.handleChange}
               />
               <FormSpacer />
               <ListField
@@ -89,8 +94,8 @@ const ProductTypeAttributeEditDialog: React.FC<ProductTypeAttributeEditDialogPro
                   getFieldError(errors, "addValues") ||
                   getFieldError(errors, "removeValues")
                 }
-                values={data.values}
-                onChange={change}
+                values={form.values.values}
+                onChange={form.handleChange}
               />
             </DialogContent>
             <DialogActions>
@@ -102,8 +107,7 @@ const ProductTypeAttributeEditDialog: React.FC<ProductTypeAttributeEditDialogPro
               </Button>
             </DialogActions>
           </>
-        )}
-      </Form>
+      </form>
     </Dialog>
   );
 };

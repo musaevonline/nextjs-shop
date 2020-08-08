@@ -51,3 +51,8 @@ def one_of_permissions_required(perms: Iterable[Enum]):
         return False
 
     return account_passes_test(check_perms)
+
+
+staff_member_required = account_passes_test(
+    lambda context: context.user.is_active and context.user.is_staff
+)

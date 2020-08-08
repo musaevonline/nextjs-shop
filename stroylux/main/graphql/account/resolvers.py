@@ -6,7 +6,17 @@ import graphene_django_optimizer as gql_optimizer
 from main.account import models
 from main.core.permissions import AccountPermissions
 from main.graphql.account.utils import get_user_permissions
-from main.graphql.utils import format_permissions_for_display
+from main.graphql.utils import format_permissions_for_display, filter_by_query_param
+
+USER_SEARCH_FIELDS = (
+    "email",
+    "first_name",
+    "last_name",
+    "default_shipping_address__first_name",
+    "default_shipping_address__last_name",
+    "default_shipping_address__city",
+    "default_shipping_address__country",
+)
 
 
 def resolve_permissions(root: models.User):
@@ -32,7 +42,7 @@ def resolve_permission_groups(info, **_kwargs):
 
 
 def resolve_user(info, id):
-    requester = info.user
+    requester = info.context.user
     if requester:
         _model, user_pk = graphene.Node.from_global_id(id)
         if requester.has_perms(
@@ -44,3 +54,11 @@ def resolve_user(info, id):
         if requester.has_perm(AccountPermissions.MANAGE_USERS):
             return models.User.objects.customers().filter(pk=user_pk).first()
     return PermissionDenied()
+
+
+def resolve_staff_users(info, query, **_kwargs):
+    qs = models.User.objects.staff()
+    qs = filter_by_query_param(
+        queryset=qs, query=query, search_fields=USER_SEARCH_FIELDS
+    )
+    return qs.distinct()

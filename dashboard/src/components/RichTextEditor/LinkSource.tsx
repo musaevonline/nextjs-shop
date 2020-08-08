@@ -8,8 +8,7 @@ import {buttonMessages, formMessages} from "@temp/intl";
 import { EditorState, EntityInstance, RichUtils } from "draft-js";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-
-import Form from "../Form";
+import {useFormik} from "formik";
 
 interface LinkSourceProps {
   editorState: EditorState;
@@ -22,12 +21,12 @@ interface LinkSourceProps {
 }
 
 const LinkSource: React.FC<LinkSourceProps> = ({
-  editorState,
-  entity,
-  entityType,
-  onComplete,
-  onClose
-}) => {
+                                                 editorState,
+                                                 entity,
+                                                 entityType,
+                                                 onComplete,
+                                                 onClose
+                                               }) => {
   const intl = useIntl();
   const initial = entity ? entity.getData().url : "";
 
@@ -35,18 +34,18 @@ const LinkSource: React.FC<LinkSourceProps> = ({
     if (url) {
       const content = editorState.getCurrentContent();
       const contentWithEntity = content.createEntity(
-        entityType.type,
-        "MUTABLE",
-        { url }
+          entityType.type,
+          "MUTABLE",
+          { url }
       );
       const entityKey = contentWithEntity.getLastCreatedEntityKey();
       const newEditorState = EditorState.set(editorState, {
         currentContent: contentWithEntity
       });
       const nextState = RichUtils.toggleLink(
-        newEditorState,
-        newEditorState.getSelection(),
-        entityKey
+          newEditorState,
+          newEditorState.getSelection(),
+          entityKey
       );
 
       onComplete(nextState);
@@ -55,40 +54,41 @@ const LinkSource: React.FC<LinkSourceProps> = ({
     }
   };
 
+  const form = useFormik({
+    enableReinitialize: true,
+    initialValues: {url: initial},
+    onSubmit: values => {
+      handleSubmit(values.url)
+    }
+  })
+
   return (
-    <Dialog onClose={onClose} open={true} fullWidth maxWidth="sm">
-      <Form
-        initial={{ url: initial }}
-        onSubmit={({ url }) => handleSubmit(url)}
-      >
-        {({ data, change, submit }) => (
-          <>
-            <DialogTitle>
-              <FormattedMessage {...buttonMessages.addOrEditLink}
-                description="button"
-              />
-            </DialogTitle>
-            <DialogContent>
-              <TextField
+      <Dialog onClose={onClose} open={true} fullWidth maxWidth="sm">
+        <form onSubmit={form.handleSubmit}>
+          <DialogTitle>
+            <FormattedMessage {...buttonMessages.addOrEditLink}
+                              description="button"
+            />
+          </DialogTitle>
+          <DialogContent>
+            <TextField
                 name="url"
                 fullWidth
                 label={intl.formatMessage(formMessages.urlLinked)}
-                value={data.url}
-                onChange={change}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={onClose}>
-                <FormattedMessage {...buttonMessages.cancel} />
-              </Button>
-              <Button onClick={submit} color="primary" variant="contained">
-                <FormattedMessage {...buttonMessages.save} />
-              </Button>
-            </DialogActions>
-          </>
-        )}
-      </Form>
-    </Dialog>
+                value={form.values.url}
+                onChange={form.handleChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose}>
+              <FormattedMessage {...buttonMessages.cancel} />
+            </Button>
+            <Button type="submit" color="primary" variant="contained">
+              <FormattedMessage {...buttonMessages.save} />
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
   );
 };
 

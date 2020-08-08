@@ -12,6 +12,10 @@ import Attributes from "@temp/icons/Attributes";
 import ProductTypes from "@temp/icons/ProductTypes";
 import {attributeListUrl} from "@temp/sections/attributes/urls";
 import {productTypeListUrl} from "@temp/sections/productTypes/urls";
+import StaffMembers from "@temp/icons/StaffMembers";
+import {staffListUrl} from "@temp/sections/staff/urls";
+import PermissionGroups from "@temp/icons/PermissionGroups";
+import {permissionGroupListUrl} from "@temp/sections/permissionGroups/urls";
 
 export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
   return [
@@ -39,6 +43,34 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
           permission: PermissionEnum.MANAGE_PRODUCTS,
           title: intl.formatMessage(sectionNames.productTypes),
           url: productTypeListUrl()
+        }
+      ]
+    },
+        {
+      label: intl.formatMessage({id: "staff_settings",
+        defaultMessage: "Staff Settings"
+      }),
+      menuItems: [
+        {
+          description: intl.formatMessage({
+            defaultMessage: "Manage your employees and their permissions",
+            id: "configurationMenuStaff"
+          }),
+          icon: <StaffMembers fontSize="inherit" viewBox="0 0 44 44" />,
+          permission: PermissionEnum.MANAGE_STAFF,
+          title: intl.formatMessage(sectionNames.staff),
+          url: staffListUrl()
+        },
+        {
+          description: intl.formatMessage({
+            defaultMessage:
+              "Manage your permission groups and their permissions",
+            id: "configurationMenuPermissionGroups"
+          }),
+          icon: <PermissionGroups fontSize="inherit" viewBox="0 0 44 44" />,
+          permission: PermissionEnum.MANAGE_STAFF,
+          title: intl.formatMessage(sectionNames.permissionGroups),
+          url: permissionGroupListUrl()
         }
       ]
     },

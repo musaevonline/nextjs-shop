@@ -71,3 +71,6 @@ ShippingErrorCode = graphene.Enum.from_enum(shipping_error_codes.ShippingErrorCo
 PaymentErrorCode = graphene.Enum.from_enum(payment_error_codes.PaymentErrorCode)
 CheckoutErrorCode = graphene.Enum.from_enum(checkout_error_codes.CheckoutErrorCode)
 OrderErrorCode = graphene.Enum.from_enum(order_error_codes.OrderErrorCode)
+PermissionGroupErrorCode = graphene.Enum.from_enum(
+    account_error_codes.PermissionGroupErrorCode
+)

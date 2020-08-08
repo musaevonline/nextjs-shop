@@ -36,6 +36,7 @@ import ResponsiveDrawer from "./ResponsiveDrawer";
 import ThemeSwitch from "./ThemeSwitch";
 import {createConfigurationMenu} from "@temp/configuration";
 import {buttonMessages} from "@temp/intl";
+import {staffMemberDetailsUrl} from "@temp/sections/staff/urls";
 
 const useStyles = makeStyles(
     theme => ({
@@ -345,9 +346,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
     const handleViewerProfile = () => {
         setMenuState(false);
-        /* FIXME */
-        // navigate(staffMemberDetailsUrl(user.id));
-        navigate('/staffmembers/url/')
+        navigate(staffMemberDetailsUrl(user.id));
     };
 
     const handleMenuItemClick = (url: string, event: React.MouseEvent<any>) => {

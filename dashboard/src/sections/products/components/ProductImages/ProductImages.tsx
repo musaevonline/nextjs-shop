@@ -160,8 +160,8 @@ const ImageListContainer = SortableContainer<ImageListContainerProps>(
       ))}
       {preview
         .sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1))
-        .map(image => (
-          <ImageTile loading={true} image={image} />
+        .map((image, i) => (
+          <ImageTile loading={true} image={image} key={i} />
         ))}
     </div>
   )

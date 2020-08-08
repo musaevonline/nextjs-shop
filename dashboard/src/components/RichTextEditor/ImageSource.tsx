@@ -9,7 +9,7 @@ import { AtomicBlockUtils, EditorState, EntityInstance } from "draft-js";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import Form from "../Form";
+import {useFormik} from "formik";
 
 interface ImageSourceProps {
   editorState: EditorState;
@@ -63,15 +63,18 @@ const ImageSource: React.FC<ImageSourceProps> = ({
       onComplete(editorState);
     }
   };
-
+  const form = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      href: initial
+    },
+    onSubmit: values => {
+      handleSubmit(values.href)
+    }
+  })
   return (
     <Dialog onClose={onClose} open={true} fullWidth maxWidth="sm">
-      <Form
-        initial={{ href: initial }}
-        onSubmit={({ href }) => handleSubmit(href)}
-      >
-        {({ data, change, submit }) => (
-          <>
+      <form onSubmit={form.handleSubmit}>
             <DialogTitle>
               <FormattedMessage {...commonMessages.addImageLinkTitle}/>
             </DialogTitle>
@@ -80,21 +83,19 @@ const ImageSource: React.FC<ImageSourceProps> = ({
                 name="href"
                 fullWidth
                 label={intl.formatMessage(formMessages.imageUrl)}
-                value={data.href}
-                onChange={change}
+                value={form.values.href}
+                onChange={form.handleChange}
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={onClose}>
                 <FormattedMessage {...buttonMessages.cancel} />
               </Button>
-              <Button onClick={submit} color="primary" variant="contained">
+              <Button type="submit" color="primary" variant="contained">
                 <FormattedMessage {...buttonMessages.save} />
               </Button>
             </DialogActions>
-          </>
-        )}
-      </Form>
+      </form>
     </Dialog>
   );
 };

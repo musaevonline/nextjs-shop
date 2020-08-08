@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
     Permission,
     PermissionsMixin,
 )
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.db.models import Q
 from django.forms.models import model_to_dict
@@ -12,8 +13,11 @@ from django_countries.fields import Country, CountryField
 from phonenumber_field.modelfields import PhoneNumber, PhoneNumberField
 from versatileimagefield.fields import VersatileImageField
 
+from . import CustomerEvents
 from .validators import validate_possible_number
+from .. import settings
 from ..core.permissions import AccountPermissions, BasePermissionEnum
+from ..core.utils.json_serializer import CustomJsonEncoder
 
 
 class PossiblePhoneNumberField(PhoneNumberField):
@@ -69,9 +73,10 @@ class Address(models.Model):
         """Return a new instance of the same address."""
         return Address.objects.create(**self.as_data())
 
+
 class UserManager(BaseUserManager):
     def create_user(
-        self, email, password=None, is_staff=False, is_active=True, **extra_fields
+            self, email, password=None, is_staff=False, is_active=True, **extra_fields
     ):
         """Create a user instance with the given email and password."""
         email = UserManager.normalize_email(email)
@@ -141,6 +146,62 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     def has_perm(self, perm: BasePermissionEnum, obj=None):  # type: ignore
         # This method is overridden to accept perm as BasePermissionEnum
-        if isinstance(perm, str) :
+        if isinstance(perm, str):
             return super().has_perm(perm, obj)
         return super().has_perm(perm.value, obj)
+
+
+class CustomerNote(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL
+    )
+    date = models.DateTimeField(db_index=True, auto_now_add=True)
+    content = models.TextField()
+    is_public = models.BooleanField(default=True)
+    customer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="notes", on_delete=models.CASCADE
+    )
+
+    class Meta:
+        ordering = ("date",)
+
+
+class CustomerEvent(models.Model):
+    """Model used to store events that happened during the customer lifecycle."""
+
+    date = models.DateTimeField(default=timezone.now, editable=False)
+    type = models.CharField(
+        max_length=255,
+        choices=[
+            (type_name.upper(), type_name) for type_name, _ in CustomerEvents.CHOICES
+        ],
+    )
+
+    order = models.ForeignKey("order.Order", on_delete=models.SET_NULL, null=True)
+    parameters = JSONField(blank=True, default=dict, encoder=CustomJsonEncoder)
+
+    user = models.ForeignKey(User, related_name="events", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ("date",)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(type={self.type!r}, user={self.user!r})"
+
+
+class StaffNotificationRecipient(models.Model):
+    user = models.OneToOneField(
+        User,
+        related_name="staff_notification",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    staff_email = models.EmailField(unique=True, blank=True, null=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("staff_email",)
+
+    def get_email(self):
+        return self.user.email if self.user else self.staff_email

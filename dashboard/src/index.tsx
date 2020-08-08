@@ -19,6 +19,7 @@ import {ApolloClient, ApolloLink, ApolloProvider, defaultDataIdFromObject, InMem
 import {ErrorResponse, onError} from "@apollo/client/link/error";
 import {setContext} from "@apollo/client/link/context";
 import {relayStylePagination} from "@apollo/client/utilities";
+import {ShopProvider} from "@temp/components/Shop";
 
 interface ResponseError extends ErrorResponse {
   networkError?: Error & {
@@ -98,7 +99,9 @@ const App: React.FC = hot(module)(() => {
                 <QueryParamProvider ReactRouterRoute={Route}>
                   <MessageManager>
                     <AppStateProvider>
-                      <Routes />
+                      <ShopProvider>
+                        <Routes />
+                      </ShopProvider>
                     </AppStateProvider>
                   </MessageManager>
                 </QueryParamProvider>

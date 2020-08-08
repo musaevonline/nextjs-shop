@@ -5,7 +5,7 @@ from graphene_federation import key
 import graphene_django_optimizer as gql_optimizer
 
 from .enums import CountryCodeEnum
-from .utils import can_user_manage_group
+from .utils import can_user_manage_group, get_groups_which_user_can_manage
 from ..checkout.types import Checkout
 from ..core.connection import DjangoPkInterface
 from ..core.types import CountryDisplay, Permission
@@ -59,6 +59,10 @@ class User(CountableDjangoObjectType):
             description="List of user's permission groups.",
         ),
         model_field="groups",
+    )
+    editable_groups = graphene.List(
+        "main.graphql.account.types.Group",
+        description="List of user's permission groups which user can manage.",
     )
     avatar = graphene.Field(Image, size=graphene.Int(description="Size of the avatar."))
 
@@ -115,6 +119,10 @@ class User(CountableDjangoObjectType):
                 rendition_key_set="user_avatars",
                 info=info,
             )
+
+    @staticmethod
+    def resolve_editable_groups(root: models.User, _info, **_kwargs):
+        return get_groups_which_user_can_manage(root)
 
     @staticmethod
     def __resolve_reference(root, _info, **_kwargs):

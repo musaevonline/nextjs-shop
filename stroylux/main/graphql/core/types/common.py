@@ -9,7 +9,7 @@ from ..enums import (
     ShippingErrorCode,
     PaymentErrorCode,
     CheckoutErrorCode,
-    OrderErrorCode
+    OrderErrorCode, PermissionGroupErrorCode
 )
 
 
@@ -163,3 +163,35 @@ class CheckoutError(Error):
 
 class OrderError(Error):
     code = OrderErrorCode(description="The error code.", required=True)
+
+
+class StaffError(AccountError):
+    permissions = graphene.List(
+        graphene.NonNull(PermissionEnum),
+        description="List of permissions which causes the error.",
+        required=False,
+    )
+    groups = graphene.List(
+        graphene.NonNull(graphene.ID),
+        description="List of permission group IDs which cause the error.",
+        required=False,
+    )
+    users = graphene.List(
+        graphene.NonNull(graphene.ID),
+        description="List of user IDs which causes the error.",
+        required=False,
+    )
+
+
+class PermissionGroupError(Error):
+    code = PermissionGroupErrorCode(description="The error code.", required=True)
+    permissions = graphene.List(
+        graphene.NonNull(PermissionEnum),
+        description="List of permissions which causes the error.",
+        required=False,
+    )
+    users = graphene.List(
+        graphene.NonNull(graphene.ID),
+        description="List of user IDs which causes the error.",
+        required=False,
+    )

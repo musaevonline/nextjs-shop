@@ -100,6 +100,24 @@ export enum PermissionEnum {
 /**
  * An enumeration.
  */
+export enum PermissionGroupErrorCode {
+  ASSIGN_NON_STAFF_MEMBER = "ASSIGN_NON_STAFF_MEMBER",
+  CANNOT_REMOVE_FROM_LAST_GROUP = "CANNOT_REMOVE_FROM_LAST_GROUP",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
+  LEFT_NOT_MANAGEABLE_PERMISSION = "LEFT_NOT_MANAGEABLE_PERMISSION",
+  OUT_OF_SCOPE_PERMISSION = "OUT_OF_SCOPE_PERMISSION",
+  OUT_OF_SCOPE_USER = "OUT_OF_SCOPE_USER",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+export enum PermissionGroupSortField {
+  NAME = "NAME",
+}
+
+/**
+ * An enumeration.
+ */
 export enum ProductErrorCode {
   ALREADY_EXISTS = "ALREADY_EXISTS",
   ATTRIBUTE_ALREADY_ASSIGNED = "ATTRIBUTE_ALREADY_ASSIGNED",
@@ -133,6 +151,11 @@ export enum ProductTypeSortField {
   SHIPPING_REQUIRED = "SHIPPING_REQUIRED",
 }
 
+export enum StaffMemberStatus {
+  ACTIVE = "ACTIVE",
+  DEACTIVATED = "DEACTIVATED",
+}
+
 /**
  * An enumeration.
  */
@@ -143,6 +166,13 @@ export enum StockErrorCode {
   NOT_FOUND = "NOT_FOUND",
   REQUIRED = "REQUIRED",
   UNIQUE = "UNIQUE",
+}
+
+export enum UserSortField {
+  EMAIL = "EMAIL",
+  FIRST_NAME = "FIRST_NAME",
+  LAST_NAME = "LAST_NAME",
+  ORDER_COUNT = "ORDER_COUNT",
 }
 
 /**
@@ -238,6 +268,29 @@ export interface CategorySortingInput {
   field: CategorySortField;
 }
 
+export interface PermissionGroupCreateInput {
+  addPermissions?: PermissionEnum[] | null;
+  addUsers?: string[] | null;
+  name: string;
+}
+
+export interface PermissionGroupFilterInput {
+  search?: string | null;
+}
+
+export interface PermissionGroupSortingInput {
+  direction: OrderDirection;
+  field: PermissionGroupSortField;
+}
+
+export interface PermissionGroupUpdateInput {
+  addPermissions?: PermissionEnum[] | null;
+  addUsers?: string[] | null;
+  name?: string | null;
+  removePermissions?: PermissionEnum[] | null;
+  removeUsers?: string[] | null;
+}
+
 export interface PriceRangeInput {
   gte?: number | null;
   lte?: number | null;
@@ -316,9 +369,39 @@ export interface ReorderInput {
   sortOrder?: number | null;
 }
 
+export interface StaffCreateInput {
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  isActive?: boolean | null;
+  note?: string | null;
+  addGroups?: string[] | null;
+  redirectUrl?: string | null;
+}
+
+export interface StaffUpdateInput {
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  isActive?: boolean | null;
+  note?: string | null;
+  addGroups?: string[] | null;
+  removeGroups?: string[] | null;
+}
+
+export interface StaffUserInput {
+  status?: StaffMemberStatus | null;
+  search?: string | null;
+}
+
 export interface StockInput {
   quantity?: number | null;
   id?: string | null;
+}
+
+export interface UserSortingInput {
+  direction: OrderDirection;
+  field: UserSortField;
 }
 
 //==============================================================

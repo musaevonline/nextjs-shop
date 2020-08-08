@@ -1,12 +1,14 @@
 import graphene
 
-from .filters import PermissionGroupFilter
+from .filters import PermissionGroupFilter, StaffUserFilter
 from .mutations.account import RequestEmailChange, ConfirmEmailChange, AccountAddressCreate, AccountAddressUpdate, \
     AccountAddressDelete, AccountSetDefaultAddress, AccountRegister, AccountUpdate, AccountRequestDeletion, \
     AccountDelete
 from .mutations.base import RequestPasswordReset, ConfirmAccount, SetPassword, PasswordChange
-from .resolvers import resolve_address, resolve_permission_groups, resolve_user
-from .sorters import PermissionGroupSortingInput
+from .mutations.permission_group import PermissionGroupCreate, PermissionGroupUpdate, PermissionGroupDelete
+from .mutations.staff import StaffCreate, StaffUpdate, StaffDelete, UserAvatarDelete, UserAvatarUpdate
+from .resolvers import resolve_address, resolve_permission_groups, resolve_user, resolve_staff_users
+from .sorters import PermissionGroupSortingInput, UserSortingInput
 from .types import User, Address, Group
 from ..core.fields import FilterInputConnectionField
 from ..core.types import FilterInputObjectType
@@ -17,6 +19,11 @@ from ...core.permissions import AccountPermissions
 class PermissionGroupFilterInput(FilterInputObjectType):
     class Meta:
         filterset_class = PermissionGroupFilter
+
+
+class StaffUserInput(FilterInputObjectType):
+    class Meta:
+        filterset_class = StaffUserFilter
 
 
 class AccountQueries(graphene.ObjectType):
@@ -44,6 +51,13 @@ class AccountQueries(graphene.ObjectType):
         description="Look up permission group by ID.",
     )
 
+    staff_users = FilterInputConnectionField(
+        User,
+        filter=StaffUserInput(description="Filtering options for staff users."),
+        sort_by=UserSortingInput(description="Sort staff users."),
+        description="List of the shop's staff users.",
+    )
+
     user = graphene.Field(
         User,
         id=graphene.Argument(graphene.ID, description="ID of the user.", required=True),
@@ -66,6 +80,10 @@ class AccountQueries(graphene.ObjectType):
     @permission_required(AccountPermissions.MANAGE_STAFF)
     def resolve_permission_group(self, info, id):
         return graphene.Node.get_node_from_global_id(info, id, Group)
+
+    @permission_required(AccountPermissions.MANAGE_STAFF)
+    def resolve_staff_users(self, info, query=None, **kwargs):
+        return resolve_staff_users(info, query=query, **kwargs)
 
     @one_of_permissions_required(
         [AccountPermissions.MANAGE_STAFF, AccountPermissions.MANAGE_USERS]
@@ -93,3 +111,16 @@ class AccountMutations(graphene.ObjectType):
     account_update = AccountUpdate.Field()
     account_request_deletion = AccountRequestDeletion.Field()
     account_delete = AccountDelete.Field()
+
+    staff_create = StaffCreate.Field()
+    staff_update = StaffUpdate.Field()
+    staff_delete = StaffDelete.Field()
+    # staff_bulk_delete = StaffBulkDelete.Field()
+
+    user_avatar_update = UserAvatarUpdate.Field()
+    user_avatar_delete = UserAvatarDelete.Field()
+
+    # Permission group mutations
+    permission_group_create = PermissionGroupCreate.Field()
+    permission_group_update = PermissionGroupUpdate.Field()
+    permission_group_delete = PermissionGroupDelete.Field()

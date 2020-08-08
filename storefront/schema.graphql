@@ -2284,6 +2284,61 @@ type Mutation {
     token: String!
   ): AccountDelete
 
+  """Creates a new staff user."""
+  staffCreate(
+    """Fields required to create a staff user."""
+    input: StaffCreateInput!
+  ): StaffCreate
+
+  """Updates an existing staff user."""
+  staffUpdate(
+    """ID of a staff user to update."""
+    id: ID!
+
+    """Fields required to update a staff user."""
+    input: StaffUpdateInput!
+  ): StaffUpdate
+
+  """Deletes a staff user."""
+  staffDelete(
+    """ID of a staff user to delete."""
+    id: ID!
+  ): StaffDelete
+
+  """
+  Create a user avatar. Only for staff members. This mutation must be sent as a
+  `multipart` request. More detailed specs of the upload format can be found
+  here: https://github.com/jaydenseric/graphql-multipart-request-spec
+  """
+  userAvatarUpdate(
+    """Represents an image file in a multipart request."""
+    image: Upload!
+  ): UserAvatarUpdate
+
+  """Deletes a user avatar. Only for staff members."""
+  userAvatarDelete: UserAvatarDelete
+
+  """Create new permission group."""
+  permissionGroupCreate(
+    """Input fields to create permission group."""
+    input: PermissionGroupCreateInput!
+  ): PermissionGroupCreate
+
+  """Update permission group."""
+  permissionGroupUpdate(
+    """ID of the group to update."""
+    id: ID!
+
+    """Input fields to create permission group."""
+    input: PermissionGroupUpdateInput!
+  ): PermissionGroupUpdate
+
+  """Delete permission group."""
+  permissionGroupDelete(
+    """ID of the group to delete."""
+    id: ID!
+  ): PermissionGroupDelete
+
   """
   Mutation that authenticates a user and returns token and user data.
   It overrides the default graphql_jwt.ObtainJSONWebToken to wrap potential
@@ -2921,6 +2976,61 @@ enum PermissionEnum {
   MANAGE_CHECKOUTS
 }
 
+"""Create new permission group."""
+type PermissionGroupCreate {
+  permissionGroupErrors: [PermissionGroupError!]!
+  group: Group
+}
+
+input PermissionGroupCreateInput {
+  """List of permission code names to assign to this group."""
+  addPermissions: [PermissionEnum!]
+
+  """List of users to assign to this group."""
+  addUsers: [ID!]
+
+  """Group name."""
+  name: String!
+}
+
+"""Delete permission group."""
+type PermissionGroupDelete {
+  permissionGroupErrors: [PermissionGroupError!]!
+  group: Group
+}
+
+type PermissionGroupError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: PermissionGroupErrorCode!
+
+  """List of permissions which causes the error."""
+  permissions: [PermissionEnum!]
+
+  """List of user IDs which causes the error."""
+  users: [ID!]
+}
+
+"""An enumeration."""
+enum PermissionGroupErrorCode {
+  ASSIGN_NON_STAFF_MEMBER
+  DUPLICATED_INPUT_ITEM
+  CANNOT_REMOVE_FROM_LAST_GROUP
+  LEFT_NOT_MANAGEABLE_PERMISSION
+  OUT_OF_SCOPE_PERMISSION
+  OUT_OF_SCOPE_USER
+  REQUIRED
+  UNIQUE
+}
+
 input PermissionGroupFilterInput {
   search: String
 }
@@ -2936,6 +3046,29 @@ input PermissionGroupSortingInput {
 
   """Sort permission group by the selected field."""
   field: PermissionGroupSortField!
+}
+
+"""Update permission group."""
+type PermissionGroupUpdate {
+  permissionGroupErrors: [PermissionGroupError!]!
+  group: Group
+}
+
+input PermissionGroupUpdateInput {
+  """List of permission code names to assign to this group."""
+  addPermissions: [PermissionEnum!]
+
+  """List of users to assign to this group."""
+  addUsers: [ID!]
+
+  """Group name."""
+  name: String
+
+  """List of permission code names to unassign from this group."""
+  removePermissions: [PermissionEnum!]
+
+  """List of users to unassign from this group."""
+  removeUsers: [ID!]
 }
 
 input PriceRangeInput {
@@ -4163,6 +4296,27 @@ type Query {
     id: ID!
   ): Group
 
+  """List of the shop's staff users."""
+  staffUsers(
+    """Filtering options for staff users."""
+    filter: StaffUserInput
+
+    """Sort staff users."""
+    sortBy: UserSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): UserCountableConnection
+
   """Look up a user by ID."""
   user(
     """ID of the user."""
@@ -4412,6 +4566,105 @@ type Shop {
   customerSetPasswordUrl: String
 }
 
+"""Creates a new staff user."""
+type StaffCreate {
+  staffErrors: [StaffError!]!
+  user: User
+}
+
+input StaffCreateInput {
+  """Given name."""
+  firstName: String
+
+  """Family name."""
+  lastName: String
+
+  """The unique email address of the user."""
+  email: String
+
+  """User account is active."""
+  isActive: Boolean
+
+  """A note about the user."""
+  note: String
+
+  """List of permission group IDs to which user should be assigned."""
+  addGroups: [ID!]
+
+  """
+  URL of a view where users should be redirected to set the password. URL in RFC 1808 format.
+  """
+  redirectUrl: String
+}
+
+"""Deletes a staff user."""
+type StaffDelete {
+  staffErrors: [StaffError!]!
+  user: User
+}
+
+type StaffError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: AccountErrorCode!
+
+  """List of permissions which causes the error."""
+  permissions: [PermissionEnum!]
+
+  """List of permission group IDs which cause the error."""
+  groups: [ID!]
+
+  """List of user IDs which causes the error."""
+  users: [ID!]
+}
+
+enum StaffMemberStatus {
+  ACTIVE
+  DEACTIVATED
+}
+
+"""Updates an existing staff user."""
+type StaffUpdate {
+  staffErrors: [StaffError!]!
+  user: User
+}
+
+input StaffUpdateInput {
+  """Given name."""
+  firstName: String
+
+  """Family name."""
+  lastName: String
+
+  """The unique email address of the user."""
+  email: String
+
+  """User account is active."""
+  isActive: Boolean
+
+  """A note about the user."""
+  note: String
+
+  """List of permission group IDs to which user should be assigned."""
+  addGroups: [ID!]
+
+  """List of permission group IDs from which user should be unassigned."""
+  removeGroups: [ID!]
+}
+
+input StaffUserInput {
+  status: StaffMemberStatus
+  search: String
+}
+
 """Represents stock."""
 type Stock implements Node {
   productVariant: ProductVariant!
@@ -4607,10 +4860,48 @@ type User implements Node & DjangoPkInterface {
 
   """List of user's permission groups."""
   permissionGroups: [Group]
+
+  """List of user's permission groups which user can manage."""
+  editableGroups: [Group]
   avatar(
     """Size of the avatar."""
     size: Int
   ): Image
+}
+
+"""Deletes a user avatar. Only for staff members."""
+type UserAvatarDelete {
+  """An updated user instance."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
+"""
+Create a user avatar. Only for staff members. This mutation must be sent as a
+`multipart` request. More detailed specs of the upload format can be found here:
+https://github.com/jaydenseric/graphql-multipart-request-spec
+"""
+type UserAvatarUpdate {
+  """An updated user instance."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
+type UserCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [UserCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type UserCountableEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
 }
 
 type UserPermission {
@@ -4625,6 +4916,28 @@ type UserPermission {
     """ID of user whose groups should be returned."""
     userId: ID!
   ): [Group!]
+}
+
+enum UserSortField {
+  """Sort users by first name."""
+  FIRST_NAME
+
+  """Sort users by last name."""
+  LAST_NAME
+
+  """Sort users by email."""
+  EMAIL
+
+  """Sort users by order count."""
+  ORDER_COUNT
+}
+
+input UserSortingInput {
+  """Specifies the direction in which to sort products."""
+  direction: OrderDirection!
+
+  """Sort users by the selected field."""
+  field: UserSortField!
 }
 
 """

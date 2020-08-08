@@ -25,6 +25,10 @@ import AttributeSection from "@temp/sections/attributes";
 import {attributeSection} from "@temp/sections/attributes/urls";
 import {productTypeListPath} from "@temp/sections/productTypes/urls";
 import ProductTypesSection from "@temp/sections/productTypes";
+import {staffListPath} from "@temp/sections/staff/urls";
+import {permissionGroupListPath} from "@temp/sections/permissionGroups/urls";
+import StaffSection from "../sections/staff";
+import PermissionGroupSection from "../sections/permissionGroups";
 
 const Routes: React.FC = () => {
     const intl = useIntl();
@@ -86,6 +90,18 @@ const Routes: React.FC = () => {
                                         path={productTypeListPath}
                                         component={ProductTypesSection}
                                     />
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_STAFF]}
+                                        path={staffListPath}
+                                        component={StaffSection}
+                                    />
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_STAFF]}
+                                        path={permissionGroupListPath}
+                                        component={PermissionGroupSection}
+                                    />
+
+
                                     {createConfigurationMenu(intl).filter(menu =>
                                         menu.menuItems.map(item =>
                                             hasPermission(item.permission, user)

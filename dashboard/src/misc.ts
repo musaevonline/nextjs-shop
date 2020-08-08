@@ -2,6 +2,9 @@ import { MutationFunction, MutationResult } from "@apollo/client";
 import urlJoin from "url-join";
 import {APP_MOUNT_URI} from "@temp/core/config";
 import {MutationResultAdditionalProps, PartialMutationProviderOutput} from "@temp/types";
+import {StaffMemberDetails_user} from "@temp/sections/staff/types/StaffMemberDetails";
+import {User} from "@sdk/fragments/types/User";
+import {StaffList_staffUsers_edges_node} from "@temp/sections/staff/types/StaffList";
 
 export function hasErrors(errorList: UserError[] | null): boolean {
   return !(
@@ -136,4 +139,31 @@ export function stopPropagation(cb: () => void) {
     event.stopPropagation();
     cb();
   };
+}
+
+export function getStringOrPlaceholder(s: string | undefined): string {
+  return s || "...";
+}
+
+export function getUserName(user?: StaffMemberDetails_user | StaffList_staffUsers_edges_node, returnEmail?: boolean) {
+  return user && (user.email || (user.firstName && user.lastName))
+    ? user.firstName && user.lastName
+      ? [user.firstName, user.lastName].join(" ")
+      : returnEmail
+      ? user.email
+      : user.email.split("@")[0]
+    : undefined;
+}
+
+export function getUserInitials(user?: StaffMemberDetails_user | User | StaffList_staffUsers_edges_node) {
+  return user && (user.email || (user.firstName && user.lastName))
+    ? (user.firstName && user.lastName
+        ? user.firstName[0] + user.lastName[0]
+        : user.email.slice(0, 2)
+      ).toUpperCase()
+    : undefined;
+}
+
+export function capitalize(s: string) {
+  return s.charAt(0).toLocaleUpperCase() + s.slice(1);
 }
