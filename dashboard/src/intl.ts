@@ -524,6 +524,26 @@ export const sectionNames = defineMessages({
     id:'permission_groups',
     defaultMessage: "Permission groups",
     description: "settings section name"
+  },
+  siteSettings: {
+    id:'site_settings',
+    defaultMessage: "Site settings",
+    description: "settings section name"
+  },
+  orders: {
+    id:'orders',
+    defaultMessage: "Orders",
+    description: "settings section name"
+  },
+  drafts: {
+    id:'drafts',
+    defaultMessage: "Drafts",
+    description: "settings section name"
+  },
+  draftOrders: {
+    id:'draftOrders',
+    defaultMessage: "Draft orders",
+    description: "settings section name"
   }
 });
 

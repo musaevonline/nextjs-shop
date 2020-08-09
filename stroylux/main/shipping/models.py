@@ -59,6 +59,7 @@ def _get_weight_type_display(min_weight, max_weight):
         "max_weight": max_weight,
     },
 
+
 class ShippingMethodQueryset(models.QuerySet):
     def price_based(self):
         return self.filter(type=ShippingMethodType.PRICE_BASED)

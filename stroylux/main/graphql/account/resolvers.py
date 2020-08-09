@@ -62,3 +62,11 @@ def resolve_staff_users(info, query, **_kwargs):
         queryset=qs, query=query, search_fields=USER_SEARCH_FIELDS
     )
     return qs.distinct()
+
+
+def resolve_customers(info, query, **_kwargs):
+    qs = models.User.objects.customers()
+    qs = filter_by_query_param(
+        queryset=qs, query=query, search_fields=USER_SEARCH_FIELDS
+    )
+    return qs.distinct()

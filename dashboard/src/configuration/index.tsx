@@ -16,6 +16,8 @@ import StaffMembers from "@temp/icons/StaffMembers";
 import {staffListUrl} from "@temp/sections/staff/urls";
 import PermissionGroups from "@temp/icons/PermissionGroups";
 import {permissionGroupListUrl} from "@temp/sections/permissionGroups/urls";
+import {siteSettingsUrl} from "@temp/sections/siteSettings/urls";
+import SiteSettings from "@temp/icons/SiteSettings";
 
 export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
   return [
@@ -46,7 +48,7 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
         }
       ]
     },
-        {
+    {
       label: intl.formatMessage({id: "staff_settings",
         defaultMessage: "Staff Settings"
       }),
@@ -64,7 +66,7 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
         {
           description: intl.formatMessage({
             defaultMessage:
-              "Manage your permission groups and their permissions",
+                "Manage your permission groups and their permissions",
             id: "configurationMenuPermissionGroups"
           }),
           icon: <PermissionGroups fontSize="inherit" viewBox="0 0 44 44" />,
@@ -74,6 +76,23 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
         }
       ]
     },
+    {
+      label: intl.formatMessage({id: "miscellaneous",
+        defaultMessage: "Miscellaneous"
+      }),
+      menuItems: [
+        {
+          description: intl.formatMessage({
+            defaultMessage: "View and update your site settings",
+            id: "configurationMenuSiteSettings"
+          }),
+          icon: <SiteSettings fontSize="inherit" viewBox="0 0 44 44" />,
+          permission: PermissionEnum.MANAGE_SETTINGS,
+          title: intl.formatMessage(sectionNames.siteSettings),
+          url: siteSettingsUrl()
+        },
+      ]
+    }
   ];
 }
 
@@ -85,14 +104,14 @@ export const ConfigurationSection: React.FC = () => {
   const intl = useIntl();
 
   return (
-    <>
-      <WindowTitle title={intl.formatMessage(sectionNames.configuration)} />
-      <ConfigurationPage
-        menu={createConfigurationMenu(intl)}
-        user={maybe(() => user.user)}
-        onSectionClick={navigate}
-      />
-    </>
+      <>
+        <WindowTitle title={intl.formatMessage(sectionNames.configuration)} />
+        <ConfigurationPage
+            menu={createConfigurationMenu(intl)}
+            user={maybe(() => user.user)}
+            onSectionClick={navigate}
+        />
+      </>
   );
 };
 export default ConfigurationSection;

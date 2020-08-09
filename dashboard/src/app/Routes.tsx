@@ -19,7 +19,7 @@ import ProductsSectionComponent from "@temp/sections/products";
 import {categoryListPath} from "@temp/sections/categories/urls";
 import CategoriesSectionComponent from "@temp/sections/categories";
 import {PermissionEnum} from "@temp/types/globalTypes";
-import ConfigurationSection, {createConfigurationMenu} from "@temp/configuration";
+import ConfigurationSection, {configurationMenuUrl, createConfigurationMenu} from "@temp/configuration";
 import {hasPermission} from "@temp/core/auth/misc";
 import AttributeSection from "@temp/sections/attributes";
 import {attributeSection} from "@temp/sections/attributes/urls";
@@ -29,6 +29,12 @@ import {staffListPath} from "@temp/sections/staff/urls";
 import {permissionGroupListPath} from "@temp/sections/permissionGroups/urls";
 import StaffSection from "../sections/staff";
 import PermissionGroupSection from "../sections/permissionGroups";
+import {siteSettingsPath} from "@temp/sections/siteSettings/urls";
+import SiteSettingsSection from "../sections/siteSettings";
+import {customerSection} from "@temp/sections/customers/urls";
+import { CustomerSection } from "../sections/customers";
+import {orderListPath} from "@temp/sections/orders/urls";
+import OrdersSection from "../sections/orders";
 
 const Routes: React.FC = () => {
     const intl = useIntl();
@@ -91,6 +97,16 @@ const Routes: React.FC = () => {
                                         component={ProductTypesSection}
                                     />
                                     <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_ORDERS]}
+                                        path={orderListPath}
+                                        component={OrdersSection}
+                                    />
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_USERS]}
+                                        path={customerSection}
+                                        component={CustomerSection}
+                                    />
+                                    <SectionRoute
                                         permissions={[PermissionEnum.MANAGE_STAFF]}
                                         path={staffListPath}
                                         component={StaffSection}
@@ -99,6 +115,11 @@ const Routes: React.FC = () => {
                                         permissions={[PermissionEnum.MANAGE_STAFF]}
                                         path={permissionGroupListPath}
                                         component={PermissionGroupSection}
+                                    />
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_SETTINGS]}
+                                        path={siteSettingsPath}
+                                        component={SiteSettingsSection}
                                     />
 
 
@@ -109,7 +130,7 @@ const Routes: React.FC = () => {
                                     ).length > 0 && (
                                         <SectionRoute
                                             exact
-                                            path="/configuration"
+                                            path={configurationMenuUrl}
                                             component={ConfigurationSection}
                                         />
                                     )}

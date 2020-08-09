@@ -179,6 +179,22 @@ type Address implements Node {
   isDefaultShippingAddress: Boolean
 }
 
+"""Creates user address."""
+type AddressCreate {
+  """A user instance for which the address was created."""
+  user: User
+  accountErrors: [AccountError!]!
+  address: Address
+}
+
+"""Deletes an address."""
+type AddressDelete {
+  """A user instance for which the address was deleted."""
+  user: User
+  accountErrors: [AccountError!]!
+  address: Address
+}
+
 input AddressInput {
   """Given name."""
   firstName: String
@@ -214,10 +230,25 @@ input AddressInput {
   phone: String
 }
 
+"""Sets a default address for the given user."""
+type AddressSetDefault {
+  """An updated user instance."""
+  user: User
+  accountErrors: [AccountError!]!
+}
+
 """An enumeration."""
 enum AddressTypeEnum {
   BILLING
   SHIPPING
+}
+
+"""Updates an address."""
+type AddressUpdate {
+  """A user object for which the address was edited."""
+  user: User
+  accountErrors: [AccountError!]!
+  address: Address
 }
 
 """
@@ -539,6 +570,48 @@ type AttributeValueUpdate {
   attribute: Attribute
   productErrors: [ProductError!]!
   attributeValue: AttributeValue
+}
+
+type AuthorizationKey {
+  """Name of the authorization backend."""
+  name: AuthorizationKeyType!
+
+  """Authorization key (client ID)."""
+  key: String!
+}
+
+"""Adds an authorization key."""
+type AuthorizationKeyAdd {
+  """Newly added authorization key."""
+  authorizationKey: AuthorizationKey
+
+  """Updated shop."""
+  shop: Shop
+  shopErrors: [ShopError!]!
+}
+
+"""Deletes an authorization key."""
+type AuthorizationKeyDelete {
+  """Authorization key that was deleted."""
+  authorizationKey: AuthorizationKey
+
+  """Updated shop."""
+  shop: Shop
+  shopErrors: [ShopError!]!
+}
+
+input AuthorizationKeyInput {
+  """Client authorization key (client ID)."""
+  key: String!
+
+  """Client secret."""
+  password: String!
+}
+
+"""An enumeration."""
+enum AuthorizationKeyType {
+  FACEBOOK
+  GOOGLE_OAUTH2
 }
 
 type BulkProductError {
@@ -1280,6 +1353,59 @@ type CreditCard {
   expYear: Int!
 }
 
+"""Deletes customers."""
+type CustomerBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  accountErrors: [AccountError!]!
+}
+
+"""Creates a new customer."""
+type CustomerCreate {
+  accountErrors: [AccountError!]!
+  user: User
+}
+
+"""Deletes a customer."""
+type CustomerDelete {
+  accountErrors: [AccountError!]!
+  user: User
+}
+
+input CustomerFilterInput {
+  dateJoined: DateRangeInput
+  moneySpent: PriceRangeInput
+  numberOfOrders: IntRangeInput
+  placedOrders: DateRangeInput
+  search: String
+}
+
+input CustomerInput {
+  """Shipping address of the customer."""
+  defaultShippingAddress: AddressInput
+
+  """Given name."""
+  firstName: String
+
+  """Family name."""
+  lastName: String
+
+  """The unique email address of the user."""
+  email: String
+
+  """User account is active."""
+  isActive: Boolean
+
+  """A note about the user."""
+  note: String
+}
+
+"""Updates an existing customer."""
+type CustomerUpdate {
+  accountErrors: [AccountError!]!
+  user: User
+}
+
 """
 The `Date` scalar type represents a Date
 value as specified by
@@ -1378,6 +1504,13 @@ type Domain {
   url: String!
 }
 
+"""Deletes draft orders."""
+type DraftOrderBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  orderErrors: [OrderError!]!
+}
+
 """Completes creating an order."""
 type DraftOrderComplete {
   """Completed order."""
@@ -1445,6 +1578,13 @@ type DraftOrderLineDelete {
 
   """An order line that was deleted."""
   orderLine: OrderLine
+  orderErrors: [OrderError!]!
+}
+
+"""Deletes order lines."""
+type DraftOrderLinesBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
   orderErrors: [OrderError!]!
 }
 
@@ -1541,6 +1681,14 @@ type Image {
   alt: String
 }
 
+input IntRangeInput {
+  """Value greater than or equal to."""
+  gte: Int
+
+  """Value less than or equal to."""
+  lte: Int
+}
+
 """
 Allows use of a JSON String for input / output from the GraphQL schema.
 
@@ -1571,6 +1719,41 @@ type MoneyRange {
 }
 
 type Mutation {
+  """Adds an authorization key."""
+  authorizationKeyAdd(
+    """Fields required to create an authorization key."""
+    input: AuthorizationKeyInput!
+
+    """Type of an authorization key to add."""
+    keyType: AuthorizationKeyType!
+  ): AuthorizationKeyAdd
+
+  """Deletes an authorization key."""
+  authorizationKeyDelete(
+    """Type of a key to delete."""
+    keyType: AuthorizationKeyType!
+  ): AuthorizationKeyDelete
+
+  """Updates site domain of the shop."""
+  shopDomainUpdate(
+    """Fields required to update site."""
+    input: SiteDomainInput
+  ): ShopDomainUpdate
+
+  """Updates shop settings."""
+  shopSettingsUpdate(
+    """Fields required to update shop settings."""
+    input: ShopSettingsInput!
+  ): ShopSettingsUpdate
+
+  """
+  Update the shop's address. If the `null` value is passed, the currently selected address will be deleted.
+  """
+  shopAddressUpdate(
+    """Fields required to update shop address."""
+    input: AddressInput
+  ): ShopAddressUpdate
+
   """Completes creating an order."""
   draftOrderComplete(
     """ID of the order that will be completed."""
@@ -1621,6 +1804,18 @@ type Mutation {
     """Fields required to update an order."""
     input: DraftOrderInput!
   ): DraftOrderUpdate
+
+  """Deletes draft orders."""
+  draftOrderBulkDelete(
+    """List of draft order IDs to delete."""
+    ids: [ID]!
+  ): DraftOrderBulkDelete
+
+  """Deletes order lines."""
+  draftOrderLinesBulkDelete(
+    """List of order lines IDs to delete."""
+    ids: [ID]!
+  ): DraftOrderLinesBulkDelete
 
   """Adds note to the order."""
   orderAddNote(
@@ -2284,6 +2479,69 @@ type Mutation {
     token: String!
   ): AccountDelete
 
+  """Creates user address."""
+  addressCreate(
+    """Fields required to create address."""
+    input: AddressInput!
+
+    """ID of a user to create address for."""
+    userId: ID!
+  ): AddressCreate
+
+  """Updates an address."""
+  addressUpdate(
+    """ID of the address to update."""
+    id: ID!
+
+    """Fields required to update the address."""
+    input: AddressInput!
+  ): AddressUpdate
+
+  """Deletes an address."""
+  addressDelete(
+    """ID of the address to delete."""
+    id: ID!
+  ): AddressDelete
+
+  """Sets a default address for the given user."""
+  addressSetDefault(
+    """ID of the address."""
+    addressId: ID!
+
+    """The type of address."""
+    type: AddressTypeEnum!
+
+    """ID of the user to change the address for."""
+    userId: ID!
+  ): AddressSetDefault
+
+  """Creates a new customer."""
+  customerCreate(
+    """Fields required to create a customer."""
+    input: UserCreateInput!
+  ): CustomerCreate
+
+  """Updates an existing customer."""
+  customerUpdate(
+    """ID of a customer to update."""
+    id: ID!
+
+    """Fields required to update a customer."""
+    input: CustomerInput!
+  ): CustomerUpdate
+
+  """Deletes a customer."""
+  customerDelete(
+    """ID of a customer to delete."""
+    id: ID!
+  ): CustomerDelete
+
+  """Deletes customers."""
+  customerBulkDelete(
+    """List of user IDs to delete."""
+    ids: [ID]!
+  ): CustomerBulkDelete
+
   """Creates a new staff user."""
   staffCreate(
     """Fields required to create a staff user."""
@@ -2305,6 +2563,12 @@ type Mutation {
     id: ID!
   ): StaffDelete
 
+  """Deletes staff users."""
+  staffBulkDelete(
+    """List of user IDs to delete."""
+    ids: [ID]!
+  ): StaffBulkDelete
+
   """
   Create a user avatar. Only for staff members. This mutation must be sent as a
   `multipart` request. More detailed specs of the upload format can be found
@@ -2317,6 +2581,15 @@ type Mutation {
 
   """Deletes a user avatar. Only for staff members."""
   userAvatarDelete: UserAvatarDelete
+
+  """Activate or deactivate users."""
+  userBulkSetActive(
+    """List of user IDs to (de)activate)."""
+    ids: [ID]!
+
+    """Determine if users will be set active or not."""
+    isActive: Boolean!
+  ): UserBulkSetActive
 
   """Create new permission group."""
   permissionGroupCreate(
@@ -2564,6 +2837,39 @@ type OrderEvent implements Node {
 
   """User who performed the action."""
   user: User
+
+  """Content of the event."""
+  message: String
+
+  """Email of the customer."""
+  email: String
+
+  """Type of an email sent to the customer."""
+  emailType: OrderEventsEmailsEnum
+
+  """Amount of money."""
+  amount: Float
+
+  """The payment ID from the payment gateway."""
+  paymentId: String
+
+  """The payment gateway of the payment."""
+  paymentGateway: String
+
+  """Number of items."""
+  quantity: Int
+
+  """Composed ID of the Fulfillment."""
+  composedId: String
+
+  """User-friendly number of an order."""
+  orderNumber: String
+
+  """List of oversold lines names."""
+  oversoldItems: [String]
+
+  """The concerned lines."""
+  lines: [OrderEventOrderLineObject]
 }
 
 type OrderEventCountableConnection {
@@ -2581,6 +2887,27 @@ type OrderEventCountableEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+type OrderEventOrderLineObject {
+  """The variant quantity."""
+  quantity: Int
+
+  """The order line."""
+  orderLine: OrderLine
+
+  """The variant name."""
+  itemName: String
+}
+
+"""An enumeration."""
+enum OrderEventsEmailsEnum {
+  PAYMENT_CONFIRMATION
+  SHIPPING_CONFIRMATION
+  TRACKING_UPDATED
+  ORDER_CONFIRMATION
+  FULFILLMENT_CONFIRMATION
+  DIGITAL_LINKS
 }
 
 """An enumeration."""
@@ -4322,6 +4649,27 @@ type Query {
     """ID of the user."""
     id: ID!
   ): User
+
+  """List of the shop's customers."""
+  customers(
+    """Filtering options for customers."""
+    filter: CustomerFilterInput
+
+    """Sort customers."""
+    sortBy: UserSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): UserCountableConnection
   _debug: DjangoDebug
   _entities(representations: [_Any]): [_Entity]
   _service: _Service
@@ -4514,6 +4862,12 @@ type Shop {
   """Customer's geolocalization data."""
   geolocalization: Geolocalization
 
+  """
+  List of configured authorization keys. Authorization keys are used to enable
+  third-party OAuth authorization (currently Facebook or Google).
+  """
+  authorizationKeys: [AuthorizationKey]!
+
   """List of available currencies."""
   currencies: [String]!
 
@@ -4564,6 +4918,110 @@ type Shop {
 
   """URL of a view where customers can set their password."""
   customerSetPasswordUrl: String
+}
+
+"""
+Update the shop's address. If the `null` value is passed, the currently selected address will be deleted.
+"""
+type ShopAddressUpdate {
+  """Updated shop."""
+  shop: Shop
+  shopErrors: [ShopError!]!
+}
+
+"""Updates site domain of the shop."""
+type ShopDomainUpdate {
+  """Updated shop."""
+  shop: Shop
+  shopErrors: [ShopError!]!
+}
+
+type ShopError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the
+  error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: ShopErrorCode!
+}
+
+"""An enumeration."""
+enum ShopErrorCode {
+  ALREADY_EXISTS
+  CANNOT_FETCH_TAX_RATES
+  GRAPHQL_ERROR
+  INVALID
+  NOT_FOUND
+  REQUIRED
+  UNIQUE
+}
+
+input ShopSettingsInput {
+  """Header text."""
+  headerText: String
+
+  """SEO description."""
+  description: String
+
+  """Include taxes in prices."""
+  includeTaxesInPrices: Boolean
+
+  """Display prices with tax in store."""
+  displayGrossPrices: Boolean
+
+  """Charge taxes on shipping."""
+  chargeTaxesOnShipping: Boolean
+
+  """Enable inventory tracking."""
+  trackInventoryByDefault: Boolean
+
+  """Default weight unit."""
+  defaultWeightUnit: WeightUnitsEnum
+
+  """Enable automatic fulfillment for all digital products."""
+  automaticFulfillmentDigitalProducts: Boolean
+
+  """Default number of max downloads per digital content URL."""
+  defaultDigitalMaxDownloads: Int
+
+  """Default number of days which digital content URL will be valid."""
+  defaultDigitalUrlValidDays: Int
+
+  """Default email sender's name."""
+  defaultMailSenderName: String
+
+  """Default email sender's address."""
+  defaultMailSenderAddress: String
+
+  """URL of a view where customers can set their password."""
+  customerSetPasswordUrl: String
+}
+
+"""Updates shop settings."""
+type ShopSettingsUpdate {
+  """Updated shop."""
+  shop: Shop
+  shopErrors: [ShopError!]!
+}
+
+input SiteDomainInput {
+  """Domain name for shop."""
+  domain: String
+
+  """Shop site name."""
+  name: String
+}
+
+"""Deletes staff users."""
+type StaffBulkDelete {
+  """Returns how many objects were affected."""
+  count: Int!
+  staffErrors: [StaffError!]!
 }
 
 """Creates a new staff user."""
@@ -4867,6 +5325,21 @@ type User implements Node & DjangoPkInterface {
     """Size of the avatar."""
     size: Int
   ): Image
+
+  """List of user's orders."""
+  orders(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): OrderCountableConnection
 }
 
 """Deletes a user avatar. Only for staff members."""
@@ -4887,6 +5360,13 @@ type UserAvatarUpdate {
   accountErrors: [AccountError!]!
 }
 
+"""Activate or deactivate users."""
+type UserBulkSetActive {
+  """Returns how many objects were affected."""
+  count: Int!
+  accountErrors: [AccountError!]!
+}
+
 type UserCountableConnection {
   """Pagination data for this connection."""
   pageInfo: PageInfo!
@@ -4902,6 +5382,31 @@ type UserCountableEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+input UserCreateInput {
+  """Shipping address of the customer."""
+  defaultShippingAddress: AddressInput
+
+  """Given name."""
+  firstName: String
+
+  """Family name."""
+  lastName: String
+
+  """The unique email address of the user."""
+  email: String
+
+  """User account is active."""
+  isActive: Boolean
+
+  """A note about the user."""
+  note: String
+
+  """
+  URL of a view where users should be redirected to set the password. URL in RFC 1808 format.
+  """
+  redirectUrl: String
 }
 
 type UserPermission {

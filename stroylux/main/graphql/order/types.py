@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from graphene import relay
 from graphql_jwt.exceptions import PermissionDenied
 
-from .enums import OrderEventsEnum
+from .enums import OrderEventsEnum, OrderEventsEmailsEnum
 from .utils import validate_draft_order
 from ..account.types import User
 from ..core.connection import CountableDjangoObjectType
@@ -32,6 +32,22 @@ class OrderEvent(CountableDjangoObjectType):
     type = OrderEventsEnum(description="Order event type.")
     user = graphene.Field(User, description="User who performed the action.")
 
+    message = graphene.String(description="Content of the event.")
+    email = graphene.String(description="Email of the customer.")
+    email_type = OrderEventsEmailsEnum(
+        description="Type of an email sent to the customer."
+    )
+    amount = graphene.Float(description="Amount of money.")
+    payment_id = graphene.String(description="The payment ID from the payment gateway.")
+    payment_gateway = graphene.String(description="The payment gateway of the payment.")
+    quantity = graphene.Int(description="Number of items.")
+    composed_id = graphene.String(description="Composed ID of the Fulfillment.")
+    order_number = graphene.String(description="User-friendly number of an order.")
+    oversold_items = graphene.List(
+        graphene.String, description="List of oversold lines names."
+    )
+    lines = graphene.List(OrderEventOrderLineObject, description="The concerned lines.")
+
     class Meta:
         description = "History log of the order."
         model = models.OrderEvent
@@ -48,6 +64,77 @@ class OrderEvent(CountableDjangoObjectType):
         ):
             return root.user
         raise PermissionDenied()
+
+    @staticmethod
+    def resolve_email(root: models.OrderEvent, _info):
+        return root.parameters.get("email", None)
+
+    @staticmethod
+    def resolve_email_type(root: models.OrderEvent, _info):
+        return root.parameters.get("email_type", None)
+
+    @staticmethod
+    def resolve_amount(root: models.OrderEvent, _info):
+        amount = root.parameters.get("amount", None)
+        return float(amount) if amount else None
+
+    @staticmethod
+    def resolve_payment_id(root: models.OrderEvent, _info):
+        return root.parameters.get("payment_id", None)
+
+    @staticmethod
+    def resolve_payment_gateway(root: models.OrderEvent, _info):
+        return root.parameters.get("payment_gateway", None)
+
+    @staticmethod
+    def resolve_quantity(root: models.OrderEvent, _info):
+        quantity = root.parameters.get("quantity", None)
+        return int(quantity) if quantity else None
+
+    @staticmethod
+    def resolve_message(root: models.OrderEvent, _info):
+        return root.parameters.get("message", None)
+
+    @staticmethod
+    def resolve_composed_id(root: models.OrderEvent, _info):
+        return root.parameters.get("composed_id", None)
+
+    @staticmethod
+    def resolve_oversold_items(root: models.OrderEvent, _info):
+        return root.parameters.get("oversold_items", None)
+
+    @staticmethod
+    def resolve_order_number(root: models.OrderEvent, _info):
+        return root.order_id
+
+    @staticmethod
+    def resolve_lines(root: models.OrderEvent, _info):
+        raw_lines = root.parameters.get("lines", None)
+
+        if not raw_lines:
+            return None
+
+        line_pks = []
+        for entry in raw_lines:
+            line_pks.append(entry.get("line_pk", None))
+
+        lines = models.OrderLine.objects.filter(pk__in=line_pks).all()
+        results = []
+        for raw_line, line_pk in zip(raw_lines, line_pks):
+            line_object = None
+            for line in lines:
+                if line.pk == line_pk:
+                    line_object = line
+                    break
+            results.append(
+                OrderEventOrderLineObject(
+                    quantity=raw_line["quantity"],
+                    order_line=line_object,
+                    item_name=raw_line["item"],
+                )
+            )
+
+        return results
 
 
 class OrderLine(CountableDjangoObjectType):

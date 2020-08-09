@@ -11,7 +11,7 @@ from .shipping.schema import ShippingMutations, ShippingQueries
 from .payment.schema import PaymentMutations, PaymentQueries
 from .checkout.schema import CheckoutQueries, CheckoutMutations
 from .order.schema import OrderQueries, OrderMutations
-from .shop.schema import ShopQueries
+from .shop.schema import ShopQueries, ShopMutations
 
 register_graphene_fields() # Need for money field order
 
@@ -36,7 +36,8 @@ class Mutation(
     ShippingMutations,
     PaymentMutations,
     CheckoutMutations,
-    OrderMutations
+    OrderMutations,
+    ShopMutations
 ):
     pass
 

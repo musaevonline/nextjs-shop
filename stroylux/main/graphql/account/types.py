@@ -8,6 +8,7 @@ from .enums import CountryCodeEnum
 from .utils import can_user_manage_group, get_groups_which_user_can_manage
 from ..checkout.types import Checkout
 from ..core.connection import DjangoPkInterface
+from ..core.fields import PrefetchingConnectionField
 from ..core.types import CountryDisplay, Permission
 from ..core.types.common import Image
 from ..core.utils import from_global_id_strict_type
@@ -16,7 +17,7 @@ from ..utils import format_permissions_for_display
 from ...account import models
 from ...checkout.utils import get_user_checkout
 from ...core.connection import CountableDjangoObjectType
-from ...core.permissions import AccountPermissions
+from ...core.permissions import AccountPermissions, OrderPermissions
 
 
 class UserPermission(Permission):
@@ -65,6 +66,10 @@ class User(CountableDjangoObjectType):
         description="List of user's permission groups which user can manage.",
     )
     avatar = graphene.Field(Image, size=graphene.Int(description="Size of the avatar."))
+
+    orders = PrefetchingConnectionField(
+        "main.graphql.order.types.Order", description="List of user's orders."
+    )
 
     class Meta:
         description = "Represents user data."
@@ -129,6 +134,13 @@ class User(CountableDjangoObjectType):
         if root.id is not None:
             return graphene.Node.get_node_from_global_id(_info, root.id)
         return get_user_model().objects.get(email=root.email)
+
+    @staticmethod
+    def resolve_orders(root: models.User, info, **_kwargs):
+        viewer = info.context.user
+        if viewer.has_perm(OrderPermissions.MANAGE_ORDERS):
+            return root.orders.all()
+        return root.orders.confirmed()
 
 
 @key(fields="id")

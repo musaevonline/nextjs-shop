@@ -1,6 +1,7 @@
 import { MutationResult } from "@apollo/client";
 import {ConfirmButtonTransitionState} from "@temp/components/ConfirmButton";
 import {IFilter} from "@temp/components/Filter";
+import {User_userPermissions} from "@sdk/fragments/types/User";
 
 export interface DialogProps {
   open: boolean;
@@ -179,4 +180,12 @@ export interface FilterOpts<T> {
 export enum ProductTypeConfigurable {
   CONFIGURABLE = "CONFIGURABLE",
   SIMPLE = "SIMPLE",
+}
+
+export type FiltersWithMultipleValues<TFilters extends string> = Partial<
+  Record<TFilters, string[]>
+>;
+
+export interface UserPermissionProps {
+  userPermissions: User_userPermissions[];
 }

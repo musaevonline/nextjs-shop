@@ -9,7 +9,7 @@ from ..enums import (
     ShippingErrorCode,
     PaymentErrorCode,
     CheckoutErrorCode,
-    OrderErrorCode, PermissionGroupErrorCode
+    OrderErrorCode, PermissionGroupErrorCode, ShopErrorCode
 )
 
 
@@ -195,3 +195,7 @@ class PermissionGroupError(Error):
         description="List of user IDs which causes the error.",
         required=False,
     )
+
+
+class ShopError(Error):
+    code = ShopErrorCode(description="The error code.", required=True)

@@ -1,9 +1,29 @@
 import django_filters
+from django.db.models import Sum, Count
 
 from main.account.models import User
 from main.graphql.account.enums import StaffMemberStatus
-from main.graphql.core.filters import EnumFilter
-from main.graphql.utils import filter_by_query_param
+from main.graphql.core.filters import EnumFilter, ObjectTypeFilter
+from main.graphql.core.types.common import DateRangeInput, PriceRangeInput, IntRangeInput
+from main.graphql.utils import filter_by_query_param, filter_range_field
+
+
+def filter_date_joined(qs, _, value):
+    return filter_range_field(qs, "date_joined__date", value)
+
+
+def filter_money_spent(qs, _, value):
+    qs = qs.annotate(money_spent=Sum("orders__total_gross_amount"))
+    return filter_range_field(qs, "money_spent", value)
+
+
+def filter_number_of_orders(qs, _, value):
+    qs = qs.annotate(total_orders=Count("orders"))
+    return filter_range_field(qs, "total_orders", value)
+
+
+def filter_placed_orders(qs, _, value):
+    return filter_range_field(qs, "orders__created__date", value)
 
 
 def filter_search(qs, _, value):
@@ -50,3 +70,29 @@ class StaffUserFilter(django_filters.FilterSet):
     class Meta:
         model = User
         fields = ["status", "search"]
+
+
+class CustomerFilter(django_filters.FilterSet):
+    date_joined = ObjectTypeFilter(
+        input_class=DateRangeInput, method=filter_date_joined
+    )
+    money_spent = ObjectTypeFilter(
+        input_class=PriceRangeInput, method=filter_money_spent
+    )
+    number_of_orders = ObjectTypeFilter(
+        input_class=IntRangeInput, method=filter_number_of_orders
+    )
+    placed_orders = ObjectTypeFilter(
+        input_class=DateRangeInput, method=filter_placed_orders
+    )
+    search = django_filters.CharFilter(method=filter_staff_search)
+
+    class Meta:
+        model = User
+        fields = [
+            "date_joined",
+            "money_spent",
+            "number_of_orders",
+            "placed_orders",
+            "search",
+        ]

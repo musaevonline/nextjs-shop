@@ -1,5 +1,6 @@
 import graphene
 
+from .bulk_mutations.draft_orders import DraftOrderBulkDelete, DraftOrderLinesBulkDelete
 from .filters import OrderFilter, DraftOrderFilter
 from .mutations.draft_orders import DraftOrderComplete, DraftOrderCreate, DraftOrderDelete, DraftOrderLinesCreate, \
     DraftOrderLineDelete, DraftOrderLineUpdate, DraftOrderUpdate
@@ -111,6 +112,8 @@ class OrderMutations(graphene.ObjectType):
     draft_order_line_delete = DraftOrderLineDelete.Field()
     draft_order_line_update = DraftOrderLineUpdate.Field()
     draft_order_update = DraftOrderUpdate.Field()
+    draft_order_bulk_delete = DraftOrderBulkDelete.Field()
+    draft_order_lines_bulk_delete = DraftOrderLinesBulkDelete.Field()
 
     order_add_note = OrderAddNote.Field()
     order_cancel = OrderCancel.Field()

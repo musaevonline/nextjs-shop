@@ -2,6 +2,8 @@ import graphene
 from django.conf import settings
 from phonenumbers import COUNTRY_CODE_TO_REGION_CODE
 
+from ...site import models as site_models
+from .enums import AuthorizationKeyType
 from ..account.types import Address
 from ..core.enums import WeightUnitsEnum
 from ..core.types.common import CountryDisplay, Permission
@@ -9,6 +11,13 @@ from ..decorators import permission_required
 from ..utils import format_permissions_for_display
 from ...core.permissions import SitePermissions, get_permissions
 from ...core.utils import get_client_ip, get_country_by_ip
+
+
+class AuthorizationKey(graphene.ObjectType):
+    name = AuthorizationKeyType(
+        description="Name of the authorization backend.", required=True
+    )
+    key = graphene.String(description="Authorization key (client ID).", required=True)
 
 
 class Domain(graphene.ObjectType):
@@ -34,6 +43,14 @@ class Geolocalization(graphene.ObjectType):
 class Shop(graphene.ObjectType):
     geolocalization = graphene.Field(
         Geolocalization, description="Customer's geolocalization data."
+    )
+    authorization_keys = graphene.List(
+        AuthorizationKey,
+        description=(
+            "List of configured authorization keys. Authorization keys are used to "
+            "enable third-party OAuth authorization (currently Facebook or Google)."
+        ),
+        required=True,
     )
     currencies = graphene.List(
         graphene.String, description="List of available currencies.", required=True
@@ -97,6 +114,11 @@ class Shop(graphene.ObjectType):
             ssl_enabled=settings.ENABLE_SSL,
             url=info.context.build_absolute_uri("/"),
         )
+
+    @staticmethod
+    @permission_required(SitePermissions.MANAGE_SETTINGS)
+    def resolve_authorization_keys(_, _info):
+        return site_models.AuthorizationKey.objects.all()
 
     @staticmethod
     def resolve_geolocalization(_, info):
@@ -182,3 +204,5 @@ class Shop(graphene.ObjectType):
     @permission_required(SitePermissions.MANAGE_SETTINGS)
     def resolve_default_digital_max_downloads(_, info):
         return info.context.site.settings.default_digital_max_downloads
+
+

@@ -8,6 +8,7 @@ from ...payment import error_codes as payment_error_codes
 from ...checkout import error_codes as checkout_error_codes
 from ...order import error_codes as order_error_codes
 from ...core.permissions import get_permissions_enum_list
+from ...core import error_codes as core_error_codes
 from .utils import str_to_enum
 
 
@@ -74,3 +75,4 @@ OrderErrorCode = graphene.Enum.from_enum(order_error_codes.OrderErrorCode)
 PermissionGroupErrorCode = graphene.Enum.from_enum(
     account_error_codes.PermissionGroupErrorCode
 )
+ShopErrorCode = graphene.Enum.from_enum(core_error_codes.ShopErrorCode)
