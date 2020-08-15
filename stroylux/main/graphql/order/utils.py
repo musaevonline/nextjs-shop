@@ -21,8 +21,8 @@ def validate_shipping_method(order):
     method = order.shipping_method
     shipping_address = order.shipping_address
     shipping_not_valid = (
-        method
-        and shipping_address
+            method
+            and shipping_address
     )  # noqa
     if shipping_not_valid:
         raise ValidationError(
@@ -46,18 +46,17 @@ def validate_order_lines(order):
                     )
                 }
             )
-        if line.variant.track_inventory:
-            try:
-                check_stock_quantity(line.variant, line.quantity)
-            except InsufficientStock as exc:
-                raise ValidationError(
-                    {
-                        "lines": ValidationError(
-                            f"Insufficient product stock: {exc.item}",
-                            code=OrderErrorCode.INSUFFICIENT_STOCK,
-                        )
-                    }
-                )
+        try:
+            check_stock_quantity(line.variant, line.quantity)
+        except InsufficientStock as exc:
+            raise ValidationError(
+                {
+                    "lines": ValidationError(
+                        f"Insufficient product stock: {exc.item}",
+                        code=OrderErrorCode.INSUFFICIENT_STOCK,
+                    )
+                }
+            )
 
 
 def validate_draft_order(order):

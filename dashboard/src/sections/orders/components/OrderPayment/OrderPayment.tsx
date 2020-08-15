@@ -104,7 +104,7 @@ const OrderPayment: React.FC<OrderPaymentProps> = props => {
             </tr>
             <tr>
               <td>
-                <FormattedMessage defaultMessage="Taxes" />
+                <FormattedMessage id="vat" defaultMessage="Taxes" />
               </td>
               <td>
                 {maybe(() => order.total.tax) === undefined ? (

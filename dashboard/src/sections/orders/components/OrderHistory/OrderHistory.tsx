@@ -225,7 +225,8 @@ const OrderHistory: React.FC<OrderHistoryProps> = props => {
     enableReinitialize: true,
     initialValues: {message: ""},
     onSubmit: onNoteAdd
-  })
+  });
+
   return (
       <div className={classes.root}>
         <Typography className={classes.header} color="textSecondary">
@@ -237,9 +238,9 @@ const OrderHistory: React.FC<OrderHistoryProps> = props => {
               <form onSubmit={form.handleSubmit}>
                 <TimelineAddNote
                     message={form.values.message}
-                    reset={form.handleReset}
                     onChange={form.handleChange}
-                    onSubmit={form.handleSubmit}
+                    reset={form.resetForm}
+                    onSubmit={form.submitForm}
                 />
               </form>
               {history

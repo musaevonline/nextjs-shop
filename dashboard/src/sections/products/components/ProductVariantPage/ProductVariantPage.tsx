@@ -16,6 +16,7 @@ import {
 } from "@temp/sections/products/utils/data";
 import { diff } from "fast-array-diff";
 import React from "react";
+import _ from 'lodash';
 
 import { maybe } from "@temp/misc";
 import { ProductVariant } from "../../types/ProductVariant";
@@ -106,9 +107,7 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
 
   const variantImages = maybe(() => variant.images.map(image => image.id), []);
   const productImages = maybe(() =>
-      variant.product.images.sort((prev, next) =>
-          prev.sortOrder > next.sortOrder ? 1 : -1
-      )
+      _.sortBy(variant?.product.images, img => img.sortOrder)
   );
   const images = maybe(() =>
       productImages

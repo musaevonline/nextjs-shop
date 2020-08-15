@@ -49,7 +49,6 @@ def create_payment_information(
         token=payment_token,
         amount=amount or payment.total,
         currency=payment.currency,
-        billing=None,
         shipping=shipping_address,
         order_id=order_id,
         customer_ip_address=payment.customer_ip_address,
@@ -113,7 +112,7 @@ def create_payment(
         "billing_country_area": billing_address.country_area,
         "currency": currency,
         "gateway": gateway,
-        "total": total.gross.amount,
+        "total": total,
         "payment_method": payment_method
     }
 
@@ -143,7 +142,6 @@ def create_transaction(
             error=error_msg,
             raw_response={},
         )
-
     txn = Transaction.objects.create(
         payment=payment,
         action_required=action_required,

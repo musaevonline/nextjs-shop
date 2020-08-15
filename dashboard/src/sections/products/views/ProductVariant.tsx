@@ -49,13 +49,6 @@ export const ProductVariant: React.FC<ProductUpdateProps> = ({
     setErrors([]);
   }, [variantId]);
 
-  // const warehouses = useWarehouseList({
-  //   displayLoader: true,
-  //   variables: {
-  //     first: 50
-  //   }
-  // });
-
   const [openModal] = createDialogActionHandlers<
     ProductVariantEditUrlDialog,
     ProductVariantEditUrlQueryParams

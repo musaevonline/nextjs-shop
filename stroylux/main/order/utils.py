@@ -122,22 +122,14 @@ def add_variant_to_draft_order(order, variant, quantity, discounts=None):
         line.quantity += quantity
         line.save(update_fields=["quantity"])
     except OrderLine.DoesNotExist:
-        unit_price = variant.get_price(discounts)
+        unit_price = variant.base_price
         unit_price = TaxedMoney(net=unit_price, gross=unit_price)
         product = variant.product
         product_name = str(product)
         variant_name = str(variant)
-        translated_product_name = str(product.translated)
-        translated_variant_name = str(variant.translated)
-        if translated_product_name == product_name:
-            translated_product_name = ""
-        if translated_variant_name == variant_name:
-            translated_variant_name = ""
         line = order.lines.create(
             product_name=product_name,
             variant_name=variant_name,
-            translated_product_name=translated_product_name,
-            translated_variant_name=translated_variant_name,
             product_sku=variant.sku,
             is_shipping_required=variant.is_shipping_required(),
             quantity=quantity,

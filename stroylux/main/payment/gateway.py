@@ -1,8 +1,9 @@
 import logging
 from decimal import Decimal
 from typing import TYPE_CHECKING, Callable, List
+from uuid import uuid4
 
-from ..payment.interface import TokenConfig
+from ..payment.interface import TokenConfig, GatewayResponse
 from . import GatewayError, PaymentError, TransactionKind
 from .models import Payment, Transaction
 from .utils import (
@@ -18,7 +19,6 @@ from .utils import (
 if TYPE_CHECKING:
     # flake8: noqa
     from ..payment.interface import CustomerSource
-
 
 logger = logging.getLogger(__name__)
 ERROR_MSG = "Oops! Something went wrong."
@@ -57,7 +57,7 @@ def require_active_payment(fn: Callable) -> Callable:
 @raise_payment_error
 @require_active_payment
 def process_payment(
-    payment: Payment, token: str, store_source: bool = False
+        payment: Payment, token: str, store_source: bool = False
 ) -> Transaction:
     payment_data = create_payment_information(
         payment=payment, payment_token=token, store_source=store_source
@@ -99,18 +99,31 @@ def authorize(payment: Payment, token: str, store_source: bool = False) -> Trans
 @raise_payment_error
 @require_active_payment
 def capture(
-    payment: Payment, amount: Decimal = None, store_source: bool = False
+        payment: Payment, amount: Decimal = None, store_source: bool = False
 ) -> Transaction:
     if amount is None:
         amount = payment.get_charge_amount()
     clean_capture(payment, Decimal(amount))
-    token = _get_past_transaction_token(payment, TransactionKind.AUTH)
+    # FIXME
+    try:
+        token = _get_past_transaction_token(payment, TransactionKind.AUTH)
+    except PaymentError:
+        token = uuid4()
     payment_data = create_payment_information(
         payment=payment, payment_token=token, amount=amount, store_source=store_source
     )
-
     error = ''
-    response = ''
+    # FIXME
+    response = GatewayResponse(
+        kind=TransactionKind.CAPTURE,
+        action_required=False,
+        transaction_id=payment_data.token,
+        is_success=True,
+        amount=payment_data.amount,
+        currency=payment_data.currency,
+        error='',
+        raw_response=None,
+    )
     return create_transaction(
         payment=payment,
         kind=TransactionKind.CAPTURE,
@@ -129,12 +142,25 @@ def refund(payment: Payment, amount: Decimal = None) -> Transaction:
     _validate_refund_amount(payment, amount)
     if not payment.can_refund():
         raise PaymentError("This payment cannot be refunded.")
-    token = _get_past_transaction_token(payment, TransactionKind.CAPTURE)
+    # FIXME
+    try:
+        token = _get_past_transaction_token(payment, TransactionKind.CAPTURE)
+    except PaymentError:
+        token = uuid4()
     payment_data = create_payment_information(
         payment=payment, payment_token=token, amount=amount
     )
     error = ''
-    response = ''
+    response = GatewayResponse(
+        kind=TransactionKind.REFUND,
+        action_required=False,
+        transaction_id=payment_data.token,
+        is_success=True,
+        amount=payment_data.amount,
+        currency=payment_data.currency,
+        error='',
+        raw_response=None,
+    )
     return create_transaction(
         payment=payment,
         kind=TransactionKind.REFUND,
@@ -177,6 +203,7 @@ def confirm(payment: Payment) -> Transaction:
         gateway_response=response,
     )
 
+
 # def _fetch_gateway_response(fn, *args, **kwargs):
 #     response, error = None, None
 #     try:
@@ -194,7 +221,7 @@ def confirm(payment: Payment) -> Transaction:
 
 
 def _get_past_transaction_token(
-    payment: Payment, kind: str  # for kind use "TransactionKind"
+        payment: Payment, kind: str  # for kind use "TransactionKind"
 ):
     txn = payment.transactions.filter(kind=kind, is_success=True).first()
     if txn is None:

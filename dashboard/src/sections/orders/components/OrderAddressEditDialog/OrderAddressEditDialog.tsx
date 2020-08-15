@@ -15,7 +15,7 @@ import useStateFromProps from "@temp/hooks/useStateFromProps";
 import { buttonMessages } from "@temp/intl";
 import { maybe } from "@temp/misc";
 import { OrderErrorFragment } from "@temp/sections/orders/types/OrderErrorFragment";
-import { AddressInput } from "@temp/types/globalTypes";
+import {AddressInput, CountryCode} from "@temp/types/globalTypes";
 import createSingleAutocompleteSelectHandler from "@temp/utils/handlers/singleAutocompleteSelectChangeHandler";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -76,7 +76,7 @@ const OrderAddressEditDialog: React.FC<OrderAddressEditDialogProps> = props => {
   }));
   const form = useFormik({
     enableReinitialize: true,
-    initialValues: address,
+    initialValues: {...address, country: CountryCode.BY},
     onSubmit: handleSubmit
   });
   const handleCountrySelect = createSingleAutocompleteSelectHandler(

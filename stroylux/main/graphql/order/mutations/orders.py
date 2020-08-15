@@ -224,7 +224,6 @@ class OrderCapture(BaseMutation):
         order = cls.get_node_or_error(info, data.get("id"), only_type=Order)
         payment = order.get_last_payment()
         clean_order_capture(payment)
-
         try_payment_action(
             order, info.context.user, payment, gateway.capture, payment, amount
         )
@@ -317,7 +316,6 @@ class OrderRefund(BaseMutation):
         order = cls.get_node_or_error(info, data.get("id"), only_type=Order)
         payment = order.get_last_payment()
         clean_refund_payment(payment)
-
         try_payment_action(
             order, info.context.user, payment, gateway.refund, payment, amount
         )

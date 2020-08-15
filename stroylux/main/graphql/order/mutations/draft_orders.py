@@ -91,8 +91,8 @@ class DraftOrderCreate(ModelMutation, I18nMixin):
             cleaned_input["quantities"] = quantities
 
         cleaned_input["status"] = OrderStatus.DRAFT
-        display_gross_prices = info.context.site.settings.display_gross_prices
-        cleaned_input["display_gross_prices"] = display_gross_prices
+        # display_gross_prices = info.context.site.settings.display_gross_prices
+        cleaned_input["display_gross_prices"] = True
 
         # Set up default addresses if possible
         user = cleaned_input.get("user")
@@ -103,9 +103,11 @@ class DraftOrderCreate(ModelMutation, I18nMixin):
             shipping_address = cls.validate_address(
                 shipping_address, instance=instance.shipping_address, info=info
             )
-            shipping_address = info.context.plugins.change_user_address(
-                shipping_address, "shipping", user=instance
-            )
+            if user:
+                user.addresses.add(shipping_address)
+            # shipping_address = info.context.plugins.change_user_address(
+            #     shipping_address, "shipping", user=instance
+            # )
             cleaned_input["shipping_address"] = shipping_address
         return cleaned_input
 
@@ -139,7 +141,7 @@ class DraftOrderCreate(ModelMutation, I18nMixin):
         if not created:
             events.draft_order_created_event(order=instance, user=info.context.user)
 
-        instance.save(update_fields=["billing_address", "shipping_address"])
+        instance.save(update_fields=["shipping_address"])
 
     @classmethod
     def _refresh_lines_unit_price(cls, info, instance, cleaned_input, new_instance):

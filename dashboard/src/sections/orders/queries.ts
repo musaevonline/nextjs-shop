@@ -151,7 +151,6 @@ export const fragmentOrderDetails = gql`
 `;
 
 export const orderListQuery = gql`
-  ${fragmentAddress}
   query OrderList(
     $first: Int
     $after: String
@@ -201,7 +200,6 @@ export const useOrderListQuery = makeQuery<OrderList, OrderListVariables>(
 );
 
 export const orderDraftListQuery = gql`
-  ${fragmentAddress}
   query OrderDraftList(
     $first: Int
     $after: String

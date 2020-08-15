@@ -21,7 +21,7 @@ def _lines_per_quantity_to_line_object_list(quantities_per_order_line):
 def _get_payment_data(amount: Optional[Decimal], payment: Payment) -> Dict:
     return {
         "parameters": {
-            "amount": amount,
+            "amount": float(amount),
             "payment_id": payment.token,
             "payment_gateway": payment.gateway,
         }
