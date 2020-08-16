@@ -7,7 +7,7 @@ import {TextField} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
-import {useLazyQuery} from "@apollo/react-hooks";
+import {useLazyQuery} from "@apollo/client";
 import {productsCardQuery} from "@sdk/queries/product";
 import {
     ProductsCardDetails,

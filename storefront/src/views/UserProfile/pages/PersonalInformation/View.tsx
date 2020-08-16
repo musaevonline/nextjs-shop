@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import Page from "./Page";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {AccountUpdate, AccountUpdateVariables} from "@sdk/mutations/types/AccountUpdate";
 import {accountEmailChangeMutation, accountPasswordChangeMutation, accountUpdateMutation} from "@sdk/mutations/user";
 import {AccountUpdateFormData} from "@temp/components/Forms/AccountUpdateForm/AccountUpdateForm";

@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import {attributeFragment} from "@sdk/fragments/attribute";
 
 export const productVariantFragment = gql`

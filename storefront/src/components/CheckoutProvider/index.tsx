@@ -5,10 +5,10 @@ import {Address} from "@sdk/fragments/types/Address";
 import {ShippingMethod} from "@sdk/fragments/types/ShippingMethod";
 import {PaymentMethod} from "@sdk/fragments/types/PaymentMethod";
 import {useEffect, useState} from "react";
-import {ApolloError} from "apollo-client";
+import {ApolloError} from "@apollo/client";
 import {Checkout} from "@sdk/fragments/types/Checkout";
 import {CheckoutLine} from "@sdk/fragments/types/CheckoutLine";
-import {useApolloClient} from "@apollo/react-hooks";
+import {useApolloClient} from "@apollo/client";
 import {CheckoutVariables} from "@sdk/queries/types/Checkout";
 import {checkoutQuery} from "@sdk/queries/checkout";
 import {meCheckout} from "@sdk/react/queries";
@@ -183,7 +183,7 @@ const CheckoutProvider: React.FC<{
       if (checkout.id) {
         await submitUpdateCheckoutLines(newCart);
       }else{
-        let newData = {...checkout, cart: newCart};
+        const newData = {...checkout, cart: newCart};
         setCheckout(newData);
       }
     }

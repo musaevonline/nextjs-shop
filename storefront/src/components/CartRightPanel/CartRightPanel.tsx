@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {checkoutUrl} from "@temp/app/routes";
 import {Link} from "react-router-dom";
 import InfiniteScroll from 'react-infinite-scroller';
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {productVariantsQuery} from "@sdk/queries/product-variant";
 import Loader from "@temp/components/Loader";
 import {priceToString} from "@temp/core/utils";

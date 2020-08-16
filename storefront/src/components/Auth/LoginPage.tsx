@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {LoginForm} from "@temp/components/Forms/LoginForm";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {TokenAuth, TokenAuthVariables} from "@sdk/mutations/types/TokenAuth";
 import {tokenAuthMutation} from "@sdk/mutations/user";
 import {useSnackbar} from "notistack";

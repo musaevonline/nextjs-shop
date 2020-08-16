@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import Page from "./Page";
 import {UserContext} from "@temp/components/User/context";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {
     accountAddressCreateMutation,
     accountAddressDeleteMutation,

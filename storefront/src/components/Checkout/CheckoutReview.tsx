@@ -1,7 +1,7 @@
 import "./scss/index.scss";
 
 import React, {useContext} from "react";
-import {useMutation, useQuery} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/client";
 import {checkoutQuery} from "@sdk/queries/checkout";
 import {TCheckoutStep} from "@temp/views/Checkout/Page";
 import {useHistory} from "react-router";

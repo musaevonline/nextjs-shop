@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {ConfirmAccount, ConfirmAccountVariables} from "@sdk/mutations/types/ConfirmAccount";
 import {confirmAccountMutation} from "@sdk/mutations/user";
 import {Redirect} from "react-router-dom";

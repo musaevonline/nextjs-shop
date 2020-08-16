@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import Page from "./Page";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {productsCardQuery} from "@sdk/queries/product";
 import {ProductsCardDetails, ProductsCardDetailsVariables} from "@sdk/queries/types/ProductsCardDetails";
 import {FavoritesContext} from "@temp/components/FavoritesProvider/context";

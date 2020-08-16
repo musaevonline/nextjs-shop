@@ -1,4 +1,3 @@
-import { LocationState } from "history";
 import { Base64 } from "js-base64";
 import { each } from "lodash";
 import { parse as parseQs } from "query-string";
@@ -96,7 +95,7 @@ export const maybe = <T>(exp: () => T, d?: T) => {
 };
 
 export const parseQueryString = (
-  location: LocationState
+  location: Location
 ): { [key: string]: string } => {
   const query = {
     ...parseQs((location as any).search.substr(1)),

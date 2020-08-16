@@ -1,0 +1,127 @@
+version: '3.7'
+
+services:
+  api:
+    container_name: 'shop_api'
+    build:
+      context: ./stroylux
+      dockerfile: ./Dockerfile
+      args:
+        STATIC_URL: '/static/'
+    expose:
+      - 8000
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - static_volume:/app/static
+      - ./stroylux/main/:/app/main:Z
+      - ./stroylux/templates/:/app/templates:Z
+      # prevents overshadowing of build-time assets
+      - /app/main/static/assets
+      - /app/templates/templated_email/compiled
+      - stroylux-media:/app/media
+    command: gunicorn main.wsgi:application --bind 0.0.0.0:8000
+    env_file: ./stroylux/common.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shop_api.entrypoints=web"
+      - "traefik.http.routers.shop_api.rule=Host(`stroylux.localhost`)&&PathPrefix(`/graphql/`)"
+  #    environment:
+#      - JAEGER_AGENT_HOST=jaeger
+#      - STOREFRONT_URL=http://stroylux.localhost/
+#      - DASHBOARD_URL=http://localhost:9000/
+
+  storefront:
+    container_name: "shop_storefront"
+    build:
+      context: ./storefront
+      dockerfile: ./Dockerfile
+      args:
+        API_URI: "http://stroylux.localhost/graphql/"
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shop_storefront.rule=Host(`stroylux.localhost`)&&PathPrefix(`/`)"
+      - "traefik.http.routers.shop_storefront.entrypoints=web"
+
+#  dashboard:
+#    build:
+#      context: ./dashboard
+#      dockerfile: ./Dockerfile.dev
+#    ports:
+#      - 9000:9000
+#    restart: unless-stopped
+#    volumes:
+#      - ./dashboard/:/app:cached
+#      - /app/node_modules/
+#    command: npm start -- --host 0.0.0.0
+
+  db:
+    image: library/postgres:11.7-alpine
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    volumes:
+      - stroylux-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=stroylux
+      - POSTGRES_PASSWORD=stroylux
+
+  redis:
+    image: library/redis:5.0-alpine
+    ports:
+      - 6379:6379
+    restart: unless-stopped
+    volumes:
+      - stroylux-redis:/data
+
+#  worker:
+#    build:
+#      context: ./stroylux
+#      dockerfile: ./Dockerfile
+#      args:
+#        STATIC_URL: '/static/'
+#    command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=info
+#    restart: unless-stopped
+#    env_file: ./stroylux/common.env
+#    depends_on:
+#      - redis
+#    volumes:
+#      - ./stroylux/main/:/app/main:Z,cached
+#      - ./stroylux/templates/:/app/templates:Z,cached
+#      # prevents overshadowing of build-time assets
+#      - /app/templates/templated_email/compiled
+#      # shared volume between worker and api for media
+#      - stroylux-media:/app/media
+#      - static_volume:/app/static
+
+#  mailhog:
+#    image: mailhog/mailhog:v1.0.0
+#    container_name: mailhog-stroylux
+#    networks:
+#      - stroylux-backend-tier
+#    ports:
+#      - 8025:8025
+#      - 1025:1025
+  proxy:
+    image: "traefik:v2.2"
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+volumes:
+  stroylux-db:
+  stroylux-redis:
+  stroylux-media:
+  static_volume:

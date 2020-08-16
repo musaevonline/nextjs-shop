@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import Page from "./Page";
 import {UserContext} from "@temp/components/User/context";
-import {useMutation, useQuery} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/client";
 import {UserOrders, UserOrdersVariables} from "@temp/views/UserProfile/types/UserOrders";
 import {userOrdersQuery} from "@temp/views/UserProfile/queries";
 import {OrderDirection, OrderSortField} from "@temp/types/globalTypes";

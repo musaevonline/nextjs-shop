@@ -1,6 +1,6 @@
 import React from "react";
 import Page from "@temp/views/UserProfile/pages/Reviews/Page";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {userReviewsQuery} from "@sdk/queries/user";
 import {UserReviews, UserReviewsVariables} from "@sdk/queries/types/UserReviews";
 import _ from "lodash";

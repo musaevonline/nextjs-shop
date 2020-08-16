@@ -1,4 +1,4 @@
-import { ApolloClient } from "apollo-client";
+import { ApolloClient } from "@apollo/client";
 import * as React from "react";
 
 import { getAuthToken, removeAuthToken, setAuthToken } from "../../core/auth";

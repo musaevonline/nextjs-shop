@@ -71,6 +71,9 @@ module.exports = ({ sourceDir, distDir }) => ({
                 progressive: true,
                 quality: 85,
               },
+              optipng: {
+                enabled: false,
+              },
               pngquant: {
                 quality: [0.65, 0.90],
                 speed: 4,
@@ -94,8 +97,9 @@ module.exports = ({ sourceDir, distDir }) => ({
       template: `${sourceDir}/index.html`,
     }),
     new ForkTsCheckerWebpackPlugin({
-      tslint: true,
-      exclude: "node_modules",
+      eslint: {
+        files: './src/**/*.{ts,tsx,js,jsx}'
+      },
       async: false,
     }),
     // PWA plugins
@@ -106,8 +110,7 @@ module.exports = ({ sourceDir, distDir }) => ({
       devMode: 'webapp',
     }),
     new webpack.EnvironmentPlugin({
-      API_URI: process.env.API_URI,
-      SERVICE_WORKER_TIMEOUT: "60000",
+      API_URI: process.env.API_URI
     }),
   ],
   node: {

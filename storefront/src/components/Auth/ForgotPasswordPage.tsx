@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {forgotPasswordMutation} from "@sdk/mutations/user";
 import {useSnackbar} from "notistack";
 import {ForgotPassword, ForgotPasswordVariables} from "@sdk/mutations/types/ForgotPassword";

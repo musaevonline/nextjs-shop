@@ -1,7 +1,7 @@
 import "./scss/index.scss";
 
 import React, {useContext, useEffect, useState} from "react";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import {TCheckoutStep} from "@temp/views/Checkout/Page";

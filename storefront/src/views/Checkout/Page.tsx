@@ -18,7 +18,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import {makeStyles} from "@material-ui/core/styles";
 import {CartItems} from "@temp/components/CartItems";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {productVariantsQuery} from "@sdk/queries/product-variant";
 import Typography from "@material-ui/core/Typography";
 import {priceToString} from "@temp/core/utils";

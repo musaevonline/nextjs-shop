@@ -37,11 +37,11 @@ COPY . /app
 COPY --from=build-python /usr/local/lib/python3.8/site-packages/ /usr/local/lib/python3.8/site-packages/
 COPY --from=build-python /usr/local/bin/ /usr/local/bin/
 WORKDIR /app
-
 RUN SECRET_KEY=dummy STATIC_URL=${STATIC_URL} python3 manage.py collectstatic --no-input
 
 RUN mkdir -p /app/media /app/static \
   && chown -R stroylux:stroylux /app/
+
 
 EXPOSE 8000
 ENV PORT 8000

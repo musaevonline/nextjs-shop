@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import {checkoutFragment} from "@sdk/fragments/checkout";
 
 export const meCheckout = gql`

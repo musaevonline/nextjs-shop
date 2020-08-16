@@ -1,8 +1,8 @@
-import { ApolloLink } from "apollo-link";
-import { setContext } from "apollo-link-context";
-import { ErrorResponse, onError } from "apollo-link-error";
 import * as React from "react";
 import {checkoutTokenEvent} from "@sdk/checkout";
+import {ErrorResponse, onError} from "@apollo/client/link/error";
+import {ApolloLink} from "@apollo/client";
+import {setContext} from "@apollo/client/link/context";
 
 export const authEvent = new Event("auth");
 
@@ -41,7 +41,8 @@ export const invalidTokenLinkWithTokenHandlerComponent = (
   component: React.ComponentClass
 ): { component: React.FC<any>; link: ApolloLink } => {
   // tslint:disable-next-line:no-empty
-  let tokenExpirationCallback = () => {};
+  let tokenExpirationCallback = () => {
+    console.log('token expiration callback')};
 
   const tokenExpirationHandler = callback => {
     tokenExpirationCallback = callback;

@@ -1,7 +1,7 @@
-import { ApolloError } from "apollo-client";
 import * as React from "react";
 import {User} from "@sdk/fragments/types/User";
 import {TokenAuth_tokenCreate_user} from "@sdk/mutations/types/TokenAuth";
+import {ApolloError} from "@apollo/client";
 
 export interface UserContextInterface {
   loading: boolean;

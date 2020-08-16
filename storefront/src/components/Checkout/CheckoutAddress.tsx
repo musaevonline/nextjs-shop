@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import {ShippingAddressForm} from "@temp/components/Forms/ShippingAddressForm";
 import {useHistory} from "react-router";
 import {TCheckoutStep} from "@temp/views/Checkout/Page";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import ContactsIcon from '@material-ui/icons/Contacts';
 import {
     checkoutAddressUpdateMutation,

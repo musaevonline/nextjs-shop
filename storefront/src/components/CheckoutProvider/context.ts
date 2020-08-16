@@ -1,9 +1,9 @@
-import { ApolloError } from "apollo-client";
 import * as React from "react";
 import {Checkout} from "@sdk/fragments/types/Checkout";
 import {ILocalCheckout, TCartLine} from "@temp/components/CheckoutProvider/index";
 import {ProductVariants_productVariants} from "@sdk/queries/types/ProductVariants";
 import {PaymentMethod} from "@sdk/fragments/types/PaymentMethod";
+import {ApolloError} from "@apollo/client";
 
 export interface FavoritesContextInterface {
     loading: boolean;

@@ -39,7 +39,7 @@ const ProductsFilter:React.FC<{
     const handleChangeAttributes = (attributeSlug, value) => e => {
         e.preventDefault();
         if (filters.attributes) {
-            let newAttributes = _.cloneDeep(filters.attributes);
+            const newAttributes = _.cloneDeep(filters.attributes);
             const index = _.findIndex(filters.attributes, el => el.slug === attributeSlug);
             if (index !== -1) {
                 if (newAttributes[index].values.includes(value)) {

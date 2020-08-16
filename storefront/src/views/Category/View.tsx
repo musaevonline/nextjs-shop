@@ -3,7 +3,7 @@ import Loader from "@temp/components/Loader";
 import {MetaWrapper} from "@temp/components";
 import {useParams} from "react-router";
 import {getGraphqlIdFromDBId} from "@temp/core/utils";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {productsCardQuery} from "@sdk/queries/product";
 import {shopQuery} from "@sdk/queries/shop";
 import Page from "@temp/views/Category/Page";

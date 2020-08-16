@@ -2,7 +2,7 @@ import React from "react";
 import Page from "./Page";
 import {ProductsCardDetails, ProductsCardDetailsVariables} from "@sdk/queries/types/ProductsCardDetails";
 import {productsCardQuery} from "@sdk/queries/product";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {useQueryParams, StringParam} from "use-query-params";
 import _ from "lodash";
 

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {resetPasswordMutation} from "@sdk/mutations/user";
 import {useSnackbar} from "notistack";
 import {ResetPassword, ResetPasswordVariables} from "@sdk/mutations/types/ResetPassword";

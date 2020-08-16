@@ -1,7 +1,7 @@
 import "./scss/index.scss";
 
 import React, {useContext, useEffect, useState} from "react";
-import {useMutation, useQuery} from "@apollo/react-hooks";
+import {useMutation, useQuery} from "@apollo/client";
 import {checkoutQuery} from "@sdk/queries/checkout";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";

@@ -6,21 +6,15 @@ import {
 } from "@sdk/react";
 import { defaultTheme } from "@styles";
 
-import { defaultDataIdFromObject, InMemoryCache } from "apollo-cache-inmemory";
 // import { persistCache } from "apollo-cache-persist";
-import { ApolloClient } from "apollo-client";
-import { ApolloLink } from "apollo-link";
-import { BatchHttpLink } from "apollo-link-batch-http";
-import { RetryLink } from "apollo-link-retry";
 import * as React from "react";
-import { ApolloProvider } from "react-apollo";
 import { render } from "react-dom";
-import { Route, Router, Switch } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { QueryParamProvider } from "use-query-params";
 
 import { App } from "./app";
 import { apiUrl } from "./constants";
-import { history } from "./history";
+// import { history } from "./history";
 
 import {OverlayProvider} from "./components";
 
@@ -30,11 +24,14 @@ import {
 } from "./core/auth";
 import {ErrorBoundary} from "react-error-boundary";
 import {SnackbarProvider, useSnackbar} from "notistack";
-import {ErrorResponse, onError} from "apollo-link-error";
 import {isJwtError} from "@temp/core/errors";
 import UserProvider from "@temp/components/User";
 import CheckoutProvider from "@temp/components/CheckoutProvider";
 import FavoritesProvider from "@temp/components/FavoritesProvider";
+import {RetryLink} from "@apollo/client/link/retry";
+import {BatchHttpLink} from "@apollo/client/link/batch-http";
+import {ApolloClient, ApolloLink, ApolloProvider, defaultDataIdFromObject, InMemoryCache} from "@apollo/client";
+import {ErrorResponse, onError} from "@apollo/client/link/error";
 
 interface ResponseError extends ErrorResponse {
     networkError?: Error & {
@@ -135,7 +132,7 @@ const startApp = async () => {
         };
 
         return (
-            <Router history={history}>
+            <BrowserRouter>
                 <QueryParamProvider ReactRouterRoute={Route}>
                     <ApolloProvider client={apolloClient}>
                         <CheckoutProvider>
@@ -173,7 +170,7 @@ const startApp = async () => {
                         </CheckoutProvider>
                     </ApolloProvider>
                 </QueryParamProvider>
-            </Router>
+            </BrowserRouter>
         );
     });
     render(

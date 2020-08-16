@@ -1,7 +1,7 @@
 import { createBrowserHistory } from "history";
 
 const history = createBrowserHistory();
-history.listen((_location, action) => {
+history.listen(({location, action}) => {
   if (["PUSH"].includes(action)) {
     window.scroll({
       behavior: "smooth",

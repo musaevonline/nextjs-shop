@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {useSnackbar} from "notistack";
 import {useUrlQuery} from "@temp/core/utils";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {confirmEmailChangeMutation} from "@sdk/mutations/user";
 import {ConfirmEmailChange, ConfirmEmailChangeVariables} from "@sdk/mutations/types/ConfirmEmailChange";
 import {Redirect} from "react-router-dom";

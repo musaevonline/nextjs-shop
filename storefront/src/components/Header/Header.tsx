@@ -2,7 +2,6 @@ import './scss/index.scss';
 
 import React, {useContext, useState} from "react";
 import SVG from 'react-inlinesvg';
-import { pure } from 'recompose';
 import {Container} from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
@@ -29,7 +28,7 @@ import {Search} from "@temp/components/Search";
 import {MenuMobile} from "@temp/components/MenuMobile";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {categoriesQuery} from "@sdk/queries/category";
 import {Overlay, OverlayContext} from "@temp/components";
 import {CartRightPanel} from "@temp/components/CartRightPanel";
@@ -287,4 +286,4 @@ const Header: React.FC = () =>{
     );
 };
 
-export default pure(Header);
+export default React.memo(Header);

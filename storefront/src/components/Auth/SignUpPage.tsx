@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {useSnackbar} from "notistack";
 import {SignUpForm} from "@temp/components/Forms/SignUpForm";
 import {AccountRegister, AccountRegisterVariables} from "@sdk/mutations/types/AccountRegister";

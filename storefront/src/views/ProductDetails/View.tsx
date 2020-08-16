@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {MetaWrapper} from "@temp/components";
 import Page from "@temp/views/ProductDetails/Page";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {productQuery} from "@sdk/queries/product";
 import {useParams} from "react-router";
 import {getGraphqlIdFromDBId} from "@temp/core/utils";

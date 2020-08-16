@@ -14,7 +14,7 @@ import InstagramLogo from 'images/instagram.svg';
 import VKLogo from 'images/vk.svg';
 import {Link} from "react-router-dom";
 import { ReactSVG } from 'react-svg'
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {categoriesQuery} from "@sdk/queries/category";
 import {Categories, CategoriesVariables} from "@sdk/queries/types/Categories";
 import Collapse from "@material-ui/core/Collapse";
