@@ -1,8 +1,8 @@
 FROM node:12.16.2 as builder
 WORKDIR /app
-COPY package.json /app/
+#COPY package.json /app/
 #RUN npm install
-COPY ./ /app/
+COPY . .
 ARG API_URI
 ENV API_URI ${API_URI:-http://localhost:8000/graphql/}
 #RUN API_URI=${API_URI} npm run build
