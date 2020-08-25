@@ -64,25 +64,25 @@ module.exports = ({ sourceDir, distDir }) => ({
               publicPath: "/images/",
             },
           },
-          // {
-          //   loader: "image-webpack-loader",
-          //   options: {
-          //     mozjpeg: {
-          //       progressive: true,
-          //       quality: 85,
-          //     },
-          //     optipng: {
-          //       enabled: false,
-          //     },
-          //     pngquant: {
-          //       quality: [0.65, 0.90],
-          //       speed: 4,
-          //     },
-          //     gifsicle: {
-          //       enabled: false,
-          //     },
-          //   },
-          // },
+          {
+            loader: "image-webpack-loader",
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 85,
+              },
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.90],
+                speed: 4,
+              },
+              gifsicle: {
+                enabled: false,
+              },
+            },
+          },
         ],
       },
     ],
