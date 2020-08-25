@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const autoprefixer = require('autoprefixer');
+const tailwind = require('tailwindcss');
 
 module.exports = ({ sourceDir, distDir }) => ({
   output: {
@@ -20,7 +21,7 @@ module.exports = ({ sourceDir, distDir }) => ({
             options: {
               'sourceMap': true,
               'plugins': function () {
-                return [autoprefixer];
+                return [tailwind, autoprefixer];
               }
             }
           },

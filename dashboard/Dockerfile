@@ -1,6 +1,6 @@
-FROM node:10 as builder
+FROM node:12.16.2 as builder
 WORKDIR /app
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 COPY . .
 ARG APP_MOUNT_URI

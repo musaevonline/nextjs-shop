@@ -10,12 +10,11 @@ services:
       args:
         STATIC_URL: '/static/'
     restart: unless-stopped
-    networks:
-      - stroylux-backend-tier
     depends_on:
       - db
       - redis
     volumes:
+      - static_volume:/app/static
       - ./stroylux/main/:/app/main:Z
       - ./stroylux/templates/:/app/templates:Z
       # prevents overshadowing of build-time assets
@@ -60,8 +59,6 @@ services:
     ports:
       - 5432:5432
     restart: unless-stopped
-    networks:
-      - stroylux-backend-tier
     volumes:
       - stroylux-db:/var/lib/postgresql/data
     environment:
@@ -73,8 +70,6 @@ services:
     ports:
       - 6379:6379
     restart: unless-stopped
-    networks:
-      - stroylux-backend-tier
     volumes:
       - stroylux-redis:/data
 
@@ -86,8 +81,6 @@ services:
         STATIC_URL: '/static/'
     command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=info
     restart: unless-stopped
-    networks:
-      - stroylux-backend-tier
     env_file: ./stroylux/common.env
     depends_on:
       - redis
@@ -102,34 +95,13 @@ services:
 #  mailhog:
 #    image: mailhog/mailhog:v1.0.0
 #    container_name: mailhog-stroylux
-#    networks:
-#      - stroylux-backend-tier
 #    ports:
 #      - 8025:8025
 #      - 1025:1025
 
 
-#  jaeger:
-#    image: jaegertracing/all-in-one
-#    ports:
-#      - "5775:5775/udp"
-#      - "6831:6831/udp"
-#      - "6832:6832/udp"
-#      - "5778:5778"
-#      - "16686:16686"
-#      - "14268:14268"
-#      - "9411:9411"
-#    restart: unless-stopped
-#    networks:
-#      - saleor-backend-tier
-
 volumes:
   stroylux-db:
-    driver: local
   stroylux-redis:
-    driver: local
+  static_volume:
   stroylux-media:
-
-networks:
-  stroylux-backend-tier:
-    driver: bridge

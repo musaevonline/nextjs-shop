@@ -41,22 +41,29 @@ services:
       args:
         API_URI: "http://stroylux.localhost/graphql/"
     restart: unless-stopped
+    volumes:
+      - static_volume:/app/static
+      - stroylux-media:/app/media
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.shop_storefront.rule=Host(`stroylux.localhost`)&&PathPrefix(`/`)"
       - "traefik.http.routers.shop_storefront.entrypoints=web"
 
-#  dashboard:
-#    build:
-#      context: ./dashboard
-#      dockerfile: ./Dockerfile.dev
-#    ports:
-#      - 9000:9000
-#    restart: unless-stopped
-#    volumes:
-#      - ./dashboard/:/app:cached
-#      - /app/node_modules/
-#    command: npm start -- --host 0.0.0.0
+  dashboard:
+    container_name: "shop_dashboard"
+    build:
+      context: ./dashboard
+      dockerfile: ./Dockerfile
+      args:
+        API_URI: "http://stroylux.localhost/graphql/"
+    restart: unless-stopped
+    volumes:
+      - static_volume:/app/static
+      - stroylux-media:/app/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.shop_dashboard.rule=Host(`stroylux.localhost`)&&PathPrefix(`/dashboard/`)"
+      - "traefik.http.routers.shop_dashboard.entrypoints=web"
 
   db:
     image: library/postgres:11.7-alpine

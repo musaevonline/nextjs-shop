@@ -77,9 +77,9 @@ module.exports = ({ sourceDir, distDir }) => ({
           {
             loader: "file-loader",
             options: {
-              name: "[name].[ext]",
-              outputPath: "images/",
-              publicPath: "/images/",
+              name: "[name].[hash].[ext]",
+              outputPath: 'images/',
+              publicPath: "/dashboard/images/",
             },
           },
           {
@@ -93,6 +93,9 @@ module.exports = ({ sourceDir, distDir }) => ({
                 quality: [0.65, 0.90],
                 speed: 4,
               },
+              optipng: {
+                enabled: false,
+              },
               gifsicle: {
                 enabled: false,
               },
@@ -100,6 +103,16 @@ module.exports = ({ sourceDir, distDir }) => ({
           },
         ],
       },
+      // {
+      //
+      //   test: /\.svg$/,
+      //   loader: 'svg-inline-loader',
+      //   include: [
+      //     resolve("node_modules"),
+      //     resolve("assets/images"),
+      //     resolve("assets/favicons")
+      //   ]
+      // },
     ],
   },
   plugins: [

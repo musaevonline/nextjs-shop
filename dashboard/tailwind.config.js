@@ -1,5 +1,18 @@
-/* eslint-disable import/no-extraneous-dependencies */
 module.exports = {
+	purge: {
+		// Learn more on https://tailwindcss.com/docs/controlling-file-size/#removing-unused-css
+		enabled: process.env.NODE_ENV === 'production',
+		content: [
+			'./src/**/*.html',
+			'./src/**/*.ts',
+			'./src/**/*.tsx',
+			'./src/**/*.js',
+			'./src/**/*.jsx'
+		]
+	},
+	future: {
+		removeDeprecatedGapUtilities: true,
+	},
 	prefix: '',
 	important: false,
 	separator: ':',

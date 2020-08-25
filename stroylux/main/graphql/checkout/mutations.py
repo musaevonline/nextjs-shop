@@ -1,3 +1,5 @@
+import decimal
+
 import graphene
 from typing import Tuple, List, Optional
 
@@ -644,7 +646,7 @@ class CheckoutComplete(BaseMutation):
         payment = create_payment(
             gateway='gateway',
             payment_token=checkout.token,
-            total=checkout_total,
+            total=decimal.Decimal(checkout_total.gross.amount),
             currency=settings.DEFAULT_CURRENCY,
             email=checkout.email,
             extra_data=extra_data,

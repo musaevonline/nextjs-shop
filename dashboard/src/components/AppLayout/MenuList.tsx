@@ -262,7 +262,7 @@ const MenuList: React.FC<MenuListProps> = props => {
                 data-tc={menuItem.label}
                 onClick={() => handleSubMenu(menuItem.ariaLabel)}
               >
-                <SVG
+                <SVG onError={e => {console.log(e)}}
                   className={classNames(classes.menuIcon, {
                     [classes.menuIconDark]: isDark,
                     [classes.menuIconSmall]: !isMenuSmall
