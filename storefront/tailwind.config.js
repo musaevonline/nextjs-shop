@@ -10,6 +10,9 @@ module.exports = {
       './src/**/*.jsx'
     ]
   },
+  future: {
+    removeDeprecatedGapUtilities: true,
+  },
   target: 'relaxed',
   prefix: '',
   important: false,
