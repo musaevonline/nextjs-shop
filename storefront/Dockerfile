@@ -1,5 +1,5 @@
 FROM node:12.16.2 as builder
-COPY package.json /app
+#COPY package.json /app
 #RUN npm install
 COPY . /app
 WORKDIR /app
