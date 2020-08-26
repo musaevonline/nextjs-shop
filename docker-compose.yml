@@ -17,18 +17,11 @@ services:
       - static_volume:/app/static
       - ./stroylux/main/:/app/main:Z
       - ./stroylux/templates/:/app/templates:Z
-      # prevents overshadowing of build-time assets
       - /app/main/static/assets
       - /app/templates/templated_email/compiled
-      # shared volume between worker and api for media
-#      - stroylux-media:/app/media
       - ./stroylux/media/:/app/media:Z
     command: python manage.py runserver 0.0.0.0:8000
     env_file: ./stroylux/common.env
-    environment:
-#      - JAEGER_AGENT_HOST=jaeger
-      - STOREFRONT_URL=http://localhost:3000/
-#      - DASHBOARD_URL=http://localhost:9000/
 
 #  storefront:
 #    build:
@@ -87,17 +80,16 @@ services:
     volumes:
       - ./stroylux/main/:/app/main:Z,cached
       - ./stroylux/templates/:/app/templates:Z,cached
-      # prevents overshadowing of build-time assets
       - /app/templates/templated_email/compiled
-      # shared volume between worker and api for media
       - stroylux-media:/app/media
 
-#  mailhog:
-#    image: mailhog/mailhog:v1.0.0
-#    container_name: mailhog-stroylux
-#    ports:
-#      - 8025:8025
-#      - 1025:1025
+  smtp:
+    image: mailhog/mailhog:v1.0.0
+    container_name: smtp
+    restart: unless-stopped
+    ports:
+      - 8025:8025
+      - 1025:1025
 
 
 volumes:

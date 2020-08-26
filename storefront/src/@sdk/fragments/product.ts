@@ -37,7 +37,6 @@ export const productCardFragment = gql`
             }
             values{
                 id
-                inputType
                 name
                 slug
             }

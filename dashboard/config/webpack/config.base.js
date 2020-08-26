@@ -11,6 +11,7 @@ const resolve = path.resolve.bind(path, __dirname);
 if (!process.env.API_URI) {
   throw new Error("Environment variable API_URI not set");
 }
+const dev = process.env.NODE_ENV === 'develop';
 const publicPath = process.env.STATIC_URL || "/";
 module.exports = ({ sourceDir, distDir }) => ({
   resolve: {
@@ -79,7 +80,7 @@ module.exports = ({ sourceDir, distDir }) => ({
             options: {
               name: "[name].[hash].[ext]",
               outputPath: 'images/',
-              publicPath: "/dashboard/images/",
+              publicPath: dev ? "/images/" : "/dashboard/images/",
             },
           },
           // {

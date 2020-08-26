@@ -14,10 +14,12 @@ import {useQuery} from "@apollo/client";
 const View: React.FC = () => {
     const shopDataQuery = useQuery<Shop>(shopQuery);
     const {data:newProductsData} = useQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
-        variables: {first: 12, sortBy:{direction: OrderDirection.DESC, field: ProductOrderField.DATE }}
+        variables: {first: 12, sortBy:{direction: OrderDirection.DESC, field: ProductOrderField.DATE }},
+        fetchPolicy: "cache-and-network"
     });
     const {data:popularProductsData} = useQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
-        variables: {first: 12, sortBy:{direction: OrderDirection.ASC, field: ProductOrderField.NAME }}
+        variables: {first: 12, sortBy:{direction: OrderDirection.ASC, field: ProductOrderField.NAME }},
+        fetchPolicy: "cache-and-network"
     });
     const shop = shopDataQuery.data?.shop;
     return(

@@ -14,7 +14,6 @@ import { QueryParamProvider } from "use-query-params";
 
 import { App } from "./app";
 import { apiUrl } from "./constants";
-// import { history } from "./history";
 
 import {OverlayProvider} from "./components";
 
@@ -40,10 +39,6 @@ interface ResponseError extends ErrorResponse {
     };
 }
 
-// const { link: invalidTokenLink } = invalidTokenLinkWithTokenHandlerComponent(
-//     UserProvider
-// );
-
 const invalidTokenLink = onError((error: ResponseError) => {
     if (
         (error.networkError && error.networkError.statusCode === 401) ||
@@ -61,6 +56,13 @@ const link = ApolloLink.from([
 ]);
 
 const cache = new InMemoryCache({
+    // typePolicies: {
+    //   Query:{
+    //       fields:{
+    //           products: relayStylePagination()
+    //       }
+    //   }
+    // },
     dataIdFromObject: obj => {
         if (obj.__typename === "Shop") {
             return "shop";

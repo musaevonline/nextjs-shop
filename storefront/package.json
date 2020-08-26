@@ -98,6 +98,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^7.0.2",
     "css-loader": "^4.2.1",
+    "dotenv": "^8.2.0",
     "eslint": "^7.7.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -133,7 +134,7 @@
     "chokidar": "^3.4.1"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=develop API_URI=http://localhost:8000/graphql/ webpack-dev-server --history-api-fallback --watch --mode development",
+    "start": "cross-env NODE_ENV=develop API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ webpack-dev-server --history-api-fallback --watch --mode development",
     "start:worker": "npm run start -- --service-worker",
     "build": "cross-env NODE_ENV=production webpack -p",
     "watch": "cross-env NODE_ENV=development webpack --mode development --watch -w",

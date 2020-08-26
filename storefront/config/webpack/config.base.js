@@ -109,9 +109,8 @@ module.exports = ({ sourceDir, distDir }) => ({
       mode: 'webapp', // optional can be 'webapp' or 'light' - 'webapp' by default
       devMode: 'webapp',
     }),
-    new webpack.EnvironmentPlugin({
-      API_URI: process.env.API_URI
-    }),
+    new webpack.EnvironmentPlugin(['API_URI', 'DASHBOARD_URL']),
+    // new webpack.DefinePlugin({ 'process.env.API_URI': JSON.stringify(process.env.API_URI) })
   ],
   node: {
     fs: "empty",

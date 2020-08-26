@@ -35,9 +35,9 @@ const AuthenticatedPage:React.FC<{
     const classes = useStyles();
 
     const logout = e => {
-      auth.logout();
-      resetCheckout();
-      onClickLink();
+        auth.logout();
+        resetCheckout();
+        onClickLink();
     };
 
     return(
@@ -94,6 +94,19 @@ const AuthenticatedPage:React.FC<{
                     </Typography>
                 </div>
                 <Divider variant="fullWidth"/>
+                {auth?.user?.isStaff &&
+                <>
+                    <div className={classes.link}>
+                        <Typography variant="subtitle2"
+                                    className={classes.link}
+                                    component='a'
+                                    href={process.env.DASHBOARD_URL || '/dashboard/'}>
+                            Панель администратора
+                        </Typography>
+                    </div>
+                    <Divider variant="fullWidth"/>
+                </>
+                }
             </div>
             <div>
                 <Button variant="contained"

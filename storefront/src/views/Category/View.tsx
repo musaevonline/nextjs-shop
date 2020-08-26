@@ -47,7 +47,9 @@ const View:React.FC = () => {
     const shopDataQuery = useQuery<Shop>(shopQuery);
     const {data:categoryResponse} = useQuery<Category, CategoryVariables>(categoryQuery, {variables:{id}});
     const {data:productsResponse, fetchMore} = useQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
-        variables: {first: PAGINATE_BY, filter:{
+        variables: {
+            first: PAGINATE_BY,
+            filter:{
                 categories: [id],
                 attributes: query.attributes,
                 price:{lte: priceRange[0], gte: priceRange[1]},
@@ -56,7 +58,8 @@ const View:React.FC = () => {
                 field: query.sortBy?.field as ProductOrderField,
                 direction: query.sortBy?.direction as OrderDirection,
             }: null
-        }
+        },
+        fetchPolicy: "cache-and-network"
     });
     const {data: categoryAttributesData} = useQuery<Attributes, AttributesVariables>(attributesQuery, {
         variables:{
@@ -91,6 +94,7 @@ const View:React.FC = () => {
         })
     };
     const shop = shopDataQuery.data?.shop;
+    console.log(productsResponse, categoryResponse)
     return(
         <MetaWrapper
             meta={{
