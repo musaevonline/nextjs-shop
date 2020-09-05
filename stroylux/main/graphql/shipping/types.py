@@ -10,8 +10,8 @@ class ShippingMethod(CountableDjangoObjectType):
 
     class Meta:
         description = (
-            "Shipping method are the methods you'll use to get customer's orders to "
-            "them. They are directly exposed to the customers."
+            "Shipping method are the methods you'll use to get customer's orders to them. "
+            "They are directly exposed to the customers."
         )
         model = models.ShippingMethod
         interfaces = [relay.Node, ]

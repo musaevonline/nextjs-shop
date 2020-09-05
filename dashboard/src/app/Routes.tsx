@@ -35,6 +35,8 @@ import {customerSection} from "@temp/sections/customers/urls";
 import { CustomerSection } from "../sections/customers";
 import {orderListPath} from "@temp/sections/orders/urls";
 import OrdersSection from "../sections/orders";
+import {shippingMethodListPath} from "@temp/sections/shipping/urls";
+import ShippingSection from "@temp/sections/shipping";
 
 const Routes: React.FC = () => {
     const intl = useIntl();
@@ -105,6 +107,11 @@ const Routes: React.FC = () => {
                                         permissions={[PermissionEnum.MANAGE_USERS]}
                                         path={customerSection}
                                         component={CustomerSection}
+                                    />
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_SHIPPING]}
+                                        path={shippingMethodListPath}
+                                        component={ShippingSection}
                                     />
                                     <SectionRoute
                                         permissions={[PermissionEnum.MANAGE_STAFF]}

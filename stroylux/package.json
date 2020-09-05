@@ -16,7 +16,7 @@
     "mjml": "^4.4.0"
   },
   "scripts": {
-    "build-schema": "python manage.py get_graphql_schema > main/graphql/schema.graphql",
+    "download-schema": "python manage.py get_graphql_schema > ../../schema.graphql",
     "heroku-postbuild": "npm run build-emails",
     "build-emails": "mjml --config.beautify false -l skip \"templates/templated_email/source/*.mjml\" -o templates/templated_email/compiled"
   }

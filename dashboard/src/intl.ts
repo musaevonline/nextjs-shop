@@ -544,6 +544,11 @@ export const sectionNames = defineMessages({
     id:'draftOrders',
     defaultMessage: "Draft orders",
     description: "settings section name"
+  },
+  shipping: {
+    id:'shipping',
+    defaultMessage: "Shipping",
+    description: "settings section name"
   }
 });
 

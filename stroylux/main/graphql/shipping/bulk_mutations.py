@@ -6,12 +6,12 @@ from ..core.mutations import ModelBulkDeleteMutation
 from ..core.types.common import ShippingError
 
 
-class ShippingPriceBulkDelete(ModelBulkDeleteMutation):
+class ShippingMethodBulkDelete(ModelBulkDeleteMutation):
     class Arguments:
         ids = graphene.List(
             graphene.ID,
             required=True,
-            description="List of shipping price IDs to delete.",
+            description="List of shipping method IDs to delete.",
         )
 
     class Meta:

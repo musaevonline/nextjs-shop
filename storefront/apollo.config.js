@@ -6,7 +6,7 @@ module.exports = {
     name: "frontend",
     service: {
       // localSchemaFile: "schema.graphql",
-      name: "stroylux",
+      name: "shop",
       url: "http://localhost:8000/graphql/",
     }
   },

@@ -12,8 +12,7 @@ import { CheckoutCreateInput, CheckoutErrorCode, ShippingMethodTypeEnum } from "
 export interface CheckoutCreate_checkoutCreate_checkoutErrors {
   __typename: "CheckoutError";
   /**
-   * Name of a field that caused the error. A value of `null` indicates that the
-   * error isn't associated with a particular field.
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
    */
   field: string | null;
   /**

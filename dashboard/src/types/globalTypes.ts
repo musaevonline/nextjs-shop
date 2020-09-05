@@ -540,6 +540,28 @@ export enum ProductTypeSortField {
 /**
  * An enumeration.
  */
+export enum ShippingErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  DUPLICATED_INPUT_ITEM = "DUPLICATED_INPUT_ITEM",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  MAX_LESS_THAN_MIN = "MAX_LESS_THAN_MIN",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+/**
+ * An enumeration.
+ */
+export enum ShippingMethodTypeEnum {
+  PRICE = "PRICE",
+  WEIGHT = "WEIGHT",
+}
+
+/**
+ * An enumeration.
+ */
 export enum ShopErrorCode {
   ALREADY_EXISTS = "ALREADY_EXISTS",
   CANNOT_FETCH_TAX_RATES = "CANNOT_FETCH_TAX_RATES",
@@ -862,6 +884,16 @@ export interface ProductVariantInput {
 export interface ReorderInput {
   id: string;
   sortOrder?: number | null;
+}
+
+export interface ShippingMethodInput {
+  name?: string | null;
+  price?: any | null;
+  minimumOrderPrice?: any | null;
+  maximumOrderPrice?: any | null;
+  minimumOrderWeight?: any | null;
+  maximumOrderWeight?: any | null;
+  type?: ShippingMethodTypeEnum | null;
 }
 
 export interface ShopSettingsInput {

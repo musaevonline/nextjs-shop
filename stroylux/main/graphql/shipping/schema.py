@@ -1,11 +1,7 @@
 import graphene
 from ..core.fields import PrefetchingConnectionField
-from .bulk_mutations import ShippingPriceBulkDelete
-from .mutations import (
-    ShippingPriceCreate,
-    ShippingPriceDelete,
-    ShippingPriceUpdate
-)
+from .bulk_mutations import ShippingMethodBulkDelete
+from .mutations import ShippingMethodCreate, ShippingMethodDelete, ShippingMethodUpdate
 from .resolvers import resolve_shipping_methods
 from .types import ShippingMethod
 from ..decorators import permission_required
@@ -34,7 +30,7 @@ class ShippingQueries(graphene.ObjectType):
 
 
 class ShippingMutations(graphene.ObjectType):
-    shipping_price_create = ShippingPriceCreate.Field()
-    shipping_price_delete = ShippingPriceDelete.Field()
-    shipping_price_bulk_delete = ShippingPriceBulkDelete.Field()
-    shipping_price_update = ShippingPriceUpdate.Field()
+    shipping_method_create = ShippingMethodCreate.Field()
+    shipping_method_delete = ShippingMethodDelete.Field()
+    shipping_method_bulk_delete = ShippingMethodBulkDelete.Field()
+    shipping_method_update = ShippingMethodUpdate.Field()

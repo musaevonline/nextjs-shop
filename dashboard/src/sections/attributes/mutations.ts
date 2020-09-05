@@ -1,5 +1,5 @@
 import { TypedMutation } from "@temp/mutations";
-import gql from "graphql-tag";
+import {gql} from '@apollo/client';
 
 import { attributeDetailsFragment } from "./queries";
 import {

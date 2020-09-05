@@ -48,11 +48,6 @@ class AccountError(Error):
 
 class ShippingError(Error):
     code = ShippingErrorCode(description="The error code.", required=True)
-    warehouses = graphene.List(
-        graphene.NonNull(graphene.ID),
-        description="List of warehouse IDs which causes the error.",
-        required=False,
-    )
 
 
 class PermissionDisplay(graphene.ObjectType):

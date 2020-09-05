@@ -535,7 +535,7 @@ class UserAvatarUpdate(BaseMutation):
     @staff_member_required
     def perform_mutation(cls, _root, info, image):
         user = info.context.user
-        image_data = info.context.FILES.get(image)
+        image_data = info.context.FILES.get("image")
         validate_image_file(image_data, "image")
 
         if user.avatar:

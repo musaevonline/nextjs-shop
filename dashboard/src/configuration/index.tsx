@@ -18,6 +18,8 @@ import PermissionGroups from "@temp/icons/PermissionGroups";
 import {permissionGroupListUrl} from "@temp/sections/permissionGroups/urls";
 import {siteSettingsUrl} from "@temp/sections/siteSettings/urls";
 import SiteSettings from "@temp/icons/SiteSettings";
+import ShippingMethods from "@temp/icons/ShippingMethods";
+import {shippingMethodListUrl} from "@temp/sections/shipping/urls";
 
 export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
   return [
@@ -45,6 +47,24 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
           permission: PermissionEnum.MANAGE_PRODUCTS,
           title: intl.formatMessage(sectionNames.productTypes),
           url: productTypeListUrl()
+        }
+      ]
+    },
+    {
+      label: intl.formatMessage({
+        id: "shippingSettings",
+        defaultMessage: "Shipping Settings"
+      }),
+      menuItems: [
+        {
+          description: intl.formatMessage({
+            defaultMessage: "Manage how you ship out orders",
+            id: "configurationMenuShipping"
+          }),
+          icon: <ShippingMethods fontSize="inherit" viewBox="0 0 44 44"/>,
+          permission: PermissionEnum.MANAGE_SHIPPING,
+          title: intl.formatMessage(sectionNames.shipping),
+          url: shippingMethodListUrl()
         }
       ]
     },

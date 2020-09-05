@@ -2,7 +2,7 @@ import graphene
 from django.core.exceptions import ValidationError
 
 from .enums import ShippingMethodTypeEnum
-from ..core.mutations import BaseMutation, ModelMutation
+from ..core.mutations import BaseMutation, ModelMutation, ModelDeleteMutation
 from ..core.scalars import Decimal, WeightScalar
 from ..core.types.common import ShippingError
 from ...core.permissions import ShippingPermissions
@@ -11,7 +11,7 @@ from ...shipping.error_codes import ShippingErrorCode
 from .types import ShippingMethod
 
 
-class ShippingPriceInput(graphene.InputObjectType):
+class ShippingMethodInput(graphene.InputObjectType):
     name = graphene.String(description="Name of the shipping method.")
     price = Decimal(description="Shipping price of the shipping method.")
     minimum_order_price = Decimal(
@@ -29,11 +29,10 @@ class ShippingPriceInput(graphene.InputObjectType):
     type = ShippingMethodTypeEnum(description="Shipping type: price or weight based.")
 
 
-class ShippingPriceMixin:
+class ShippingMethodMixin:
     @classmethod
     def clean_input(cls, info, instance, data, input_cls=None):
         cleaned_input = super().clean_input(info, instance, data)
-
         # Rename the price field to price_amount (the model's)
         price_amount = cleaned_input.pop("price", None)
         if price_amount is not None:
@@ -98,15 +97,15 @@ class ShippingPriceMixin:
         return cleaned_input
 
 
-class ShippingPriceCreate(ShippingPriceMixin, ModelMutation):
+class ShippingMethodCreate(ShippingMethodMixin, ModelMutation):
 
     class Arguments:
-        input = ShippingPriceInput(
-            description="Fields required to create a shipping price.", required=True
+        input = ShippingMethodInput(
+            description="Fields required to create a shipping method.", required=True
         )
 
     class Meta:
-        description = "Creates a new shipping price."
+        description = "Creates a new shipping method."
         model = models.ShippingMethod
         permissions = (ShippingPermissions.MANAGE_SHIPPING,)
         error_type_class = ShippingError
@@ -118,16 +117,16 @@ class ShippingPriceCreate(ShippingPriceMixin, ModelMutation):
         return response
 
 
-class ShippingPriceUpdate(ShippingPriceMixin, ModelMutation):
+class ShippingMethodUpdate(ShippingMethodMixin, ModelMutation):
 
     class Arguments:
         id = graphene.ID(description="ID of a shipping price to update.", required=True)
-        input = ShippingPriceInput(
-            description="Fields required to update a shipping price.", required=True
+        input = ShippingMethodInput(
+            description="Fields required to update a shipping method.", required=True
         )
 
     class Meta:
-        description = "Updates a new shipping price."
+        description = "Updates a new shipping method."
         model = models.ShippingMethod
         permissions = (ShippingPermissions.MANAGE_SHIPPING,)
         error_type_class = ShippingError
@@ -139,16 +138,16 @@ class ShippingPriceUpdate(ShippingPriceMixin, ModelMutation):
         return response
 
 
-class ShippingPriceDelete(BaseMutation):
+class ShippingMethodDelete(BaseMutation):
     shipping_method = graphene.Field(
         ShippingMethod, description="A shipping method to delete."
     )
 
     class Arguments:
-        id = graphene.ID(required=True, description="ID of a shipping price to delete.")
+        id = graphene.ID(required=True, description="ID of a shipping method to delete.")
 
     class Meta:
-        description = "Deletes a shipping price."
+        description = "Deletes a shipping method."
         permissions = (ShippingPermissions.MANAGE_SHIPPING,)
         error_type_class = ShippingError
         error_type_field = "shipping_errors"
@@ -161,6 +160,6 @@ class ShippingPriceDelete(BaseMutation):
         shipping_method_id = shipping_method.id
         shipping_method.delete()
         shipping_method.id = shipping_method_id
-        return ShippingPriceDelete(
+        return ShippingMethodDelete(
             shipping_method=shipping_method
         )
