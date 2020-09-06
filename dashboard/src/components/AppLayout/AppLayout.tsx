@@ -152,7 +152,7 @@ const useStyles = makeStyles(
                 }
             },
             // background: theme.palette.secondary.main,
-            // background: theme.palette.secondary.main,
+            background: "white",
             display: "block",
             height: 80,
             position: "relative",
@@ -171,7 +171,7 @@ const useStyles = makeStyles(
                 width: "80px",
                 "& image":{
                     width: 70,
-                    transform: "translate(5px, 0)"
+                    transform: "translate(60px, 0)"
                 }
             }
         },

@@ -17,7 +17,7 @@ from .mutations.product_variant import ProductVariantCreate, ProductVariantDelet
     ProductVariantUpdate, ProductVariantBulkCreate, ProductVariantStocksCreate, ProductVariantStocksDelete, \
     ProductVariantStocksUpdate, VariantImageAssign, VariantImageUnassign
 from .resolvers import resolve_products, resolve_categories, resolve_product_variants, resolve_product_types, \
-    resolve_attributes, resolve_product_reviews
+    resolve_attributes, resolve_product_reviews, resolve_report_product_sales
 from .sorters import ProductOrder, CategorySortingInput, ProductTypeSortingInput, AttributeSortingInput, \
     ProductReviewOrder
 from .types import Product, ProductVariant, Category, ProductType, Stock
@@ -25,6 +25,7 @@ from main.graphql.core.fields import FilterInputConnectionField, PrefetchingConn
 from .types.attributes import Attribute
 # from .types.products import ProductReview
 from .types.products import ProductReview
+from ..core.enums import ReportingPeriod
 from ..decorators import permission_required
 from ...core.permissions import ProductPermissions
 from ...product import models
@@ -134,6 +135,14 @@ class ProductQueries(graphene.ObjectType):
     #     description="List of the shop's product reviews.",
     # )
 
+    report_product_sales = PrefetchingConnectionField(
+        ProductVariant,
+        period=graphene.Argument(
+            ReportingPeriod, required=True, description="Span of time."
+        ),
+        description="List of top selling products.",
+    )
+
     @staticmethod
     def resolve_categories(self, info, level=None, **kwargs):
         return resolve_categories(info, level=level, **kwargs)
@@ -192,6 +201,10 @@ class ProductQueries(graphene.ObjectType):
     @staticmethod
     def resolve_product_reviews(self, info, **kwargs):
         return resolve_product_reviews(info, **kwargs)
+
+    @permission_required(ProductPermissions.MANAGE_PRODUCTS)
+    def resolve_report_product_sales(self, *_args, period, **_kwargs):
+        return resolve_report_product_sales(period)
 
 
 class ProductMutations(graphene.ObjectType):

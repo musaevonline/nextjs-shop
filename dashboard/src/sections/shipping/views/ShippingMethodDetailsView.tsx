@@ -7,10 +7,10 @@ import {useIntl} from "react-intl";
 import {useShippingMethodDelete, useShippingMethodUpdate} from "../mutations";
 import {shippingMethodListUrl, ShippingMethodUrlQueryParams} from "../urls";
 import useShop from "@temp/hooks/useShop";
-import {ShippingMethodTypeEnum} from "@temp/types/globalTypes";
 import {ShippingMethodDetailsFormData} from "@temp/sections/shipping/components/ShippingMethodDetailsForm";
 import {useShippingMethod} from "@temp/sections/shipping/queries";
 import ShippingMethodUpdatePage from "@temp/sections/shipping/components/ShippingMethodUpdatePage";
+import {ShippingMethodTypeEnum} from "@temp/types/globalTypes";
 
 export interface ShippingMethodDetailsProps {
     id: string;
@@ -24,7 +24,7 @@ const ShippingMethodDetailsView: React.FC<ShippingMethodDetailsProps> = ({
     const navigate = useNavigator();
     const notify = useNotifier();
     const intl = useIntl();
-    const shop = useShop()
+    const shop = useShop();
 
     const { data, loading } = useShippingMethod({
         displayLoader: true,
@@ -45,14 +45,46 @@ const ShippingMethodDetailsView: React.FC<ShippingMethodDetailsProps> = ({
         onCompleted: data => {
             if (data.shippingMethodDelete.errors.length === 0) {
                 notify({
-                    text: intl.formatMessage(commonMessages.savedChanges)
+                    text: intl.formatMessage({
+                        id: "shippingMethodDeleted",
+                        defaultMessage: "Shipping method deleted"
+                    })
                 });
+                navigate(shippingMethodListUrl(), true);
             }
         }
     });
 
+    const onSubmit = (formData: ShippingMethodDetailsFormData) => {
+        const minmaxPrice = formData.type === ShippingMethodTypeEnum.PRICE ? {
+            minimumOrderPrice: formData.noLimits ? 0 : formData.minValue,
+            maximumOrderPrice: formData.noLimits ? null: formData.maxValue,
+            minimumOrderWeight: null,
+            maximumOrderWeight: null
+        } : {
+            minimumOrderPrice: null,
+            maximumOrderPrice: null,
+            minimumOrderWeight: formData.noLimits ? 0 : formData.minValue,
+            maximumOrderWeight: formData.noLimits ? null: formData.maxValue
+        };
+        updateShippingMethod({
+            variables: {
+                id,
+                input: {
+                    ...minmaxPrice,
+                    name: formData.name,
+                    description: formData.description,
+                    price: formData.isFree ? 0 : formData.price,
+                    type: formData.type,
+                }
+            }
+        })
+
+    };
+
     return (
         <ShippingMethodUpdatePage defaultCurrency={shop?.defaultCurrency || "BYN"}
+                                  defaultWeightUnit={shop?.defaultWeightUnit || ""}
                                   shippingMethod={data?.shippingMethod}
                                   disabled={updateShippingMethodOpts.loading ||
                                   deleteShippingRateMethod.loading ||
@@ -60,22 +92,7 @@ const ShippingMethodDetailsView: React.FC<ShippingMethodDetailsProps> = ({
                                   }
                                   errors={updateShippingMethodOpts.data?.shippingMethodUpdate.errors || []}
                                   onBack={() => navigate(shippingMethodListUrl())}
-                                  onSubmit={(formData: ShippingMethodDetailsFormData) =>
-                                      updateShippingMethod({
-                                          variables: {
-                                              id,
-                                              input: {
-                                                  name: formData.name,
-                                                  price: formData.price,
-                                                  type: ShippingMethodTypeEnum.PRICE,
-                                                  minimumOrderPrice: formData.minValue,
-                                                  maximumOrderPrice: formData.maxValue,
-                                                  minimumOrderWeight: null,
-                                                  maximumOrderWeight: null
-                                              }
-                                          }
-                                      })
-                                  }
+                                  onSubmit={onSubmit}
                                   saveButtonBarState={updateShippingMethodOpts.status}
                                   onDelete={() => deleteShippingMethod({variables: {id}})}
 

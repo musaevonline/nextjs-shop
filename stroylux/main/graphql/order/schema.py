@@ -7,9 +7,10 @@ from .mutations.draft_orders import DraftOrderComplete, DraftOrderCreate, DraftO
 from .mutations.orders import OrderAddNote, OrderCancel, OrderCapture, OrderMarkAsPaid, OrderRefund, OrderUpdate, \
     OrderUpdateShipping, OrderVoid
 from .resolvers import resolve_order_by_token, resolve_draft_orders, resolve_orders, resolve_order, \
-    resolve_homepage_events
+    resolve_homepage_events, resolve_orders_total
 from .sorters import OrderSortingInput
 from ..core.enums import ReportingPeriod
+from ..core.types.money import TaxedMoney
 from ...core.permissions import OrderPermissions
 from ..core.fields import FilterInputConnectionField, PrefetchingConnectionField
 from ..core.types import FilterInputObjectType
@@ -83,6 +84,12 @@ class OrderQueries(graphene.ObjectType):
         ),
     )
 
+    orders_total = graphene.Field(
+        TaxedMoney,
+        description="Return the total sales amount from a specific period.",
+        period=graphene.Argument(ReportingPeriod, description="A period of time."),
+    )
+
     @permission_required(OrderPermissions.MANAGE_ORDERS)
     def resolve_homepage_events(self, *_args, **_kwargs):
         return resolve_homepage_events()
@@ -102,6 +109,10 @@ class OrderQueries(graphene.ObjectType):
 
     def resolve_order_by_token(self, _info, token):
         return resolve_order_by_token(token)
+
+    @permission_required(OrderPermissions.MANAGE_ORDERS)
+    def resolve_orders_total(self, info, period, **_kwargs):
+        return resolve_orders_total(info, period)
 
 
 class OrderMutations(graphene.ObjectType):

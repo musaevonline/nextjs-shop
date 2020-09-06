@@ -465,6 +465,20 @@ export enum PaymentChargeStatusEnum {
 /**
  * An enumeration.
  */
+export enum PaymentErrorCode {
+  BILLING_ADDRESS_NOT_SET = "BILLING_ADDRESS_NOT_SET",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  PARTIAL_PAYMENT_NOT_ALLOWED = "PARTIAL_PAYMENT_NOT_ALLOWED",
+  PAYMENT_ERROR = "PAYMENT_ERROR",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+/**
+ * An enumeration.
+ */
 export enum PermissionEnum {
   MANAGE_APPS = "MANAGE_APPS",
   MANAGE_CHECKOUTS = "MANAGE_CHECKOUTS",
@@ -575,6 +589,11 @@ export enum ShopErrorCode {
 export enum StaffMemberStatus {
   ACTIVE = "ACTIVE",
   DEACTIVATED = "DEACTIVATED",
+}
+
+export enum StockAvailability {
+  IN_STOCK = "IN_STOCK",
+  OUT_OF_STOCK = "OUT_OF_STOCK",
 }
 
 /**
@@ -785,6 +804,11 @@ export interface OrderUpdateShippingInput {
   shippingMethod?: string | null;
 }
 
+export interface PaymentMethodInput {
+  name?: string | null;
+  description?: string | null;
+}
+
 export interface PermissionGroupCreateInput {
   addPermissions?: PermissionEnum[] | null;
   addUsers?: string[] | null;
@@ -817,6 +841,7 @@ export interface ProductFilterInput {
   isPublished?: boolean | null;
   productType?: string | null;
   search?: string | null;
+  stockAvailability?: StockAvailability | null;
   productTypes?: (string | null)[] | null;
   categories?: (string | null)[] | null;
   attributes?: (AttributeInput | null)[] | null;
@@ -888,6 +913,7 @@ export interface ReorderInput {
 
 export interface ShippingMethodInput {
   name?: string | null;
+  description?: string | null;
   price?: any | null;
   minimumOrderPrice?: any | null;
   maximumOrderPrice?: any | null;

@@ -4,12 +4,13 @@ from collections import defaultdict
 
 import django_filters
 import graphene
-from django.db.models import Q
+from django.db.models import Q, Sum, F, Subquery
+from django.db.models.functions import Coalesce
 from graphene_django.filter import GlobalIDMultipleChoiceFilter, GlobalIDFilter
 from typing import List, Optional, Dict, Iterable
 
 from .descriptions import AttributeDescriptions, AttributeValueDescriptions
-from .enums import ProductTypeEnum
+from .enums import ProductTypeEnum, StockAvailability
 from ..core.filters import EnumFilter, ListObjectTypeFilter, ObjectTypeFilter
 from ..core.types import FilterInputObjectType
 from ..core.types.common import PriceRangeInput
@@ -168,6 +169,30 @@ def filter_price(qs, _, value):
     )
     return qs
 
+def filter_products_by_stock_availability(qs, stock_availability):
+    total_stock = (
+        Stock.objects.select_related("product_variant")
+        .values("product_variant__product_id")
+        .annotate(
+            total_quantity_allocated=Coalesce(Sum("allocations__quantity_allocated"), 0)
+        )
+        .annotate(total_quantity=Coalesce(Sum("quantity"), 0))
+        .annotate(total_available=F("total_quantity") - F("total_quantity_allocated"))
+        .filter(total_available__lte=0)
+        .values_list("product_variant__product_id", flat=True)
+    )
+    if stock_availability == StockAvailability.IN_STOCK:
+        qs = qs.exclude(id__in=Subquery(total_stock))
+    elif stock_availability == StockAvailability.OUT_OF_STOCK:
+        qs = qs.filter(id__in=Subquery(total_stock))
+    return qs
+
+
+def filter_stock_availability(qs, _, value):
+    if value:
+        qs = filter_products_by_stock_availability(qs, value)
+    return qs
+
 
 class AttributeInput(graphene.InputObjectType):
     slug = graphene.String(required=True, description=AttributeDescriptions.SLUG)
@@ -187,6 +212,9 @@ class ProductFilter(django_filters.FilterSet):
     price = ObjectTypeFilter(
         input_class=PriceRangeInput, method=filter_price, field_name="price_amount"
     )
+    stock_availability = EnumFilter(
+        input_class=StockAvailability, method=filter_stock_availability
+    )
 
     class Meta:
         model = Product
@@ -194,6 +222,7 @@ class ProductFilter(django_filters.FilterSet):
             "is_published",
             "product_type",
             "search",
+            "stock_availability"
         ]
 
 

@@ -20,11 +20,9 @@ export const shippingMethodPath = (id: string) =>
   urlJoin(shippingMethodListPath, id);
 export type ShippingMethodUrlDialog =
   | "add-rate"
-  | "assign-country"
   | "edit-rate"
   | "remove"
-  | "remove-rate"
-  | "unassign-country";
+  | "remove-rate";
 export type ShippingMethodUrlQueryParams = Dialog<ShippingMethodUrlDialog> &
   SingleAction &
   Partial<{

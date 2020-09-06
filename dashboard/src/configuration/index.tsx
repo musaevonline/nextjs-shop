@@ -20,6 +20,8 @@ import {siteSettingsUrl} from "@temp/sections/siteSettings/urls";
 import SiteSettings from "@temp/icons/SiteSettings";
 import ShippingMethods from "@temp/icons/ShippingMethods";
 import {shippingMethodListUrl} from "@temp/sections/shipping/urls";
+import {paymentMethodListUrl} from "@temp/sections/paymentMethods/urls";
+import PaymentMethods from "@temp/icons/PaymentMethods";
 
 export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
   return [
@@ -53,7 +55,7 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
     {
       label: intl.formatMessage({
         id: "shippingSettings",
-        defaultMessage: "Shipping Settings"
+        defaultMessage: "Shipping Payment Settings"
       }),
       menuItems: [
         {
@@ -65,6 +67,16 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
           permission: PermissionEnum.MANAGE_SHIPPING,
           title: intl.formatMessage(sectionNames.shipping),
           url: shippingMethodListUrl()
+        },
+        {
+          description: intl.formatMessage({
+            defaultMessage: "Manage payment methods",
+            id: "configurationMenuPaymentMethod"
+          }),
+          icon: <PaymentMethods fontSize="inherit" viewBox="0 0 937.5 937.5"/>,
+          permission: PermissionEnum.MANAGE_ORDERS,
+          title: intl.formatMessage(sectionNames.paymentMethods),
+          url: paymentMethodListUrl()
         }
       ]
     },

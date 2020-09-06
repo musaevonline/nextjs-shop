@@ -5,14 +5,14 @@ from django.core.exceptions import ValidationError
 from ...core.permissions import OrderPermissions
 from ...core.taxes import zero_taxed_money
 from ...core.utils import get_client_ip
-from ...payment import PaymentError, models
+from ...payment import models
 from ...payment.error_codes import PaymentErrorCode
 from ...payment.utils import create_payment
 from ..account.types import AddressInput
 from ..checkout.types import Checkout
-from ..core.mutations import BaseMutation
+from ..core.mutations import BaseMutation, ModelMutation
 from ..core.scalars import Decimal
-from ..core.types import common as common_types
+from ..core.types import common as common_types, PaymentError
 from ..core.utils import from_global_id_strict_type
 from .types import Payment, PaymentMethod
 
@@ -71,12 +71,12 @@ class CheckoutPaymentCreate(BaseMutation):
         return max(checkout_total, zero_taxed_money(checkout_total.currency))
 
     @classmethod
-    def clean_shipping_address(cls, shipping_address):
-        if shipping_address is None:
+    def clean_payment_address(cls, payment_address):
+        if payment_address is None:
             raise ValidationError(
                 {
-                    "shipping_address": ValidationError(
-                        "No shipping address associated with this checkout.",
+                    "payment_address": ValidationError(
+                        "No payment address associated with this checkout.",
                         code=PaymentErrorCode.BILLING_ADDRESS_NOT_SET,
                     )
                 }
@@ -126,7 +126,7 @@ class CheckoutPaymentCreate(BaseMutation):
         checkout_total = cls.calculate_total(info, checkout)
         amount = data.get("amount", checkout_total.gross.amount)
 
-        cls.clean_shipping_address(checkout.shipping_address)
+        cls.clean_payment_address(checkout.payment_address)
         cls.clean_payment_amount(checkout_total, amount)
         payment_method = cls.clean_payment_method(data.get('paymentMethodId'))
 
@@ -235,3 +235,83 @@ class PaymentSecureConfirm(BaseMutation):
         # except PaymentError as e:
         #     raise ValidationError(str(e), code=PaymentErrorCode.PAYMENT_ERROR)
         return PaymentSecureConfirm(payment=payment)
+
+
+class PaymentMethodInput(graphene.InputObjectType):
+    name = graphene.String(description="Name of the payment method.")
+    description = graphene.String(description="Description of the payment method.")
+    
+
+class PaymentMethodMixin:
+    @classmethod
+    def clean_input(cls, info, instance, data, input_cls=None):
+        cleaned_input = super().clean_input(info, instance, data)
+        return cleaned_input
+
+
+class PaymentMethodCreate(PaymentMethodMixin, ModelMutation):
+
+    class Arguments:
+        input = PaymentMethodInput(
+            description="Fields required to create a payment method.", required=True
+        )
+
+    class Meta:
+        description = "Creates a new payment method."
+        model = models.PaymentMethod
+        permissions = (OrderPermissions.MANAGE_ORDERS,)
+        error_type_class = PaymentError
+        error_type_field = "payment_errors"
+
+    @classmethod
+    def success_response(cls, instance):
+        response = super().success_response(instance)
+        return response
+
+
+class PaymentMethodUpdate(PaymentMethodMixin, ModelMutation):
+
+    class Arguments:
+        id = graphene.ID(description="ID of a payment price to update.", required=True)
+        input = PaymentMethodInput(
+            description="Fields required to update a payment method.", required=True
+        )
+
+    class Meta:
+        description = "Updates a new payment method."
+        model = models.PaymentMethod
+        permissions = (OrderPermissions.MANAGE_ORDERS,)
+        error_type_class = PaymentError
+        error_type_field = "payment_errors"
+
+    @classmethod
+    def success_response(cls, instance):
+        response = super().success_response(instance)
+        return response
+
+
+class PaymentMethodDelete(BaseMutation):
+    payment_method = graphene.Field(
+        PaymentMethod, description="A payment method to delete."
+    )
+
+    class Arguments:
+        id = graphene.ID(required=True, description="ID of a payment method to delete.")
+
+    class Meta:
+        description = "Deletes a payment method."
+        permissions = (OrderPermissions.MANAGE_ORDERS,)
+        error_type_class = PaymentError
+        error_type_field = "payment_errors"
+
+    @classmethod
+    def perform_mutation(cls, _root, info, **data):
+        payment_method = cls.get_node_or_error(
+            info, data.get("id"), only_type=PaymentMethod
+        )
+        payment_method_id = payment_method.id
+        payment_method.delete()
+        payment_method.id = payment_method_id
+        return PaymentMethodDelete(
+            payment_method=payment_method
+        )

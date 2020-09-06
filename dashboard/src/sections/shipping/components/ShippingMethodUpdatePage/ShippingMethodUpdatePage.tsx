@@ -1,13 +1,13 @@
 import AppHeader from "@temp/components/AppHeader";
-import { ConfirmButtonTransitionState } from "@temp/components/ConfirmButton";
+import {ConfirmButtonTransitionState} from "@temp/components/ConfirmButton";
 import Container from "@temp/components/Container";
 import Grid from "@temp/components/Grid";
 import PageHeader from "@temp/components/PageHeader";
 import SaveButtonBar from "@temp/components/SaveButtonBar";
-import { sectionNames } from "@temp/intl";
-import { ShippingErrorFragment } from "@temp/sections/shipping/types/ShippingErrorFragment";
+import {sectionNames} from "@temp/intl";
+import {ShippingErrorFragment} from "@temp/sections/shipping/types/ShippingErrorFragment";
 import React from "react";
-import { useIntl } from "react-intl";
+import {useIntl} from "react-intl";
 import {useFormik} from "formik";
 import ShippingMethodDetailsForm, {ShippingMethodDetailsFormData} from "@temp/sections/shipping/components/ShippingMethodDetailsForm";
 import {ShippingMethodTypeEnum} from "@temp/types/globalTypes";
@@ -16,6 +16,7 @@ import {maybe} from "@temp/misc";
 
 export interface ShippingMethodUpdatePageProps {
     defaultCurrency: string;
+    defaultWeightUnit: string;
     shippingMethod: ShippingMethodFragment
     disabled: boolean;
     errors: ShippingErrorFragment[];
@@ -27,6 +28,7 @@ export interface ShippingMethodUpdatePageProps {
 
 const ShippingMethodUpdatePage: React.FC<ShippingMethodUpdatePageProps> = ({
                                                                                defaultCurrency,
+                                                                               defaultWeightUnit,
                                                                                shippingMethod,
                                                                                disabled,
                                                                                errors,
@@ -47,16 +49,18 @@ const ShippingMethodUpdatePage: React.FC<ShippingMethodUpdatePageProps> = ({
                 ? maybe(() => shippingMethod.minimumOrderPrice.amount.toString(), "")
                 : maybe(() => shippingMethod.minimumOrderWeight.value.toString(), ""),
         name: maybe(() => shippingMethod.name, ""),
-        noLimits: false,
-        price: maybe(() => shippingMethod.price.amount.toString(), "")
-    };
+        noLimits: shippingMethod?.type === ShippingMethodTypeEnum.PRICE
+                ? maybe(() => !shippingMethod.minimumOrderPrice.amount && !shippingMethod.maximumOrderPrice, false)
+                : maybe(() => !shippingMethod.minimumOrderWeight.value && !shippingMethod.maximumOrderWeight, false),
+        price: maybe(() => shippingMethod.price.amount.toString(), ""),
+        description: maybe(() => shippingMethod.description, ""),
+        type: maybe(() => shippingMethod.type, ShippingMethodTypeEnum.PRICE)
 
+    };
     const form = useFormik({
         enableReinitialize: true,
         initialValues: initialForm,
-        onSubmit: values => {
-            onSubmit(values);
-        }
+        onSubmit
     })
     return (
         <form onSubmit={form.handleSubmit}>
@@ -75,9 +79,9 @@ const ShippingMethodUpdatePage: React.FC<ShippingMethodUpdatePageProps> = ({
                     <ShippingMethodDetailsForm data={form.values}
                                                disabled={disabled}
                                                defaultCurrency={defaultCurrency}
+                                               defaultWeightUnit={defaultWeightUnit}
                                                errors={errors}
                                                onChange={form.handleChange}
-                                               variant={ShippingMethodTypeEnum.PRICE}
                     />
                 </Grid>
                 <SaveButtonBar

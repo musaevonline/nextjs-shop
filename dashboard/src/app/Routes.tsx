@@ -10,7 +10,7 @@ import AppLayout from "@temp/components/AppLayout";
 import {ErrorBoundary} from "react-error-boundary";
 import {Route, Switch} from "react-router-dom";
 import SectionRoute from "@temp/core/auth/components/SectionRoute";
-import {HomePage} from "@temp/sections/Home";
+import HomePage from "@temp/sections/home";
 import NotFound from "@temp/components/NotFound";
 import LoginLoading from "@temp/core/auth/components/LoginLoading";
 import Auth from "@temp/core/auth";
@@ -37,6 +37,8 @@ import {orderListPath} from "@temp/sections/orders/urls";
 import OrdersSection from "../sections/orders";
 import {shippingMethodListPath} from "@temp/sections/shipping/urls";
 import ShippingSection from "@temp/sections/shipping";
+import {paymentMethodListPath} from "@temp/sections/paymentMethods/urls";
+import PaymentMethodSection from "@temp/sections/paymentMethods";
 
 const Routes: React.FC = () => {
     const intl = useIntl();
@@ -112,6 +114,11 @@ const Routes: React.FC = () => {
                                         permissions={[PermissionEnum.MANAGE_SHIPPING]}
                                         path={shippingMethodListPath}
                                         component={ShippingSection}
+                                    />
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_ORDERS]}
+                                        path={paymentMethodListPath}
+                                        component={PaymentMethodSection}
                                     />
                                     <SectionRoute
                                         permissions={[PermissionEnum.MANAGE_STAFF]}

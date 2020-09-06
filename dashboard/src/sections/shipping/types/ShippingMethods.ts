@@ -79,8 +79,9 @@ export interface ShippingMethods_shippingMethods_edges_node {
   minimumOrderWeight: ShippingMethods_shippingMethods_edges_node_minimumOrderWeight | null;
   maximumOrderPrice: ShippingMethods_shippingMethods_edges_node_maximumOrderPrice | null;
   maximumOrderWeight: ShippingMethods_shippingMethods_edges_node_maximumOrderWeight | null;
-  name: string;
   price: ShippingMethods_shippingMethods_edges_node_price | null;
+  name: string;
+  description: string;
   /**
    * Type of the shipping method.
    */

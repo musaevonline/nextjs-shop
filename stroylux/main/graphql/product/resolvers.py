@@ -1,6 +1,8 @@
 import graphene_django_optimizer as gql_optimizer
+from django.db.models import Sum
 
-from ..utils import get_database_id
+from ..utils import get_database_id, filter_by_period
+from ...order import OrderStatus
 from ...product import models
 from .filters import filter_attributes_by_product_types
 
@@ -57,3 +59,18 @@ def resolve_product_reviews(info, **_kwargs):
     qs = models.ProductReview.objects.visible_to_user(user)
     qs = qs.distinct()
     return gql_optimizer.query(qs, info)
+
+
+def resolve_report_product_sales(period):
+    qs = models.ProductVariant.objects.all()
+
+    # exclude draft and canceled orders
+    exclude_status = [OrderStatus.DRAFT, OrderStatus.CANCELED]
+    qs = qs.exclude(order_lines__order__status__in=exclude_status)
+
+    # filter by period
+    qs = filter_by_period(qs, period, "order_lines__order__created")
+
+    qs = qs.annotate(quantity_ordered=Sum("order_lines__quantity"))
+    qs = qs.filter(quantity_ordered__isnull=False)
+    return qs.order_by("-quantity_ordered")

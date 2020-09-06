@@ -57,7 +57,7 @@ export const commonMessages = defineMessages({
   },
   generalInformation: {
     id:'general_info',
-    defaultMessage: "General Informations"
+    defaultMessage: "General Information"
   },
   lastName: {
     id:'last_name',
@@ -548,6 +548,11 @@ export const sectionNames = defineMessages({
   shipping: {
     id:'shipping',
     defaultMessage: "Shipping",
+    description: "settings section name"
+  },
+  paymentMethods: {
+    id:'paymentMethods',
+    defaultMessage: "Payment methods",
     description: "settings section name"
   }
 });

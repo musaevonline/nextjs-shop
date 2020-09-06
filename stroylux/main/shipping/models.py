@@ -68,7 +68,7 @@ class ShippingMethodQueryset(models.QuerySet):
         return self.filter(type=ShippingMethodType.WEIGHT_BASED)
 
     def applicable_shipping_methods(self, price: Money, weight, country_code):
-        """Return the ShippingMethods that can be used on an order with shipment.
+        """Return the PaymentMethods that can be used on an order with shipment.
         It is based on the given country code, and by shipping methods that are
         applicable to the given price & weight total.
         """

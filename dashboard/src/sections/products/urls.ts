@@ -1,6 +1,7 @@
 import urlJoin from "url-join";
 import {ActiveTab, BulkAction, Dialog, Pagination, Sort, TabActionDialog} from "@temp/types";
 import {stringifyQs} from "@temp/utils/urls";
+import {StockAvailability} from "@temp/types/globalTypes";
 
 const productSection = "/products/";
 
@@ -20,6 +21,7 @@ export enum ProductListUrlSortField {
     name = "name",
     productType = "productType",
     status = "status",
+    stockStatus = "stockStatus",
     price = "price"
 }
 
@@ -31,6 +33,7 @@ export interface ProductListUrlQueryParams
         Pagination,
         ActiveTab {
     attributeId?: string;
+    stockStatus?: StockAvailability;
     query?: string;
 }
 

@@ -21,3 +21,7 @@ class AttributeValueType(graphene.Enum):
     GRADIENT = "GRADIENT"
     URL = "URL"
     STRING = "STRING"
+
+class StockAvailability(graphene.Enum):
+    IN_STOCK = "AVAILABLE"
+    OUT_OF_STOCK = "OUT_OF_STOCK"

@@ -176,7 +176,7 @@ export function getStringOrPlaceholder(s: string | undefined): string {
 export function getUserName(user?: StaffMemberDetails_user |
     StaffList_staffUsers_edges_node |
     CustomerDetails_user |
-    ListCustomers_customers_edges_node, returnEmail?: boolean) {
+    ListCustomers_customers_edges_node | User, returnEmail?: boolean) {
   return user && (user.email || (user.firstName && user.lastName))
       ? user.firstName && user.lastName
           ? [user.firstName, user.lastName].join(" ")

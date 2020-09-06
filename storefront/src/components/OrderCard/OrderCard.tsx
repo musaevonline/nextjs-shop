@@ -128,7 +128,7 @@ const OrderCard:React.FC<OrderCardProps> = ({ order, addReview }) => {
                                             <div className="py-10">
                                                 <div className="flex flex-wrap mb-5 px-10">
                                                     <div className="w-200 font-medium">Способ оплаты:</div>
-                                                    <div className="flex-1 min-w-200">{order.payments[0].paymentMethod.name}</div>
+                                                    <div className="flex-1 min-w-200">{order.payments[0].paymentMethod?.name || "Удален"}</div>
                                                 </div>
                                                 <div className="flex flex-wrap mb-5 px-10">
                                                     <div className="w-200 font-medium">Способ доставки:</div>

@@ -6,53 +6,54 @@ import {ShippingMethods, ShippingMethodsVariables} from "@temp/sections/shipping
 import {ShippingMethod, ShippingMethodVariables} from "@temp/sections/shipping/types/ShippingMethod";
 
 export const shippingMethodFragment = gql`
-  fragment ShippingMethodFragment on ShippingMethod {
-    id
-    minimumOrderPrice {
-      amount
-      currency
+    fragment ShippingMethodFragment on ShippingMethod {
+        id
+        minimumOrderPrice {
+            amount
+            currency
+        }
+        minimumOrderWeight {
+            unit
+            value
+        }
+        maximumOrderPrice {
+            amount
+            currency
+        }
+        maximumOrderWeight {
+            unit
+            value
+        }
+        price {
+            amount
+            currency
+        }
+        name
+        description
+        type
     }
-    minimumOrderWeight {
-      unit
-      value
-    }
-    maximumOrderPrice {
-      amount
-      currency
-    }
-    maximumOrderWeight {
-      unit
-      value
-    }
-    name
-    price {
-      amount
-      currency
-    }
-    type
-  }
 `;
 
 const shippingMethods = gql`
-  ${shippingMethodFragment}
-  ${pageInfoFragment}
-  query ShippingMethods(
-    $first: Int
-    $after: String
-    $last: Int
-    $before: String
-  ) {
-    shippingMethods(first: $first, after: $after, last: $last, before: $before) {
-      edges {
-        node {
-          ...ShippingMethodFragment
+    ${shippingMethodFragment}
+    ${pageInfoFragment}
+    query ShippingMethods(
+        $first: Int
+        $after: String
+        $last: Int
+        $before: String
+    ) {
+        shippingMethods(first: $first, after: $after, last: $last, before: $before) {
+            edges {
+                node {
+                    ...ShippingMethodFragment
+                }
+            }
+            pageInfo {
+                ...PageInfoFragment
+            }
         }
-      }
-      pageInfo {
-        ...PageInfoFragment
-      }
     }
-  }
 `;
 export const useShippingMethodList = makeQuery<
     ShippingMethods,
@@ -60,12 +61,12 @@ export const useShippingMethodList = makeQuery<
     >(shippingMethods);
 
 const shippingMethod = gql`
-  ${shippingMethodFragment}
-  query ShippingMethod($id: ID!) {
-    shippingMethod(id: $id) {
-      ...ShippingMethodFragment
+    ${shippingMethodFragment}
+    query ShippingMethod($id: ID!) {
+        shippingMethod(id: $id) {
+            ...ShippingMethodFragment
+        }
     }
-  }
 `;
 export const useShippingMethod = makeQuery<ShippingMethod, ShippingMethodVariables>(
     shippingMethod

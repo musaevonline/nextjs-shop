@@ -7,6 +7,19 @@ import {Typography} from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import PlaceHolder from 'images/placeholder540x540.png';
+import Avatar from "@material-ui/core/Avatar";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+    avatar: {
+        width: 100,
+        height: 100,
+        [theme.breakpoints.down('xs')]: {
+            width: "100%",
+            height: "auto"
+        }
+    }
+}));
 
 const OrderLine:React.FC<{
     line: Order_lines,
@@ -14,14 +27,20 @@ const OrderLine:React.FC<{
     addReview():void,
     canAddReview: boolean
 }> = ({line, divider, addReview, canAddReview}) => {
+    const classes = useStyles();
+
     return(
         <div className="flex flex-wrap py-10 relative">
-            <div className="max-w-300 mr-10 flex items-center">
+            <div className="max-w-300 pr-10 flex items-center m-auto">
                 <Link to={getProductUrl(line.variant.product.slug, line.variant.product.id)} className="block">
-                    <img src={line.thumbnail?.url || PlaceHolder} alt={line.productName} className="object-contain max-w-100"/>
+                    <Avatar src={line.thumbnail?.url || PlaceHolder}
+                            alt={line.productName}
+                            className={classes.avatar}
+                            variant="rounded"
+                    />
                 </Link>
             </div>
-            <div className="flex-1 pb-10">
+            <div className="flex-1 pb-10 min-w-300 xs:text-center sm:text-left">
                 <div className="mb-5">
                     <Typography component={Link}
                                 variant="h6"

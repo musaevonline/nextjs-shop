@@ -79,8 +79,9 @@ export interface ShippingMethod_shippingMethod {
   minimumOrderWeight: ShippingMethod_shippingMethod_minimumOrderWeight | null;
   maximumOrderPrice: ShippingMethod_shippingMethod_maximumOrderPrice | null;
   maximumOrderWeight: ShippingMethod_shippingMethod_maximumOrderWeight | null;
-  name: string;
   price: ShippingMethod_shippingMethod_price | null;
+  name: string;
+  description: string;
   /**
    * Type of the shipping method.
    */
