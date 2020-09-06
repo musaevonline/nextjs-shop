@@ -11,8 +11,8 @@ services:
         STATIC_URL: '/static/'
     restart: unless-stopped
     depends_on:
-      - db
       - redis
+      - pgbouncer
     volumes:
       - static_volume:/app/static
       - ./stroylux/main/:/app/main:Z
@@ -50,7 +50,7 @@ services:
   db:
     image: library/postgres:11.7-alpine
     ports:
-      - 5432:5432
+      - 5432
     restart: unless-stopped
     volumes:
       - stroylux-db:/var/lib/postgresql/data
@@ -90,6 +90,17 @@ services:
     ports:
       - 8025:8025
       - 1025:1025
+
+  pgbouncer:
+    image: edoburu/pgbouncer:1.11.0
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    depends_on:
+      - db
+    volumes:
+      - ./stroylux/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./stroylux/userlist.txt:/etc/pgbouncer/userlist.txt:ro
 
 
 volumes:

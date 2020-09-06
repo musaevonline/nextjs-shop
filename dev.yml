@@ -12,7 +12,7 @@ services:
       - 8000
     restart: unless-stopped
     depends_on:
-      - db
+      - pgbouncer
       - redis
     volumes:
       - static_volume:/app/static
@@ -68,7 +68,7 @@ services:
   db:
     image: library/postgres:11.7-alpine
     ports:
-      - 5432:5432
+      - 5432
     restart: unless-stopped
     volumes:
       - stroylux-db:/var/lib/postgresql/data
@@ -84,25 +84,22 @@ services:
     volumes:
       - stroylux-redis:/data
 
-#  worker:
-#    build:
-#      context: ./stroylux
-#      dockerfile: ./Dockerfile
-#      args:
-#        STATIC_URL: '/static/'
-#    command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=info
-#    restart: unless-stopped
-#    env_file: ./stroylux/common.env
-#    depends_on:
-#      - redis
-#    volumes:
-#      - ./stroylux/main/:/app/main:Z,cached
-#      - ./stroylux/templates/:/app/templates:Z,cached
-#      # prevents overshadowing of build-time assets
-#      - /app/templates/templated_email/compiled
-#      # shared volume between worker and api for media
-#      - stroylux-media:/app/media
-#      - static_volume:/app/static
+  worker:
+    build:
+      context: ./stroylux
+      dockerfile: ./Dockerfile
+      args:
+        STATIC_URL: '/static/'
+    command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=info
+    restart: unless-stopped
+    env_file: ./stroylux/common.env
+    depends_on:
+      - redis
+    volumes:
+      - ./stroylux/main/:/app/main:Z,cached
+      - ./stroylux/templates/:/app/templates:Z,cached
+      - /app/templates/templated_email/compiled
+      - stroylux-media:/app/media
 
 #  mailhog:
 #    image: mailhog/mailhog:v1.0.0
@@ -126,6 +123,17 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  pgbouncer:
+    image: edoburu/pgbouncer:1.11.0
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    depends_on:
+      - db
+    volumes:
+      - ./stroylux/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./stroylux/userlist.txt:/etc/pgbouncer/userlist.txt:ro
 
 volumes:
   stroylux-db:
