@@ -12,6 +12,7 @@ module.exports = {
 	},
 	future: {
 		removeDeprecatedGapUtilities: true,
+		purgeLayersByDefault: true
 	},
 	prefix: '',
 	important: false,

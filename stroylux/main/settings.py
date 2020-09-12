@@ -222,7 +222,7 @@ def get_host():
 
 MAX_CHECKOUT_LINE_QUANTITY = int(os.environ.get("MAX_CHECKOUT_LINE_QUANTITY", 10000))
 
-ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,stroylux.localhost,104.248.132.8"))
+ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
 ALLOWED_GRAPHQL_ORIGINS = os.environ.get("ALLOWED_GRAPHQL_ORIGINS", "*")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -312,11 +312,11 @@ GRAPHENE = {
     "MIDDLEWARE": [
         "main.graphql.middleware.JWTMiddleware",
         'graphene_django.debug.DjangoDebugMiddleware'
-    ],
+    ]
 }
 
-RECAPTCHA_PUBLIC_KEY = '6LezSfgUAAAAAHkHF2X8W4JlK_MIPkzohf5uG7GU' #'6LcGQ_gUAAAAAHF3GpHmEql5CfmNcUAYsHWHxh4p'
-RECAPTCHA_PRIVATE_KEY = '6LezSfgUAAAAACJFq2maz2Ybo2hz7mtmcz2ONqEN' # '6LcGQ_gUAAAAAE3pGZbL2YTnBSWFmjmgvjsFMa_y'
+RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY", '') #'6LcGQ_gUAAAAAHF3GpHmEql5CfmNcUAYsHWHxh4p'
+RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY", '') # '6LcGQ_gUAAAAAE3pGZbL2YTnBSWFmjmgvjsFMa_y'
 
 RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'

@@ -8,8 +8,8 @@ services:
       dockerfile: ./Dockerfile
       args:
         STATIC_URL: '/static/'
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     restart: unless-stopped
     depends_on:
       - pgbouncer
@@ -23,15 +23,12 @@ services:
       - /app/templates/templated_email/compiled
       - stroylux-media:/app/media
     command: gunicorn main.wsgi:application --bind 0.0.0.0:8000
-    env_file: ./stroylux/common.env
+    env_file: ./stroylux/prod.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.shop_api.entrypoints=web"
-      - "traefik.http.routers.shop_api.rule=Host(`104.248.132.8`)&&PathPrefix(`/graphql/`)"
-  #    environment:
-#      - JAEGER_AGENT_HOST=jaeger
-#      - STOREFRONT_URL=http://stroylux.localhost/
-#      - DASHBOARD_URL=http://localhost:9000/
+      - "traefik.http.routers.backendssl.entrypoints=websecure"
+      - "traefik.http.routers.backendssl.rule=Host(`stroylux.localhost`)&&PathPrefix(`/graphql/`) || Host(`stroylux.localhost`)&&PathPrefix(`/admin/`)"
+      - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
 
   storefront:
     container_name: "shop_storefront"
@@ -39,15 +36,14 @@ services:
       context: ./storefront
       dockerfile: ./Dockerfile
       args:
-        API_URI: "http://104.248.132.8/graphql/"
+        API_URI: "https://stroylux.localhost/graphql/"
+        DASHBOARD_URL: "https://stroylux.localhost/dashboard/"
     restart: unless-stopped
-    volumes:
-      - static_volume:/app/static
-      - stroylux-media:/app/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.shop_storefront.rule=Host(`104.248.132.8`)&&PathPrefix(`/`)"
-      - "traefik.http.routers.shop_storefront.entrypoints=web"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.rule=Host(`stroylux.localhost`)&&PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
 
   dashboard:
     container_name: "shop_dashboard"
@@ -55,15 +51,27 @@ services:
       context: ./dashboard
       dockerfile: ./Dockerfile
       args:
-        API_URI: "http://104.248.132.8/graphql/"
+        API_URI: "https://stroylux.localhost/graphql/"
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.rule=Host(`stroylux.localhost`)&&PathPrefix(`/dashboard/`)"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
+
+  nginx:
+    image: nginx
     restart: unless-stopped
     volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - static_volume:/app/static
       - stroylux-media:/app/media
     labels:
+      #      - "traefik.docker.network=proxy"
       - "traefik.enable=true"
-      - "traefik.http.routers.shop_dashboard.rule=Host(`104.248.132.8`)&&PathPrefix(`/dashboard/`)"
-      - "traefik.http.routers.shop_dashboard.entrypoints=web"
+      - "traefik.http.routers.nginx.entrypoints=websecure"
+      - "traefik.http.routers.nginx.rule=Host(`stroylux.localhost`)&&PathPrefix(`/static/`) || Host(`stroylux.localhost`)&&PathPrefix(`/media/`)"
+      - "traefik.http.routers.nginx.tls.certresolver=letsencrypt"
 
   db:
     image: library/postgres:11.7-alpine
@@ -92,7 +100,7 @@ services:
         STATIC_URL: '/static/'
     command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=info
     restart: unless-stopped
-    env_file: ./stroylux/common.env
+    env_file: ./stroylux/prod.env
     depends_on:
       - redis
     volumes:
@@ -101,29 +109,47 @@ services:
       - /app/templates/templated_email/compiled
       - stroylux-media:/app/media
 
-#  mailhog:
-#    image: mailhog/mailhog:v1.0.0
-#    container_name: mailhog-stroylux
-#    networks:
-#      - stroylux-backend-tier
-#    ports:
-#      - 8025:8025
-#      - 1025:1025
+#  smtp:
+#      image: mailhog/mailhog:v1.0.0
+#      container_name: smtp
+#      restart: unless-stopped
+#      ports:
+#        - 8025:8025
+#        - 1025:1025
+#      labels:
+#        - "traefik.enable=true"
+#        - "traefik.http.routers.smtp.entrypoints=websecure"
+#        - "traefik.http.services.smtp.loadbalancer.server.port=8025"
+#        - "traefik.http.routers.smtp.rule=Host(`mailhog.docker.localhost`)"
+#        - "traefik.http.routers.smtp.tls.certresolver=letsencrypt"
   proxy:
     image: "traefik:v2.2"
     container_name: "traefik"
+    env_file: prod.env
     command:
-      - "--log.level=DEBUG"
+      - "--log.level=ERROR"
       - "--api.insecure=true"
+      - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesResolvers.letsencrypt.acme.dnsChallenge=true"
+      - "--certificatesResolvers.letsencrypt.acme.dnsChallenge.provider=digitalocean"
+      - "--certificatesresolvers.letsencrypt.acme.email=vladorton1@gmail.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     ports:
       - "80:80"
       - "8080:8080"
+      - "443:443"
     volumes:
+      - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
+        
   pgbouncer:
     image: edoburu/pgbouncer:1.11.0
     restart: unless-stopped
@@ -134,6 +160,7 @@ services:
     volumes:
       - ./stroylux/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
       - ./stroylux/userlist.txt:/etc/pgbouncer/userlist.txt:ro
+
 
 volumes:
   stroylux-db:
