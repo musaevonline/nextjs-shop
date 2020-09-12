@@ -38,6 +38,7 @@ services:
       args:
         API_URI: "https://stroylux-drev.xyz/graphql/"
         DASHBOARD_URL: "https://stroylux-drev.xyz/dashboard/"
+        STOREFRONT_URL: "https://stroylux-drev.xyz/"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -124,6 +125,7 @@ services:
 #        - "traefik.http.routers.smtp.tls.certresolver=letsencrypt"
   proxy:
     image: "traefik:v2.2"
+    restart: unless-stopped
     container_name: "traefik"
     env_file: prod.env
     command:

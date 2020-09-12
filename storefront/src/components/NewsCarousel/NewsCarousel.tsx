@@ -36,7 +36,7 @@ const NewsCarousel:React.FC = () =>{
     const dataNews1 = {
         id: 1,
         created: 'Дек 23, 2019',
-        img: "http://fotomasterskie.ru/wp-content/uploads/2017/12/metallicheskaya_krovlya.jpg",
+        img: "https://www.stroy-krov.ru/images/articles/chto-takoe-krovlja/1.jpg",
         title: "Устройство кровли и ее утепление",
         text: "Устройство кровли является завершающим этапом строительства дома.\n" +
             "                И именно от выбора кровельного материала будет зависеть прочность и надежность крыши.\n" +
@@ -46,7 +46,7 @@ const NewsCarousel:React.FC = () =>{
     const dataNews2 = {
         id: 2,
         created: 'Дек 15, 2019',
-        img: 'http://traiv-komplekt.ru/images/articles/3171462.gif',
+        img: 'https://traiv-komplekt.ru/images/articles/3171462.gif',
         title: 'Анкера для бетона',
         text: 'Бетонные панели или плиты-перекрытия часто выступают несущими элементами строения. Следовательно, крепёж, ' +
             'устанавливаемый в них, должен обладать высокой грузоподъёмностью, надёжностью и стойкостью к воздействию окружающей среды.'

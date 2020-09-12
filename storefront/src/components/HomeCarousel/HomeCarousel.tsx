@@ -15,7 +15,7 @@ const HomeCarousel:React.FC = () =>{
             alt: "Первый слайд"
         },
         {
-            url: "http://stroy-lux.by/wp-content/uploads/2019/07/фон1.jpg",
+            url: "https://stroy-lux.by/wp-content/uploads/2019/07/%D1%84%D0%BE%D0%BD1.jpg",
             alt: "Второй слайд"
         }
     ];

@@ -37,7 +37,7 @@ const CheckoutReview:React.FC<{
     const submitOrder = async (e) => {
         e.preventDefault();
         const REDIRECT_PATH = '/order/details/';
-        const REDIRECT_URL = 'http://localhost:3000' + REDIRECT_PATH;
+        const REDIRECT_URL = process.env.STOREFRONT_URL || 'http://localhost:3000' + REDIRECT_PATH;
         if (checkout && checkout.paymentMethod && checkout.shippingMethod) {
             try {
                 const response = await checkoutComplete({
