@@ -27,7 +27,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backendssl.entrypoints=websecure"
-      - "traefik.http.routers.backendssl.rule=Host(`stroylux.localhost`)&&PathPrefix(`/graphql/`) || Host(`stroylux.localhost`)&&PathPrefix(`/admin/`)"
+      - "traefik.http.routers.backendssl.rule=Host(`104.248.132.8`)&&PathPrefix(`/graphql/`) || Host(`104.248.132.8`)&&PathPrefix(`/admin/`)"
       - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
 
   storefront:
@@ -36,13 +36,13 @@ services:
       context: ./storefront
       dockerfile: ./Dockerfile
       args:
-        API_URI: "https://stroylux.localhost/graphql/"
-        DASHBOARD_URL: "https://stroylux.localhost/dashboard/"
+        API_URI: "https://104.248.132.8/graphql/"
+        DASHBOARD_URL: "https://104.248.132.8/dashboard/"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.rule=Host(`stroylux.localhost`)&&PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.rule=Host(`104.248.132.8`)&&PathPrefix(`/`)"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
 
   dashboard:
@@ -51,12 +51,12 @@ services:
       context: ./dashboard
       dockerfile: ./Dockerfile
       args:
-        API_URI: "https://stroylux.localhost/graphql/"
+        API_URI: "https://104.248.132.8/graphql/"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.rule=Host(`stroylux.localhost`)&&PathPrefix(`/dashboard/`)"
+      - "traefik.http.routers.dashboard.rule=Host(`104.248.132.8`)&&PathPrefix(`/dashboard/`)"
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
 
   nginx:
@@ -70,7 +70,7 @@ services:
       #      - "traefik.docker.network=proxy"
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.entrypoints=websecure"
-      - "traefik.http.routers.nginx.rule=Host(`stroylux.localhost`)&&PathPrefix(`/static/`) || Host(`stroylux.localhost`)&&PathPrefix(`/media/`)"
+      - "traefik.http.routers.nginx.rule=Host(`104.248.132.8`)&&PathPrefix(`/static/`) || Host(`104.248.132.8`)&&PathPrefix(`/media/`)"
       - "traefik.http.routers.nginx.tls.certresolver=letsencrypt"
 
   db:
