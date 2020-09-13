@@ -20,6 +20,7 @@ import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { BlogFragment } from "../../../types/BlogFragment";
+import TableCellAvatar from "@temp/components/TableCellAvatar";
 
 export interface BlogListProps extends ListProps, ListActions {
     blogList: BlogFragment[];
@@ -151,12 +152,13 @@ const BlogList: React.FC<BlogListProps> = props => {
                                             onChange={() => toggle(blog.id)}
                                         />
                                     </TableCell>
-                                    <TableCell className={classes.colName}>
-                                        {maybe<React.ReactNode>(
-                                            () => blog.name,
-                                            <Skeleton />
-                                        )}
-                                    </TableCell>
+                                    <TableCellAvatar
+                                        className={classes.colName}
+                                        thumbnail={maybe(() => blog.thumbnail.url)}
+                                        data-tc="name"
+                                    >
+                                        {maybe<React.ReactNode>(() => blog.name, <Skeleton />)}
+                                    </TableCellAvatar>
                                     <TableCell className={classes.colType}>
                                         {maybe<React.ReactNode>(
                                             () => blog.description,

@@ -19,6 +19,7 @@ import { ListActions, ListProps } from "@temp/types";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {BlogArticleFragment} from "@temp/sections/blog/types/BlogArticleFragment";
+import TableCellAvatar from "@temp/components/TableCellAvatar";
 
 
 export interface BlogArticleListProps extends ListProps, ListActions {
@@ -115,7 +116,7 @@ const BlogArticleList: React.FC<BlogArticleListProps> = props => {
                 <TableFooter>
                     <TableRow>
                         <TablePagination
-                            colSpan={4}
+                            colSpan={numberOfColumns}
                             settings={settings}
                             hasNextPage={pageInfo && !disabled ? pageInfo.hasNextPage : false}
                             onNextPage={onNextPage}
@@ -151,12 +152,13 @@ const BlogArticleList: React.FC<BlogArticleListProps> = props => {
                                             onChange={() => toggle(blogArticle.id)}
                                         />
                                     </TableCell>
-                                    <TableCell className={classes.colName}>
-                                        {maybe<React.ReactNode>(
-                                            () => blogArticle.title,
-                                            <Skeleton />
-                                        )}
-                                    </TableCell>
+                                    <TableCellAvatar
+                                        className={classes.colName}
+                                        thumbnail={maybe(() => blogArticle.thumbnail.url)}
+                                        data-tc="name"
+                                    >
+                                        {maybe<React.ReactNode>(() => blogArticle.title, <Skeleton />)}
+                                    </TableCellAvatar>
                                     <TableCell className={classes.colType}>
                                         {maybe<React.ReactNode>(
                                             () => blogArticle.body,

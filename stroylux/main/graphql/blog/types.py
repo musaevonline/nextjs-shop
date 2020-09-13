@@ -78,7 +78,7 @@ class BlogCategoryType(CountableDjangoObjectType):
 
     @staticmethod
     @graphene_django_optimizer.resolver_hints(only=["image"])
-    def resolve_thumbnail(root: models.Blog, info, *, size=255):
+    def resolve_thumbnail(root: models.BlogCategory, info, *, size=255):
         url = get_thumbnail(root.image, size, method="thumbnail")
         return Image(alt=root.name, url=info.context.build_absolute_uri(url))
 
@@ -107,6 +107,6 @@ class BlogArticleType(CountableDjangoObjectType):
 
     @staticmethod
     @graphene_django_optimizer.resolver_hints(only=["image"])
-    def resolve_thumbnail(root: models.Blog, info, *, size=255):
+    def resolve_thumbnail(root: models.BlogArticle, info, *, size=255):
         url = get_thumbnail(root.image, size, method="thumbnail")
-        return Image(alt=root.name, url=info.context.build_absolute_uri(url))
+        return Image(alt=root.title, url=info.context.build_absolute_uri(url))
