@@ -36,6 +36,9 @@ export interface AppListViewSettings {
   [ListViews.VOUCHER_LIST]: ListSettings;
   [ListViews.WAREHOUSE_LIST]: ListSettings;
   [ListViews.WEBHOOK_LIST]: ListSettings;
+  [ListViews.BLOG_LIST]: ListSettings;
+  [ListViews.BLOG_CATEGORY_LIST]: ListSettings;
+  [ListViews.BLOG_ARTICLE_LIST]: ListSettings;
 }
 export const defaultListSettings: AppListViewSettings = {
   [ListViews.CATEGORY_LIST]: {
@@ -85,6 +88,15 @@ export const defaultListSettings: AppListViewSettings = {
     rowNumber: PAGINATE_BY
   },
   [ListViews.WEBHOOK_LIST]: {
+    rowNumber: PAGINATE_BY
+  },
+  [ListViews.BLOG_LIST]: {
+    rowNumber: PAGINATE_BY
+  },
+  [ListViews.BLOG_CATEGORY_LIST]: {
+    rowNumber: PAGINATE_BY
+  },
+  [ListViews.BLOG_ARTICLE_LIST]: {
     rowNumber: PAGINATE_BY
   }
 };

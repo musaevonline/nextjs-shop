@@ -142,7 +142,7 @@ class BlogCategoryCreate(ModelMutation):
 class BlogCategoryUpdate(BlogCategoryCreate):
     class Arguments:
         id = graphene.ID(required=True, description="ID of a blog category to update.")
-        input = BlogInput(
+        input = BlogCategoryInput(
             required=True, description="Fields required to update a blog category."
         )
 
@@ -225,7 +225,7 @@ class BlogArticleCreate(ModelMutation):
 class BlogArticleUpdate(BlogArticleCreate):
     class Arguments:
         id = graphene.ID(required=True, description="ID of a blog article to update.")
-        input = BlogInput(
+        input = BlogArticleInput(
             required=True, description="Fields required to update a blog article."
         )
 

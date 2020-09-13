@@ -2,6 +2,7 @@ import customerIcon from "@assets/images/menu-customers-icon.svg";
 import catalogIcon from "@assets/images/menu-catalog-icon.svg";
 import homeIcon from "@assets/images/menu-home-icon.svg";
 import ordersIcon from "@assets/images/menu-orders-icon.svg";
+import blogIcon from "@assets/images/blog-icon.svg";
 import { sectionNames } from "@temp/intl";
 import { IntlShape } from "react-intl";
 
@@ -10,6 +11,9 @@ import {productListUrl} from "@temp/sections/products/urls";
 import {categoryListUrl} from "@temp/sections/categories/urls";
 import {customerListUrl} from "@temp/sections/customers/urls";
 import {orderDraftListUrl, orderListUrl} from "@temp/sections/orders/urls";
+import {blogListUrl} from "@temp/sections/blog/urls/blog_urls";
+import {blogCategoryListUrl} from "@temp/sections/blog/urls/blog_category_urls";
+import {blogArticleListUrl} from "@temp/sections/blog/urls/blog_article_urls";
 
 export interface IMenuItem {
   ariaLabel: string;
@@ -73,14 +77,30 @@ function createMenuStructure(intl: IntlShape): IMenuItem[] {
       label: intl.formatMessage(sectionNames.customers),
       permission: PermissionEnum.MANAGE_USERS,
       url: customerListUrl()
-      // children: [
-      //   {
-      //     ariaLabel: "sales",
-      //     label: intl.formatMessage(sectionNames.sales),
-      //     url: saleListUrl()
-      //   },
-      // ]
-    }
+    },
+      {
+      ariaLabel: "blog",
+      children: [
+        {
+          ariaLabel: "blog",
+          label: intl.formatMessage(sectionNames.blog),
+          url: blogListUrl()
+        },
+        {
+          ariaLabel: "blogCategories",
+          label: intl.formatMessage(sectionNames.blogCategories),
+          url: blogCategoryListUrl()
+        },
+        {
+          ariaLabel: "blogArticles",
+          label: intl.formatMessage(sectionNames.blogArticles),
+          url: blogArticleListUrl()
+        }
+      ],
+      icon: blogIcon,
+      label: intl.formatMessage(sectionNames.blog),
+      permission: PermissionEnum.MANAGE_BLOG
+    },
   ];
 }
 

@@ -554,6 +554,21 @@ export const sectionNames = defineMessages({
     id:'paymentMethods',
     defaultMessage: "Payment methods",
     description: "settings section name"
+  },
+  blog: {
+    id:'blog',
+    defaultMessage: "Blog",
+    description: "settings section name"
+  },
+  blogCategories: {
+    id:'blogCategories',
+    defaultMessage: "Blog Categories",
+    description: "settings section name"
+  },
+  blogArticles: {
+    id:'blogArticles',
+    defaultMessage: "Blog Articles",
+    description: "settings section name"
   }
 });
 

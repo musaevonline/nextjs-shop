@@ -81,6 +81,7 @@ PERMISSIONS_ENUMS = [
     SitePermissions,
     WebhookPermissions,
     CheckoutPermissions,
+    BlogPermissions
 ]
 
 

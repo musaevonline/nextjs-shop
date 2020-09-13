@@ -81,6 +81,19 @@ export enum AuthorizationKeyType {
   GOOGLE_OAUTH2 = "GOOGLE_OAUTH2",
 }
 
+/**
+ * An enumeration.
+ */
+export enum BlogErrorCode {
+  ALREADY_EXISTS = "ALREADY_EXISTS",
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_BLOG_IMAGE = "NOT_BLOG_IMAGE",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
 export enum CategorySortField {
   NAME = "NAME",
   PRODUCT_COUNT = "PRODUCT_COUNT",
@@ -481,6 +494,7 @@ export enum PaymentErrorCode {
  */
 export enum PermissionEnum {
   MANAGE_APPS = "MANAGE_APPS",
+  MANAGE_BLOG = "MANAGE_BLOG",
   MANAGE_CHECKOUTS = "MANAGE_CHECKOUTS",
   MANAGE_DISCOUNTS = "MANAGE_DISCOUNTS",
   MANAGE_GIFT_CARD = "MANAGE_GIFT_CARD",
@@ -706,6 +720,27 @@ export interface AttributeValueInput {
 export interface AuthorizationKeyInput {
   key: string;
   password: string;
+}
+
+export interface BlogArticleInput {
+  title?: string | null;
+  body?: string | null;
+  slug?: string | null;
+  image?: any | null;
+}
+
+export interface BlogCategoryInput {
+  name?: string | null;
+  description?: string | null;
+  slug?: string | null;
+  image?: any | null;
+}
+
+export interface BlogInput {
+  name?: string | null;
+  description?: string | null;
+  slug?: string | null;
+  image?: any | null;
 }
 
 export interface CategoryFilterInput {
