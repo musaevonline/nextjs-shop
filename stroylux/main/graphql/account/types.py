@@ -16,7 +16,7 @@ from ..decorators import one_of_permissions_required, permission_required
 from ..utils import format_permissions_for_display
 from ...account import models
 from ...checkout.utils import get_user_checkout
-from ...core.connection import CountableDjangoObjectType
+from ..core.connection import CountableDjangoObjectType
 from ...core.permissions import AccountPermissions, OrderPermissions
 
 

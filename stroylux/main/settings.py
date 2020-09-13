@@ -184,6 +184,7 @@ INSTALLED_APPS = [
     "main.payment",
     "main.order",
     "main.graphql",
+    "main.blog",
     # External apps
     "versatileimagefield",
     "graphene_django",
@@ -238,6 +239,11 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     ],
     "background_images": [("header_image", "thumbnail__1080x440")],
     "user_avatars": [("default", "thumbnail__445x445")],
+    "blog": [
+        ("default", "thumbnail__1080x1080"),
+        ("small", "thumbnail__510x510"),
+
+    ],
 }
 
 VERSATILEIMAGEFIELD_SETTINGS = {

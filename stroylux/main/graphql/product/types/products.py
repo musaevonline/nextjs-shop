@@ -17,7 +17,7 @@ from main.graphql.core.types import Money, MoneyRange
 from main.graphql.core.types.common import Image
 from main.graphql.decorators import permission_required
 from main import settings
-from main.core.connection import CountableDjangoObjectType
+from ...core.connection import CountableDjangoObjectType
 from main.core.permissions import ProductPermissions
 from main.product import models
 from main.product.templatetags.product_images import get_thumbnail, get_product_image_thumbnail

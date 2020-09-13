@@ -12,6 +12,7 @@ from .payment.schema import PaymentMutations, PaymentQueries
 from .checkout.schema import CheckoutQueries, CheckoutMutations
 from .order.schema import OrderQueries, OrderMutations
 from .shop.schema import ShopQueries, ShopMutations
+from .blog.schema import BlogQueries, BlogMutations
 
 register_graphene_fields() # Need for money field order
 
@@ -24,6 +25,7 @@ class Query(
     PaymentQueries,
     CheckoutQueries,
     OrderQueries,
+    BlogQueries,
     ShopQueries
 ):
     debug = graphene.Field(DjangoDebug, name='_debug')
@@ -37,7 +39,8 @@ class Mutation(
     PaymentMutations,
     CheckoutMutations,
     OrderMutations,
-    ShopMutations
+    ShopMutations,
+    BlogMutations
 ):
     pass
 

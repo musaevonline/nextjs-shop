@@ -63,6 +63,10 @@ class WebhookPermissions(BasePermissionEnum):
     MANAGE_WEBHOOKS = "webhook.manage_webhooks"
 
 
+class BlogPermissions(BasePermissionEnum):
+    MANAGE_BLOG = "blog.manage_blog"
+
+
 PERMISSIONS_ENUMS = [
     AccountPermissions,
     AppPermission,
@@ -109,6 +113,6 @@ def get_permissions(permissions=None):
         codenames = split_permission_codename(permissions)
     return (
         Permission.objects.filter(codename__in=codenames)
-        .prefetch_related("content_type")
-        .order_by("codename")
+            .prefetch_related("content_type")
+            .order_by("codename")
     )

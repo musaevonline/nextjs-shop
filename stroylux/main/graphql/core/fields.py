@@ -130,27 +130,6 @@ class PrefetchingConnectionField(BaseDjangoConnectionField):
             **args,
         )
 
-    @classmethod
-    def resolve_connection(cls, connection, args, iterable):
-        if isinstance(iterable, QuerySet):
-            _len = iterable.count()
-        else:
-            _len = len(iterable)
-
-        connection = connection_from_list_slice(
-            iterable,
-            args,
-            slice_start=0,
-            list_length=_len,
-            list_slice_length=_len,
-            connection_type=connection,
-            edge_type=connection.Edge,
-            pageinfo_type=PageInfo,
-        )
-        connection.iterable = iterable
-        connection.length = _len
-        return connection
-
 
 class FilterInputConnectionField(PrefetchingConnectionField):
     def __init__(self, *args, **kwargs):

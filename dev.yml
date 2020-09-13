@@ -99,7 +99,7 @@ services:
       dockerfile: ./Dockerfile
       args:
         STATIC_URL: '/static/'
-    command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=info
+    command: celery -A stroylux worker --app=main.celeryconf:app --loglevel=error
     restart: unless-stopped
     env_file: ./stroylux/prod.env
     depends_on:
