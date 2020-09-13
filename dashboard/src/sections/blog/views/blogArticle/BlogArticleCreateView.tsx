@@ -8,6 +8,7 @@ import BlogArticleCreatePage from "../../components/blogArticle/BlogArticleCreat
 import {useBlogArticleCreate} from "../../mutations";
 import {blogArticleListUrl, blogArticleUrl} from "../../urls/blog_article_urls";
 import {BlogArticleDetailsFormData} from "@temp/sections/blog/components/blogArticle/BlogArticleDetailsForm";
+import {slugify} from "@temp/core/utils";
 
 const BlogArticleCreateView: React.FC<{}> = () => {
     const navigate = useNavigator();
@@ -26,9 +27,18 @@ const BlogArticleCreateView: React.FC<{}> = () => {
     });
 
     const onSubmit = (formData: BlogArticleDetailsFormData) => {
+        const input = {
+            title: formData.title,
+            body: formData.body,
+            isPublished: formData.isPublished,
+            slug: slugify(formData.title)
+        };
+        if (!!formData.image) {
+            input['image'] = formData.image;
+        }
         createBlogArticle({
             variables: {
-                input: formData
+                input
             }
         })
 

@@ -24,25 +24,30 @@ export interface BlogCategoryUpdatePageProps {
 }
 
 const BlogCategoryUpdatePage: React.FC<BlogCategoryUpdatePageProps> = ({
-                                                           blogCategory,
-                                                           disabled,
-                                                           errors,
-                                                           onBack,
-                                                           onDelete,
-                                                           onSubmit,
-                                                           saveButtonBarState
-                                                       }) => {
+                                                                           blogCategory,
+                                                                           disabled,
+                                                                           errors,
+                                                                           onBack,
+                                                                           onDelete,
+                                                                           onSubmit,
+                                                                           saveButtonBarState
+                                                                       }) => {
     const intl = useIntl();
     const initialForm: BlogCategoryDetailsFormData = {
         name: maybe(() => blogCategory.name, ""),
         description: maybe(() => blogCategory.description, ""),
+        isPublished: maybe(() => blogCategory.isPublished, false),
+        image: null,
 
     };
     const form = useFormik({
         enableReinitialize: true,
         initialValues: initialForm,
         onSubmit
-    })
+    });
+    const onImageChange = (file: File) => {
+        form.setFieldValue('image', file ? file: null);
+    }
     return (
         <form onSubmit={form.handleSubmit}>
             <Container>
@@ -58,9 +63,11 @@ const BlogCategoryUpdatePage: React.FC<BlogCategoryUpdatePageProps> = ({
                 />
                 <Grid>
                     <BlogCategoryDetailsForm data={form.values}
-                                     disabled={disabled}
-                                     errors={errors}
-                                     onChange={form.handleChange}
+                                             disabled={disabled}
+                                             errors={errors}
+                                             onChange={form.handleChange}
+                                             onImageChange={onImageChange}
+                                             initialImgUrl={maybe(() => blogCategory.thumbnail.url, "")}
                     />
                 </Grid>
                 <SaveButtonBar

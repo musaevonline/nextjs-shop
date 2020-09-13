@@ -20,16 +20,18 @@ export interface BlogArticleCreatePageProps {
 }
 
 const BlogArticleCreatePage: React.FC<BlogArticleCreatePageProps> = ({
-                                                           disabled,
-                                                           errors,
-                                                           onBack,
-                                                           onSubmit,
-                                                           saveButtonBarState
-                                                       }) => {
+                                                                         disabled,
+                                                                         errors,
+                                                                         onBack,
+                                                                         onSubmit,
+                                                                         saveButtonBarState
+                                                                     }) => {
     const intl = useIntl();
     const initialForm: BlogArticleDetailsFormData = {
         title: "",
         body: "",
+        isPublished: false,
+        image: null
     };
 
     const form = useFormik({
@@ -37,6 +39,9 @@ const BlogArticleCreatePage: React.FC<BlogArticleCreatePageProps> = ({
         initialValues: initialForm,
         onSubmit
     });
+    const onImageChange = (file: File) => {
+        form.setFieldValue('image', file);
+    }
     return (
         <form onSubmit={form.handleSubmit}>
             <Container>
@@ -52,9 +57,11 @@ const BlogArticleCreatePage: React.FC<BlogArticleCreatePageProps> = ({
                 />
                 <Grid>
                     <BlogArticleDetailsForm data={form.values}
-                                             disabled={disabled}
-                                             errors={errors}
-                                             onChange={form.handleChange}
+                                            disabled={disabled}
+                                            errors={errors}
+                                            onChange={form.handleChange}
+                                            onImageChange={onImageChange}
+                                            initialImgUrl=""
                     />
                 </Grid>
                 <SaveButtonBar

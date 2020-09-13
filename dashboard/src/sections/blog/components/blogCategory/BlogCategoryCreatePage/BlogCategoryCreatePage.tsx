@@ -20,16 +20,18 @@ export interface BlogCreatePageProps {
 }
 
 const BlogCategoryCreatePage: React.FC<BlogCreatePageProps> = ({
-                                                           disabled,
-                                                           errors,
-                                                           onBack,
-                                                           onSubmit,
-                                                           saveButtonBarState
-                                                       }) => {
+                                                                   disabled,
+                                                                   errors,
+                                                                   onBack,
+                                                                   onSubmit,
+                                                                   saveButtonBarState
+                                                               }) => {
     const intl = useIntl();
     const initialForm: BlogCategoryDetailsFormData = {
         name: "",
         description: "",
+        isPublished: false,
+        image: null
     };
 
     const form = useFormik({
@@ -37,6 +39,9 @@ const BlogCategoryCreatePage: React.FC<BlogCreatePageProps> = ({
         initialValues: initialForm,
         onSubmit
     });
+    const onImageChange = (file: File) => {
+        form.setFieldValue('image', file);
+    }
     return (
         <form onSubmit={form.handleSubmit}>
             <Container>
@@ -55,6 +60,8 @@ const BlogCategoryCreatePage: React.FC<BlogCreatePageProps> = ({
                                              disabled={disabled}
                                              errors={errors}
                                              onChange={form.handleChange}
+                                             onImageChange={onImageChange}
+                                             initialImgUrl=""
                     />
                 </Grid>
                 <SaveButtonBar

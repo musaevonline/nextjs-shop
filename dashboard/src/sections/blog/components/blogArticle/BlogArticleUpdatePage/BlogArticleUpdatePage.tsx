@@ -24,25 +24,30 @@ export interface BlogArticleUpdatePageProps {
 }
 
 const BlogArticleUpdatePage: React.FC<BlogArticleUpdatePageProps> = ({
-                                                           blogArticle,
-                                                           disabled,
-                                                           errors,
-                                                           onBack,
-                                                           onDelete,
-                                                           onSubmit,
-                                                           saveButtonBarState
-                                                       }) => {
+                                                                         blogArticle,
+                                                                         disabled,
+                                                                         errors,
+                                                                         onBack,
+                                                                         onDelete,
+                                                                         onSubmit,
+                                                                         saveButtonBarState
+                                                                     }) => {
     const intl = useIntl();
     const initialForm: BlogArticleDetailsFormData = {
         title: maybe(() => blogArticle.title, ""),
         body: maybe(() => blogArticle.body, ""),
+        isPublished: maybe(() => blogArticle.isPublished, false),
+        image: null,
 
     };
     const form = useFormik({
         enableReinitialize: true,
         initialValues: initialForm,
         onSubmit
-    })
+    });
+    const onImageChange = (file: File) => {
+        form.setFieldValue('image', file ? file: null);
+    }
     return (
         <form onSubmit={form.handleSubmit}>
             <Container>
@@ -58,9 +63,11 @@ const BlogArticleUpdatePage: React.FC<BlogArticleUpdatePageProps> = ({
                 />
                 <Grid>
                     <BlogArticleDetailsForm data={form.values}
-                                     disabled={disabled}
-                                     errors={errors}
-                                     onChange={form.handleChange}
+                                            disabled={disabled}
+                                            errors={errors}
+                                            onChange={form.handleChange}
+                                            onImageChange={onImageChange}
+                                            initialImgUrl={maybe(() => blogArticle.thumbnail.url, "")}
                     />
                 </Grid>
                 <SaveButtonBar

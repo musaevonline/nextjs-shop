@@ -8,6 +8,7 @@ import BlogCategoryCreatePage from "../../components/blogCategory/BlogCategoryCr
 import {useBlogCategoryCreate} from "../../mutations";
 import {blogCategoryListUrl, blogCategoryUrl} from "../../urls/blog_category_urls";
 import {BlogCategoryDetailsFormData} from "@temp/sections/blog/components/blogCategory/BlogCategoryDetailsForm";
+import {slugify} from "@temp/core/utils";
 
 const BlogCategoryCreateView: React.FC<{}> = () => {
     const navigate = useNavigator();
@@ -26,9 +27,18 @@ const BlogCategoryCreateView: React.FC<{}> = () => {
     });
 
     const onSubmit = (formData: BlogCategoryDetailsFormData) => {
+        const input = {
+            name: formData.name,
+            description: formData.description,
+            isPublished: formData.isPublished,
+            slug: slugify(formData.name)
+        };
+        if (!!formData.image) {
+            input['image'] = formData.image;
+        }
         createBlog({
             variables: {
-                input: formData
+                input
             }
         })
 

@@ -46,8 +46,8 @@ const BlogDetailsForm: React.FC<BlogDetailsFormProps> = props => {
         onImageChange,
         initialImgUrl
     } = props;
-    const classes = useStyles();
     const intl = useIntl();
+    const classes = useStyles();
     const upload = React.useRef(null);
 
     const formFields = [
@@ -104,7 +104,7 @@ const BlogDetailsForm: React.FC<BlogDetailsFormProps> = props => {
                 <Hr />
                 <ControlledCheckbox
                     name={"isPublished" as keyof FormData}
-                    label={intl.formatMessage({id: 'bloIsPublished',
+                    label={intl.formatMessage({id: 'isPublished',
                         defaultMessage: "Is Published",
                         description: "blog form field"
                     })}
