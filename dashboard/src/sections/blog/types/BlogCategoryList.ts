@@ -4,7 +4,7 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: BlogArticleList
+// GraphQL query operation: BlogCategoryList
 // ====================================================
 
 export interface BlogCategoryList_blogCategoryList_edges_node_thumbnail {

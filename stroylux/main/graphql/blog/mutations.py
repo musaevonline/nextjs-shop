@@ -18,7 +18,8 @@ class BlogInput(graphene.InputObjectType):
     name = graphene.String(description="Blog name.")
     description = graphene.String(description="Blog description (HTML/text).")
     slug = graphene.String(description="Blog slug.")
-    image = Upload(description="Image file.")
+    is_published = graphene.Boolean(description="Blog is published.")
+    image = Upload(description="Image file.", required=False)
 
 
 class BlogCreate(ModelMutation):
@@ -101,7 +102,8 @@ class BlogCategoryInput(graphene.InputObjectType):
     name = graphene.String(description="Blog category name.")
     description = graphene.String(description="Blog category description (HTML/text).")
     slug = graphene.String(description="Blog category slug.")
-    image = Upload(description="Image file.")
+    is_published = graphene.Boolean(description="Blog category is published.")
+    image = Upload(description="Image file.", required=False)
 
 
 class BlogCategoryCreate(ModelMutation):
@@ -184,7 +186,8 @@ class BlogArticleInput(graphene.InputObjectType):
     title = graphene.String(description="Blog article name.")
     body = graphene.String(description="Blog article description (HTML/text).")
     slug = graphene.String(description="Blog article slug.")
-    image = Upload(description="Image file.")
+    is_published = graphene.Boolean(description="Blog article is published.")
+    image = Upload(description="Image file.", required=False)
 
 
 class BlogArticleCreate(ModelMutation):

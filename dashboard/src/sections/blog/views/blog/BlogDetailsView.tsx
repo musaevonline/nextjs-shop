@@ -9,6 +9,7 @@ import {blogListUrl, BlogUrlQueryParams} from "../../urls/blog_urls";
 import {BlogDetailsFormData} from "@temp/sections/blog/components/blog/BlogDetailsForm";
 import {useBlog} from "@temp/sections/blog/queries";
 import BlogUpdatePage from "@temp/sections/blog/components/blog/BlogUpdatePage";
+import {slugify} from "@temp/core/utils";
 
 export interface BlogDetailsProps {
     id: string;
@@ -53,10 +54,19 @@ const BlogDetailsView: React.FC<BlogDetailsProps> = ({
     });
 
     const onSubmit = (formData: BlogDetailsFormData) => {
+        const input = {
+            name: formData.name,
+            description: formData.description,
+            isPublished: formData.isPublished,
+            slug: slugify(formData.name)
+        };
+        if (!!formData.image) {
+            input['image'] = formData.image;
+        }
         updateBlog({
             variables: {
                 id,
-                input: formData
+                input
             }
         })
 

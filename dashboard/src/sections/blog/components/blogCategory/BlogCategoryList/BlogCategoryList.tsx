@@ -131,17 +131,17 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = props => {
                 <TableBody>
                     {renderCollection(
                         blogCategoryList,
-                        blog => {
-                            const isSelected = blog
-                                ? isChecked(blog.id)
+                        blogCategory => {
+                            const isSelected = blogCategory
+                                ? isChecked(blogCategory.id)
                                 : false;
 
                             return (
                                 <TableRow
                                     className={classes.row}
-                                    hover={!!blog}
-                                    key={blog ? blog.id : "skeleton"}
-                                    onClick={blog && onRowClick(blog.id)}
+                                    hover={!!blogCategory}
+                                    key={blogCategory ? blogCategory.id : "skeleton"}
+                                    onClick={blogCategory && onRowClick(blogCategory.id)}
                                     selected={isSelected}
                                 >
                                     <TableCell padding="checkbox">
@@ -149,19 +149,19 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = props => {
                                             checked={isSelected}
                                             disabled={disabled}
                                             disableClickPropagation
-                                            onChange={() => toggle(blog.id)}
+                                            onChange={() => toggle(blogCategory.id)}
                                         />
                                     </TableCell>
                                     <TableCellAvatar
                                         className={classes.colName}
-                                        thumbnail={maybe(() => blog.thumbnail.url)}
+                                        thumbnail={maybe(() => blogCategory.thumbnail.url)}
                                         data-tc="name"
                                     >
-                                        {maybe<React.ReactNode>(() => blog.name, <Skeleton />)}
+                                        {maybe<React.ReactNode>(() => blogCategory.name, <Skeleton />)}
                                     </TableCellAvatar>
                                     <TableCell className={classes.colType}>
                                         {maybe<React.ReactNode>(
-                                            () => blog.description,
+                                            () => blogCategory.description,
                                             <Skeleton />
                                         )}
                                     </TableCell>
@@ -171,7 +171,7 @@ const BlogCategoryList: React.FC<BlogCategoryListProps> = props => {
                                             disabled={disabled}
                                             onClick={event => {
                                                 event.stopPropagation();
-                                                onRemove(blog.id);
+                                                onRemove(blogCategory.id);
                                             }}
                                         >
                                             <DeleteIcon />

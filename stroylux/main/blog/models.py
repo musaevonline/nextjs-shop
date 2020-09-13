@@ -28,7 +28,7 @@ class Blog(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     image = VersatileImageField(
-        upload_to='blog', blank=False, max_length=255, default=None)
+        upload_to='blog', max_length=255, default=None, null=True)
     slug = models.SlugField(max_length=128, default="", blank=False,
                             null=False, unique=True)
     is_published = models.BooleanField(default=False)
@@ -73,7 +73,7 @@ class BlogCategory(MPTTModel):
     slug = models.SlugField(max_length=30, default="", blank=False,
                             null=False, unique=True)
     image = VersatileImageField(
-        upload_to='blog/categories', blank=False, max_length=255, default=None)
+        upload_to='blog/categories', max_length=255, default=None, null=True)
     description = models.TextField()
     is_published = models.BooleanField(default=True)
     parent = models.ForeignKey(
@@ -125,7 +125,7 @@ class BlogArticle(models.Model):
     slug = models.SlugField(max_length=128, default="", blank=False,
                             null=False, unique=True)
     image = VersatileImageField(
-        upload_to='blog/articles', blank=False, max_length=255, default=None)
+        upload_to='blog/articles', max_length=255, default=None, null=True)
     tags = models.CharField(max_length=50, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_published = models.DateTimeField(null=True)

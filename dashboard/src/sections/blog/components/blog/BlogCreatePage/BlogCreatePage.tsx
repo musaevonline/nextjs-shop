@@ -30,6 +30,8 @@ const BlogCreatePage: React.FC<BlogCreatePageProps> = ({
     const initialForm: BlogDetailsFormData = {
         name: "",
         description: "",
+        isPublished: false,
+        image: null
     };
 
     const form = useFormik({
@@ -37,6 +39,10 @@ const BlogCreatePage: React.FC<BlogCreatePageProps> = ({
         initialValues: initialForm,
         onSubmit
     });
+
+    const onImageChange = (file: File) => {
+        form.setFieldValue('image', file);
+    }
     return (
         <form onSubmit={form.handleSubmit}>
             <Container>
@@ -55,6 +61,8 @@ const BlogCreatePage: React.FC<BlogCreatePageProps> = ({
                                      disabled={disabled}
                                      errors={errors}
                                      onChange={form.handleChange}
+                                     onImageChange={onImageChange}
+                                     initialImgUrl=""
                     />
                 </Grid>
                 <SaveButtonBar

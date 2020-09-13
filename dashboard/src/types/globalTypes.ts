@@ -726,6 +726,7 @@ export interface BlogArticleInput {
   title?: string | null;
   body?: string | null;
   slug?: string | null;
+  isPublished?: boolean | null;
   image?: any | null;
 }
 
@@ -733,6 +734,7 @@ export interface BlogCategoryInput {
   name?: string | null;
   description?: string | null;
   slug?: string | null;
+  isPublished?: boolean | null;
   image?: any | null;
 }
 
@@ -740,6 +742,7 @@ export interface BlogInput {
   name?: string | null;
   description?: string | null;
   slug?: string | null;
+  isPublished?: boolean | null;
   image?: any | null;
 }
 

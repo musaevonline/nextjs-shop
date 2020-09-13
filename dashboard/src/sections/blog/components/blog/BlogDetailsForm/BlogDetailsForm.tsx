@@ -9,10 +9,23 @@ import CardTitle from "@temp/components/CardTitle";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {getFormErrors} from "@temp/utils/errors";
+import Button from "@material-ui/core/Button";
+import {makeStyles} from "@material-ui/core/styles";
+import ImageTile from "@temp/components/ImageTile";
+import ControlledCheckbox from "@temp/components/ControlledCheckbox";
+const useStyles = makeStyles(
+    theme => ({
+        fileField: {
+            display: "none"
+        }
+    })
+);
 
 export interface BlogDetailsFormData {
     name: string;
     description: string;
+    isPublished: boolean;
+    image: File | null;
 }
 
 export interface BlogDetailsFormProps {
@@ -20,6 +33,8 @@ export interface BlogDetailsFormProps {
     errors: BlogErrorFragment[];
     data: BlogDetailsFormData;
     onChange: (event: React.ChangeEvent<any>) => void;
+    onImageChange: (file: File) => void;
+    initialImgUrl: string
 }
 
 const BlogDetailsForm: React.FC<BlogDetailsFormProps> = props => {
@@ -27,17 +42,29 @@ const BlogDetailsForm: React.FC<BlogDetailsFormProps> = props => {
         disabled,
         errors,
         data,
-        onChange
+        onChange,
+        onImageChange,
+        initialImgUrl
     } = props;
-
+    const classes = useStyles();
     const intl = useIntl();
+    const upload = React.useRef(null);
 
     const formFields = [
         "name",
-        "description"
+        "description",
+        "isPublished"
     ];
 
     const formErrors = getFormErrors(formFields, errors);
+
+    const handleImageChange = (files: FileList) => {
+        onImageChange(files[0])
+    }
+    const image = {
+        url: data.image ? URL.createObjectURL(data.image) : initialImgUrl,
+        alt: ""
+    }
     return (
         <Card>
             <CardTitle
@@ -74,6 +101,39 @@ const BlogDetailsForm: React.FC<BlogDetailsFormProps> = props => {
                     value={data.description}
                     onChange={onChange}
                 />
+                <Hr />
+                <ControlledCheckbox
+                    name={"isPublished" as keyof FormData}
+                    label={intl.formatMessage({id: 'bloIsPublished',
+                        defaultMessage: "Is Published",
+                        description: "blog form field"
+                    })}
+                    checked={data.isPublished}
+                    onChange={onChange}
+                    disabled={disabled}
+                />
+                <Hr/>
+                <>
+                    <Button
+                        onClick={() => upload.current.click()}
+                        disabled={disabled}
+                        variant="text"
+                        color="primary"
+                        data-tc="button-upload-image"
+                    >
+                        {intl.formatMessage(commonMessages.uploadImage)}
+                    </Button>
+                    <input
+                        className={classes.fileField}
+                        id="fileUpload"
+                        onChange={event => handleImageChange(event.target.files)}
+                        multiple={false}
+                        type="file"
+                        ref={upload}
+                        accept="image/*"
+                    />
+                    <ImageTile image={image} onImageEdit={() => upload.current.click()}/>
+                </>
             </CardContent>
         </Card>
 
