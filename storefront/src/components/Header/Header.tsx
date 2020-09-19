@@ -16,7 +16,7 @@ import {
     deliveryPaymentUrl,
     helpUrl,
     contactsUrl,
-    blogUrl,
+    blogPath,
     galleryUrl,
     callBackModalUrl, baseUrl, userProfileFavoritesUrl
 } from "@temp/app/routes";
@@ -175,7 +175,7 @@ const Header: React.FC = () =>{
                         </div>
                         <div className="header__top_right">
                             <ul className="list_inline">
-                                <li><Link to={blogUrl}>Блог</Link></li>
+                                <li><Link to={blogPath}>Блог</Link></li>
                                 <li><Link to={galleryUrl}>Фотогалерея</Link></li>
                             </ul>
                         </div>
@@ -238,7 +238,7 @@ const Header: React.FC = () =>{
                                 </IconButton>
                                 <Link to={userProfileFavoritesUrl}>
                                     <IconButton>
-                                        <HeartIcon fillRule="evenodd" clipRule="evenodd"/>
+                                        <HeartIcon viewBox="0 -28 512.001 512"/>
                                     </IconButton>
                                 </Link>
                             </div>

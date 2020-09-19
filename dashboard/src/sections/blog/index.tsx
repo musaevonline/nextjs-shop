@@ -4,18 +4,7 @@ import {sectionNames} from "@temp/intl";
 import { parse as parseQs } from "qs";
 import {Route, RouteComponentProps, Switch} from "react-router-dom";
 import React from "react";
-import {
-    blogAddPath,
-    blogListPath,
-    BlogListUrlQueryParams,
-    BlogListUrlSortField,
-    blogPath,
-    BlogUrlQueryParams
-} from "@temp/sections/blog/urls/blog_urls";
 import {asSortParams} from "@temp/utils/sort";
-import BlogListView from "./views/blog/BlogList";
-import BlogDetailsView from "@temp/sections/blog/views/blog/BlogDetailsView";
-import BlogCreateView from "@temp/sections/blog/views/blog/BlogCreateView";
 import {
     blogCategoryAddPath,
     blogCategoryListPath,
@@ -34,33 +23,6 @@ import {
 import BlogArticleCreateView from "@temp/sections/blog/views/blogArticle/BlogArticleCreateView";
 import BlogArticleListView from "@temp/sections/blog/views/blogArticle/BlogArticleList";
 import BlogArticleDetailsView from "@temp/sections/blog/views/blogArticle/BlogArticleDetailsView";
-
-const BlogList: React.FC<RouteComponentProps<any>> = ({ location }) => {
-  const qs = parseQs(location.search.substr(1));
-  const params: BlogListUrlQueryParams = asSortParams(
-    qs,
-    BlogListUrlSortField,
-    BlogListUrlSortField.name,
-    false
-  );
-  return <BlogListView params={params} />;
-};
-
-interface BlogDetailsRouteProps {
-  id: string;
-}
-const BlogDetails: React.FC<RouteComponentProps<
-  BlogDetailsRouteProps
->> = ({ location, match }) => {
-  const qs = parseQs(location.search.substr(1));
-  const params: BlogUrlQueryParams = qs;
-  return (
-    <BlogDetailsView
-      id={decodeURIComponent(match.params.id)}
-      params={params}
-    />
-  );
-};
 
 const BlogCategoryList: React.FC<RouteComponentProps<any>> = ({ location }) => {
   const qs = parseQs(location.search.substr(1));
@@ -113,25 +75,6 @@ const BlogArticleDetails: React.FC<RouteComponentProps<
       id={decodeURIComponent(match.params.id)}
       params={params}
     />
-  );
-};
-
-export const BlogComponent = () => {
-  const intl = useIntl();
-
-  return (
-    <>
-      <WindowTitle title={intl.formatMessage(sectionNames.blog)} />
-      <Switch>
-        <Route exact path={blogListPath} component={BlogList} />
-        <Route exact path={blogAddPath} component={BlogCreateView} />
-        <Route path={blogPath(":id")} component={BlogDetails} />
-
-        <Route exact path={blogCategoryListPath} component={BlogCategoryList} />
-        <Route exact path={blogCategoryAddPath} component={BlogArticleCreateView} />
-        <Route path={blogCategoryPath(":id")} component={BlogCategoryDetails} />
-      </Switch>
-    </>
   );
 };
 

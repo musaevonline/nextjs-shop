@@ -1,11 +1,7 @@
 import {gql} from "@apollo/client";
 import makeMutation from "@temp/hooks/makeMutation";
 
-import {blogArticleFragment, blogCategoryFragment, blogFragment} from "./queries";
-import {DeleteBlog, DeleteBlogVariables} from "@temp/sections/blog/types/DeleteBlog";
-import {BulkDeleteBlog, BulkDeleteBlogVariables} from "@temp/sections/blog/types/BulkDeleteBlog";
-import {CreateBlog, CreateBlogVariables} from "@temp/sections/blog/types/CreateBlog";
-import {UpdateBlog, UpdateBlogVariables} from "@temp/sections/blog/types/UpdateBlog";
+import {blogArticleFragment, blogCategoryFragment} from "./queries";
 import {DeleteBlogCategory, DeleteBlogCategoryVariables} from "@temp/sections/blog/types/DeleteBlogCategory";
 import {
     BulkDeleteBlogCategory,
@@ -24,74 +20,6 @@ export const blogErrorFragment = gql`
         field
     }
 `;
-
-const deleteBlog = gql`
-    ${blogErrorFragment}
-    mutation DeleteBlog($id: ID!) {
-        blogDelete(id: $id) {
-            errors: blogErrors {
-                ...BlogErrorFragment
-            }
-        }
-    }
-`;
-export const useBlogDelete = makeMutation<
-    DeleteBlog,
-    DeleteBlogVariables
-    >(deleteBlog);
-
-const bulkDeleteBlog = gql`
-    ${blogErrorFragment}
-    mutation BulkDeleteBlog($ids: [ID]!) {
-        blogBulkDelete(ids: $ids) {
-            errors: blogErrors {
-                ...BlogErrorFragment
-            }
-        }
-    }
-`;
-export const useBlogBulkDelete = makeMutation<
-    BulkDeleteBlog,
-    BulkDeleteBlogVariables
-    >(bulkDeleteBlog);
-
-const createBlog = gql`
-    ${blogErrorFragment}
-    ${blogFragment}
-    mutation CreateBlog($input: BlogInput!) {
-        blogCreate(input: $input) {
-            errors: blogErrors {
-                ...BlogErrorFragment
-            }
-            blog {
-                ...BlogFragment
-            }
-        }
-    }
-`;
-export const useBlogCreate = makeMutation<
-    CreateBlog,
-    CreateBlogVariables
-    >(createBlog);
-
-const updateBlog = gql`
-    ${blogErrorFragment}
-    ${blogFragment}
-    mutation UpdateBlog($id: ID!, $input: BlogInput!) {
-        blogUpdate(id: $id, input: $input) {
-            errors: blogErrors {
-                ...BlogErrorFragment
-            }
-            blog {
-                ...BlogFragment
-            }
-        }
-    }
-`;
-export const useBlogUpdate = makeMutation<
-    UpdateBlog,
-    UpdateBlogVariables
-    >(updateBlog);
 
 const deleteBlogCategory = gql`
     ${blogErrorFragment}

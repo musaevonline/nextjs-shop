@@ -39,10 +39,9 @@ import {shippingMethodListPath} from "@temp/sections/shipping/urls";
 import ShippingSection from "@temp/sections/shipping";
 import {paymentMethodListPath} from "@temp/sections/paymentMethods/urls";
 import PaymentMethodSection from "@temp/sections/paymentMethods";
-import {blogListPath} from "@temp/sections/blog/urls/blog_urls";
 import {blogCategoryListPath} from "@temp/sections/blog/urls/blog_category_urls";
 import {blogArticleListPath} from "@temp/sections/blog/urls/blog_article_urls";
-import {BlogComponent, BlogCategoryComponent, BlogArticleComponent} from "@temp/sections/blog";
+import {BlogCategoryComponent, BlogArticleComponent} from "@temp/sections/blog";
 
 const Routes: React.FC = () => {
     const intl = useIntl();
@@ -139,10 +138,6 @@ const Routes: React.FC = () => {
                                         path={siteSettingsPath}
                                         component={SiteSettingsSection}
                                     />
-
-                                    <SectionRoute path={blogListPath}
-                                                  permissions={[PermissionEnum.MANAGE_BLOG]}
-                                                  component={BlogComponent} />
                                     <SectionRoute path={blogCategoryListPath}
                                                   permissions={[PermissionEnum.MANAGE_BLOG]}
                                                   component={BlogCategoryComponent} />

@@ -4,7 +4,7 @@
   position: relative;
   &__head{
     cursor: pointer;
-    height: 60px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -33,7 +33,8 @@
     opacity: 0;
     transform: scaleY(0);
     transition: opacity .2s,bottom .2s;
-    box-shadow: inset 0 0 0 3px $primary-color;
+    //box-shadow: inset 0 0 0 3px $primary-color;
+    box-shadow: 0 1px 4px 0 #222;
     color: $black;
     background-color: $white;
     padding: 10px 5px;

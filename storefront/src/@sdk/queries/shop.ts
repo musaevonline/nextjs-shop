@@ -3,7 +3,7 @@ import {ShopBaseFragment} from "@sdk/fragments/shop";
 
 export const shopQuery = gql`
     ${ShopBaseFragment}
-    query Shop {
+    query ShopInfo {
         shop{
            ...Shop
         }

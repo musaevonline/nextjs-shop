@@ -13,11 +13,11 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import classNames from "classnames";
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import {FavoritesContext} from "@temp/components/FavoritesProvider/context";
 import Badge from "@material-ui/core/Badge";
 import Tooltip from "@material-ui/core/Tooltip";
+import HeartIcon from "@temp/icons/HeartIcon";
+import HeartIconFilled from "@temp/icons/HeartIconFilled";
 
 const useStyles = makeStyles(theme => ({
     favoritesIcon: {
@@ -57,7 +57,6 @@ const ProductCard:React.FC<ProductCardProps> = ({item, isNew, isDiscount}) =>{
             setFavorites([...favorites, id]);
         }
     };
-
     return(
         <div className="product-card">
             <Link to={getProductUrl(slug, id)}>
@@ -122,8 +121,8 @@ const ProductCard:React.FC<ProductCardProps> = ({item, isNew, isDiscount}) =>{
                 classes.favoritesIcon)}
                  data-active={favorites.includes(id)}
                  onClick={toggleFavorites}>
-                {favorites.includes(id) ? <FavoriteIcon/> :
-                    <FavoriteBorderIcon />
+                {favorites.includes(id) ? <HeartIconFilled viewBox="0 -28 512.00002 512"/> :
+                    <HeartIcon viewBox="0 -28 512.001 512"/>
                 }
             </div>
 

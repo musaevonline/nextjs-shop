@@ -11,13 +11,14 @@ const HomeCarousel:React.FC = () =>{
 
     const images = [
         {
+            url: "https://stroy-lux.by/wp-content/uploads/2019/07/%D1%84%D0%BE%D0%BD1.jpg",
+            alt: "Второй слайд"
+        },
+        {
             url: "https://avatars.mds.yandex.net/get-pdb/752643/361918da-d020-40a8-92fe-fe96ec14c9c3/s1200",
             alt: "Первый слайд"
         },
-        {
-            url: "https://stroy-lux.by/wp-content/uploads/2019/07/%D1%84%D0%BE%D0%BD1.jpg",
-            alt: "Второй слайд"
-        }
+
     ];
 
     const settings = {

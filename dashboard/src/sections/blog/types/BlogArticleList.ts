@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { BlogArticleStatus } from "./../../../types/globalTypes";
+
 // ====================================================
 // GraphQL query operation: BlogArticleList
 // ====================================================
@@ -27,8 +29,14 @@ export interface BlogArticleList_blogArticleList_edges_node {
   id: string;
   slug: string;
   title: string;
+  subtitle: string;
+  keywords: string;
+  tags: string;
+  status: BlogArticleStatus;
   body: string;
   isPublished: boolean;
+  dateAdded: any;
+  datePublished: any | null;
   /**
    * The main thumbnail for a blog article.
    */

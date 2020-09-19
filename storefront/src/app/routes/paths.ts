@@ -7,7 +7,6 @@ export const aboutUrl = `${baseUrl}about/`;
 export const deliveryPaymentUrl = `${baseUrl}delivery_and_payment/`;
 export const helpUrl = `${baseUrl}help/`;
 export const contactsUrl = `${baseUrl}contacts/`;
-export const blogUrl = `${baseUrl}blog/`;
 export const galleryUrl = `${baseUrl}gallery/`;
 export const callBackModalUrl = `${baseUrl}callBackModal/`;
 export const accountLoginUrl = `${baseUrl}login/`;
@@ -31,6 +30,8 @@ export const userProfileOrdersUrl = `${baseUrl}user/orders/`;
 export const userProfileReviewsUrl = `${baseUrl}user/reviews/`;
 export const userProfileEmailChangeConfirmUrl = `${baseUrl}user/email-change-confirm/`;
 
+// BLOG //
+export const blogPath = `${baseUrl}blog/`;
 
 // GET URL //
 export const getCategoryUrl = (slug: string, id: string) =>{
@@ -45,3 +46,6 @@ export const getProductUrl = (slug: string, id: string) =>{
 export const getOrderCreatedUrl = (token: string) => {
     return `${baseUrl}order/created/${token}/`;
 };
+
+export const getBlogCategoryUrl = (blogCategorySlug: string) => `${blogPath}${blogCategorySlug}/`
+export const getBlogArticleUrl = (blogCategorySlug: string, articleSlug: string) => `${blogPath}${blogCategorySlug}/${articleSlug}/`

@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { BlogArticleInput, BlogErrorCode } from "./../../../types/globalTypes";
+import { BlogArticleInput, BlogErrorCode, BlogArticleStatus } from "./../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateBlogArticle
@@ -41,8 +41,14 @@ export interface UpdateBlogArticle_blogArticleUpdate_blogArticle {
   id: string;
   slug: string;
   title: string;
+  subtitle: string;
+  keywords: string;
+  tags: string;
+  status: BlogArticleStatus;
   body: string;
   isPublished: boolean;
+  dateAdded: any;
+  datePublished: any | null;
   /**
    * The main thumbnail for a blog article.
    */

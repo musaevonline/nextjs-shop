@@ -5,17 +5,16 @@ import {useParams} from "react-router";
 import {getGraphqlIdFromDBId} from "@temp/core/utils";
 import {useQuery} from "@apollo/client";
 import {productsCardQuery} from "@sdk/queries/product";
-import {shopQuery} from "@sdk/queries/shop";
 import Page from "@temp/views/Category/Page";
 import {categoryQuery} from "@sdk/queries/category";
 import _ from "lodash";
 import {attributesQuery} from "@sdk/queries/attribute";
 import {Attributes, AttributesVariables} from "@sdk/queries/types/Attributes";
-import {Shop} from "@sdk/queries/types/Shop";
 import {Category, CategoryVariables} from "@sdk/queries/types/Category";
 import {ProductsCardDetails, ProductsCardDetailsVariables} from "@sdk/queries/types/ProductsCardDetails";
 import {DelimitedNumericArrayParam, JsonParam, ObjectParam, useQueryParams} from "use-query-params";
 import {OrderDirection, ProductOrderField} from "@temp/types/globalTypes";
+import useShop from "@temp/hooks/useShop";
 
 const PAGINATE_BY = 20;
 
@@ -44,7 +43,7 @@ const View:React.FC = () => {
     });
 
     const priceRange = query.priceRange || [0, 100];
-    const shopDataQuery = useQuery<Shop>(shopQuery);
+    const shop = useShop();
     const {data:categoryResponse} = useQuery<Category, CategoryVariables>(categoryQuery, {variables:{id}});
     const {data:productsResponse, fetchMore} = useQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
         variables: {
@@ -93,8 +92,6 @@ const View:React.FC = () => {
             }
         })
     };
-    const shop = shopDataQuery.data?.shop;
-    console.log(productsResponse, categoryResponse)
     return(
         <MetaWrapper
             meta={{

@@ -3,31 +3,6 @@ import graphene
 from main.graphql.core.types import SortInputObjectType
 
 
-class BlogOrderField(graphene.Enum):
-    NAME = ["name", "slug"]
-    PUBLISHED = ["is_published", "name", "slug"]
-
-    @property
-    def description(self):
-        # pylint: disable=no-member
-        descriptions = {
-            BlogOrderField.NAME.name: "name",
-            BlogOrderField.PUBLISHED.name: "publication status",
-        }
-        if self.name in descriptions:
-            return f"Sort blog by {descriptions[self.name]}."
-        raise ValueError("Unsupported enum value: %s" % self.value)
-
-
-class BlogOrder(SortInputObjectType):
-    field = graphene.Argument(
-        BlogOrderField, description=f"Sort blog list by the selected field."
-    )
-
-    class Meta:
-        sort_enum = BlogOrderField
-
-
 class BlogCategoryOrderField(graphene.Enum):
     NAME = ["name", "slug"]
     PUBLISHED = ["is_published", "name", "slug"]
@@ -55,6 +30,7 @@ class BlogCategoryOrder(SortInputObjectType):
 
 class BlogArticleOrderField(graphene.Enum):
     TITLE = ["title", "slug"]
+    DATE = ["date_published", "date_added", "title", "slug"]
     PUBLISHED = ["is_published", "title", "slug"]
 
     @property
@@ -63,6 +39,7 @@ class BlogArticleOrderField(graphene.Enum):
         descriptions = {
             BlogCategoryOrderField.TITLE.name: "title",
             BlogCategoryOrderField.PUBLISHED.name: "publication status",
+            BlogCategoryOrderField.DATE.name: "date",
         }
         if self.name in descriptions:
             return f"Sort blog article by {descriptions[self.name]}."

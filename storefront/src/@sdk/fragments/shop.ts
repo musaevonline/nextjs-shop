@@ -5,5 +5,9 @@ export const ShopBaseFragment = gql`
         name
         description
         headerText
+        domain{
+            host
+            url
+        }
     }
 `;

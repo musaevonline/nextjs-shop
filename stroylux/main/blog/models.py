@@ -9,7 +9,16 @@ from ..account.models import User
 from ..core.permissions import BlogPermissions
 
 
-class BlogQueryset(models.QuerySet):
+class BlogSubscriber(models.Model):
+    email = models.EmailField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None, related_name='blog_subscribe')
+    confirmed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.email} {'(not confirmed)' if self.confirmed else ''}"
+
+
+class BlogCategoryQueryset(models.QuerySet):
 
     def published(self):
         return self.filter(is_published=True)
@@ -24,50 +33,7 @@ class BlogQueryset(models.QuerySet):
         return self.published()
 
 
-class Blog(models.Model):
-    name = models.CharField(max_length=50)
-    description = models.TextField(blank=True)
-    image = VersatileImageField(
-        upload_to='blog', max_length=255, default=None, null=True)
-    slug = models.SlugField(max_length=128, default="", blank=False,
-                            null=False, unique=True)
-    is_published = models.BooleanField(default=False)
-    subscribers = models.ManyToManyField('BlogSubscriber', related_name='blog')
-
-    objects = BlogQueryset.as_manager()
-
-    class Meta:
-        app_label = "blog"
-        ordering = ("name",)
-        permissions = (
-            (BlogPermissions.MANAGE_BLOG.codename, "Manage blog."),
-        )
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def image_url(self):
-        return '%s%s' % (settings.MEDIA_URL, self.image.name)
-
-
-class BlogSubscriber(models.Model):
-    email = models.EmailField(unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None, related_name='blog_subscribe')
-    confirmed = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.email} {'(not confirmed)' if self.confirmed else ''}"
-
-
-class BlogCategoryQueryset(BlogQueryset):
-
-    def published(self):
-        return self.filter(is_published=True, blog__is_published=True)
-
-
 class BlogCategory(MPTTModel):
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='categories')
     name = models.CharField(max_length=30)
     sort_order = models.IntegerField(null=True)
     slug = models.SlugField(max_length=30, default="", blank=False,
@@ -85,6 +51,9 @@ class BlogCategory(MPTTModel):
     class Meta:
         app_label = "blog"
         ordering = ("sort_order",)
+        permissions = (
+            (BlogPermissions.MANAGE_BLOG.codename, "Manage blog."),
+        )
 
     def __str__(self):
         return self.name
@@ -99,12 +68,10 @@ class BlogArticleQueryset(models.QuerySet):
     def published(self, user):
         if user.is_authenticated:
             return self.filter(Q(is_published=True) | Q(author=user),
-                           category__is_published=True,
-                           category__blog__is_published=True
-                           )
+                               category__is_published=True
+                               )
         return self.filter(is_published=True,
-                           category__is_published=True,
-                           category__blog__is_published=True
+                           category__is_published=True
                            )
 
     @staticmethod

@@ -4,54 +4,9 @@ from graphene import relay
 from graphene_federation import key
 
 from main.blog import models
-from .filters import BlogCategoryFilterInput
-from .sorters import BlogCategoryOrder
-from ..core.connection import CountableDjangoObjectType
 from main.graphql.core.types.common import Image
 from main.product.templatetags.product_images import get_thumbnail
-from ..core.fields import FilterInputConnectionField
-
-
-@key(fields="id")
-@key(fields="slug")
-class BlogType(CountableDjangoObjectType):
-    thumbnail = graphene.Field(
-        Image,
-        description="The main thumbnail for a blog.",
-        size=graphene.Argument(graphene.Int, description="Size of thumbnail."),
-    )
-
-    # categories = graphene_django_optimizer.field(FilterInputConnectionField(
-    #     lambda: BlogCategoryType,
-    #     filter=BlogCategoryFilterInput(description="Filtering options for blog category list."),
-    #     sort_by=BlogCategoryOrder(description="Sort blog category list."),
-    #     ids=graphene.List(
-    #         graphene.ID, description="Filter blog category list by given IDs."
-    #     ),
-    #     description="List of the shop's blog category.",
-    # ),
-    #     model_field='categories'
-    # )
-
-    class Meta:
-        description = "Represents a blog of a given type."
-        interfaces = [relay.Node]
-        model = models.Blog
-        filter_fields = ["id"]
-        only_fields = [
-            "id",
-            "name",
-            "slug",
-            "description",
-            "is_published",
-            "categories"
-        ]
-
-    @staticmethod
-    @graphene_django_optimizer.resolver_hints(only=["image"])
-    def resolve_thumbnail(root: models.Blog, info, *, size=255):
-        url = get_thumbnail(root.image, size, method="thumbnail")
-        return Image(alt=root.name, url=info.context.build_absolute_uri(url))
+from ..core.connection import CountableDjangoObjectType
 
 
 @key(fields="id")
@@ -73,7 +28,8 @@ class BlogCategoryType(CountableDjangoObjectType):
             "name",
             "slug",
             "description",
-            "is_published"
+            "is_published",
+            "articles"
         ]
 
     @staticmethod
@@ -91,6 +47,7 @@ class BlogArticleType(CountableDjangoObjectType):
         description="The main thumbnail for a blog article.",
         size=graphene.Argument(graphene.Int, description="Size of thumbnail."),
     )
+    author_name = graphene.String()
 
     class Meta:
         description = "Represents a blog article of a given type."
@@ -100,13 +57,23 @@ class BlogArticleType(CountableDjangoObjectType):
         only_fields = [
             "id",
             "title",
+            "subtitle",
+            "keywords",
+            "tags",
+            "status",
             "slug",
             "body",
-            "is_published"
+            "is_published",
+            "date_added",
+            "date_published",
+            "category"
         ]
 
-    @staticmethod
     @graphene_django_optimizer.resolver_hints(only=["image"])
-    def resolve_thumbnail(root: models.BlogArticle, info, *, size=255):
-        url = get_thumbnail(root.image, size, method="thumbnail")
-        return Image(alt=root.title, url=info.context.build_absolute_uri(url))
+    def resolve_thumbnail(self: models.BlogArticle, info, *, size=255):
+        url = get_thumbnail(self.image, size, method="thumbnail")
+        return Image(alt=self.title, url=info.context.build_absolute_uri(url))
+
+    @graphene_django_optimizer.resolver_hints(select_related=["author"])
+    def resolve_author_name(self: models.BlogArticle, info):
+        return self.author.get_full_name()

@@ -7,6 +7,18 @@
 // GraphQL query operation: Shop
 // ====================================================
 
+export interface Shop_shop_domain {
+  __typename: "Domain";
+  /**
+   * The host name of the domain.
+   */
+  host: string;
+  /**
+   * Shop's absolute URL.
+   */
+  url: string;
+}
+
 export interface Shop_shop {
   __typename: "Shop";
   /**
@@ -21,6 +33,10 @@ export interface Shop_shop {
    * Header text.
    */
   headerText: string | null;
+  /**
+   * Shop's domain data.
+   */
+  domain: Shop_shop_domain;
 }
 
 export interface Shop {

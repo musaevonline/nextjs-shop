@@ -31,6 +31,7 @@ import {RetryLink} from "@apollo/client/link/retry";
 import {BatchHttpLink} from "@apollo/client/link/batch-http";
 import {ApolloClient, ApolloLink, ApolloProvider, defaultDataIdFromObject, InMemoryCache} from "@apollo/client";
 import {ErrorResponse, onError} from "@apollo/client/link/error";
+import {ShopProvider} from "@temp/components/Shop";
 
 interface ResponseError extends ErrorResponse {
     networkError?: Error & {
@@ -137,39 +138,41 @@ const startApp = async () => {
             <BrowserRouter>
                 <QueryParamProvider ReactRouterRoute={Route}>
                     <ApolloProvider client={apolloClient}>
-                        <CheckoutProvider>
-                            {({checkoutContext}) =>
-                                <UserProvider refreshUser={true}
-                                              apolloClient={apolloClient}
-                                              onUserLogin={() => {
-                                                  checkoutContext.findUserCheckout()
-                                              }
-                                              }
-                                              onUserLogout={() => {
-                                                  if (checkoutContext.checkout.token) {
-                                                      checkoutContext.resetCheckout();
+                        <ShopProvider>
+                            <CheckoutProvider>
+                                {({checkoutContext}) =>
+                                    <UserProvider refreshUser={true}
+                                                  apolloClient={apolloClient}
+                                                  onUserLogin={() => {
+                                                      checkoutContext.findUserCheckout()
                                                   }
-                                              }
-                                              }>
-                                    <OverlayProvider>
-                                        <FavoritesProvider>
-                                            <ErrorBoundary
-                                                FallbackComponent={ErrorFallback}
-                                                onError={errorHandler}
-                                                // onReset={() => {
-                                                //     apolloClient.resetStore()
-                                                // }}
-                                            >
-                                                <Switch>
-                                                    <Route component={App} />
-                                                </Switch>
-                                                <Notifications />
-                                            </ErrorBoundary>
-                                        </FavoritesProvider>
-                                    </OverlayProvider>
-                                </UserProvider>
-                            }
-                        </CheckoutProvider>
+                                                  }
+                                                  onUserLogout={() => {
+                                                      if (checkoutContext.checkout.token) {
+                                                          checkoutContext.resetCheckout();
+                                                      }
+                                                  }
+                                                  }>
+                                        <OverlayProvider>
+                                            <FavoritesProvider>
+                                                <ErrorBoundary
+                                                    FallbackComponent={ErrorFallback}
+                                                    onError={errorHandler}
+                                                    // onReset={() => {
+                                                    //     apolloClient.resetStore()
+                                                    // }}
+                                                >
+                                                    <Switch>
+                                                        <Route component={App} />
+                                                    </Switch>
+                                                    <Notifications />
+                                                </ErrorBoundary>
+                                            </FavoritesProvider>
+                                        </OverlayProvider>
+                                    </UserProvider>
+                                }
+                            </CheckoutProvider>
+                        </ShopProvider>
                     </ApolloProvider>
                 </QueryParamProvider>
             </BrowserRouter>

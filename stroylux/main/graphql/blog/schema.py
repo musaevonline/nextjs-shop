@@ -1,36 +1,17 @@
 import graphene
 
-from main.graphql.blog.bulk_mutations import BlogBulkDelete, BlogCategoryBulkDelete, BlogArticleBulkDelete
-from main.graphql.blog.mutations import BlogCreate, BlogDelete, BlogUpdate, BlogCategoryCreate, BlogCategoryUpdate, \
+from main.graphql.blog.bulk_mutations import BlogCategoryBulkDelete, BlogArticleBulkDelete
+from main.graphql.blog.mutations import BlogCategoryCreate, BlogCategoryUpdate, \
     BlogCategoryDelete, BlogArticleCreate, BlogArticleUpdate, BlogArticleDelete
-from main.graphql.blog.sorters import BlogOrder, BlogCategoryOrder, BlogArticleOrder
-from main.graphql.blog.filters import BlogFilterInput, BlogCategoryFilterInput, BlogArticleFilterInput
-from main.graphql.blog.resolvers import resolve_blog, resolve_blog_list, resolve_blog_category, \
+from main.graphql.blog.sorters import BlogCategoryOrder, BlogArticleOrder
+from main.graphql.blog.filters import BlogCategoryFilterInput, BlogArticleFilterInput
+from main.graphql.blog.resolvers import resolve_blog_category, \
     resolve_blog_category_list, resolve_blog_article, resolve_blog_article_list
-from main.graphql.blog.types import BlogType, BlogCategoryType, BlogArticleType
+from main.graphql.blog.types import BlogCategoryType, BlogArticleType
 from main.graphql.core.fields import FilterInputConnectionField
 
 
 class BlogQueries(graphene.ObjectType):
-    blog = product = graphene.Field(
-        BlogType,
-        id=graphene.Argument(
-            graphene.ID, description="ID of the blog.", required=False
-        ),
-        slug=graphene.Argument(
-            graphene.String, description="Slug of the blog.", required=False
-        ),
-        description="Look up a blog by ID or slug.",
-    )
-    blog_list = FilterInputConnectionField(
-        BlogType,
-        filter=BlogFilterInput(description="Filtering options for blog list."),
-        sort_by=BlogOrder(description="Sort blog list."),
-        ids=graphene.List(
-            graphene.ID, description="Filter blog list by given IDs."
-        ),
-        description="List of the shop's blog.",
-    )
     blog_category = graphene.Field(
         BlogCategoryType,
         id=graphene.Argument(
@@ -71,14 +52,6 @@ class BlogQueries(graphene.ObjectType):
     )
 
     @staticmethod
-    def resolve_blog(self, info, id=None, slug=None):
-        return resolve_blog(info, id, slug)
-
-    @staticmethod
-    def resolve_blog_list(self, info, ids=None, **kwargs):
-        return resolve_blog_list(info, ids, **kwargs)
-
-    @staticmethod
     def resolve_blog_category(self, info, id=None, slug=None):
         return resolve_blog_category(info, id, slug)
 
@@ -96,10 +69,6 @@ class BlogQueries(graphene.ObjectType):
 
 
 class BlogMutations(graphene.ObjectType):
-    blog_create = BlogCreate.Field()
-    blog_update = BlogUpdate.Field()
-    blog_delete = BlogDelete.Field()
-    blog_bulk_delete = BlogBulkDelete.Field()
 
     blog_category_create = BlogCategoryCreate.Field()
     blog_category_update = BlogCategoryUpdate.Field()

@@ -12,6 +12,7 @@ import ResetPasswordPage from "@temp/components/Auth/ResetPasswordPage";
 import {UserProfileRouter} from "@temp/views/UserProfile";
 import {FavoritesPage} from "@temp/views/Favorites";
 import {SearchPage} from "@temp/views/Search";
+import {BlogView} from "@temp/views/Blog";
 
 export const Routes: React.FC = () => (
     <>
@@ -27,6 +28,7 @@ export const Routes: React.FC = () => (
             <Route exact path={paths.resetPasswordUrl} component={ResetPasswordPage}/>
 
             <Route path={paths.userPath} component={UserProfileRouter}/>
+            <Route path={paths.blogPath} component={BlogView}/>
 
             <Route component={NotFound}/>
         </Switch>

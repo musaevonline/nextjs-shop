@@ -7,6 +7,18 @@
 // GraphQL fragment: Shop
 // ====================================================
 
+export interface Shop_domain {
+  __typename: "Domain";
+  /**
+   * The host name of the domain.
+   */
+  host: string;
+  /**
+   * Shop's absolute URL.
+   */
+  url: string;
+}
+
 export interface Shop {
   __typename: "Shop";
   /**
@@ -21,4 +33,8 @@ export interface Shop {
    * Header text.
    */
   headerText: string | null;
+  /**
+   * Shop's domain data.
+   */
+  domain: Shop_domain;
 }

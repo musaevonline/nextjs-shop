@@ -53,6 +53,25 @@ export enum AttributeSortField {
   VISIBLE_IN_STOREFRONT = "VISIBLE_IN_STOREFRONT",
 }
 
+export enum BlogArticleOrderField {
+  DATE = "DATE",
+  PUBLISHED = "PUBLISHED",
+  TITLE = "TITLE",
+}
+
+/**
+ * An enumeration.
+ */
+export enum BlogArticleStatus {
+  COMPLETED = "COMPLETED",
+  DRAFT = "DRAFT",
+}
+
+export enum BlogCategoryOrderField {
+  NAME = "NAME",
+  PUBLISHED = "PUBLISHED",
+}
+
 export enum CategorySortField {
   NAME = "NAME",
   PRODUCT_COUNT = "PRODUCT_COUNT",
@@ -441,6 +460,11 @@ export enum ShippingMethodTypeEnum {
   WEIGHT = "WEIGHT",
 }
 
+export enum StockAvailability {
+  IN_STOCK = "IN_STOCK",
+  OUT_OF_STOCK = "OUT_OF_STOCK",
+}
+
 export interface AccountInput {
   firstName?: string | null;
   lastName?: string | null;
@@ -487,6 +511,29 @@ export interface AttributeInput {
 export interface AttributeSortingInput {
   direction: OrderDirection;
   field: AttributeSortField;
+}
+
+export interface BlogArticleFilterInput {
+  isPublished?: boolean | null;
+  slug?: string | null;
+  title?: string | null;
+  category?: string | null;
+}
+
+export interface BlogArticleOrder {
+  direction: OrderDirection;
+  field?: BlogArticleOrderField | null;
+}
+
+export interface BlogCategoryFilterInput {
+  isPublished?: boolean | null;
+  slug?: string | null;
+  name?: string | null;
+}
+
+export interface BlogCategoryOrder {
+  direction: OrderDirection;
+  field?: BlogCategoryOrderField | null;
 }
 
 export interface CategoryFilterInput {
@@ -537,6 +584,7 @@ export interface ProductFilterInput {
   isPublished?: boolean | null;
   productType?: string | null;
   search?: string | null;
+  stockAvailability?: StockAvailability | null;
   productTypes?: (string | null)[] | null;
   categories?: (string | null)[] | null;
   attributes?: (AttributeInput | null)[] | null;

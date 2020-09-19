@@ -7,6 +7,7 @@ import { Routes } from "./routes";
 import {Header} from "@temp/components/Header";
 import {Footer} from "@temp/components/Footer";
 import {ScrollTopButton} from "@temp/components/ScrollTopButton";
+import ScrollToTop from "@temp/components/ScrollToTop/ScrollToTop";
 // import {Scrollbars} from 'react-custom-scrollbars';
 
 const App: React.FC<RouteComponentProps> = ({history: {location: { pathname }}}) => {
@@ -16,10 +17,11 @@ const App: React.FC<RouteComponentProps> = ({history: {location: { pathname }}})
             {/*<Scrollbars autoHide*/}
             {/*            autoHideTimeout={1000}*/}
             {/*            autoHideDuration={200}>*/}
-                <header className="header"><Header/></header>
-                <Routes />
-                <ScrollTopButton/>
-                <Footer/>
+            <ScrollToTop/>
+            <header className="header"><Header/></header>
+            <Routes />
+            <ScrollTopButton/>
+            <Footer/>
             {/*</Scrollbars>*/}
         </>
     );

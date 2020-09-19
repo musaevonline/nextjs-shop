@@ -2,65 +2,10 @@ import makeQuery from "@temp/hooks/makeQuery";
 import {gql} from "@apollo/client";
 
 import { pageInfoFragment } from "@temp/queries";
-import {BlogList, BlogListVariables} from "@temp/sections/blog/types/BlogList";
-import {Blog, BlogVariables} from "@temp/sections/blog/types/Blog";
 import {BlogCategoryList, BlogCategoryListVariables} from "@temp/sections/blog/types/BlogCategoryList";
 import {BlogCategory, BlogCategoryVariables} from "@temp/sections/blog/types/BlogCategory";
 import {BlogArticleList, BlogArticleListVariables} from "@temp/sections/blog/types/BlogArticleList";
 import {BlogArticle, BlogArticleVariables} from "@temp/sections/blog/types/BlogArticle";
-
-export const blogFragment = gql`
-    fragment BlogFragment on BlogType {
-        id
-        slug
-        name
-        description
-        isPublished
-        thumbnail{
-            alt
-            url
-        }
-    }
-`;
-
-const blogList = gql`
-    ${blogFragment}
-    ${pageInfoFragment}
-    query BlogList(
-        $first: Int
-        $after: String
-        $last: Int
-        $before: String
-    ) {
-        blogList(first: $first, after: $after, last: $last, before: $before) {
-            edges {
-                node {
-                    ...BlogFragment
-                }
-            }
-            pageInfo {
-                ...PageInfoFragment
-            }
-        }
-    }
-`;
-export const useBlogList = makeQuery<
-    BlogList,
-    BlogListVariables
-    >(blogList);
-
-const blog = gql`
-    ${blogFragment}
-    query Blog($id: ID!) {
-        blog(id: $id) {
-            ...BlogFragment
-        }
-    }
-`;
-export const useBlog = makeQuery<Blog, BlogVariables>(
-    blog
-);
-
 
 export const blogCategoryFragment = gql`
     fragment BlogCategoryFragment on BlogCategoryType {
@@ -119,8 +64,14 @@ export const blogArticleFragment = gql`
         id
         slug
         title
+        subtitle
+        keywords
+        tags
+        status
         body
         isPublished
+        dateAdded
+        datePublished
         thumbnail{
             alt
             url

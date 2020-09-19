@@ -11,7 +11,6 @@ import {productListUrl} from "@temp/sections/products/urls";
 import {categoryListUrl} from "@temp/sections/categories/urls";
 import {customerListUrl} from "@temp/sections/customers/urls";
 import {orderDraftListUrl, orderListUrl} from "@temp/sections/orders/urls";
-import {blogListUrl} from "@temp/sections/blog/urls/blog_urls";
 import {blogCategoryListUrl} from "@temp/sections/blog/urls/blog_category_urls";
 import {blogArticleListUrl} from "@temp/sections/blog/urls/blog_article_urls";
 
@@ -81,11 +80,6 @@ function createMenuStructure(intl: IntlShape): IMenuItem[] {
       {
       ariaLabel: "blog",
       children: [
-        {
-          ariaLabel: "blog",
-          label: intl.formatMessage(sectionNames.blog),
-          url: blogListUrl()
-        },
         {
           ariaLabel: "blogCategories",
           label: intl.formatMessage(sectionNames.blogCategories),

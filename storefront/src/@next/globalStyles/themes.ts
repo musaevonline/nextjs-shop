@@ -6,9 +6,9 @@ export const defaultTheme = createMuiTheme({
 	palette: {
 		type: 'light',
 		primary: {
-			light: orange[400],
-			main: orange[800],
-			dark: orange[900]
+			light: "#444",
+			main: "#222",
+			dark: "#000"
 		},
 		secondary: grey,
 		background: {
@@ -93,6 +93,9 @@ export const defaultTheme = createMuiTheme({
 			}
 		},
 		MuiButton: {
+			root: {
+				borderRadius: 0
+			},
 			containedSizeLarge: {
 				padding: '12px 22px'
 			}

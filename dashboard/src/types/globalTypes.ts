@@ -84,6 +84,14 @@ export enum AuthorizationKeyType {
 /**
  * An enumeration.
  */
+export enum BlogArticleStatus {
+  COMPLETED = "COMPLETED",
+  DRAFT = "DRAFT",
+}
+
+/**
+ * An enumeration.
+ */
 export enum BlogErrorCode {
   ALREADY_EXISTS = "ALREADY_EXISTS",
   GRAPHQL_ERROR = "GRAPHQL_ERROR",
@@ -731,14 +739,6 @@ export interface BlogArticleInput {
 }
 
 export interface BlogCategoryInput {
-  name?: string | null;
-  description?: string | null;
-  slug?: string | null;
-  isPublished?: boolean | null;
-  image?: any | null;
-}
-
-export interface BlogInput {
   name?: string | null;
   description?: string | null;
   slug?: string | null;
