@@ -16,7 +16,7 @@ import {ProductsCardDetails_products} from "@sdk/queries/types/ProductsCardDetai
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {BlogArticleList_blogArticleList_edges} from "@sdk/queries/types/BlogArticleList";
-import {INews} from "@temp/components/NewsCard/NewsCard";
+import {IArticleCard} from "@temp/components/ArticleCard/ArticleCard";
 import {dateToShortString} from "@temp/core/utils";
 import {Skeleton} from "@material-ui/lab";
 
@@ -73,10 +73,14 @@ const Page: React.FC<{
     newProducts: ProductsCardDetails_products,
     popularProducts: ProductsCardDetails_products,
     articlesEdges: BlogArticleList_blogArticleList_edges[],
+    articlesLoading: boolean;
 
-}> = ({ loading, shop, newProducts, popularProducts, articlesEdges }) => {
+}> = ({
+          loading, shop, newProducts,
+          popularProducts, articlesEdges, articlesLoading
+      }) => {
 
-    const news: INews[] = articlesEdges?.map(edge => ({
+    const news: IArticleCard[] = articlesEdges?.map(edge => ({
         id: edge.node.id,
         categorySlug: edge.node.category.slug,
         articleSlug: edge.node.slug,
@@ -144,6 +148,7 @@ const Page: React.FC<{
                         }
                     </CardContent>
                 </Card>
+                {(articlesLoading || !!news.length) &&
                 <Card className="my-20">
                     <CardContent>
                         <Typography variant="h3" className="pt-20 pb-5 text-center">Новости</Typography>
@@ -156,6 +161,7 @@ const Page: React.FC<{
                         }
                     </CardContent>
                 </Card>
+                }
             </Container>
         </div>
     );

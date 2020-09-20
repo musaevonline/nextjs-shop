@@ -7,13 +7,12 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import {Link} from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
-import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import {
   BlogCategoryListWithArticles_blogCategoryList_edges_node
 } from "@sdk/queries/types/BlogCategoryListWithArticles";
-import {getBlogArticleUrl, getBlogCategoryUrl} from "@temp/app/routes";
+import {getBlogCategoryUrl} from "@temp/app/routes";
+import {ArticleCard} from "@temp/components/ArticleCard";
+import {IArticleCard} from "@temp/components/ArticleCard/ArticleCard";
 import {dateToShortString} from "@temp/core/utils";
 
 const useArrowsStyles = makeStyles(theme => ({
@@ -74,20 +73,16 @@ const useStyles = makeStyles(theme => ({
     // backgroundColor: "red"
     '& .react-multi-carousel-track': {
       margin: '0 auto'
+    },
+    "& li": {
+      padding: "10px 0"
     }
   },
   item: {
     position: "relative",
-    padding: "0 10px",
-    // transition: "box-shadow .5s ease-in-out",
-    // "&:hover": {
-    //   "box-shadow": "0 0 20px 0 rgba(0, 0, 0, 0.35)"
-    // },
+    padding: "0 5px",
     '& a': {
       textDecoration: "none"
-    },
-    '&:hover a': {
-      textDecoration: "underline"
     },
     "&:hover $icons": {
       opacity: 1
@@ -235,7 +230,7 @@ const ArticleCarousel:React.FC<IArticleCarouselProps> = ({category}) => {
       <div className={classes.root}>
         <div className={classes.header}>
           <Typography variant="h6">{category.name}</Typography>
-          <Link to={getBlogCategoryUrl(category.slug)}>Discover more {'>'}</Link>
+          <Link to={getBlogCategoryUrl(category.slug)} className="mt-5">Еще {'>'}</Link>
         </div>
         <Carousel responsive={responsive}
                   className={classes.carousel}
@@ -250,43 +245,24 @@ const ArticleCarousel:React.FC<IArticleCarouselProps> = ({category}) => {
                   partialVisible={true}
         >
           {edges.map((edge, i) => {
-            const article = edge.node;
+            const node = edge.node;
+            const article: IArticleCard = {
+              articleSlug: node.slug,
+              id: node.id,
+              categorySlug: node.category.slug,
+              created: dateToShortString(node.dateAdded),
+              img: node.thumbnail?.url,
+              keywords: node.keywords,
+              status: node.status,
+              subtitle: node.subtitle,
+              tags: node.tags,
+              text: node.body,
+              title: node.title
+            }
 
             return(
                 <div key={i} className={classes.item}>
-                  <Link to={getBlogArticleUrl(category.slug, article.slug)}>
-                    <img className={classes.image} src={article.thumbnail?.url} alt={article.title}/>
-                  </Link>
-
-                  <div className={classes.icons}>
-                    <Tooltip title="More like this" enterDelay={300}>
-                      <IconButton size="small"
-                                  className={classes.icon}
-                                  onClick={e => {console.log('update measure like')}}
-                                  data-active={false}
-                      >
-                        <ThumbUpOutlinedIcon/>
-                      </IconButton>
-                    </Tooltip>
-
-                    <Tooltip title="Less like this" enterDelay={300}>
-                      <IconButton size="small"
-                                  className={classes.icon}
-                                  onClick={e => {console.log('update measure like')}}
-                                  data-active={false}
-                      >
-                        <ThumbDownAltOutlinedIcon/>
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-
-                  <Link to={getBlogArticleUrl(category.slug, article.slug)}>
-                    <Typography variant="body2" className={classes.title} paragraph>{article.title}</Typography>
-                  </Link>
-                  <div className={classes.dateAdded}>{dateToShortString(article.dateAdded)}</div>
-                  <Typography variant="body1" className={classes.subtitle} paragraph>{article.subtitle}</Typography>
-                  <Typography className={classes.author} variant="caption">By {article.authorName}</Typography>
-
+                  <ArticleCard  article={article} />
                 </div>
             )
           })}

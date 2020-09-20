@@ -7,10 +7,11 @@ from main.graphql.utils import get_database_id
 
 
 def resolve_blog_category(info, id=None, slug=None):
+    user = info.context.user
     if id:
         return graphene.Node.get_node_from_global_id(info, id, BlogCategoryType)
     if slug:
-        return graphene_django_optimizer.query(BlogCategory.objects.filter(slug=slug), info).first()
+        return graphene_django_optimizer.query(BlogCategory.objects.visible_to_user(user).filter(slug=slug), info).first()
     return None
 
 
@@ -28,10 +29,11 @@ def resolve_blog_category_list(info, ids, **_kwargs):
 
 
 def resolve_blog_article(info, id=None, slug=None):
+    user = info.context.user
     if id:
         return graphene.Node.get_node_from_global_id(info, id, BlogArticleType)
     if slug:
-        return graphene_django_optimizer.query(BlogArticle.objects.filter(slug=slug), info).first()
+        return graphene_django_optimizer.query(BlogArticle.objects.visible_to_user(user).filter(slug=slug), info).first()
     return None
 
 

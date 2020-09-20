@@ -25,7 +25,7 @@ const View: React.FC = () => {
         fetchPolicy: "cache-and-network",
         nextFetchPolicy: "cache-first"
     });
-    const {data: articlesData} = useBlogArticleListQuery({
+    const {data: articlesData, loading: articlesLoading} = useBlogArticleListQuery({
         variables: {
             first: PAGINATE_BY,
             filter: {isPublished: true},
@@ -44,6 +44,7 @@ const View: React.FC = () => {
                     newProducts={newProductsData?.products}
                     popularProducts={popularProductsData?.products}
                     articlesEdges={articlesData?.blogArticleList.edges}
+                    articlesLoading={articlesLoading}
                     shop={shop}
                 />
 

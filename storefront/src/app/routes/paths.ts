@@ -32,6 +32,8 @@ export const userProfileEmailChangeConfirmUrl = `${baseUrl}user/email-change-con
 
 // BLOG //
 export const blogPath = `${baseUrl}blog/`;
+export const blogCategoryPath = `${blogPath}:categorySlug/`;
+export const blogArticlePath = `${blogCategoryPath}:articleSlug/`;
 
 // GET URL //
 export const getCategoryUrl = (slug: string, id: string) =>{

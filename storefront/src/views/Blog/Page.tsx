@@ -72,36 +72,41 @@ const Page:React.FC<IProps> = ({
                 <Card>
                     <CardContent>
                         <Typography variant="h4">Блог</Typography>
-                        <Grid container spacing={0}>
-                            <Grid className={classes.mainArticle} item xs={12} sm={12} md={6}>
-                                <Typography variant="subtitle1" paragraph>Новая</Typography>
-                                <MainArticleCard article={mainArticleData}
-                                                 loading={loading}
-                                />
-                            </Grid>
-                            <Grid className={classes.recommendedArticles} item xs={12} sm={12} md={6}>
-                                <RecommendedArticles title="Рекомендованные"
-                                                     page={articlePage}
-                                                     handleChangePage={setPage}
-                                                     articlesData={articlesData}
-                                                     paginateBy={PAGINATE_BY_RECOMMENDED}
+                        {!loading && !articlesData?.edges.length && <Typography variant="h5">Список пуст</Typography>}
+                        {(loading || !!articlesData?.edges.length) &&
+                        <>
+                            <Grid container spacing={0}>
+                                <Grid className={classes.mainArticle} item xs={12} sm={12} md={6}>
+                                    <Typography variant="subtitle1" paragraph>Новая</Typography>
+                                    <MainArticleCard article={mainArticleData}
                                                      loading={loading}
-                                />
+                                    />
+                                </Grid>
+                                <Grid className={classes.recommendedArticles} item xs={12} sm={12} md={6}>
+                                    <RecommendedArticles title="Рекомендованные"
+                                                         page={articlePage}
+                                                         handleChangePage={setPage}
+                                                         articlesData={articlesData}
+                                                         paginateBy={PAGINATE_BY_RECOMMENDED}
+                                                         loading={loading}
+                                    />
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        {blogCategoriesData?.edges.map((categoryEdge, i) => {
-                            if (!categoryEdge.node.articles.edges.length) return null
-                            return(
-                                <React.Fragment key={i}>
-                                    <div className="pb-10"/>
-                                    <Divider/>
-                                    <div className="pt-10"/>
-                                    <Container maxWidth="xl">
-                                        <ArticleCarousel category={categoryEdge.node}/>
-                                    </Container>
-                                </React.Fragment>
-                            )
-                        })}
+                            {blogCategoriesData?.edges.map((categoryEdge, i) => {
+                                if (!categoryEdge.node.articles.edges.length) return null
+                                return (
+                                    <React.Fragment key={i}>
+                                        <div className="pb-10"/>
+                                        <Divider/>
+                                        <div className="pt-10"/>
+                                        <Container maxWidth="xl">
+                                            <ArticleCarousel category={categoryEdge.node}/>
+                                        </Container>
+                                    </React.Fragment>
+                                )
+                            })}
+                        </>
+                        }
                     </CardContent>
                 </Card>
             </div>

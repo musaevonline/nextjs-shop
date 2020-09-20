@@ -29,6 +29,11 @@ export const blogArticleQuery = gql`
     query BlogArticle($slug: String, $id: ID){
         blogArticle(slug: $slug, id: $id){
             ...BlogArticleFragment
+            category{
+                id
+                slug
+                name
+            }
 
         }
     }
@@ -113,6 +118,7 @@ export const blogArticleListQuery = gql`
                     category{
                         id
                         slug
+                        name
                     }
                 }
             }

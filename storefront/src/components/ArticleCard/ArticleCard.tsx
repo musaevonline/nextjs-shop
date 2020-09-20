@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {Typography} from "@material-ui/core";
 import {getBlogArticleUrl} from "@temp/app/routes";
 
-export interface INews {
+export interface IArticleCard {
     id: string | number,
     subtitle: string,
     keywords: string,
@@ -19,12 +19,12 @@ export interface INews {
     text: string
 }
 
-interface NewsCardProps {
-    news: INews
+interface IProps {
+    article: IArticleCard
 }
 
-const NewsCard:React.FC<NewsCardProps> = ({news}) =>{
-    const {created, img, title, articleSlug, categorySlug, subtitle} = news;
+const ArticleCard:React.FC<IProps> = ({article}) =>{
+    const {created, img, title, articleSlug, categorySlug, subtitle} = article;
 
     return(
         <div className="news-card">
@@ -48,4 +48,4 @@ const NewsCard:React.FC<NewsCardProps> = ({news}) =>{
     );
 };
 
-export default NewsCard;
+export default ArticleCard;

@@ -16,6 +16,7 @@ export interface BlogArticle_blogArticle_category {
    */
   id: string;
   slug: string;
+  name: string;
 }
 
 export interface BlogArticle_blogArticle_thumbnail {

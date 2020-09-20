@@ -36,6 +36,7 @@ export interface BlogArticleList_blogArticleList_edges_node_category {
    */
   id: string;
   slug: string;
+  name: string;
 }
 
 export interface BlogArticleList_blogArticleList_edges_node_thumbnail {

@@ -26,7 +26,8 @@ class BlogArticleFilter(django_filters.FilterSet):
             "is_published",
             "slug",
             "title",
-            "category"
+            "category",
+            "category__slug"
         ]
 
 

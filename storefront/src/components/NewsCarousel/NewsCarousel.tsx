@@ -3,11 +3,11 @@ import "react-multi-carousel/lib/styles.css";
 
 import React from "react";
 import Carousel from "react-multi-carousel";
-import {NewsCard} from "@temp/components/NewsCard";
-import {INews} from "@temp/components/NewsCard/NewsCard";
+import {IArticleCard} from "@temp/components/ArticleCard/ArticleCard";
+import {ArticleCard} from "@temp/components/ArticleCard";
 
 const NewsCarousel:React.FC<{
-    news: INews[]
+    news: IArticleCard[]
 }> = ({news}) =>{
     // let isMobile = false;
     // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -47,7 +47,7 @@ const NewsCarousel:React.FC<{
                       transitionDuration={500}
                       containerClass="carousel-container news-carousel"
                       removeArrowOnDeviceType={["tablet", "mobile"]}>
-                {news.map((node, i) => <NewsCard key={i} news={node}/>)}
+                {news.map((node, i) => <ArticleCard key={i} article={node}/>)}
 
             </Carousel>
         </div>

@@ -518,6 +518,7 @@ export interface BlogArticleFilterInput {
   slug?: string | null;
   title?: string | null;
   category?: string | null;
+  category_Slug?: string | null;
 }
 
 export interface BlogArticleOrder {
