@@ -241,7 +241,10 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     "user_avatars": [("default", "thumbnail__445x445")],
     "blog": [
         ("default", "thumbnail__1080x1080"),
-        ("small", "thumbnail__510x510"),
+        ("lg", "thumbnail__510x510"),
+        ("md", "thumbnail__255x255"),
+        ("sm", "thumbnail__120x120"),
+        ("xs", "thumbnail__60x60"),
 
     ],
 }
