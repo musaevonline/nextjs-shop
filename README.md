@@ -49,5 +49,4 @@ $ docker-compose run --rm api python3 manage.py populatedb --createsuperuser
 $ docker-compose up
 ```
 
-Dump DB: manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 4 > db.json
-psql -h localhost -p 5432 -d DB_NAME -U USER_NAME --password
+Dump DB: docker-compose run --rm api python manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 4 > db.json

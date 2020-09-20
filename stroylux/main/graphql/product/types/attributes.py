@@ -47,7 +47,6 @@ class AttributeValue(CountableDjangoObjectType):
         return resolve_attribute_value_type(root.value)
 
     @staticmethod
-    @permission_required(ProductPermissions.MANAGE_PRODUCTS)
     def resolve_input_type(root: models.AttributeValue, *_args):
         return root.input_type
 

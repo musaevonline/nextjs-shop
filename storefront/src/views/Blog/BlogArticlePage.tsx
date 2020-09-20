@@ -178,7 +178,7 @@ const BlogArticlePage:React.FC<IProps> = ({article, loading}) => {
                 </div>
                 <div className={classes.additionalInfo}>
                   <span>{dateToShortString(article.dateAdded)}</span>
-                  <span>By {article.authorName}</span>
+                  <span>{article.authorName}</span>
                   <span>{article.category.name}</span>
                 </div>
                 <div className={classes.mainImg}>

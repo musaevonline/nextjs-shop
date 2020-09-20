@@ -103,7 +103,7 @@ const MainArticleCard: React.FC<IProps> = ({article, loading}) => {
                         <Typography className={classes.title} variant="h5">{article.title}</Typography>
                     </div>
                     <div className={classes.body}>{article.subtitle}</div>
-                    <div className={classes.author}>By {article.authorName}</div>
+                    <div className={classes.author}>{article.authorName}</div>
                 </Link>
                 <div className={classes.icons}>
                     <Tooltip title="More like this" enterDelay={300}>

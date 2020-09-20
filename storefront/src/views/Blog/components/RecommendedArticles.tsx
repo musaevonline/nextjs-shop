@@ -137,7 +137,7 @@ const RecommendedArticles:React.FC<IProps> = ({
                                     {article.title}
                                 </Typography>
                                 <div className={classes.dateAdded}>{dateToShortString(article.dateAdded)}</div>
-                                <div className={classes.author}>By {article.authorName}</div>
+                                <div className={classes.author}>{article.authorName}</div>
                                 <div className={classes.icons}>
                                     <Tooltip title="More like this" enterDelay={300}>
                                         <IconButton size="small"
