@@ -185,6 +185,7 @@ INSTALLED_APPS = [
     "main.order",
     "main.graphql",
     "main.blog",
+    "main.page",
     # External apps
     "versatileimagefield",
     "graphene_django",

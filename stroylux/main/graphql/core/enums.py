@@ -10,6 +10,7 @@ from ...order import error_codes as order_error_codes
 from ...core.permissions import get_permissions_enum_list
 from ...core import error_codes as core_error_codes
 from ...blog import error_codes as blog_error_codes
+from ...page import error_codes as page_error_codes
 from .utils import str_to_enum
 
 
@@ -78,3 +79,4 @@ PermissionGroupErrorCode = graphene.Enum.from_enum(
 )
 ShopErrorCode = graphene.Enum.from_enum(core_error_codes.ShopErrorCode)
 BlogErrorCode = graphene.Enum.from_enum(blog_error_codes.BlogErrorCode)
+PageErrorCode = graphene.Enum.from_enum(page_error_codes.PageErrorCode)

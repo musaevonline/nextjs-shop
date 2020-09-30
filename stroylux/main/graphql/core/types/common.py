@@ -9,7 +9,7 @@ from ..enums import (
     ShippingErrorCode,
     PaymentErrorCode,
     CheckoutErrorCode,
-    OrderErrorCode, PermissionGroupErrorCode, ShopErrorCode, BlogErrorCode
+    OrderErrorCode, PermissionGroupErrorCode, ShopErrorCode, BlogErrorCode, PageErrorCode
 )
 
 
@@ -198,3 +198,7 @@ class ShopError(Error):
 
 class BlogError(Error):
     code = BlogErrorCode(description="The error code.", required=True)
+
+
+class PageError(Error):
+    code = PageErrorCode(description="The error code.", required=True)
