@@ -12,6 +12,12 @@ import {useFormik} from "formik";
 import BlogArticleDetailsForm, {BlogArticleDetailsFormData} from "@temp/sections/blog/components/blogArticle/BlogArticleDetailsForm";
 import {BlogArticleFragment} from "@temp/sections/blog/types/BlogArticleFragment";
 import {maybe} from "@temp/misc";
+import {SingleAutocompleteChoiceType} from "@temp/components/SingleAutocompleteSelectField";
+import {FetchMoreProps} from "@temp/types";
+import createSingleAutocompleteSelectHandler from "@temp/utils/handlers/singleAutocompleteSelectChangeHandler";
+import useStateFromProps from "@temp/hooks/useStateFromProps";
+import VisibilityCard from "@temp/components/VisibilityCard";
+import useDateLocalize from "@temp/hooks/useDateLocalize";
 
 export interface BlogArticleUpdatePageProps {
     blogArticle: BlogArticleFragment
@@ -21,6 +27,9 @@ export interface BlogArticleUpdatePageProps {
     onBack: () => void;
     onDelete: () => void;
     onSubmit: (data: BlogArticleDetailsFormData) => void;
+    categoryChoiceList: SingleAutocompleteChoiceType[],
+    fetchCategories: (query: string) => void;
+    fetchMoreCategories: FetchMoreProps;
 }
 
 const BlogArticleUpdatePage: React.FC<BlogArticleUpdatePageProps> = ({
@@ -30,14 +39,21 @@ const BlogArticleUpdatePage: React.FC<BlogArticleUpdatePageProps> = ({
                                                                          onBack,
                                                                          onDelete,
                                                                          onSubmit,
-                                                                         saveButtonBarState
+                                                                         saveButtonBarState,
+                                                                         categoryChoiceList,
+                                                                         fetchCategories,
+                                                                         fetchMoreCategories
                                                                      }) => {
     const intl = useIntl();
+    const localizeDate = useDateLocalize();
+    const [selectedCategory, setSelectedCategory] = useStateFromProps(maybe(() => blogArticle.category.name, ''));
     const initialForm: BlogArticleDetailsFormData = {
         title: maybe(() => blogArticle.title, ""),
         body: maybe(() => blogArticle.body, ""),
         isPublished: maybe(() => blogArticle.isPublished, false),
         image: null,
+        publicationDate: maybe(() => blogArticle.datePublished, ''),
+        category: maybe(() => blogArticle.category.id, ''),
 
     };
     const form = useFormik({
@@ -48,6 +64,11 @@ const BlogArticleUpdatePage: React.FC<BlogArticleUpdatePageProps> = ({
     const onImageChange = (file: File) => {
         form.setFieldValue('image', file ? file: null);
     }
+    const handleCategorySelect = createSingleAutocompleteSelectHandler(
+        (e) => {form.handleChange(e as any)},
+        setSelectedCategory,
+        categoryChoiceList
+    );
     return (
         <form onSubmit={form.handleSubmit}>
             <Container>
@@ -68,6 +89,37 @@ const BlogArticleUpdatePage: React.FC<BlogArticleUpdatePageProps> = ({
                                             onChange={form.handleChange}
                                             onImageChange={onImageChange}
                                             initialImgUrl={maybe(() => blogArticle.thumbnail.url, "")}
+                                            categories={categoryChoiceList}
+                                            categoryInputDisplayValue={selectedCategory}
+                                            onCategoryChange={handleCategorySelect}
+                                            fetchCategories={fetchCategories}
+                                            fetchMoreCategories={fetchMoreCategories}
+                    />
+                    <VisibilityCard
+                        data={form.values}
+                        errors={errors}
+                        disabled={disabled}
+                        hiddenMessage={intl.formatMessage(
+                            {
+                                id: "will_be_visible_from{date}",
+                                defaultMessage: "will be visible from {date}",
+                                description: "article"
+                            },
+                            {
+                                date: localizeDate(form.values.publicationDate)
+                            }
+                        )}
+                        onChange={form.handleChange}
+                        visibleMessage={intl.formatMessage(
+                            {
+                                id: "since{date}",
+                                defaultMessage: "since {date}",
+                                description: "article"
+                            },
+                            {
+                                date: localizeDate(form.values.publicationDate)
+                            }
+                        )}
                     />
                 </Grid>
                 <SaveButtonBar

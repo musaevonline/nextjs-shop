@@ -33,6 +33,15 @@ export interface CreateBlogArticle_blogArticleCreate_blogArticle_thumbnail {
   url: string;
 }
 
+export interface CreateBlogArticle_blogArticleCreate_blogArticle_category {
+  __typename: "BlogCategoryType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  name: string;
+}
+
 export interface CreateBlogArticle_blogArticleCreate_blogArticle {
   __typename: "BlogArticleType";
   /**
@@ -53,6 +62,7 @@ export interface CreateBlogArticle_blogArticleCreate_blogArticle {
    * The main thumbnail for a blog article.
    */
   thumbnail: CreateBlogArticle_blogArticleCreate_blogArticle_thumbnail | null;
+  category: CreateBlogArticle_blogArticleCreate_blogArticle_category;
 }
 
 export interface CreateBlogArticle_blogArticleCreate {

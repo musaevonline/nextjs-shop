@@ -40,6 +40,7 @@ export interface RichTextEditorProps {
   name: string;
   scroll?: boolean;
   onChange: (event: React.ChangeEvent<any>) => void;
+  isJson?: boolean
 }
 
 const useStyles = makeStyles(
@@ -272,21 +273,32 @@ function handleSave(
     value: any,
     initial: any,
     name: string,
-    onChange: (event: ChangeEvent) => void
+    onChange: (event: ChangeEvent) => void,
+    isJson?: boolean
 ) {
   if (value && !isEqual(value, initial)) {
-    const html = convertToHTML(exporterConfig)(convertFromRaw(value));
-    onChange({
-      target: {
-        name,
-        value: html
-      }
-    });
+    if (isJson){
+      onChange({
+        target: {
+          name,
+          value: value
+        }
+      });
+    }else{
+      const html = convertToHTML(exporterConfig)(convertFromRaw(value));
+      onChange({
+        target: {
+          name,
+          value: html
+        }
+      });
+    }
+
   }
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = props => {
-  const { error, helperText, initial, label, name, scroll, onChange } = props;
+  const { error, helperText, initial, label, name, scroll, onChange, isJson } = props;
   const fromHTML = (html) => convertToRaw(convertFromHTML(importerConfig)(html))
 
   const classes = useStyles(props);
@@ -315,8 +327,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = props => {
           >
             <DraftailEditor
                 key={initial}
-                rawContentState={initial ? fromHTML(initial) : null}
-                onSave={value => handleSave(value, initial, name, onChange)}
+                rawContentState={initial ? isJson ? initial : fromHTML(initial) : null}
+                onSave={value => handleSave(value, initial, name, onChange, isJson)}
                 blockTypes={[
                   {
                     icon: <HeaderOne />,

@@ -475,6 +475,25 @@ export enum OrderStatusFilter {
 /**
  * An enumeration.
  */
+export enum PageErrorCode {
+  GRAPHQL_ERROR = "GRAPHQL_ERROR",
+  INVALID = "INVALID",
+  NOT_FOUND = "NOT_FOUND",
+  REQUIRED = "REQUIRED",
+  UNIQUE = "UNIQUE",
+}
+
+export enum PageSortField {
+  CREATION_DATE = "CREATION_DATE",
+  PUBLICATION_DATE = "PUBLICATION_DATE",
+  SLUG = "SLUG",
+  TITLE = "TITLE",
+  VISIBILITY = "VISIBILITY",
+}
+
+/**
+ * An enumeration.
+ */
 export enum PaymentChargeStatusEnum {
   FULLY_CHARGED = "FULLY_CHARGED",
   FULLY_REFUNDED = "FULLY_REFUNDED",
@@ -736,6 +755,8 @@ export interface BlogArticleInput {
   slug?: string | null;
   isPublished?: boolean | null;
   image?: any | null;
+  datePublished?: string | null;
+  category: string;
 }
 
 export interface BlogCategoryInput {
@@ -840,6 +861,20 @@ export interface OrderUpdateInput {
 
 export interface OrderUpdateShippingInput {
   shippingMethod?: string | null;
+}
+
+export interface PageInput {
+  slug?: string | null;
+  title?: string | null;
+  content?: string | null;
+  contentJson?: any | null;
+  isPublished?: boolean | null;
+  publicationDate?: string | null;
+}
+
+export interface PageSortingInput {
+  direction: OrderDirection;
+  field: PageSortField;
 }
 
 export interface PaymentMethodInput {

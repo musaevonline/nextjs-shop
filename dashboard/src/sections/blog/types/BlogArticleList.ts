@@ -21,6 +21,15 @@ export interface BlogArticleList_blogArticleList_edges_node_thumbnail {
   url: string;
 }
 
+export interface BlogArticleList_blogArticleList_edges_node_category {
+  __typename: "BlogCategoryType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  name: string;
+}
+
 export interface BlogArticleList_blogArticleList_edges_node {
   __typename: "BlogArticleType";
   /**
@@ -41,6 +50,7 @@ export interface BlogArticleList_blogArticleList_edges_node {
    * The main thumbnail for a blog article.
    */
   thumbnail: BlogArticleList_blogArticleList_edges_node_thumbnail | null;
+  category: BlogArticleList_blogArticleList_edges_node_category;
 }
 
 export interface BlogArticleList_blogArticleList_edges {

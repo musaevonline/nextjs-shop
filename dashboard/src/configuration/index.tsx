@@ -22,6 +22,8 @@ import ShippingMethods from "@temp/icons/ShippingMethods";
 import {shippingMethodListUrl} from "@temp/sections/shipping/urls";
 import {paymentMethodListUrl} from "@temp/sections/paymentMethods/urls";
 import PaymentMethods from "@temp/icons/PaymentMethods";
+import {pageListUrl} from "@temp/sections/pages/urls";
+import Pages from "@temp/icons/Pages";
 
 export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
   return [
@@ -113,6 +115,16 @@ export function createConfigurationMenu(intl: IntlShape): MenuSection[] {
         defaultMessage: "Miscellaneous"
       }),
       menuItems: [
+        {
+          description: intl.formatMessage({
+            defaultMessage: "Manage and add additional pages",
+            id: "configurationMenuPages"
+          }),
+          icon: <Pages fontSize="inherit" viewBox="0 0 44 44" />,
+          permission: PermissionEnum.MANAGE_PAGES,
+          title: intl.formatMessage(sectionNames.pages),
+          url: pageListUrl()
+        },
         {
           description: intl.formatMessage({
             defaultMessage: "View and update your site settings",

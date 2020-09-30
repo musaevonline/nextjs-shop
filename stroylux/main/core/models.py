@@ -40,7 +40,7 @@ class PublishedQuerySet(models.QuerySet):
         today = datetime.date.today()
         return self.filter(
             Q(publication_date__lte=today) | Q(publication_date__isnull=True),
-            is_published=True, variants__isnull=False
+            is_published=True
         )
 
     @staticmethod

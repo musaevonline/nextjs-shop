@@ -1,12 +1,12 @@
 import graphene
 
 from ..core.fields import FilterInputConnectionField
+from .types import Page
 from .bulk_mutations import PageBulkDelete, PageBulkPublish
 from .filters import PageFilterInput
 from .mutations import PageCreate, PageDelete, PageUpdate
 from .resolvers import resolve_page, resolve_pages
 from .sorters import PageSortingInput
-from .types import Page
 
 
 class PageQueries(graphene.ObjectType):

@@ -21,7 +21,7 @@ export const blogCategoryFragment = gql`
     }
 `;
 
-const blogCategoryList = gql`
+export const blogCategoryList = gql`
     ${blogCategoryFragment}
     ${pageInfoFragment}
     query BlogCategoryList(
@@ -75,6 +75,10 @@ export const blogArticleFragment = gql`
         thumbnail{
             alt
             url
+        }
+        category{
+            id
+            name
         }
     }
 `;

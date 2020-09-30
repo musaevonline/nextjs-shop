@@ -10,6 +10,10 @@ import {BlogArticleDetailsFormData} from "@temp/sections/blog/components/blogArt
 import {useBlogArticle} from "@temp/sections/blog/queries";
 import BlogArticleUpdatePage from "@temp/sections/blog/components/blogArticle/BlogArticleUpdatePage";
 import {slugify} from "@temp/core/utils";
+import useBlogCategorySearch from "@temp/searches/useBlogCategorySearch";
+import {DEFAULT_INITIAL_SEARCH_DATA} from "@temp/config";
+import {getChoices} from "@temp/sections/products/utils/data";
+import {maybe} from "@temp/misc";
 
 export interface BlogArticleDetailsProps {
     id: string;
@@ -17,9 +21,9 @@ export interface BlogArticleDetailsProps {
 }
 
 const BlogArticleDetailsView: React.FC<BlogArticleDetailsProps> = ({
-                                                                         id,
-                                                                         params
-                                                                     }) => {
+                                                                       id,
+                                                                       params
+                                                                   }) => {
     const navigate = useNavigator();
     const notify = useNotifier();
     const intl = useIntl();
@@ -52,13 +56,23 @@ const BlogArticleDetailsView: React.FC<BlogArticleDetailsProps> = ({
             }
         }
     });
+    const {
+        loadMore: loadMoreCategories,
+        search: searchCategories,
+        result: searchCategoriesOpts
+    } = useBlogCategorySearch({
+        variables: DEFAULT_INITIAL_SEARCH_DATA
+    });
+    const categoryChoiceList = getChoices(maybe(() => searchCategoriesOpts.data.search.edges.map(edge => edge.node), []));
 
     const onSubmit = (formData: BlogArticleDetailsFormData) => {
         const input = {
             title: formData.title,
             body: formData.body,
             isPublished: formData.isPublished,
-            slug: slugify(formData.title)
+            slug: slugify(formData.title),
+            datePublished: formData.publicationDate,
+            category: formData.category
         };
         if (!!formData.image) {
             input['image'] = formData.image;
@@ -74,15 +88,25 @@ const BlogArticleDetailsView: React.FC<BlogArticleDetailsProps> = ({
 
     return (
         <BlogArticleUpdatePage blogArticle={data?.blogArticle}
-                                disabled={updateBlogArticleOpts.loading ||
-                                deleteBlogArticleRateMethod.loading ||
-                                loading
-                                }
-                                errors={updateBlogArticleOpts.data?.blogArticleUpdate.errors || []}
-                                onBack={() => navigate(blogArticleListUrl())}
-                                onSubmit={onSubmit}
-                                saveButtonBarState={updateBlogArticleOpts.status}
-                                onDelete={() => deleteBlogArticle({variables: {id}})}
+                               disabled={updateBlogArticleOpts.loading ||
+                               deleteBlogArticleRateMethod.loading ||
+                               loading
+                               }
+                               errors={updateBlogArticleOpts.data?.blogArticleUpdate.errors || []}
+                               onBack={() => navigate(blogArticleListUrl())}
+                               onSubmit={onSubmit}
+                               saveButtonBarState={updateBlogArticleOpts.status}
+                               onDelete={() => deleteBlogArticle({variables: {id}})}
+                               categoryChoiceList={categoryChoiceList}
+                               fetchCategories={searchCategories}
+                               fetchMoreCategories={{
+                                   hasMore: maybe(
+                                       () =>
+                                           searchCategoriesOpts.data.search.pageInfo.hasNextPage
+                                   ),
+                                   loading: searchCategoriesOpts.loading,
+                                   onFetchMore: loadMoreCategories
+                               }}
 
         />
     );

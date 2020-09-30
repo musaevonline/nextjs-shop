@@ -33,6 +33,15 @@ export interface UpdateBlogArticle_blogArticleUpdate_blogArticle_thumbnail {
   url: string;
 }
 
+export interface UpdateBlogArticle_blogArticleUpdate_blogArticle_category {
+  __typename: "BlogCategoryType";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  name: string;
+}
+
 export interface UpdateBlogArticle_blogArticleUpdate_blogArticle {
   __typename: "BlogArticleType";
   /**
@@ -53,6 +62,7 @@ export interface UpdateBlogArticle_blogArticleUpdate_blogArticle {
    * The main thumbnail for a blog article.
    */
   thumbnail: UpdateBlogArticle_blogArticleUpdate_blogArticle_thumbnail | null;
+  category: UpdateBlogArticle_blogArticleUpdate_blogArticle_category;
 }
 
 export interface UpdateBlogArticle_blogArticleUpdate {

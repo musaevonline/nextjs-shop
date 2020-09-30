@@ -42,6 +42,8 @@ import PaymentMethodSection from "@temp/sections/paymentMethods";
 import {blogCategoryListPath} from "@temp/sections/blog/urls/blog_category_urls";
 import {blogArticleListPath} from "@temp/sections/blog/urls/blog_article_urls";
 import {BlogCategoryComponent, BlogArticleComponent} from "@temp/sections/blog";
+import {pageListPath} from "@temp/sections/pages/urls";
+import PageSection from "@temp/sections/pages";
 
 const Routes: React.FC = () => {
     const intl = useIntl();
@@ -145,6 +147,11 @@ const Routes: React.FC = () => {
                                                   permissions={[PermissionEnum.MANAGE_BLOG]}
                                                   component={BlogArticleComponent} />
 
+                                    <SectionRoute
+                                        permissions={[PermissionEnum.MANAGE_PAGES]}
+                                        path={pageListPath}
+                                        component={PageSection}
+                                    />
 
                                     {createConfigurationMenu(intl).filter(menu =>
                                         menu.menuItems.map(item =>

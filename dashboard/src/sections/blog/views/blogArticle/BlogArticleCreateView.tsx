@@ -9,6 +9,10 @@ import {useBlogArticleCreate} from "../../mutations";
 import {blogArticleListUrl, blogArticleUrl} from "../../urls/blog_article_urls";
 import {BlogArticleDetailsFormData} from "@temp/sections/blog/components/blogArticle/BlogArticleDetailsForm";
 import {slugify} from "@temp/core/utils";
+import {getChoices} from "@temp/sections/products/utils/data";
+import {maybe} from "@temp/misc";
+import {DEFAULT_INITIAL_SEARCH_DATA} from "@temp/config";
+import useBlogCategorySearch from "@temp/searches/useBlogCategorySearch";
 
 const BlogArticleCreateView: React.FC<{}> = () => {
     const navigate = useNavigator();
@@ -25,13 +29,21 @@ const BlogArticleCreateView: React.FC<{}> = () => {
             }
         }
     });
-
+    const {
+        loadMore: loadMoreCategories,
+        search: searchCategories,
+        result: searchCategoriesOpts
+    } = useBlogCategorySearch({
+        variables: DEFAULT_INITIAL_SEARCH_DATA
+    });
     const onSubmit = (formData: BlogArticleDetailsFormData) => {
         const input = {
             title: formData.title,
             body: formData.body,
             isPublished: formData.isPublished,
-            slug: slugify(formData.title)
+            slug: slugify(formData.title),
+            datePublished: formData.publicationDate,
+            category: formData.category
         };
         if (!!formData.image) {
             input['image'] = formData.image;
@@ -43,13 +55,24 @@ const BlogArticleCreateView: React.FC<{}> = () => {
         })
 
     };
+    const categoryChoiceList = getChoices(maybe(() => searchCategoriesOpts.data.search.edges.map(edge => edge.node), []));
 
     return (
         <BlogArticleCreatePage disabled={createBlogArticleOpts.loading}
-                                 errors={createBlogArticleOpts.data?.blogArticleCreate.errors || []}
-                                 onBack={() => navigate(blogArticleListUrl())}
-                                 onSubmit={onSubmit}
-                                 saveButtonBarState={createBlogArticleOpts.status}
+                               errors={createBlogArticleOpts.data?.blogArticleCreate.errors || []}
+                               onBack={() => navigate(blogArticleListUrl())}
+                               onSubmit={onSubmit}
+                               saveButtonBarState={createBlogArticleOpts.status}
+                               categoryChoiceList={categoryChoiceList}
+                               fetchCategories={searchCategories}
+                               fetchMoreCategories={{
+                                   hasMore: maybe(
+                                       () =>
+                                           searchCategoriesOpts.data.search.pageInfo.hasNextPage
+                                   ),
+                                   loading: searchCategoriesOpts.loading,
+                                   onFetchMore: loadMoreCategories
+                               }}
         />
     );
 };

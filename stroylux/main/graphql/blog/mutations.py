@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import graphene
 from django.core.exceptions import ValidationError
 
@@ -48,6 +50,9 @@ class BlogCategoryCreate(ModelMutation):
         if data.get("image"):
             image_data = info.context.FILES.get(data["image"])
             validate_image_file(image_data, "image")
+
+        last_cat = models.BlogCategory.objects.last()
+        cleaned_input['sort_order'] = last_cat.sort_order + 1 if last_cat else 0
         return cleaned_input
 
     @classmethod
@@ -104,6 +109,11 @@ class BlogArticleInput(graphene.InputObjectType):
     slug = graphene.String(description="Blog article slug.")
     is_published = graphene.Boolean(description="Blog article is published.")
     image = Upload(description="Image file.", required=False)
+    date_published = graphene.String(
+        description="Publication date. ISO 8601 standard.",
+        required=False
+    )
+    category = graphene.ID(required=True, description="Blog category")
 
 
 class BlogArticleCreate(ModelMutation):
@@ -132,6 +142,10 @@ class BlogArticleCreate(ModelMutation):
         if data.get("image"):
             image_data = info.context.FILES.get(data["image"])
             validate_image_file(image_data, "image")
+        cleaned_input['author'] = info.context.user
+        if not cleaned_input['date_published']:
+            cleaned_input['date_published'] = datetime.now().isoformat()
+        print(cleaned_input)
         return cleaned_input
 
     @classmethod

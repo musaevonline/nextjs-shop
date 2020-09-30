@@ -10,9 +10,14 @@ import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {getFormErrors} from "@temp/utils/errors";
 import {makeStyles} from "@material-ui/core/styles";
-import ControlledCheckbox from "@temp/components/ControlledCheckbox";
 import Button from "@material-ui/core/Button";
 import ImageTile from "@temp/components/ImageTile";
+import SingleAutocompleteSelectField, {SingleAutocompleteChoiceType} from "@temp/components/SingleAutocompleteSelectField";
+import {FetchMoreProps} from "@temp/types";
+import {ChangeEvent} from "@temp/hooks/useForm";
+import {maybe} from "@temp/misc";
+import {FormData} from "@temp/sections/pages/components/PageDetailsPage";
+import RichTextEditor from "@temp/components/RichTextEditor";
 
 const useStyles = makeStyles(
     theme => ({
@@ -26,6 +31,8 @@ export interface BlogArticleDetailsFormData {
     body: string;
     isPublished: boolean;
     image: File | null;
+    publicationDate: string;
+    category: string;
 }
 
 export interface BlogArticleDetailsFormProps {
@@ -34,7 +41,12 @@ export interface BlogArticleDetailsFormProps {
     data: BlogArticleDetailsFormData;
     onChange: (event: React.ChangeEvent<any>) => void;
     onImageChange: (file: File) => void;
-    initialImgUrl: string
+    initialImgUrl: string,
+    categories?: SingleAutocompleteChoiceType[];
+    categoryInputDisplayValue: string;
+    fetchCategories: (query: string) => void;
+    fetchMoreCategories: FetchMoreProps;
+    onCategoryChange: (event: ChangeEvent) => void;
 }
 
 const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
@@ -44,7 +56,12 @@ const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
         data,
         onChange,
         onImageChange,
-        initialImgUrl
+        initialImgUrl,
+        categories,
+        categoryInputDisplayValue,
+        fetchCategories,
+        fetchMoreCategories,
+        onCategoryChange
     } = props;
 
     const intl = useIntl();
@@ -54,7 +71,7 @@ const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
     const formFields = [
         "title",
         "body",
-        "isPublished"
+        "category"
     ];
     const handleImageChange = (files: FileList) => {
         onImageChange(files[0])
@@ -86,31 +103,36 @@ const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
                     onChange={onChange}
                 />
                 <Hr />
-                <TextField
+                <SingleAutocompleteSelectField
+                    displayValue={categoryInputDisplayValue}
+                    error={!!formErrors.category}
+                    helperText={getBlogErrorMessage(formErrors.category, intl)}
                     disabled={disabled}
-                    error={!!formErrors.body}
-                    fullWidth
-                    multiline
-                    helperText={getBlogErrorMessage(formErrors.body, intl)}
                     label={intl.formatMessage({
-                        id: "blogArticleBody",
-                        defaultMessage: "Blog Article Body",
-                        description: "blog article body"
+                        id: 'category',
+                        defaultMessage: "Category"
                     })}
-                    name={"body" as keyof FormData}
-                    value={data.body}
-                    onChange={onChange}
+                    choices={disabled ? [] : categories}
+                    name="category"
+                    value={data.category}
+                    onChange={onCategoryChange}
+                    fetchChoices={fetchCategories}
+                    data-tc="category"
+                    {...fetchMoreCategories}
                 />
                 <Hr />
-                <ControlledCheckbox
-                    name={"isPublished" as keyof FormData}
-                    label={intl.formatMessage({id: 'isPublished',
-                        defaultMessage: "Is Published",
-                        description: "blog form field"
-                    })}
-                    checked={data.isPublished}
-                    onChange={onChange}
+                <RichTextEditor
                     disabled={disabled}
+                    error={!!formErrors.contentJson}
+                    helperText={getBlogErrorMessage(formErrors.body, intl)}
+                    initial={maybe(() => data.body)}
+                    label={intl.formatMessage({
+                        id: "article_body",
+                        defaultMessage: "Body",
+                        description: "article body"
+                    })}
+                    name={"body" as keyof FormData}
+                    onChange={onChange}
                 />
                 <Hr/>
                 <>
