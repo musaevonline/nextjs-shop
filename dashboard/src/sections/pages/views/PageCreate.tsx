@@ -52,7 +52,7 @@ export const PageCreate: React.FC<PageCreateProps> = () => {
               pageCreate({
                 variables: {
                   input: {
-                    contentJson: JSON.stringify(formData.content),
+                    content: formData.content,
                     isPublished: formData.isPublished,
                     publicationDate: formData.isPublished
                       ? null

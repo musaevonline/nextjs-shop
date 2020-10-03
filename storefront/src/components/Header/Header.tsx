@@ -12,13 +12,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import SwipeableViews from 'react-swipeable-views';
 import {
-    aboutUrl,
-    deliveryPaymentUrl,
-    helpUrl,
-    contactsUrl,
     blogPath,
-    galleryUrl,
-    callBackModalUrl, baseUrl, userProfileFavoritesUrl
+    callBackModalUrl, baseUrl, userProfileFavoritesUrl, getPageUrl
 } from "@temp/app/routes";
 
 import Logo from "../../images/logo.svg";
@@ -47,6 +42,7 @@ import {useTheme} from "@material-ui/core/styles";
 import TabPanel from "@temp/components/TabPanel";
 import {UserContext} from "@temp/components/User/context";
 import {CheckoutContext} from "@temp/components/CheckoutProvider/context";
+import {usePages} from "@sdk/queries/page";
 
 const Header: React.FC = () =>{
     const [isActiveSearch, setIsActiveSearch] = useState(false);
@@ -62,6 +58,11 @@ const Header: React.FC = () =>{
     const {data:dataCategories} = useQuery<Categories, CategoriesVariables>(categoriesQuery, {
         variables: {level: 0}
     });
+    const {data:pagesData} = usePages({
+        variables: {
+            first: 5
+        }
+    })
 
     const overlay = useContext(OverlayContext);
     const toggleCartDrawer = (open: boolean) => (
@@ -167,16 +168,13 @@ const Header: React.FC = () =>{
                     <Container maxWidth="xl">
                         <div className="header__top_left">
                             <ul className="list_inline">
-                                <li><Link to={aboutUrl}>О нас</Link></li>
-                                <li><Link to={deliveryPaymentUrl}>Доставка и оплата</Link></li>
-                                <li><Link to={helpUrl}>Помощь</Link></li>
-                                <li><Link to={contactsUrl}>Контакты</Link></li>
+                                {pagesData?.pages.edges.map(edge => <li key={edge.node.id}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></li>)}
                             </ul>
                         </div>
                         <div className="header__top_right">
                             <ul className="list_inline">
                                 <li><Link to={blogPath}>Блог</Link></li>
-                                <li><Link to={galleryUrl}>Фотогалерея</Link></li>
+                                {/*<li><Link to={galleryUrl}>Фотогалерея</Link></li>*/}
                             </ul>
                         </div>
                     </Container>

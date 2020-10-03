@@ -391,6 +391,14 @@ export enum OrderStatusFilter {
   UNFULFILLED = "UNFULFILLED",
 }
 
+export enum PageSortField {
+  CREATION_DATE = "CREATION_DATE",
+  PUBLICATION_DATE = "PUBLICATION_DATE",
+  SLUG = "SLUG",
+  TITLE = "TITLE",
+  VISIBILITY = "VISIBILITY",
+}
+
 /**
  * An enumeration.
  */
@@ -519,6 +527,7 @@ export interface BlogArticleFilterInput {
   title?: string | null;
   category?: string | null;
   category_Slug?: string | null;
+  search?: string | null;
 }
 
 export interface BlogArticleOrder {
@@ -530,6 +539,7 @@ export interface BlogCategoryFilterInput {
   isPublished?: boolean | null;
   slug?: string | null;
   name?: string | null;
+  search?: string | null;
 }
 
 export interface BlogCategoryOrder {
@@ -574,6 +584,15 @@ export interface OrderFilterInput {
 export interface OrderSortingInput {
   direction: OrderDirection;
   field: OrderSortField;
+}
+
+export interface PageFilterInput {
+  search?: string | null;
+}
+
+export interface PageSortingInput {
+  direction: OrderDirection;
+  field: PageSortField;
 }
 
 export interface PriceRangeInput {

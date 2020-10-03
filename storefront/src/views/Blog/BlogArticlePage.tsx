@@ -16,6 +16,7 @@ import ThumbDownAltOutlinedIcon from "@material-ui/icons/ThumbDownAltOutlined";
 import Divider from "@material-ui/core/Divider";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import DOMPurify from 'dompurify';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -219,7 +220,7 @@ const BlogArticlePage:React.FC<IProps> = ({article, loading}) => {
             <Container maxWidth="lg">
               <Typography variant="h6" align="center" paragraph>Описание</Typography>
               <div className={classes.body}>
-                <span dangerouslySetInnerHTML={{__html: article.body}}/>
+                <span dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(article.body)}}/>
               </div>
             </Container>
             }

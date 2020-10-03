@@ -18,6 +18,7 @@ export interface PageList_pages_edges_node {
   title: string;
   slug: string;
   isPublished: boolean;
+  content: string;
 }
 
 export interface PageList_pages_edges {

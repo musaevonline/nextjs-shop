@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import CardTitle from "@temp/components/CardTitle";
 import FormSpacer from "@temp/components/FormSpacer";
-import RichTextEditor from "@temp/components/RichTextEditor";
 import { commonMessages } from "@temp/intl";
 import { PageErrorFragment } from "@temp/sections/pages/types/PageErrorFragment";
 import { getFormErrors } from "@temp/utils/errors";
@@ -12,9 +11,9 @@ import getPageErrorMessage from "@temp/utils/errors/page";
 import React from "react";
 import { useIntl } from "react-intl";
 
-import { maybe } from "@temp/misc";
 import { PageDetails_page } from "../../types/PageDetails";
 import { FormData } from "../PageDetailsPage";
+import {RichCKEditor} from "@temp/components/RichCkeditor";
 
 export interface PageInfoProps {
     data: FormData;
@@ -34,13 +33,11 @@ const useStyles = makeStyles(
 );
 
 const PageInfo: React.FC<PageInfoProps> = props => {
-    const { data, disabled, errors, page, onChange } = props;
-
+    const { data, disabled, errors, onChange } = props;
     const classes = useStyles(props);
     const intl = useIntl();
 
-    const formErrors = getFormErrors(["title", "contentJson"], errors);
-
+    const formErrors = getFormErrors(["title", "content"], errors);
     return (
         <Card className={classes.root}>
             <CardTitle
@@ -62,19 +59,10 @@ const PageInfo: React.FC<PageInfoProps> = props => {
                     onChange={onChange}
                 />
                 <FormSpacer />
-                <RichTextEditor
-                    disabled={disabled}
-                    error={!!formErrors.contentJson}
-                    helperText={getPageErrorMessage(formErrors.contentJson, intl)}
-                    initial={maybe(() => JSON.parse(page.contentJson))}
-                    label={intl.formatMessage({
-                        id: "content",
-                        defaultMessage: "Content",
-                        description: "page content"
-                    })}
-                    name={"content" as keyof FormData}
-                    onChange={onChange}
-                    isJson
+                <RichCKEditor disabled={disabled}
+                              data={data.content}
+                              name="content"
+                              onChange={onChange}
                 />
             </CardContent>
         </Card>

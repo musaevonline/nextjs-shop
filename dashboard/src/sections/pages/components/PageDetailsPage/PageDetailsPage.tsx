@@ -9,11 +9,6 @@ import VisibilityCard from "@temp/components/VisibilityCard";
 import useDateLocalize from "@temp/hooks/useDateLocalize";
 import { sectionNames } from "@temp/intl";
 import { PageErrorFragment } from "@temp/sections/pages/types/PageErrorFragment";
-import {
-  ContentState,
-  convertToRaw,
-  RawDraftContentState
-} from "draft-js";
 import React from "react";
 import { useIntl } from "react-intl";
 
@@ -24,7 +19,7 @@ import PageSlug from "../PageSlug";
 import {useFormik} from "formik";
 
 export interface FormData {
-  content: RawDraftContentState;
+  content: string;
   isPublished: boolean;
   publicationDate: string;
   slug: string;
@@ -54,10 +49,7 @@ const PageDetailsPage: React.FC<PageDetailsPageProps> = ({
   const localizeDate = useDateLocalize();
 
   const initialForm: FormData = React.useMemo(() => ({
-    content: maybe(
-        () => JSON.parse(page.contentJson),
-        convertToRaw(ContentState.createFromText(""))
-    ),
+    content: maybe(() => page.content, ""),
     isPublished: maybe(() => page.isPublished, false),
     publicationDate: maybe(() => page.publicationDate, ""),
     slug: maybe(() => page.slug, ""),

@@ -21,7 +21,7 @@ export interface PageDetailsProps {
 }
 
 const createPageInput = (data: FormData): PageInput => ({
-  contentJson: JSON.stringify(data.content),
+  content: data.content,
   isPublished: data.isPublished,
   publicationDate: data.isPublished
       ? null

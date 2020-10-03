@@ -13,6 +13,7 @@ import {UserProfileRouter} from "@temp/views/UserProfile";
 import {FavoritesPage} from "@temp/views/Favorites";
 import {SearchPage} from "@temp/views/Search";
 import {BlogArticleView, BlogCategoryView, BlogView} from "@temp/views/Blog";
+import {PageView} from "@temp/views/Page";
 
 export const Routes: React.FC = () => (
     <>
@@ -31,6 +32,8 @@ export const Routes: React.FC = () => (
             <Route path={paths.blogArticlePath} component={BlogArticleView}/>
             <Route path={paths.blogCategoryPath} component={BlogCategoryView}/>
             <Route path={paths.blogPath} component={BlogView}/>
+
+            <Route path={paths.pagePath} component={PageView}/>
 
             <Route component={NotFound}/>
         </Switch>

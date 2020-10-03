@@ -3,11 +3,6 @@ import {getDBIdFromGraphqlId} from "@temp/core/utils";
 
 export const baseUrl = "/";
 export const searchUrl = `${baseUrl}search/`;
-export const aboutUrl = `${baseUrl}about/`;
-export const deliveryPaymentUrl = `${baseUrl}delivery_and_payment/`;
-export const helpUrl = `${baseUrl}help/`;
-export const contactsUrl = `${baseUrl}contacts/`;
-export const galleryUrl = `${baseUrl}gallery/`;
 export const callBackModalUrl = `${baseUrl}callBackModal/`;
 export const accountLoginUrl = `${baseUrl}login/`;
 export const cartUrl = `${baseUrl}cart/`;
@@ -35,6 +30,10 @@ export const blogPath = `${baseUrl}blog/`;
 export const blogCategoryPath = `${blogPath}:categorySlug/`;
 export const blogArticlePath = `${blogCategoryPath}:articleSlug/`;
 
+// PAGE //
+
+export const pagePath = `${baseUrl}page/:slug/`;
+
 // GET URL //
 export const getCategoryUrl = (slug: string, id: string) =>{
     const pk = getDBIdFromGraphqlId(id, 'Category');
@@ -49,5 +48,7 @@ export const getOrderCreatedUrl = (token: string) => {
     return `${baseUrl}order/created/${token}/`;
 };
 
-export const getBlogCategoryUrl = (blogCategorySlug: string) => `${blogPath}${blogCategorySlug}/`
-export const getBlogArticleUrl = (blogCategorySlug: string, articleSlug: string) => `${blogPath}${blogCategorySlug}/${articleSlug}/`
+export const getBlogCategoryUrl = (blogCategorySlug: string) => `${blogPath}${blogCategorySlug}/`;
+export const getBlogArticleUrl = (blogCategorySlug: string, articleSlug: string) => `${blogPath}${blogCategorySlug}/${articleSlug}/`;
+
+export const getPageUrl = (slug) => `${baseUrl}page/${slug}/`;

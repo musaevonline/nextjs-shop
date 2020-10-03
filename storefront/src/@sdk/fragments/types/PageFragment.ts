@@ -13,8 +13,11 @@ export interface PageFragment {
    * The ID of the object.
    */
   id: string;
-  title: string;
-  slug: string;
-  isPublished: boolean;
+  contentJson: any;
   content: string;
+  isPublished: boolean;
+  created: any;
+  publicationDate: any | null;
+  slug: string;
+  title: string;
 }

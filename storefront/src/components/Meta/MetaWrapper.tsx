@@ -3,6 +3,7 @@ import * as React from "react";
 import { META_DEFAULTS } from "../../core/config";
 import { default as MetaConsumer } from "./consumer";
 import { MetaContextInterface, Provider as MetaProvider } from "./context";
+import useShop from "@temp/hooks/useShop";
 
 const removeEmpty = obj => {
   const newObj = {};
@@ -19,10 +20,22 @@ interface MetaWrapperProps {
   children: React.ReactNode;
 }
 
-const MetaWrapper: React.FC<MetaWrapperProps> = ({ children, meta }) => (
-  <MetaProvider value={{ ...META_DEFAULTS, ...removeEmpty(meta) }}>
-    <MetaConsumer>{children}</MetaConsumer>
-  </MetaProvider>
-);
+const MetaWrapper: React.FC<MetaWrapperProps> = ({ children, meta }) => {
+
+  const shop = useShop();
+  return (
+      <MetaProvider value={{
+        ...META_DEFAULTS,
+        ...{
+          title: shop?.headerText,
+          description: shop?.description,
+        },
+        ...removeEmpty(meta)
+      }}>
+        <MetaConsumer>{children}</MetaConsumer>
+      </MetaProvider>
+  );
+}
+
 
 export default MetaWrapper;

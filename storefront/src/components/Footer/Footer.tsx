@@ -7,7 +7,11 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined';
 import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined';
 import QueryBuilderOutlinedIcon from '@material-ui/icons/QueryBuilderOutlined';
-import {aboutUrl, baseUrl, contactsUrl, deliveryPaymentUrl, getCategoryUrl, helpUrl} from "@temp/app/routes";
+import {
+    baseUrl,
+    getCategoryUrl,
+    getPageUrl,
+} from "@temp/app/routes";
 import Logo from "images/logo.svg";
 import FacebookLogo from 'images/facebook.svg';
 import InstagramLogo from 'images/instagram.svg';
@@ -21,6 +25,7 @@ import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import {usePages} from "@sdk/queries/page";
 
 
 
@@ -29,6 +34,11 @@ const Footer:React.FC = () =>{
     const {data:dataCategories} = useQuery<Categories, CategoriesVariables>(categoriesQuery, {
         variables: {level: 0}
     });
+    const {data:pagesData} = usePages({
+        variables: {
+            first: 5
+        }
+    })
 
     return(
         <footer className="footer">
@@ -62,10 +72,7 @@ const Footer:React.FC = () =>{
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__links">
                         <h5 className="divider-bottom relative pb-10 mb-10">О магазине:</h5>
-                        <div><Link to={aboutUrl}>О нас</Link></div>
-                        <div><Link to={deliveryPaymentUrl}>Доставка и оплата</Link></div>
-                        <div><Link to={helpUrl}>Помощь</Link></div>
-                        <div><Link to={contactsUrl}>Контакты</Link></div>
+                        {pagesData?.pages.edges.map(edge => <div key={edge.node.id}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></div>)}
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__categories">
                         <div className="categories-group">

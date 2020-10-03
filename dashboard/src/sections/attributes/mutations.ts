@@ -34,13 +34,7 @@ import {
   AttributeValueUpdate,
   AttributeValueUpdateVariables
 } from "./types/AttributeValueUpdate";
-
-export const productErrorFragment = gql`
-  fragment ProductErrorFragment on ProductError {
-    code
-    field
-  }
-`;
+import {productErrorFragment} from "@temp/sections/products/mutations";
 
 const attributeBulkDelete = gql`
   ${productErrorFragment}

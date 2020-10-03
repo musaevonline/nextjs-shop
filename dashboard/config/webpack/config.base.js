@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const webpack = require("webpack");
+const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
 const resolve = path.resolve.bind(path, __dirname);
 
@@ -69,6 +70,7 @@ module.exports = ({ sourceDir, distDir }) => ({
       {
 
         test: /\.(gif|jpg|png|svg)$/,
+        exclude: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
         // include: [
         //   resolve("node_modules"),
         //   resolve("assets/images"),
@@ -82,7 +84,7 @@ module.exports = ({ sourceDir, distDir }) => ({
               outputPath: 'images/',
               publicPath: dev ? "/images/" : "/dashboard/images/",
             },
-          },
+          }
           // {
           //   loader: "image-webpack-loader",
           //   options: {
@@ -103,6 +105,34 @@ module.exports = ({ sourceDir, distDir }) => ({
           //   },
           // },
         ],
+      },
+      {
+        test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+
+        use: [ 'raw-loader' ]
+      },
+      {
+        test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              injectType: 'singletonStyleTag',
+              attributes: {
+                'data-cke': true
+              }
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: styles.getPostCssConfig( {
+              themeImporter: {
+                themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+              },
+              minify: true
+            } )
+          }
+        ]
       },
       // {
       //

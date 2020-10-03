@@ -30,6 +30,7 @@ export interface PageCreate_pageCreate_page {
   title: string;
   slug: string;
   isPublished: boolean;
+  content: string;
   contentJson: any;
   publicationDate: any | null;
 }

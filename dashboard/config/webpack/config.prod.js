@@ -10,6 +10,7 @@ module.exports = ({ sourceDir, distDir }) => ({
     rules: [
       {
         test: /\.(scss|css)$/,
+        exclude:  /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
           {

@@ -16,6 +16,7 @@ export interface PageDetails_page {
   title: string;
   slug: string;
   isPublished: boolean;
+  content: string;
   contentJson: any;
   publicationDate: any | null;
 }

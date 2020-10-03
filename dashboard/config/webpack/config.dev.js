@@ -4,6 +4,7 @@ const autoprefixer = require('autoprefixer');
 const tailwind = require('tailwindcss');
 const webpack = require('webpack');
 
+
 module.exports = ({ sourceDir, distDir }) => {
 
   return {
@@ -20,6 +21,7 @@ module.exports = ({ sourceDir, distDir }) => {
       rules: [
         {
           test: /\.(scss|css)$/,
+          exclude:  /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
           use: [
             "style-loader",
             {
