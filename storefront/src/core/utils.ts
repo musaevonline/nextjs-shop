@@ -6,22 +6,33 @@ import {PRICE_CURRENCY} from "@temp/core/constants";
 import {MoneyRange} from "@sdk/fragments/types/MoneyRange";
 import {OrderDirection, ProductOrderField} from "@temp/types/globalTypes";
 import {useLocation} from "react-router";
+import currencyFormatter from 'currency-formatter';
+const BYN_CURRENCY = {
+  "code": "UAH",
+  "symbol": " р.",
+  "thousandsSeparator": " ",
+  "decimalSeparator": ",",
+  "symbolOnLeft": false,
+  "spaceBetweenAmountAndSymbol": false,
+  "decimalDigits": 2
+}
 
 export const slugify = (text: string | number): string =>
-  text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/&/g, "-and-") // Replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
-    .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+    text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-") // Replace spaces with -
+        .replace(/&/g, "-and-") // Replace & with 'and'
+        .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+        .replace(/\-\-+/g, "-"); // Replace multiple - with single -
 
 export const getDBIdFromGraphqlId = (
-  graphqlId: string,
-  schema?: string
+    graphqlId: string,
+    schema?: string
 ): number => {
   // This is temporary solution, we will use slugs in the future
+  if (!graphqlId) return null;
   const rawId = Base64.decode(graphqlId);
   const regexp = /(\w+):(\d+)/;
   const arr = regexp.exec(rawId);
@@ -32,38 +43,40 @@ export const getDBIdFromGraphqlId = (
 };
 
 export const getGraphqlIdFromDBId = (id: string, schema: string): string =>
-  // This is temporary solution, we will use slugs in the future
-  Base64.encode(`${schema}:${id}`);
+    // This is temporary solution, we will use slugs in the future
+    Base64.encode(`${schema}:${id}`);
 
 export const priceToString = (
-  price: { amount: number; currency: string }
+    price: { amount: number; currency: string }
 ): string => {
   const { amount, currency } = price;
-  return `${amount.toFixed(2)} ${getPriceCurrency(currency)} `;
+  return currencyFormatter.format(amount,
+      currency === 'BYN' ? BYN_CURRENCY: {code: currency}
+  );
 };
 
 export const generateProductUrl = (id: string, name: string) =>
-  `/product/${slugify(name)}/${getDBIdFromGraphqlId(id, "Product")}/`;
+    `/product/${slugify(name)}/${getDBIdFromGraphqlId(id, "Product")}/`;
 
 export const generateCategoryUrl = (id: string, name: string) =>
-  `/category/${slugify(name)}/${getDBIdFromGraphqlId(id, "Category")}/`;
+    `/category/${slugify(name)}/${getDBIdFromGraphqlId(id, "Category")}/`;
 
 export const generateCollectionUrl = (id: string, name: string) =>
-  `/collection/${slugify(name)}/${getDBIdFromGraphqlId(id, "Collection")}/`;
+    `/collection/${slugify(name)}/${getDBIdFromGraphqlId(id, "Collection")}/`;
 
 export const generatePageUrl = (slug: string) => `/page/${slug}/`;
 
 
 export const getValueOrEmpty = <T>(value: T): T | string =>
-  value === undefined || value === null ? "" : value;
+    value === undefined || value === null ? "" : value;
 
 export const convertSortByFromString = (sortBy: string) => {
   if (!sortBy) {
     return null;
   }
   const direction = sortBy.startsWith("-")
-    ? OrderDirection.DESC
-    : OrderDirection.ASC;
+      ? OrderDirection.DESC
+      : OrderDirection.ASC;
 
   let field;
   switch (sortBy.replace(/^-/, "")) {
@@ -95,7 +108,7 @@ export const maybe = <T>(exp: () => T, d?: T) => {
 };
 
 export const parseQueryString = (
-  location: Location
+    location: Location
 ): { [key: string]: string } => {
   const query = {
     ...parseQs((location as any).search.substr(1)),
@@ -137,8 +150,8 @@ export const dateToShortString = (stringDate: string): string =>{
 };
 
 export function findValueInEnum<TEnum extends object>(
-  needle: string,
-  haystack: TEnum
+    needle: string,
+    haystack: TEnum
 ): TEnum[keyof TEnum] {
   const match = Object.entries(haystack).find(([_, value]) => value === needle);
 
@@ -150,5 +163,5 @@ export function findValueInEnum<TEnum extends object>(
 }
 
 export function useUrlQuery() {
-    return new URLSearchParams(useLocation().search);
+  return new URLSearchParams(useLocation().search);
 }

@@ -10,6 +10,8 @@ export const productDetailsUrl = `${baseUrl}product/:slug/:pk/`;
 export const checkoutUrl = `${baseUrl}checkout/`;
 export const orderCreated = `${baseUrl}order/created/:token/`;
 export const categoryUrl = `${baseUrl}category/:slug/:pk/`;
+export const orderPath = `${baseUrl}orders/:token/`;
+export const ordersUrl = `${baseUrl}orders/`;
 
 // AUTH //
 
@@ -52,3 +54,7 @@ export const getBlogCategoryUrl = (blogCategorySlug: string) => `${blogPath}${bl
 export const getBlogArticleUrl = (blogCategorySlug: string, articleSlug: string) => `${blogPath}${blogCategorySlug}/${articleSlug}/`;
 
 export const getPageUrl = (slug) => `${baseUrl}page/${slug}/`;
+
+export const getOrderUrl = (token: string): string => {
+    return `${baseUrl}orders/${token}/`;
+}

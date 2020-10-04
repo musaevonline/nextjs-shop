@@ -16,7 +16,7 @@ from ..shipping.types import ShippingMethod
 from ...core.permissions import AccountPermissions, OrderPermissions
 from ...order import OrderStatus, models
 from ...order.utils import get_valid_shipping_methods_for_order
-from ...product.templatetags.product_images import get_product_image_thumbnail
+from ...product.templatetags.product_images import get_product_image_thumbnail, get_thumbnail
 
 
 class OrderEventOrderLineObject(graphene.ObjectType):
@@ -173,14 +173,16 @@ class OrderLine(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_thumbnail(root: models.OrderLine, info, *, size=255):
-        if not root.variant:
-            return None
+        if not root.variant_id:
+            return Image(alt=root.variant_name,
+                         url=info.context.build_absolute_uri(get_thumbnail(None, size, method="thumbnail")))
         image = root.variant.get_first_image()
         if image:
             url = get_product_image_thumbnail(image, size, method="thumbnail")
             alt = image.alt
             return Image(alt=alt, url=info.context.build_absolute_uri(url))
-        return None
+        return Image(alt=root.variant_name,
+                     url=info.context.build_absolute_uri(get_thumbnail(None, size, method="thumbnail")))
 
     @staticmethod
     def resolve_unit_price(root: models.OrderLine, _info):

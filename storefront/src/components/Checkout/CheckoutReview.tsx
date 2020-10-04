@@ -7,7 +7,7 @@ import {TCheckoutStep} from "@temp/views/Checkout/Page";
 import {useHistory} from "react-router";
 import Button from "@material-ui/core/Button";
 import {checkoutCompleteMutation} from "@sdk/mutations/checkout";
-import {getOrderCreatedUrl} from "@temp/app/routes";
+import {getOrderUrl, ordersUrl} from "@temp/app/routes";
 import {Divider, Typography} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
@@ -36,8 +36,7 @@ const CheckoutReview:React.FC<{
 
     const submitOrder = async (e) => {
         e.preventDefault();
-        const REDIRECT_PATH = '/order/details/';
-        const REDIRECT_URL = process.env.STOREFRONT_URL || 'http://localhost:3000' + REDIRECT_PATH;
+        const REDIRECT_URL = `${process.env.STOREFRONT_URL || 'http://localhost:3000'}${ordersUrl}`;
         if (checkout && checkout.paymentMethod && checkout.shippingMethod) {
             try {
                 const response = await checkoutComplete({
@@ -53,7 +52,7 @@ const CheckoutReview:React.FC<{
                     })
                 } else {
                     clearCheckout();
-                    history.push(getOrderCreatedUrl(response.data.checkoutComplete.order.token));
+                    history.push(getOrderUrl(response.data.checkoutComplete.order.token));
                 }
             } catch (e) {
                 console.error(e);

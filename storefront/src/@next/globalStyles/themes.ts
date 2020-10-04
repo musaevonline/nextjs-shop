@@ -143,6 +143,11 @@ export const defaultTheme = createMuiTheme({
 			root:{
 				fontSize: '1.4rem'
 			}
+		},
+		MuiTableCell:{
+			root: {
+				fontSize: "1.4rem"
+			}
 		}
 	}
 });

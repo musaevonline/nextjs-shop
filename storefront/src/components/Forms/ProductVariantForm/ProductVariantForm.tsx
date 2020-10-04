@@ -9,7 +9,7 @@ import {ProductVariant} from "@sdk/fragments/types/ProductVariant";
 import {MAX_CHECKOUT_VARIANT_LINES} from "@temp/core/constants";
 import _ from "lodash";
 import Button from "@material-ui/core/Button";
-import {ProductWithVariants} from "@sdk/fragments/types/ProductWithVariants";
+import {ProductWithVariants, ProductWithVariants_variants_attributes} from "@sdk/fragments/types/ProductWithVariants";
 import {getProductVariantsAttributes, selectVariantByAttributes} from "@temp/views/ProductDetails/utils";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
@@ -27,11 +27,24 @@ interface ProductVariantFormProps {
     checkoutVariantQuantity: (selectedVariantId:string) => number
 }
 
+const getInitialAttributes = (attrs: ProductWithVariants_variants_attributes[]) => {
+    const data = {};
+    if (attrs){
+        attrs.forEach(attr => {
+            if (!!attr.values.length) {
+                data[attr.attribute.id] = {value: attr.values[0].id, label: attr.values[0].name}
+            }
+        })
+    }
+    return data
+}
+
 const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVariantToCheckoutSubmit,
                                                                   setSelectedVariant, setSelectedQuantity,
                                                                   selectedVariant, checkoutVariantQuantity
                                                               }) =>{
-    const [selectedAttrs, setSelectedAttrs] = React.useState({})
+    const isManyVariants = product.variants?.length > 1;
+    const [selectedAttrs, setSelectedAttrs] = React.useState(isManyVariants ? {} : getInitialAttributes(product.variants[0]?.attributes))
     let selectedVariantStockQuantity = 0;
     let availableQuantity = MAX_CHECKOUT_VARIANT_LINES;
     if (selectedVariant){
@@ -40,7 +53,7 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
         availableQuantity = Math.min(selectedVariantStockQuantity - checkoutVariantQuantity(selectedVariant.id), MAX_CHECKOUT_VARIANT_LINES);
     }
 
-    const isManyVariants = product.variants?.length > 1;
+
     const schema = Yup.object().shape({
         variant: Yup.string()
             .required('Вариант не выбран'),
@@ -104,19 +117,20 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
             <form onSubmit={form.handleSubmit}>
                 <Grid container spacing={2}>
                     {attributes.map(attr => {
-                        const options = [{label: "Выберите...", value: ""}, ...attr.values.map(val => ({label: val.name, value: val.id}))];
+                        const options = attr.values.map(val => ({label: val.name, value: val.id}));
+                        if (!options.length) return null;
                         return(
                             <Grid key={attr.id} item xs={12}>
                                 <Autocomplete
                                     id={attr.id}
                                     options={options}
                                     onChange={onChangeAttribute(attr.id)}
-                                    value={selectedAttrs[attr.id] || {label: "Выберите...", value: ""}}
+                                    value={selectedAttrs[attr.id] || null}
                                     disableClearable
                                     autoHighlight
-                                    getOptionLabel={option => option.label}
-                                    renderOption={option => option.label}
-                                    getOptionSelected={(option, value) => option.value === value.value}
+                                    getOptionLabel={option => option?.label || null}
+                                    renderOption={option => option?.label || null}
+                                    getOptionSelected={(option, value) => option?.value === value.value}
                                     renderInput={params => (
                                         <TextField
                                             {...params}
@@ -133,14 +147,6 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
                             </Grid>
                         )
                     })}
-                    {/*<Grid item xs={12}>*/}
-                    {/*            <FormControl margin="normal" fullWidth>*/}
-                    {/*                <AutocompleteFormSelect form={form}*/}
-                    {/*                                        label="Вариант"*/}
-                    {/*                                        name="variant"*/}
-                    {/*                                        options={variantsOptions}/>*/}
-                    {/*            </FormControl>*/}
-                    {/*        </Grid>*/}
                     <Grid item xs={12} sm={4}>
                         <div className="product-form__quantity">
                             <FormControl margin="normal" fullWidth>

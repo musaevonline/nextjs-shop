@@ -15,6 +15,8 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import DOMPurify from 'dompurify';
 import {useQueryParams, NumberParam} from "use-query-params";
+import {getProductVariantsAttributes} from "@temp/views/ProductDetails/utils";
+import Typography from "@material-ui/core/Typography";
 
 
 function a11yProps(index: any) {
@@ -39,6 +41,7 @@ const ProductTabs:React.FC<{
         setQuery({...query, tab: newValue});
     };
     const tab = query.tab || 0;
+    const attrs = getProductVariantsAttributes(product);
     return(
         <div className="product-tabs">
             <Card>
@@ -69,8 +72,31 @@ const ProductTabs:React.FC<{
                                         return(
                                             <Grid key={attr.attribute.id} item xs={12} sm={6}>
                                                 <div className="flex justify-between">
-                                                    <div className="font-medium">{attr.attribute.name}:</div>
-                                                    <div>{attr.values[0]?.name}</div>
+                                                    <Typography variant="h6" className="font-medium">{attr.attribute.name}:</Typography>
+                                                    <div>
+                                                        {attr.values.map(val =>
+                                                            <Typography key={val.id} variant="body1" className="font-medium">
+                                                                {val.name}
+                                                            </Typography>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </Grid>
+
+                                        )
+                                    })}
+                                    {attrs.map(attr => {
+                                        return(
+                                            <Grid key={attr.id} item xs={12} sm={6}>
+                                                <div className="flex justify-between">
+                                                    <Typography variant="h6"><strong>{attr.name}:</strong></Typography>
+                                                    <div>
+                                                        {attr.values.map(val =>
+                                                            <Typography key={val.id} variant="body1" className="font-medium">
+                                                                {val.name}
+                                                            </Typography>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </Grid>
 

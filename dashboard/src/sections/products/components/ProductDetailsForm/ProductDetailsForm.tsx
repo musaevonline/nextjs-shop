@@ -4,11 +4,11 @@ import TextField from "@material-ui/core/TextField";
 import { ProductErrorFragment } from "@temp/sections/products/types/ProductErrorFragment";
 import CardTitle from "@temp/components/CardTitle";
 import FormSpacer from "@temp/components/FormSpacer";
-import RichTextEditor from "@temp/components/RichTextEditor";
 import { commonMessages } from "@temp/intl";
 import { getFormErrors, getProductErrorMessage } from "@temp/utils/errors";
 import React from "react";
 import { useIntl } from "react-intl";
+import {RichCKEditor} from "@temp/components/RichCkeditor";
 
 interface ProductDetailsFormProps {
     data: {
@@ -55,15 +55,7 @@ export const ProductDetailsForm: React.FC<ProductDetailsFormProps> = ({
                     onChange={onChange}
                 />
                 <FormSpacer />
-                <RichTextEditor
-                    disabled={disabled}
-                    error={!!formErrors.description}
-                    helperText={getProductErrorMessage(formErrors.description, intl)}
-                    initial={initialDescription}
-                    label={intl.formatMessage(commonMessages.description)}
-                    name="description"
-                    onChange={onChange}
-                />
+                <RichCKEditor disabled={disabled} data={initialDescription} name={"description"} onChange={onChange}/>
             </CardContent>
         </Card>
     );

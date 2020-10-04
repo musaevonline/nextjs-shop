@@ -14,6 +14,7 @@ import {FavoritesPage} from "@temp/views/Favorites";
 import {SearchPage} from "@temp/views/Search";
 import {BlogArticleView, BlogCategoryView, BlogView} from "@temp/views/Blog";
 import {PageView} from "@temp/views/Page";
+import {OrderView} from "@temp/views/Order";
 
 export const Routes: React.FC = () => (
     <>
@@ -24,6 +25,8 @@ export const Routes: React.FC = () => (
             <Route exact path={paths.userProfileFavoritesUrl} component={FavoritesPage}/>
             <Route exact path={paths.searchUrl} component={SearchPage}/>
             <Route path={paths.checkoutUrl} component={CheckoutPage}/>
+
+            <Route path={paths.orderPath} component={OrderView}/>
 
             <Route exact path={paths.signUpConfirmUrl} component={SignUpConfirmView}/>
             <Route exact path={paths.resetPasswordUrl} component={ResetPasswordPage}/>
