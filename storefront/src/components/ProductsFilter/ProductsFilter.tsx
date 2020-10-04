@@ -28,7 +28,7 @@ const ProductsFilter:React.FC<{
     setFilters(values: TUrlQuery):void,
 }> = ({attributes, filters,  setFilters}) =>{
     const classes = useStyles();
-    const priceRange = filters.priceRange || [0, 100];
+    const priceRange = filters.priceRange || [0, 1000];
     const [collapse, setCollapse] = useState([]);
     const [localPriceRange, setLocalPriceRange] = useState<number | number[]>(priceRange);
 

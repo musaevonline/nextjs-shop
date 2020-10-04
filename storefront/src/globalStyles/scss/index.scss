@@ -1,4 +1,4 @@
-@import url("~reset-css");
+//@import url("~reset-css");
 
 //@import "~tailwindcss/base";
 @import "~tailwindcss/components";
@@ -12,6 +12,7 @@ html {
   font-size: 62.5%; /* 62.5% of 16px = 10px */
 }
 body, footer {
+  margin: 0;
   font-family: $base-font-family;
   font-size: $base-font-size;
   line-height: $base-line-height;
@@ -148,6 +149,9 @@ body, footer {
         width: 1.6rem;
       }
     }
+  }
+  strong{
+    font-weight: 600;
   }
 }
 //$maxWidth: 1280;

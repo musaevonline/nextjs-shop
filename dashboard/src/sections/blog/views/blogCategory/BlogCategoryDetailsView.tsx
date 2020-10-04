@@ -9,7 +9,7 @@ import {blogCategoryListUrl, BlogCategoryUrlQueryParams} from "../../urls/blog_c
 import {BlogCategoryDetailsFormData} from "@temp/sections/blog/components/blogCategory/BlogCategoryDetailsForm";
 import {useBlogCategory} from "@temp/sections/blog/queries";
 import BlogCategoryUpdatePage from "@temp/sections/blog/components/blogCategory/BlogCategoryUpdatePage";
-import {slugify} from "@temp/core/utils";
+import {slugifyStr} from "@temp/core/utils";
 
 export interface BlogCategoryDetailsProps {
     id: string;
@@ -58,7 +58,7 @@ const BlogCategoryDetailsView: React.FC<BlogCategoryDetailsProps> = ({
             name: formData.name,
             description: formData.description,
             isPublished: formData.isPublished,
-            slug: slugify(formData.name)
+            slug: slugifyStr(formData.name)
         };
         if (!!formData.image) {
             input['image'] = formData.image;

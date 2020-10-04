@@ -1,12 +1,12 @@
 import "./scss/index.scss";
 
 import React, {useState} from "react";
+import _ from 'lodash';
 import {Container} from "@material-ui/core";
 import {Link} from "react-router-dom";
-import { Link as ScrollLink, Element } from 'react-scroll'
+import { Element } from 'react-scroll'
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {baseUrl, getCategoryUrl} from "@temp/app/routes";
-import Rating from "@material-ui/lab/Rating";
 import Grid from "@material-ui/core/Grid";
 import {ProductCarousel} from "@temp/components/ProductCarousel";
 import {ProductDetails} from "@temp/components/ProductDetails";
@@ -19,6 +19,7 @@ import {ProductDetails_product} from "@sdk/queries/types/ProductDetails";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {ProductReviews_productReviews} from "@sdk/queries/types/ProductReviews";
+import Typography from "@material-ui/core/Typography";
 
 const Page:React.FC<{
     product: ProductDetails_product,
@@ -34,7 +35,7 @@ const Page:React.FC<{
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
     const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
 
-    const relatedProducts = product.category?.products;
+    const relatedProducts = product.category?.products.edges.filter(edge => edge.node.id !== product?.id);
 
     const responsive = {
         large:{
@@ -73,29 +74,9 @@ const Page:React.FC<{
                         <span>{product.name}</span>
                     </Breadcrumbs>
                 </div>
-                <Card className="mb-20">
-                    <CardContent>
-                        <div className="product-page__header">
-                            <h2>{product.name}</h2>
-                            <div className="product-page__rating">
-                                {product.rating.count > 0 &&
-                                <Rating
-                                    size="medium"
-                                    name="simple-controlled"
-                                    defaultValue={product.rating.ratingAvg}
-                                />
-                                }
-                                <ScrollLink href="#reviews" activeClass="active" to="reviews" smooth="easeInOutCubic" spy={true} duration={1000}>
-                                    <span className="rating__title">Отзывы ({product.rating.count})</span>
-                                </ScrollLink>
-
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={7}>
-                        <Card>
+                        <Card className="sticky top-0">
                             <CardContent>
                                 <div className="product-carousel">
                                     {product.images && <ProductCarousel images={product.images}/>}
@@ -126,10 +107,10 @@ const Page:React.FC<{
                     />
                 </Element>
 
-                {relatedProducts?.edges.length > 0 &&
+                {relatedProducts?.length > 0 &&
                 <Card className="mt-20">
                     <CardContent>
-                        <h3 className="mt-20 mb-20 text-center">Рекомендуемые товары</h3>
+                        <Typography variant="h1" className="text-center" gutterBottom>Рекомендуемые товары</Typography>
                         <div className="separator max-w-300"/>
                         <Carousel swipeable
                                   draggable={false}
@@ -139,7 +120,7 @@ const Page:React.FC<{
                                   transitionDuration={500}
                                   containerClass="carousel-container"
                                   removeArrowOnDeviceType={["tablet", "mobile"]}>
-                            {relatedProducts.edges.map((item, i) => <ProductCard key={i} item={item.node}/>)}
+                            {relatedProducts.map((item, i) => <ProductCard key={i} item={item.node}/>)}
                         </Carousel>
                     </CardContent>
                 </Card>

@@ -19,6 +19,7 @@ import {FormattedMessage, IntlShape, useIntl} from "react-intl";
 import { AttributeDetails_attribute_values } from "../../types/AttributeDetails";
 import {useFormik} from "formik";
 import * as yup from 'yup';
+import {slugifyStr} from "@temp/core/utils";
 
 const createSchema = (intl: IntlShape) => yup.object().shape({
   name: yup.string().required(intl.formatMessage(formMessages.requiredField))
@@ -26,6 +27,7 @@ const createSchema = (intl: IntlShape) => yup.object().shape({
 
 export interface AttributeValueEditDialogFormData {
   name: string;
+  slug: string;
 }
 export interface AttributeValueEditDialogProps {
   attributeValue: AttributeDetails_attribute_values | null;
@@ -48,7 +50,8 @@ const AttributeValueEditDialog: React.FC<AttributeValueEditDialogProps> = ({
 }) => {
   const intl = useIntl();
   const initialForm: AttributeValueEditDialogFormData = {
-    name: maybe(() => attributeValue.name, "")
+    name: maybe(() => attributeValue.name, ""),
+    slug: maybe(() => attributeValue.slug, "")
   };
   const errors = useModalDialogErrors(apiErrors, open);
   const formErrors = getFormErrors(["name"], errors);
@@ -58,7 +61,7 @@ const AttributeValueEditDialog: React.FC<AttributeValueEditDialogProps> = ({
     enableReinitialize: true,
     validationSchema: createSchema(intl),
     onSubmit: values => {
-      onSubmit(values);
+      onSubmit({...values, slug: slugifyStr(values.name)});
     }
   })
 

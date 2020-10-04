@@ -6,14 +6,6 @@
     align-items: flex-end;
     flex-wrap: wrap;
   }
-  .MuiRating-root{
-    .MuiRating-iconEmpty svg{
-      color: rgba(0, 0, 0, 0.26);
-    }
-    svg{
-      color: $primary-color;
-    }
-  }
   h2{
     padding-right: 20px;
   }

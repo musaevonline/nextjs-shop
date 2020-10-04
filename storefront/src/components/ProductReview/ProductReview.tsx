@@ -9,6 +9,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import {Divider} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import AvatarPlaceHolder from "images/user.svg";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
     divider:{
@@ -32,7 +33,7 @@ const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
     const classes = useStyles();
     const advantages = JSON.parse(review.advantages);
     const flaws = JSON.parse(review.flaws);
-    console.log(advantages);
+
     return(
         <>
             <div className="review p-2">
@@ -53,7 +54,7 @@ const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
                     />
                 </div>
                 <div className="review__title">
-                    <h5>{review.title}</h5>
+                    <Typography variant="h5" gutterBottom>{review.title}</Typography>
                 </div>
 
                 <div className="review__content pt-5">{review.content}</div>

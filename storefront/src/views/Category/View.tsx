@@ -58,7 +58,8 @@ const View:React.FC = () => {
                 direction: query.sortBy?.direction as OrderDirection,
             }: null
         },
-        fetchPolicy: "cache-and-network"
+        fetchPolicy: "cache-and-network",
+        nextFetchPolicy: "cache-first"
     });
     const {data: categoryAttributesData} = useQuery<Attributes, AttributesVariables>(attributesQuery, {
         variables:{

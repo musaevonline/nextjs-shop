@@ -29,8 +29,13 @@
     &__title{
       margin-bottom: 10px;
     }
+    ul{
+      padding-left: 0;
+    }
     &__list li{
       margin-bottom: 10px;
+      list-style: none;
+      line-height: 1.8rem;
       a{
         color: #9595a0;
         font-size: $small-font-size;

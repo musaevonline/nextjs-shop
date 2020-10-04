@@ -4,13 +4,14 @@ import React, {useEffect} from "react";
 import * as Yup from "yup";
 import {useFormik} from "formik";
 import {FormControl, TextField} from "@material-ui/core";
-import AutocompleteFormSelect from "@temp/components/Forms/AutoCompleteFormSelect";
 import Grid from "@material-ui/core/Grid";
 import {ProductVariant} from "@sdk/fragments/types/ProductVariant";
 import {MAX_CHECKOUT_VARIANT_LINES} from "@temp/core/constants";
 import _ from "lodash";
 import Button from "@material-ui/core/Button";
 import {ProductWithVariants} from "@sdk/fragments/types/ProductWithVariants";
+import {getProductVariantsAttributes, selectVariantByAttributes} from "@temp/views/ProductDetails/utils";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export type TFormProductVariantData = {
     variant: string,
@@ -30,6 +31,7 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
                                                                   setSelectedVariant, setSelectedQuantity,
                                                                   selectedVariant, checkoutVariantQuantity
                                                               }) =>{
+    const [selectedAttrs, setSelectedAttrs] = React.useState({})
     let selectedVariantStockQuantity = 0;
     let availableQuantity = MAX_CHECKOUT_VARIANT_LINES;
     if (selectedVariant){
@@ -49,8 +51,9 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
             .max(availableQuantity,
                 `Доступно ${availableQuantity}`)
     });
-
+    const attributes = getProductVariantsAttributes(product);
     const form = useFormik({
+        enableReinitialize: true,
         initialValues: {
             variant: isManyVariants ? '' : product.variants[0]?.id || '',
             quantity: 1
@@ -59,6 +62,7 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
         onSubmit: (values:TFormProductVariantData) => {
             addVariantToCheckoutSubmit(values);
             form.resetForm();
+            setSelectedAttrs({});
         }
     });
 
@@ -86,10 +90,57 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
         }, ...variantsOptions];
     }
 
+    const onChangeAttribute = (attrId) => (e, value) => {
+        const newAttrs = {
+            ...selectedAttrs,
+            [attrId]: value
+        }
+        setSelectedAttrs(newAttrs);
+        const newSelectedVariant = selectVariantByAttributes(product.variants, newAttrs);
+        form.setFieldValue('variant', newSelectedVariant?.id);
+    }
     return(
         <div className="product-form">
             <form onSubmit={form.handleSubmit}>
                 <Grid container spacing={2}>
+                    {attributes.map(attr => {
+                        const options = [{label: "Выберите...", value: ""}, ...attr.values.map(val => ({label: val.name, value: val.id}))];
+                        return(
+                            <Grid key={attr.id} item xs={12}>
+                                <Autocomplete
+                                    id={attr.id}
+                                    options={options}
+                                    onChange={onChangeAttribute(attr.id)}
+                                    value={selectedAttrs[attr.id] || {label: "Выберите...", value: ""}}
+                                    disableClearable
+                                    autoHighlight
+                                    getOptionLabel={option => option.label}
+                                    renderOption={option => option.label}
+                                    getOptionSelected={(option, value) => option.value === value.value}
+                                    renderInput={params => (
+                                        <TextField
+                                            {...params}
+                                            label={attr.name}
+                                            variant="outlined"
+                                            fullWidth
+                                            inputProps={{
+                                                ...params.inputProps
+                                            }}
+                                        />
+                                    )}
+                                    fullWidth
+                                />
+                            </Grid>
+                        )
+                    })}
+                    {/*<Grid item xs={12}>*/}
+                    {/*            <FormControl margin="normal" fullWidth>*/}
+                    {/*                <AutocompleteFormSelect form={form}*/}
+                    {/*                                        label="Вариант"*/}
+                    {/*                                        name="variant"*/}
+                    {/*                                        options={variantsOptions}/>*/}
+                    {/*            </FormControl>*/}
+                    {/*        </Grid>*/}
                     <Grid item xs={12} sm={4}>
                         <div className="product-form__quantity">
                             <FormControl margin="normal" fullWidth>
@@ -114,27 +165,20 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
                             </FormControl>
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={8}>
-                        <div className="product-form__variant">
-                            <FormControl margin="normal" fullWidth>
-                                <AutocompleteFormSelect form={form}
-                                                        label="Вариант"
-                                                        name="variant"
-                                                        options={variantsOptions}/>
-                            </FormControl>
+                    <Grid item xs={12} sm={8} className="flex items-center">
+                        <div className="pt-5 w-full">
+                            <Button  type="submit"
+                                     variant="contained"
+                                     color="primary"
+                                     size="large"
+                                     fullWidth
+                                     disabled={!form.isValid || !selectedVariantStockQuantity}>
+                                Добавить в корзину
+                            </Button>
                         </div>
                     </Grid>
                 </Grid>
-                <div className="pt-10">
-                    <Button  type="submit"
-                             variant="contained"
-                             color="primary"
-                             size="large"
-                             fullWidth
-                             disabled={!form.isValid || !selectedVariantStockQuantity}>
-                        Добавить в корзину
-                    </Button>
-                </div>
+
             </form>
         </div>
     );

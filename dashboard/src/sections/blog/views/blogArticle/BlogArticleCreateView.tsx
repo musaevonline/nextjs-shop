@@ -8,7 +8,7 @@ import BlogArticleCreatePage from "../../components/blogArticle/BlogArticleCreat
 import {useBlogArticleCreate} from "../../mutations";
 import {blogArticleListUrl, blogArticleUrl} from "../../urls/blog_article_urls";
 import {BlogArticleDetailsFormData} from "@temp/sections/blog/components/blogArticle/BlogArticleDetailsForm";
-import {slugify} from "@temp/core/utils";
+import {slugifyStr} from "@temp/core/utils";
 import {getChoices} from "@temp/sections/products/utils/data";
 import {maybe} from "@temp/misc";
 import {DEFAULT_INITIAL_SEARCH_DATA} from "@temp/config";
@@ -41,7 +41,7 @@ const BlogArticleCreateView: React.FC<{}> = () => {
             title: formData.title,
             body: formData.body,
             isPublished: formData.isPublished,
-            slug: slugify(formData.title),
+            slug: slugifyStr(formData.title),
             datePublished: formData.publicationDate,
             category: formData.category
         };

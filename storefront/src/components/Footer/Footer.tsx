@@ -26,6 +26,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import {usePages} from "@sdk/queries/page";
+import Typography from "@material-ui/core/Typography";
 
 
 
@@ -46,7 +47,7 @@ const Footer:React.FC = () =>{
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6} md={3}>
                         <div className="footer__contacts flex flex-col">
-                            <h5 className="divider-bottom relative pb-10 mb-10">Контакты:</h5>
+                            <Typography variant="h5" gutterBottom>Контакты:</Typography>
                             <div className="flex align-center py-5">
                                 <SvgIcon className="mr-10" fontSize="small">
                                     <PhoneOutlinedIcon/>
@@ -71,12 +72,12 @@ const Footer:React.FC = () =>{
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__links">
-                        <h5 className="divider-bottom relative pb-10 mb-10">О магазине:</h5>
+                        <Typography variant="h5" gutterBottom>О магазине:</Typography>
                         {pagesData?.pages.edges.map(edge => <div key={edge.node.id}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></div>)}
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__categories">
                         <div className="categories-group">
-                            <h5 className="divider-bottom relative pb-10 mb-10">Каталог товаров:</h5>
+                            <Typography variant="h5" gutterBottom>Каталог товаров:</Typography>
                             <Collapse in={isOpenAllCategories} collapsedHeight={200}>
                                 <ul className="categories-group__list">
                                     {dataCategories?.categories.edges.map(edge => (
@@ -105,7 +106,7 @@ const Footer:React.FC = () =>{
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__links">
                         <div className="social">
-                            <h5 className="social__title divider-bottom relative pb-10 mb-10">Мы в соцсетях:</h5>
+                            <Typography variant="h5" gutterBottom>Мы в соцсетях:</Typography>
                             <div className="flex align-center">
                                 <a href="https://www.facebook.com/stroy.lux.by/?modal=admin_todo_tour" target="_blank" rel="noopener">
                                     <ReactSVG src={FacebookLogo} title="Facebook"/>

@@ -22,6 +22,7 @@ from ....product.error_codes import ProductErrorCode
 
 class AttributeValueCreateInput(graphene.InputObjectType):
     name = graphene.String(required=True, description=AttributeValueDescriptions.NAME)
+    slug = graphene.String(required=True, description=AttributeValueDescriptions.SLUG)
 
 
 class AttributeCreateInput(graphene.InputObjectType):
@@ -326,11 +327,11 @@ class AttributeValueCreate(ModelMutation):
         error_type_class = ProductError
         error_type_field = "product_errors"
 
-    @classmethod
-    def clean_input(cls, info, instance, data):
-        cleaned_input = super().clean_input(info, instance, data)
-        cleaned_input["slug"] = slugify(cleaned_input["name"])
-        return cleaned_input
+    # @classmethod
+    # def clean_input(cls, info, instance, data):
+    #     cleaned_input = super().clean_input(info, instance, data)
+        # cleaned_input["slug"] = slugify(cleaned_input["name"])
+        # return cleaned_input
 
     @classmethod
     def clean_instance(cls, info, instance):
@@ -368,12 +369,12 @@ class AttributeValueUpdate(ModelMutation):
         error_type_class = ProductError
         error_type_field = "product_errors"
 
-    @classmethod
-    def clean_input(cls, info, instance, data):
-        cleaned_input = super().clean_input(info, instance, data)
-        if "name" in cleaned_input:
-            cleaned_input["slug"] = slugify(cleaned_input["name"])
-        return cleaned_input
+    # @classmethod
+    # def clean_input(cls, info, instance, data):
+    #     cleaned_input = super().clean_input(info, instance, data)
+    #     if "name" in cleaned_input:
+    #         cleaned_input["slug"] = slugify(cleaned_input["name"])
+    #     return cleaned_input
 
     @classmethod
     def clean_instance(cls, info, instance):

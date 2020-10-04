@@ -9,7 +9,7 @@ import {blogArticleListUrl, BlogArticleUrlQueryParams} from "../../urls/blog_art
 import {BlogArticleDetailsFormData} from "@temp/sections/blog/components/blogArticle/BlogArticleDetailsForm";
 import {useBlogArticle} from "@temp/sections/blog/queries";
 import BlogArticleUpdatePage from "@temp/sections/blog/components/blogArticle/BlogArticleUpdatePage";
-import {slugify} from "@temp/core/utils";
+import {slugifyStr} from "@temp/core/utils";
 import useBlogCategorySearch from "@temp/searches/useBlogCategorySearch";
 import {DEFAULT_INITIAL_SEARCH_DATA} from "@temp/config";
 import {getChoices} from "@temp/sections/products/utils/data";
@@ -70,7 +70,7 @@ const BlogArticleDetailsView: React.FC<BlogArticleDetailsProps> = ({
             title: formData.title,
             body: formData.body,
             isPublished: formData.isPublished,
-            slug: slugify(formData.title),
+            slug: slugifyStr(formData.title),
             datePublished: formData.publicationDate,
             category: formData.category
         };

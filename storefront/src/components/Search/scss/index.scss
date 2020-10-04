@@ -41,6 +41,9 @@
       top: 100%;
       border-left: none;
       border-bottom: none;
+      & ul{
+        padding-left: 0;
+      }
     }
   }
   &__suggestion{

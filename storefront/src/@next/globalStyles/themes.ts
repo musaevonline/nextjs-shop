@@ -20,21 +20,27 @@ export const defaultTheme = createMuiTheme({
 	typography:{
 		htmlFontSize: 10,
 		h1:{
+			fontSize: "3.6rem",
 			fontWeight: "inherit"
 		},
 		h2:{
+			fontSize: "2.8rem",
 			fontWeight: "inherit"
 		},
 		h3:{
+			fontSize: "2.2rem",
 			fontWeight: "inherit"
 		},
 		h4:{
+			fontSize: "2rem",
 			fontWeight: "inherit"
 		},
 		h5:{
+			fontSize: "1.8rem",
 			fontWeight: "inherit"
 		},
 		h6:{
+			fontSize: "1.6rem",
 			fontWeight: "inherit"
 		},
 		body1: {

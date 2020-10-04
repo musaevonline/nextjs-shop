@@ -1,7 +1,6 @@
 import "./scss/index.scss";
 
 import React from 'react';
-import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -13,6 +12,9 @@ import {ProductDetails_product} from "@sdk/queries/types/ProductDetails";
 import Grid from "@material-ui/core/Grid";
 import {ProductReviews_productReviews} from "@sdk/queries/types/ProductReviews";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import DOMPurify from 'dompurify';
+import {useQueryParams, NumberParam} from "use-query-params";
 
 
 function a11yProps(index: any) {
@@ -22,6 +24,8 @@ function a11yProps(index: any) {
     };
 }
 
+
+
 const ProductTabs:React.FC<{
     product: ProductDetails_product,
     reviews: ProductReviews_productReviews | null,
@@ -29,22 +33,18 @@ const ProductTabs:React.FC<{
     loadMoreReviews():void
 }> = ({ product, reviews, reviewsLoading, loadMoreReviews }) =>{
     const theme = useTheme();
-    const [value, setValue] = React.useState(0);
+    const [query, setQuery] = useQueryParams({tab: NumberParam});
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue);
+        setQuery({...query, tab: newValue});
     };
-
-    const handleChangeIndex = (index: number) => {
-        setValue(index);
-    };
-
+    const tab = query.tab || 0;
     return(
         <div className="product-tabs">
             <Card>
                 <CardContent>
                     <Tabs
-                        value={value}
+                        value={tab}
                         onChange={handleChange}
                         indicatorColor="primary"
                         textColor="primary"
@@ -52,62 +52,52 @@ const ProductTabs:React.FC<{
                     >
                         <Tab label="Описание" {...a11yProps(0)} />
                         <Tab label="Характеристики" {...a11yProps(1)} />
-                        <Tab label="Отзывы" {...a11yProps(2)} />
+                        <Tab label={`Отзывы ${reviews?.edges.length}`} {...a11yProps(2)} />
                     </Tabs>
-                    <SwipeableViews
-                        axis='x'
-                        index={value}
-                        onChangeIndex={handleChangeIndex}
-                    >
-                        <TabPanel value={value} index={0} dir={theme.direction}>
-                            <Card>
-                                <CardContent>
-                                    <div className="product-tabs__description text-small"
-                                         dangerouslySetInnerHTML={{__html: product.description}}
-                                    />
-                                </CardContent>
-                            </Card>
+                    <Paper elevation={0}>
+                        <TabPanel value={tab} index={0} dir={theme.direction}>
+                            <CardContent>
+                                <div className="product-tabs__description text-small"
+                                     dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(product.description)}}
+                                />
+                            </CardContent>
                         </TabPanel>
-                        <TabPanel value={value} index={1} dir={theme.direction}>
-                            <Card>
-                                <CardContent>
-                                    <Grid container spacing={3}>
-                                        {product.attributes.map(attr => {
-                                            return(
-                                                <Grid key={attr.attribute.id} item xs={12} sm={6}>
-                                                    <div className="flex justify-between">
-                                                        <div className="font-medium">{attr.attribute.name}:</div>
-                                                        <div>{attr.values[0]?.name}</div>
-                                                    </div>
-                                                </Grid>
+                        <TabPanel value={tab} index={1} dir={theme.direction}>
+                            <CardContent>
+                                <Grid container spacing={3}>
+                                    {product.attributes.map(attr => {
+                                        return(
+                                            <Grid key={attr.attribute.id} item xs={12} sm={6}>
+                                                <div className="flex justify-between">
+                                                    <div className="font-medium">{attr.attribute.name}:</div>
+                                                    <div>{attr.values[0]?.name}</div>
+                                                </div>
+                                            </Grid>
 
-                                            )
-                                        })}
-                                    </Grid>
-                                </CardContent>
-                            </Card>
+                                        )
+                                    })}
+                                </Grid>
+                            </CardContent>
                         </TabPanel>
-                        <TabPanel value={value} index={2} dir={theme.direction}>
-                            <Card>
-                                <CardContent>
-                                    {reviews &&
-                                    <div className="text-small">
-                                        {reviews.edges.map((edge, i) => <ProductReview key={i}
-                                                                                  review={edge.node}/>)}
-                                        {reviews.edges.length === 0 && <div>Пока нет</div>}
-                                        {reviews.pageInfo.hasNextPage &&
-                                        <div className="my-10">
-                                            <Button size="small"
-                                                    disabled={reviewsLoading}
-                                                    onClick={e => loadMoreReviews()}>Еще</Button>
-                                        </div>
-                                        }
+                        <TabPanel value={tab} index={2} dir={theme.direction}>
+                            <CardContent>
+                                {reviews &&
+                                <div className="text-small">
+                                    {reviews.edges.map((edge, i) => <ProductReview key={i}
+                                                                                   review={edge.node}/>)}
+                                    {reviews.edges.length === 0 && <div>Пока нет</div>}
+                                    {reviews.pageInfo.hasNextPage &&
+                                    <div className="my-10">
+                                        <Button size="small"
+                                                disabled={reviewsLoading}
+                                                onClick={e => loadMoreReviews()}>Еще</Button>
                                     </div>
                                     }
-                                </CardContent>
-                            </Card>
+                                </div>
+                                }
+                            </CardContent>
                         </TabPanel>
-                    </SwipeableViews>
+                    </Paper>
                 </CardContent>
             </Card>
         </div>
