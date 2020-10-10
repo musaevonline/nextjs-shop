@@ -1,21 +1,26 @@
+from collections import defaultdict
+
 import graphene
 from django.core.exceptions import ValidationError
+from django.template.defaultfilters import pluralize
 
 from main.account.models import User
+from main.core.exceptions import InsufficientStock
 from main.core.permissions import OrderPermissions
 from main.core.taxes import zero_taxed_money
 from main.graphql.core.mutations import BaseMutation
-from main.graphql.order.types import Order, OrderEvent
+from main.graphql.order.types import Order, OrderEvent, OrderLine
 from main.order import events, models
 from main.order.actions import cancel_order, order_captured, clean_mark_order_as_paid, mark_order_as_paid, \
-    order_refunded, order_shipping_updated, order_voided
+    order_refunded, order_shipping_updated, order_voided, fulfill_order_line
 from main.order.error_codes import OrderErrorCode
-from main.order.utils import get_valid_shipping_methods_for_order
+from main.order.utils import get_valid_shipping_methods_for_order, update_order_status
 from main.payment import PaymentError, gateway, CustomPaymentChoices
 from .draft_orders import DraftOrderUpdate
 from ...account.types import AddressInput
 from ...core.scalars import Decimal
 from ...core.types.common import OrderError
+from ...core.utils import get_duplicated_values
 from ...shipping.types import ShippingMethod
 
 
@@ -443,3 +448,99 @@ class OrderUpdateShipping(BaseMutation):
         # Post-process the results
         order_shipping_updated(order)
         return OrderUpdateShipping(order=order)
+
+
+class OrderFulfillLineInput(graphene.InputObjectType):
+    order_line_id = graphene.ID(
+        description="The ID of the order line.", name="orderLineId"
+    )
+
+
+class OrderFulfillInput(graphene.InputObjectType):
+    lines = graphene.List(
+        graphene.NonNull(OrderFulfillLineInput),
+        required=True,
+        description="List of items informing how to fulfill the order.",
+    )
+    notify_customer = graphene.Boolean(
+        description="If true, send an email notification to the customer."
+    )
+
+
+class OrderFulfill(BaseMutation):
+    order_lines = graphene.List(
+        OrderLine, description="List of created order lines."
+    )
+    order = graphene.Field(Order, description="Fulfilled order.")
+
+    class Arguments:
+        order = graphene.ID(
+            description="ID of the order to be fulfilled.", name="order"
+        )
+        input = OrderFulfillInput(
+            required=True, description="Fields required to create an fulfillment."
+        )
+
+    class Meta:
+        description = "Fulfill order lines."
+        permissions = (OrderPermissions.MANAGE_ORDERS,)
+        error_type_class = OrderError
+        error_type_field = "order_errors"
+
+    @classmethod
+    def check_lines_for_duplicates(cls, lines_ids):
+        duplicates = get_duplicated_values(lines_ids)
+        if duplicates:
+            raise ValidationError(
+                {
+                    "orderLineId": ValidationError(
+                        "Duplicated order line ID.",
+                        code=OrderErrorCode.DUPLICATED_INPUT_ITEM,
+                        params={"order_line": duplicates.pop()},
+                    )
+                }
+            )
+
+    @classmethod
+    def clean_input(cls, data):
+        lines = data["lines"]
+
+        lines_ids = [line["order_line_id"] for line in lines]
+        cls.check_lines_for_duplicates(lines_ids)
+        order_lines = cls.get_nodes_or_error(
+            lines_ids, field="lines", only_type=OrderLine
+        )
+        data["order_lines"] = order_lines
+        return data
+
+    @classmethod
+    def perform_mutation(cls, _root, info, order, **data):
+        order = cls.get_node_or_error(info, order, field="order", only_type=Order)
+        data = data.get("input")
+
+        cleaned_input = cls.clean_input(data)
+
+        # user = info.context.user
+        notify_customer = cleaned_input.get("notify_customer", True)
+        order_lines = cleaned_input['order_lines']
+        try:
+            # TODO send email if notify customer True
+            for line in order_lines:
+                fulfill_order_line(line, line.quantity_unfulfilled)
+        except InsufficientStock as exc:
+            order_line_global_id = graphene.Node.to_global_id(
+                "OrderLine", exc.context["order_line"].pk
+            )
+            raise ValidationError(
+                {
+                    "stocks": ValidationError(
+                        f"Insufficient product stock: {exc.item}",
+                        code=OrderErrorCode.INSUFFICIENT_STOCK,
+                        params={
+                            "order_line": order_line_global_id
+                        },
+                    )
+                }
+            )
+        update_order_status(order)
+        return OrderFulfill(order_lines=order_lines, order=order)

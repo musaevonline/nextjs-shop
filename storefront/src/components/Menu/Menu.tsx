@@ -13,7 +13,6 @@ interface MenuProps {
 }
 
 const Menu:React.FC<MenuProps> = ({categories}) =>{
-    if (!categories) return null;
 
     return(
         <div className="menu">
@@ -24,23 +23,26 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
                     <KeyboardArrowDownIcon />
                 </div>
             </div>
+            {categories &&
             <ul className="menu__list">
                 {categories.edges.map(edge => {
                     const node = edge.node;
-                    return(
+                    return (
                         <li key={node.id}>
                             <Link to={getCategoryUrl(node.slug, node.id)}>{node.name}</Link>
                             {node.children.edges.length > 0 &&
                             <>
                                 <ChevronRightIcon/>
                                 <ul className="submenu" data-level={1}>
-                                    {node.children.edges.map(childEdge1 =>{
+                                    {node.children.edges.map(childEdge1 => {
                                         const childNode1 = childEdge1.node;
-                                        return(
+                                        return (
                                             <li key={childNode1.id}>
-                                                <Link to={getCategoryUrl(childNode1.slug, childNode1.id)}>{childNode1.name}</Link>
+                                                <Link
+                                                    to={getCategoryUrl(childNode1.slug, childNode1.id)}>{childNode1.name}</Link>
                                                 {childNode1.children.edges.map(childEdge2 =>
-                                                    <Link key={childEdge2.node.id} className="submenu__link" to={getCategoryUrl(childEdge2.node.slug, childEdge2.node.id)}>
+                                                    <Link key={childEdge2.node.id} className="submenu__link"
+                                                          to={getCategoryUrl(childEdge2.node.slug, childEdge2.node.id)}>
                                                         {childEdge2.node.name}
                                                     </Link>
                                                 )}
@@ -54,6 +56,7 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
                     )
                 })}
             </ul>
+            }
         </div>
     )
 };

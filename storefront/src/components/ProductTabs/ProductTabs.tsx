@@ -55,7 +55,7 @@ const ProductTabs:React.FC<{
                     >
                         <Tab label="Описание" {...a11yProps(0)} />
                         <Tab label="Характеристики" {...a11yProps(1)} />
-                        <Tab label={`Отзывы ${reviews?.edges.length}`} {...a11yProps(2)} />
+                        <Tab label={`Отзывы ${reviews?.edges.length || ''}`} {...a11yProps(2)} />
                     </Tabs>
                     <Paper elevation={0}>
                         <TabPanel value={tab} index={0} dir={theme.direction}>
@@ -72,14 +72,17 @@ const ProductTabs:React.FC<{
                                         return(
                                             <Grid key={attr.attribute.id} item xs={12} sm={6}>
                                                 <div className="flex justify-between">
-                                                    <Typography variant="h6" className="font-medium">{attr.attribute.name}:</Typography>
-                                                    <div>
+                                                    <Typography variant="h6"><strong>{attr.attribute.name}:</strong></Typography>
+                                                    <ul className="text-right m-0">
                                                         {attr.values.map(val =>
-                                                            <Typography key={val.id} variant="body1" className="font-medium">
+                                                            <Typography key={val.id}
+                                                                        variant="body1"
+                                                                        component="li"
+                                                                        className="font-medium">
                                                                 {val.name}
                                                             </Typography>
                                                         )}
-                                                    </div>
+                                                    </ul>
                                                 </div>
                                             </Grid>
 
@@ -90,13 +93,16 @@ const ProductTabs:React.FC<{
                                             <Grid key={attr.id} item xs={12} sm={6}>
                                                 <div className="flex justify-between">
                                                     <Typography variant="h6"><strong>{attr.name}:</strong></Typography>
-                                                    <div>
+                                                    <ul className="text-right m-0">
                                                         {attr.values.map(val =>
-                                                            <Typography key={val.id} variant="body1" className="font-medium">
+                                                            <Typography key={val.id}
+                                                                        variant="body1"
+                                                                        component="li"
+                                                                        className="font-medium">
                                                                 {val.name}
                                                             </Typography>
                                                         )}
-                                                    </div>
+                                                    </ul>
                                                 </div>
                                             </Grid>
 

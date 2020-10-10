@@ -52,6 +52,12 @@ const OrderLine:React.FC<{
                 </div>
                 <div className="text-gray-500">№ {getDBIdFromGraphqlId(line.variant.id, 'ProductVariant')}</div>
                 <div className="text-base text-gray-500">
+                    {line.variant?.attributes &&
+                    <div>
+                        {line.variant.attributes.map(attr => <span>{attr.attribute.name}: {attr.values.map(val =>
+                            <span>{val.name}</span>)}; </span>)}
+                    </div>
+                    }
                     <div>Количетсво: {line.quantity}</div>
                     <div>Цена за ед.: {priceToString({amount: line.unitPrice.gross.amount, currency: line.unitPrice.currency})}</div>
                     <div>Сумма.: {priceToString({amount: line.unitPrice.gross.amount * line.quantity, currency: line.unitPrice.currency})}</div>

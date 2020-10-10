@@ -431,6 +431,7 @@ export enum ProductErrorCode {
 export enum ProductOrderField {
   DATE = "DATE",
   NAME = "NAME",
+  ORDER_COUNT = "ORDER_COUNT",
   PUBLISHED = "PUBLISHED",
   TYPE = "TYPE",
 }
@@ -471,6 +472,16 @@ export enum ShippingMethodTypeEnum {
 export enum StockAvailability {
   IN_STOCK = "IN_STOCK",
   OUT_OF_STOCK = "OUT_OF_STOCK",
+}
+
+/**
+ * An enumeration.
+ */
+export enum WeightUnitsEnum {
+  G = "G",
+  KG = "KG",
+  LB = "LB",
+  OZ = "OZ",
 }
 
 export interface AccountInput {

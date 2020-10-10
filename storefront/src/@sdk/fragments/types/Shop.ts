@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { WeightUnitsEnum } from "./../../../types/globalTypes";
+
 // ====================================================
 // GraphQL fragment: Shop
 // ====================================================
@@ -33,6 +35,22 @@ export interface Shop {
    * Header text.
    */
   headerText: string | null;
+  /**
+   * Shop's default currency.
+   */
+  defaultCurrency: string;
+  /**
+   * Default shop's email sender's address.
+   */
+  defaultMailSenderAddress: string | null;
+  /**
+   * Default shop's email sender's name.
+   */
+  defaultMailSenderName: string | null;
+  /**
+   * Default weight unit.
+   */
+  defaultWeightUnit: WeightUnitsEnum | null;
   /**
    * Shop's domain data.
    */

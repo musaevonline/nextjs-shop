@@ -66,7 +66,7 @@ const Page:React.FC<{
                                                 <Rating
                                                     size="small"
                                                     name="review"
-                                                    disabled
+                                                    readOnly
                                                     value={RATING[node.rating]}
                                                 />
                                                 <div>{node.content}</div>

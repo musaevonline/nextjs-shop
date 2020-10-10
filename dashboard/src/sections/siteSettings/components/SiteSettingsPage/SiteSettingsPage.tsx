@@ -13,7 +13,6 @@ import useStateFromProps from "@temp/hooks/useStateFromProps";
 import { commonMessages, sectionNames } from "@temp/intl";
 import { ShopErrorFragment } from "@temp/sections/siteSettings/types/ShopErrorFragment";
 import createSingleAutocompleteSelectHandler from "@temp/utils/handlers/singleAutocompleteSelectChangeHandler";
-import { mapCountriesToChoices } from "@temp/utils/maps";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -44,6 +43,7 @@ export interface SiteSettingsPageFormData
   description: string;
   domain: string;
   name: string;
+  headerText: string;
 }
 
 export interface SiteSettingsPageProps {
@@ -84,6 +84,7 @@ const useStyles = makeStyles(
       name: "SiteSettingsPage"
     }
 );
+const countryChoices = Object.keys(CountryCode).map(key => ({value: key, label: key}));
 
 const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
   const {
@@ -124,7 +125,8 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
     defaultMailSenderName: maybe(() => shop.defaultMailSenderName, ""),
     description: maybe(() => shop.description, ""),
     domain: maybe(() => shop.domain.host, ""),
-    name: maybe(() => shop.name, "")
+    name: maybe(() => shop.name, ""),
+    headerText: maybe(() => shop.headerText, "")
   };
 
   const form = useFormik({
@@ -139,7 +141,8 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
     }
   });
 
-  const countryChoices = mapCountriesToChoices([]);
+  // const countryChoices = mapCountriesToChoices(Object.keys(CountryCode));
+
   const handleCountryChange = createSingleAutocompleteSelectHandler(
       form.handleChange,
       setDisplayCountry,

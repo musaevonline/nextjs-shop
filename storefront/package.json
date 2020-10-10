@@ -62,6 +62,7 @@
     "react-router-dom": "^5.2.0",
     "react-scroll": "^1.8.1",
     "react-scroll-up-button": "^1.6.4",
+    "react-sticky": "^6.0.3",
     "react-svg": "^11.0.35",
     "react-swipeable-views": "^0.13.9",
     "reset-css": "^5.0.1",

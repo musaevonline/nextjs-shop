@@ -62,7 +62,7 @@ body, footer {
     flex-direction: column;
     background-color: #F8F8F8;
 
-    & > div:first-of-type {
+    & main{
       flex: 1;
       min-height: calc(100vh - 400px);
     }

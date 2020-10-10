@@ -21,7 +21,7 @@ const View: React.FC = () => {
         nextFetchPolicy: "cache-first"
     });
     const {data:popularProductsData} = useQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
-        variables: {first: PAGINATE_BY, sortBy:{direction: OrderDirection.ASC, field: ProductOrderField.NAME }},
+        variables: {first: PAGINATE_BY, sortBy:{direction: OrderDirection.DESC, field: ProductOrderField.ORDER_COUNT }},
         fetchPolicy: "cache-and-network",
         nextFetchPolicy: "cache-first"
     });
@@ -33,12 +33,7 @@ const View: React.FC = () => {
         }
     })
     return(
-        <MetaWrapper
-            meta={{
-                description: shop ? shop.description : "",
-                title: shop ? shop.name : "",
-            }}
-        >
+        <MetaWrapper meta={{}}>
                 <Page
                     loading={!newProductsData}
                     newProducts={newProductsData?.products}

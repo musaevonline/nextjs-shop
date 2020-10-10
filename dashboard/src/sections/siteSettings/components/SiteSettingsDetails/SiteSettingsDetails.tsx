@@ -27,7 +27,7 @@ const SiteSettingsDetails: React.FC<SiteSettingsDetailsProps> = ({
 }) => {
   const intl = useIntl();
 
-  const formErrors = getFormErrors(["name", "domain", "description"], errors);
+  const formErrors = getFormErrors(["name", "domain", "description", "headerText"], errors);
 
   return (
     <Card>
@@ -47,10 +47,29 @@ const SiteSettingsDetails: React.FC<SiteSettingsDetailsProps> = ({
             getShopErrorMessage(formErrors.name, intl) ||
             intl.formatMessage({id: "name_your_store_tab",
               defaultMessage:
-                "Name of your store is shown on tab in web browser"
+                "Name of your store"
             })
           }
           value={data.name}
+          onChange={onChange}
+        />
+        <FormSpacer />
+        <TextField
+          disabled={disabled}
+          error={!!formErrors.headerText}
+          fullWidth
+          name="headerText"
+          label={intl.formatMessage({id: "header_text_store",
+            defaultMessage: "Header text of your store"
+          })}
+          helperText={
+            getShopErrorMessage(formErrors.name, intl) ||
+            intl.formatMessage({id: "header_text_your_store_tab",
+              defaultMessage:
+                "Header text of your store is shown on tab in web browser"
+            })
+          }
+          value={data.headerText}
           onChange={onChange}
         />
         <FormSpacer />

@@ -11,6 +11,7 @@ class ProductOrderField(graphene.Enum):
     DATE = ["updated_at", "name", "slug"]
     TYPE = ["product_type__name", "name", "slug"]
     PUBLISHED = ["is_published", "name", "slug"]
+    ORDER_COUNT = ["order_count", "name", "slug"]
 
     @property
     def description(self):
@@ -20,10 +21,15 @@ class ProductOrderField(graphene.Enum):
             ProductOrderField.TYPE.name: "type",
             ProductOrderField.DATE.name: "update date",
             ProductOrderField.PUBLISHED.name: "publication status",
+            ProductOrderField.ORDER_COUNT.name: "popular",
         }
         if self.name in descriptions:
             return f"Sort products by {descriptions[self.name]}."
         raise ValueError("Unsupported enum value: %s" % self.value)
+
+    @staticmethod
+    def qs_with_order_count(queryset: QuerySet) -> QuerySet:
+        return queryset.annotate(order_count=Count('variants__order_lines'))
 
 
 class ProductReviewOrderField(graphene.Enum):

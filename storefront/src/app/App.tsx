@@ -9,16 +9,21 @@ import {Header} from "@temp/components/Header";
 import {Footer} from "@temp/components/Footer";
 import {ScrollTopButton} from "@temp/components/ScrollTopButton";
 import ScrollToTop from "@temp/components/ScrollToTop/ScrollToTop";
+import { StickyContainer } from 'react-sticky';
 
 const App: React.FC<RouteComponentProps> = ({history: {location: { pathname }}}) => {
 
     return (
         <>
             <ScrollToTop/>
-            <header className="header"><Header/></header>
-            <Routes />
-            <ScrollTopButton/>
-            <Footer/>
+            <StickyContainer>
+                <header className="header"><Header /></header>
+                <main className="main">
+                    <Routes />
+                </main>
+                <ScrollTopButton/>
+                <Footer/>
+            </StickyContainer>
         </>
     );
 };

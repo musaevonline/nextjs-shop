@@ -18,10 +18,11 @@ export const shopFragment = gql`
     defaultMailSenderAddress
     defaultMailSenderName
     description
+    name
+    headerText
     domain {
       host
     }
-    name
   }
 `;
 const siteSettings = gql`

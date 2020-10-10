@@ -12,8 +12,8 @@ const useStyles = makeStyles(
       display: "block",
       height: 8,
       left: -theme.spacing(2),
-      position: "absolute" as "absolute",
-      top: "calc(50% - 5px)",
+      position: "absolute",
+      top: "calc(50% - 3px)",
       width: 8
     };
 

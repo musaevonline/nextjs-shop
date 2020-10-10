@@ -125,7 +125,8 @@ export const SiteSettings: React.FC<SiteSettingsProps> = ({ params }) => {
                             defaultMailSenderAddress:
                               data.defaultMailSenderAddress,
                             defaultMailSenderName: data.defaultMailSenderName,
-                            description: data.description
+                            description: data.description,
+                            headerText: data.headerText
                           }
                         }
                       });

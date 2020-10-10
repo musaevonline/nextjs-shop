@@ -90,11 +90,15 @@ export interface ShopFragment {
    */
   description: string | null;
   /**
-   * Shop's domain data.
-   */
-  domain: ShopFragment_domain;
-  /**
    * Shop's name.
    */
   name: string;
+  /**
+   * Header text.
+   */
+  headerText: string | null;
+  /**
+   * Shop's domain data.
+   */
+  domain: ShopFragment_domain;
 }

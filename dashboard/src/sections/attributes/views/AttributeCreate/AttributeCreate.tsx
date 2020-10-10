@@ -123,7 +123,8 @@ const AttributeDetails: React.FC<AttributeDetailsProps> = ({ params }) => {
                       0
                     ),
                     values: values.map(value => ({
-                      name: value.name
+                      name: value.name,
+                      slug: value.slug
                     }))
                   }
                 }

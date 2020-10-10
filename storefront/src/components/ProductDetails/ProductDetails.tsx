@@ -74,11 +74,20 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product, addVariantToChec
                         <div className="flex items-center flex-1 min-w-200">
                             <Rating
                                 size="small"
-                                disabled
+                                readOnly
                                 name="simple-controlled"
                                 defaultValue={product.rating.ratingAvg}
                             />
-                            <ScrollLink href="#reviews" activeClass="active" to="reviews" smooth="easeInOutCubic" spy={true} duration={1000} onClick={onSelectReviewsTab}>
+                            <ScrollLink href="#reviews"
+                                        activeClass="active"
+                                        to="reviews"
+                                        smooth="easeInOutCubic"
+                                        spy={true}
+                                        duration={1000}
+                                        onClick={onSelectReviewsTab}
+                                        offset={-100}
+
+                            >
                                 <span className={classes.reviewsCount}>Отзывы ({product.rating.count})</span>
                             </ScrollLink>
                         </div>

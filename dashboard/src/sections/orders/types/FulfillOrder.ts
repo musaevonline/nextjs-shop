@@ -3,13 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../../types/globalTypes";
+import { OrderFulfillInput, OrderErrorCode, OrderEventsEmailsEnum, OrderEventsEnum, PaymentChargeStatusEnum, OrderStatus, OrderAction } from "./../../../types/globalTypes";
 
 // ====================================================
-// GraphQL mutation operation: OrderDraftCancel
+// GraphQL mutation operation: FulfillOrder
 // ====================================================
 
-export interface OrderDraftCancel_draftOrderDelete_errors {
+export interface FulfillOrder_orderFulfill_errors {
   __typename: "OrderError";
   /**
    * The error code.
@@ -25,7 +25,7 @@ export interface OrderDraftCancel_draftOrderDelete_errors {
   message: string | null;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_events_user {
+export interface FulfillOrder_orderFulfill_order_events_user {
   __typename: "User";
   /**
    * The ID of the object.
@@ -34,7 +34,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_events_user {
   email: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_events {
+export interface FulfillOrder_orderFulfill_order_events {
   __typename: "OrderEvent";
   /**
    * The ID of the object.
@@ -71,10 +71,10 @@ export interface OrderDraftCancel_draftOrderDelete_order_events {
   /**
    * User who performed the action.
    */
-  user: OrderDraftCancel_draftOrderDelete_order_events_user | null;
+  user: FulfillOrder_orderFulfill_order_events_user | null;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_lines_unitPrice_gross {
+export interface FulfillOrder_orderFulfill_order_lines_unitPrice_gross {
   __typename: "Money";
   /**
    * Amount of money.
@@ -86,7 +86,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_lines_unitPrice_gross {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_lines_unitPrice_net {
+export interface FulfillOrder_orderFulfill_order_lines_unitPrice_net {
   __typename: "Money";
   /**
    * Amount of money.
@@ -98,19 +98,19 @@ export interface OrderDraftCancel_draftOrderDelete_order_lines_unitPrice_net {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_lines_unitPrice {
+export interface FulfillOrder_orderFulfill_order_lines_unitPrice {
   __typename: "TaxedMoney";
   /**
    * Amount of money including taxes.
    */
-  gross: OrderDraftCancel_draftOrderDelete_order_lines_unitPrice_gross;
+  gross: FulfillOrder_orderFulfill_order_lines_unitPrice_gross;
   /**
    * Amount of money without taxes.
    */
-  net: OrderDraftCancel_draftOrderDelete_order_lines_unitPrice_net;
+  net: FulfillOrder_orderFulfill_order_lines_unitPrice_net;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_lines_thumbnail {
+export interface FulfillOrder_orderFulfill_order_lines_thumbnail {
   __typename: "Image";
   /**
    * The URL of the image.
@@ -118,7 +118,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_lines_thumbnail {
   url: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_lines {
+export interface FulfillOrder_orderFulfill_order_lines {
   __typename: "OrderLine";
   /**
    * The ID of the object.
@@ -132,14 +132,14 @@ export interface OrderDraftCancel_draftOrderDelete_order_lines {
   /**
    * Price of the single item in the order line.
    */
-  unitPrice: OrderDraftCancel_draftOrderDelete_order_lines_unitPrice | null;
+  unitPrice: FulfillOrder_orderFulfill_order_lines_unitPrice | null;
   /**
    * The main thumbnail for the ordered product.
    */
-  thumbnail: OrderDraftCancel_draftOrderDelete_order_lines_thumbnail | null;
+  thumbnail: FulfillOrder_orderFulfill_order_lines_thumbnail | null;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_shippingAddress_country {
+export interface FulfillOrder_orderFulfill_order_shippingAddress_country {
   __typename: "CountryDisplay";
   /**
    * Country code.
@@ -151,7 +151,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_shippingAddress_country
   country: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_shippingAddress {
+export interface FulfillOrder_orderFulfill_order_shippingAddress {
   __typename: "Address";
   city: string;
   cityArea: string;
@@ -159,7 +159,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_shippingAddress {
   /**
    * Shop's default country.
    */
-  country: OrderDraftCancel_draftOrderDelete_order_shippingAddress_country;
+  country: FulfillOrder_orderFulfill_order_shippingAddress_country;
   countryArea: string;
   firstName: string;
   /**
@@ -173,7 +173,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_shippingAddress {
   streetAddress2: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_shippingMethod {
+export interface FulfillOrder_orderFulfill_order_shippingMethod {
   __typename: "ShippingMethod";
   /**
    * The ID of the object.
@@ -181,7 +181,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_shippingMethod {
   id: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_shippingPrice_gross {
+export interface FulfillOrder_orderFulfill_order_shippingPrice_gross {
   __typename: "Money";
   /**
    * Amount of money.
@@ -193,15 +193,15 @@ export interface OrderDraftCancel_draftOrderDelete_order_shippingPrice_gross {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_shippingPrice {
+export interface FulfillOrder_orderFulfill_order_shippingPrice {
   __typename: "TaxedMoney";
   /**
    * Amount of money including taxes.
    */
-  gross: OrderDraftCancel_draftOrderDelete_order_shippingPrice_gross;
+  gross: FulfillOrder_orderFulfill_order_shippingPrice_gross;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_subtotal_gross {
+export interface FulfillOrder_orderFulfill_order_subtotal_gross {
   __typename: "Money";
   /**
    * Amount of money.
@@ -213,15 +213,15 @@ export interface OrderDraftCancel_draftOrderDelete_order_subtotal_gross {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_subtotal {
+export interface FulfillOrder_orderFulfill_order_subtotal {
   __typename: "TaxedMoney";
   /**
    * Amount of money including taxes.
    */
-  gross: OrderDraftCancel_draftOrderDelete_order_subtotal_gross;
+  gross: FulfillOrder_orderFulfill_order_subtotal_gross;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_total_gross {
+export interface FulfillOrder_orderFulfill_order_total_gross {
   __typename: "Money";
   /**
    * Amount of money.
@@ -233,7 +233,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_total_gross {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_total_tax {
+export interface FulfillOrder_orderFulfill_order_total_tax {
   __typename: "Money";
   /**
    * Amount of money.
@@ -245,19 +245,19 @@ export interface OrderDraftCancel_draftOrderDelete_order_total_tax {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_total {
+export interface FulfillOrder_orderFulfill_order_total {
   __typename: "TaxedMoney";
   /**
    * Amount of money including taxes.
    */
-  gross: OrderDraftCancel_draftOrderDelete_order_total_gross;
+  gross: FulfillOrder_orderFulfill_order_total_gross;
   /**
    * Amount of taxes.
    */
-  tax: OrderDraftCancel_draftOrderDelete_order_total_tax;
+  tax: FulfillOrder_orderFulfill_order_total_tax;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_totalAuthorized {
+export interface FulfillOrder_orderFulfill_order_totalAuthorized {
   __typename: "Money";
   /**
    * Amount of money.
@@ -269,7 +269,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_totalAuthorized {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_totalCaptured {
+export interface FulfillOrder_orderFulfill_order_totalCaptured {
   __typename: "Money";
   /**
    * Amount of money.
@@ -281,7 +281,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_totalCaptured {
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_user {
+export interface FulfillOrder_orderFulfill_order_user {
   __typename: "User";
   /**
    * The ID of the object.
@@ -290,7 +290,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_user {
   email: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_availableShippingMethods_price {
+export interface FulfillOrder_orderFulfill_order_availableShippingMethods_price {
   __typename: "Money";
   /**
    * Amount of money.
@@ -302,17 +302,17 @@ export interface OrderDraftCancel_draftOrderDelete_order_availableShippingMethod
   currency: string;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order_availableShippingMethods {
+export interface FulfillOrder_orderFulfill_order_availableShippingMethods {
   __typename: "ShippingMethod";
   /**
    * The ID of the object.
    */
   id: string;
   name: string;
-  price: OrderDraftCancel_draftOrderDelete_order_availableShippingMethods_price | null;
+  price: FulfillOrder_orderFulfill_order_availableShippingMethods_price | null;
 }
 
-export interface OrderDraftCancel_draftOrderDelete_order {
+export interface FulfillOrder_orderFulfill_order {
   __typename: "Order";
   /**
    * The ID of the object.
@@ -327,11 +327,11 @@ export interface OrderDraftCancel_draftOrderDelete_order {
   /**
    * List of events associated with the order.
    */
-  events: (OrderDraftCancel_draftOrderDelete_order_events | null)[] | null;
+  events: (FulfillOrder_orderFulfill_order_events | null)[] | null;
   /**
    * List of order lines.
    */
-  lines: (OrderDraftCancel_draftOrderDelete_order_lines | null)[];
+  lines: (FulfillOrder_orderFulfill_order_lines | null)[];
   /**
    * User-friendly number of an order.
    */
@@ -340,22 +340,22 @@ export interface OrderDraftCancel_draftOrderDelete_order {
    * Internal payment status.
    */
   paymentStatus: PaymentChargeStatusEnum | null;
-  shippingAddress: OrderDraftCancel_draftOrderDelete_order_shippingAddress | null;
-  shippingMethod: OrderDraftCancel_draftOrderDelete_order_shippingMethod | null;
+  shippingAddress: FulfillOrder_orderFulfill_order_shippingAddress | null;
+  shippingMethod: FulfillOrder_orderFulfill_order_shippingMethod | null;
   shippingMethodName: string | null;
   /**
    * Total price of shipping.
    */
-  shippingPrice: OrderDraftCancel_draftOrderDelete_order_shippingPrice | null;
+  shippingPrice: FulfillOrder_orderFulfill_order_shippingPrice | null;
   status: OrderStatus;
   /**
    * The sum of line prices not including shipping.
    */
-  subtotal: OrderDraftCancel_draftOrderDelete_order_subtotal | null;
+  subtotal: FulfillOrder_orderFulfill_order_subtotal | null;
   /**
    * Total amount of the order.
    */
-  total: OrderDraftCancel_draftOrderDelete_order_total | null;
+  total: FulfillOrder_orderFulfill_order_total | null;
   /**
    * List of actions that can be performed in the current state of an order.
    */
@@ -363,12 +363,12 @@ export interface OrderDraftCancel_draftOrderDelete_order {
   /**
    * Amount authorized for the order.
    */
-  totalAuthorized: OrderDraftCancel_draftOrderDelete_order_totalAuthorized | null;
+  totalAuthorized: FulfillOrder_orderFulfill_order_totalAuthorized | null;
   /**
    * Amount captured by payment.
    */
-  totalCaptured: OrderDraftCancel_draftOrderDelete_order_totalCaptured | null;
-  user: OrderDraftCancel_draftOrderDelete_order_user | null;
+  totalCaptured: FulfillOrder_orderFulfill_order_totalCaptured | null;
+  user: FulfillOrder_orderFulfill_order_user | null;
   /**
    * Email address of the customer.
    */
@@ -376,22 +376,26 @@ export interface OrderDraftCancel_draftOrderDelete_order {
   /**
    * Shipping methods that can be used with this order.
    */
-  availableShippingMethods: (OrderDraftCancel_draftOrderDelete_order_availableShippingMethods | null)[] | null;
+  availableShippingMethods: (FulfillOrder_orderFulfill_order_availableShippingMethods | null)[] | null;
 }
 
-export interface OrderDraftCancel_draftOrderDelete {
-  __typename: "DraftOrderDelete";
-  errors: OrderDraftCancel_draftOrderDelete_errors[];
-  order: OrderDraftCancel_draftOrderDelete_order | null;
-}
-
-export interface OrderDraftCancel {
+export interface FulfillOrder_orderFulfill {
+  __typename: "OrderFulfill";
+  errors: FulfillOrder_orderFulfill_errors[];
   /**
-   * Deletes a draft order.
+   * Fulfilled order.
    */
-  draftOrderDelete: OrderDraftCancel_draftOrderDelete | null;
+  order: FulfillOrder_orderFulfill_order | null;
 }
 
-export interface OrderDraftCancelVariables {
-  id: string;
+export interface FulfillOrder {
+  /**
+   * Fulfill order lines.
+   */
+  orderFulfill: FulfillOrder_orderFulfill | null;
+}
+
+export interface FulfillOrderVariables {
+  orderId: string;
+  input: OrderFulfillInput;
 }

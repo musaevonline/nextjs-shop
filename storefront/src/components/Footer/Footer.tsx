@@ -27,11 +27,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import {usePages} from "@sdk/queries/page";
 import Typography from "@material-ui/core/Typography";
+import useShop from "@temp/hooks/useShop";
 
 
 
 const Footer:React.FC = () =>{
     const [isOpenAllCategories, setOpenAllCategories] = useState(false);
+    const shop = useShop();
     const {data:dataCategories} = useQuery<Categories, CategoriesVariables>(categoriesQuery, {
         variables: {level: 0}
     });
@@ -39,8 +41,7 @@ const Footer:React.FC = () =>{
         variables: {
             first: 5
         }
-    })
-
+    });
     return(
         <footer className="footer">
             <Container maxWidth="xl">
@@ -52,13 +53,13 @@ const Footer:React.FC = () =>{
                                 <SvgIcon className="mr-10" fontSize="small">
                                     <PhoneOutlinedIcon/>
                                 </SvgIcon>
-                                <a href="tel:+375444979196">+375444979196</a>
+                                <a href={`tel:${shop?.companyAddress.phone}`}>{shop?.companyAddress.phone}</a>
                             </div>
                             <div className="flex align-center py-5">
                                 <SvgIcon className="mr-10" fontSize="small">
                                     <MailOutlineOutlinedIcon/>
                                 </SvgIcon>
-                                <a href="mailto:vladimirsmeun@gmail.com">vladimirsmeun@gmail.com</a>
+                                <a href={`mailto:${shop?.defaultMailSenderAddress}`}>{shop?.defaultMailSenderAddress}</a>
                             </div>
                             <div className="flex align-center py-5">
                                 <SvgIcon className="mr-10" fontSize="small">
@@ -66,7 +67,8 @@ const Footer:React.FC = () =>{
                                 </SvgIcon>
                                 <div className="flex flex-col">
                                     <div>Режим работы магазина:</div>
-                                    <div>ПН - ПТ: с 9:30 до 17:30</div>
+                                    <div>ПН - ПТ: с 9:00 до 18:00</div>
+                                    <div>СБ - НД: с 9:00 до 15:00</div>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +127,7 @@ const Footer:React.FC = () =>{
                     </Grid>
                 </Grid>
                 <div className="text-center copyright-text">
-                    <span>©{new Date().getFullYear()} stroylux.by. Все права защищены</span>
+                    <span>©{new Date().getFullYear()} {shop?.name}. Все права защищены</span>
                 </div>
             </Container>
         </footer>

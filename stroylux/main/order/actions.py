@@ -102,7 +102,7 @@ def clean_mark_order_as_paid(order: "Order"):
         raise PaymentError("Orders with payments can not be manually marked as paid.", )
 
 
-def fulfill_order_line(order_line, quantity, warehouse_pk):
+def fulfill_order_line(order_line, quantity):
     """Fulfill order line with given quantity."""
     if order_line.variant and order_line.variant:
         decrease_stock(order_line, quantity)

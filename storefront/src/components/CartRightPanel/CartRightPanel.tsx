@@ -18,13 +18,21 @@ import Typography from "@material-ui/core/Typography";
 import {CartItems} from "@temp/components/CartItems";
 import {ProductVariants, ProductVariantsVariables} from "@sdk/queries/types/ProductVariants";
 import {CheckoutContext} from "@temp/components/CheckoutProvider/context";
+import {makeStyles} from "@material-ui/core/styles";
 
 const PAGINATE_BY = 100;
+
+const useStyles = makeStyles(theme => ({
+    drawer: {
+        maxWidth: "calc(100% - 20px)"
+    }
+}))
 
 const CartRightPanel:React.FC<{
     isOpen: boolean
     toggleCartDrawer(isOpen: boolean): any
 }> = ({isOpen, toggleCartDrawer}) =>{
+    const classes = useStyles();
     const [sumPrice, setSumPrice] = useState({amount: 0, currency: 'BYN'});
     const {checkout, calculateCheckoutTotal, quantity} = useContext(CheckoutContext);
     const {data:productVariantsData, fetchMore} = useQuery<ProductVariants, ProductVariantsVariables>(productVariantsQuery, {
@@ -65,6 +73,7 @@ const CartRightPanel:React.FC<{
                 swipeAreaWidth={0}
                 onClose={toggleCartDrawer(false)}
                 onOpen={toggleCartDrawer(true)}
+                classes={{paper: classes.drawer}}
             >
                 <div className="cart-panel__body">
                     <div className="cart-panel__header">

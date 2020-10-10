@@ -43,8 +43,14 @@ import TabPanel from "@temp/components/TabPanel";
 import {UserContext} from "@temp/components/User/context";
 import {CheckoutContext} from "@temp/components/CheckoutProvider/context";
 import {usePages} from "@sdk/queries/page";
+import { Sticky } from 'react-sticky';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import useShop from "@temp/hooks/useShop";
 
 const Header: React.FC = () =>{
+    const theme = useTheme();
+    const shop = useShop();
+    const xs = useMediaQuery(theme.breakpoints.down('xs'));
     const [isActiveSearch, setIsActiveSearch] = useState(false);
     const [isOpenCartPanel, setOpenCartPanel] = useState(false);
     const [accountDrawerState, setAccountDrawerState] = useState(false);
@@ -52,7 +58,6 @@ const Header: React.FC = () =>{
     const [forgotPassword, setForgotPassword] = useState(false);
 
     const {quantity:checkoutQuantity} = useContext(CheckoutContext);
-    const theme = useTheme();
     const user = useContext(UserContext);
     const authenticated = !!user.user;
     const {data:dataCategories} = useQuery<Categories, CategoriesVariables>(categoriesQuery, {
@@ -87,8 +92,6 @@ const Header: React.FC = () =>{
         <>
             {overlay.type && <Overlay context={overlay}/>}
             <CartRightPanel isOpen={isOpenCartPanel} toggleCartDrawer={toggleCartDrawer}/>
-
-
             <Drawer anchor="right"
                     PaperProps={{
                         className: "w-400 max-w-full"
@@ -168,7 +171,8 @@ const Header: React.FC = () =>{
                     <Container maxWidth="xl">
                         <div className="header__top_left">
                             <ul className="list_inline">
-                                {pagesData?.pages.edges.map(edge => <li key={edge.node.id}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></li>)}
+                                {pagesData?.pages.edges.map(edge => <li key={edge.node.id}><Link
+                                    to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></li>)}
                             </ul>
                         </div>
                         <div className="header__top_right">
@@ -191,7 +195,7 @@ const Header: React.FC = () =>{
                         <div className="mobile">
                             <PhoneAndroidIcon/>
                             <div className="mobile__body">
-                                <Typography variant="h6">+375 (44) 497-91-96</Typography>
+                                <Typography variant="h6">{shop?.companyAddress.phone}</Typography>
                                 <div className="mobile__call">
                                     <Button component={Link}
                                             to={callBackModalUrl}
@@ -205,7 +209,8 @@ const Header: React.FC = () =>{
                             <div className="work_time__body">
                                 <Typography variant="h6">Режим работы</Typography>
                                 <div className="work_time__schedule">
-                                    Пн-Пт с 9:30 - 20:30
+                                    <div>ПН - ПТ: с 9:00 до 18:00</div>
+                                    <div>СБ - НД: с 9:00 до 15:00</div>
                                 </div>
                             </div>
 
@@ -217,68 +222,82 @@ const Header: React.FC = () =>{
                         </div>
                     </div>
                 </Container>
-                <div className="header__bottom">
-                    <Container maxWidth="xl">
-                        <div className="flex items-center h-60">
-                            <div className="w-300">
-                                <div className="header__categories">
-                                    <Menu categories={dataCategories?.categories}/>
+                <Sticky topOffset={140}>
+                    {({
+                          style,
+                          isSticky
+                      }) => (
+                        <div className={`header__bottom bg-white ${isSticky ? "shadow-xl": "" }`} style={style}>
+                            <Container maxWidth="xl">
+                                <div className="flex items-center h-60">
+                                    <div className="w-300">
+                                        <div className="header__categories">
+                                            <Menu categories={dataCategories?.categories}/>
+                                        </div>
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="header__search">
+                                            <Search />
+                                        </div>
+                                    </div>
+                                    <div className="w-200 flex">
+                                        <IconButton onClick={e => {setAccountDrawerState(true)}}>
+                                            <AccountIcon fillRule="evenodd" clipRule="evenodd"/>
+                                        </IconButton>
+                                        <Link to={userProfileFavoritesUrl}>
+                                            <IconButton>
+                                                <HeartIcon viewBox="0 -28 512.001 512"/>
+                                            </IconButton>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex-1">
-                                <div className="header__search">
-                                    <Search />
-                                </div>
-                            </div>
-                            <div className="w-200 flex">
-                                <IconButton onClick={e => {setAccountDrawerState(true)}}>
-                                    <AccountIcon fillRule="evenodd" clipRule="evenodd"/>
-                                </IconButton>
-                                <Link to={userProfileFavoritesUrl}>
-                                    <IconButton>
-                                        <HeartIcon viewBox="0 -28 512.001 512"/>
-                                    </IconButton>
-                                </Link>
-                            </div>
+                            </Container>
                         </div>
-                    </Container>
-                </div>
+                    )}
+                </Sticky>
             </Hidden>
             <Hidden mdUp>
-                <Container maxWidth="lg">
-                    <div className="mobile-header">
-                        <div className="menu">
-                            <MenuMobile />
-                        </div>
-                        <div className="mobile-header__logo">
-                            <Link to={baseUrl}>
-                                <img src={Logo} alt="СтройЛюксДрев"/>
-                            </Link>
-                        </div>
-                        <div className="mobile-header__utilities">
-                            <div className="mobile-header__search-icon">
-                                <IconButton onClick={e => {setIsActiveSearch(prev => !prev)}}>
-                                    {isActiveSearch ? <CloseIcon/> : <SearchIcon/>}
-                                </IconButton>
+                <Sticky topOffset={xs ? 0 : 50}>
+                    {({
+                          style,
+                          isSticky
+                      }) => (
+                        <Container maxWidth="lg" style={style} className={`bg-white ${isSticky ? "shadow-xl": "" }`}>
+                            <div className="mobile-header">
+                                <div className="menu">
+                                    <MenuMobile categories={dataCategories?.categories}/>
+                                </div>
+                                <div className="mobile-header__logo">
+                                    <Link to={baseUrl}>
+                                        <img src={Logo} alt="СтройЛюксДрев"/>
+                                    </Link>
+                                </div>
+                                <div className="mobile-header__utilities">
+                                    <div className="mobile-header__search-icon">
+                                        <IconButton onClick={e => {setIsActiveSearch(prev => !prev)}}>
+                                            {isActiveSearch ? <CloseIcon/> : <SearchIcon/>}
+                                        </IconButton>
+                                    </div>
+                                    <div className="mobile-header__account-icon">
+                                        <IconButton onClick={e => setAccountDrawerState(true)}>
+                                            <AccountIcon fillRule="evenodd" clipRule="evenodd"/>
+                                        </IconButton>
+                                    </div>
+                                    <div className="mobile-header__cart">
+                                        <IconButton onClick={toggleCartDrawer(true)}>
+                                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
+                                                <ShoppingCartOutlinedIcon />
+                                            </Badge>
+                                        </IconButton>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="mobile-header__account-icon">
-                                <IconButton onClick={e => setAccountDrawerState(true)}>
-                                    <AccountIcon fillRule="evenodd" clipRule="evenodd"/>
-                                </IconButton>
-                            </div>
-                            <div className="mobile-header__cart">
-                                <IconButton onClick={toggleCartDrawer(true)}>
-                                    <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                        <ShoppingCartOutlinedIcon />
-                                    </Badge>
-                                </IconButton>
-                            </div>
-                        </div>
-                    </div>
-                    <Collapse in={isActiveSearch}>
-                        <Search />
-                    </Collapse>
-                </Container>
+                            <Collapse in={isActiveSearch}>
+                                <Search />
+                            </Collapse>
+                        </Container>
+                    )}
+                </Sticky>
             </Hidden>
         </>
     );

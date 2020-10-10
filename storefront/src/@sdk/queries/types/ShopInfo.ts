@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { WeightUnitsEnum } from "./../../../types/globalTypes";
+
 // ====================================================
 // GraphQL query operation: ShopInfo
 // ====================================================
@@ -17,6 +19,39 @@ export interface ShopInfo_shop_domain {
    * Shop's absolute URL.
    */
   url: string;
+}
+
+export interface ShopInfo_shop_companyAddress_country {
+  __typename: "CountryDisplay";
+  /**
+   * Country code.
+   */
+  code: string;
+  /**
+   * Country name.
+   */
+  country: string;
+}
+
+export interface ShopInfo_shop_companyAddress {
+  __typename: "Address";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  streetAddress1: string;
+  streetAddress2: string;
+  city: string;
+  postalCode: string;
+  /**
+   * Shop's default country.
+   */
+  country: ShopInfo_shop_companyAddress_country;
+  countryArea: string;
+  phone: string;
 }
 
 export interface ShopInfo_shop {
@@ -34,9 +69,29 @@ export interface ShopInfo_shop {
    */
   headerText: string | null;
   /**
+   * Shop's default currency.
+   */
+  defaultCurrency: string;
+  /**
+   * Default shop's email sender's address.
+   */
+  defaultMailSenderAddress: string | null;
+  /**
+   * Default shop's email sender's name.
+   */
+  defaultMailSenderName: string | null;
+  /**
+   * Default weight unit.
+   */
+  defaultWeightUnit: WeightUnitsEnum | null;
+  /**
    * Shop's domain data.
    */
   domain: ShopInfo_shop_domain;
+  /**
+   * Company address.
+   */
+  companyAddress: ShopInfo_shop_companyAddress | null;
 }
 
 export interface ShopInfo {

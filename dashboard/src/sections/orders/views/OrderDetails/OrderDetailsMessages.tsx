@@ -19,6 +19,7 @@ import { OrderShippingMethodUpdate } from "../../types/OrderShippingMethodUpdate
 import { OrderUpdate } from "../../types/OrderUpdate";
 import { OrderVoid } from "../../types/OrderVoid";
 import { orderUrl, OrderUrlQueryParams } from "../../urls";
+import {FulfillOrder} from "@temp/sections/orders/types/FulfillOrder";
 
 interface OrderDetailsMessages {
   children: (props: {
@@ -36,6 +37,7 @@ interface OrderDetailsMessages {
     handlePaymentRefund: (data: OrderRefund) => void;
     handleShippingMethodUpdate: (data: OrderShippingMethodUpdate) => void;
     handleUpdate: (data: OrderUpdate) => void;
+    handleFulfill: (data: FulfillOrder) => void;
   }) => React.ReactElement;
   id: string;
   params: OrderUrlQueryParams;
@@ -205,6 +207,17 @@ export const OrderDetailsMessages: React.FC<OrderDetailsMessages> = ({
       closeModal();
     }
   };
+  const handleFulfill = (data: FulfillOrder) => {
+    const errs = data.orderFulfill?.errors;
+    if (errs.length === 0) {
+      pushMessage({
+        text: intl.formatMessage({id: "order_fulfill",
+          defaultMessage: "Order successfully fulfilled"
+        })
+      });
+      closeModal();
+    }
+  };
 
   return children({
     handleDraftCancel,
@@ -220,6 +233,7 @@ export const OrderDetailsMessages: React.FC<OrderDetailsMessages> = ({
     handlePaymentCapture,
     handlePaymentRefund,
     handleShippingMethodUpdate,
-    handleUpdate
+    handleUpdate,
+    handleFulfill
   });
 };

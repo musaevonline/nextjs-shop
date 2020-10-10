@@ -148,9 +148,19 @@ export const defaultTheme = createMuiTheme({
 			root: {
 				fontSize: "1.4rem"
 			}
-		}
+		},
+		MuiDrawer: {
+			root: {
+				maxWidth: "calc(100% - 20px)"
+			}
+		},
+		MuiTreeItem: {
+			label: {
+				paddingLeft: 15
+			}
+		},
 	}
-});
+} as any);
 
 // export type DefaultTheme = typeof defaultTheme;
 // export const styled = baseStyled as ThemedStyledInterface<DefaultTheme>;

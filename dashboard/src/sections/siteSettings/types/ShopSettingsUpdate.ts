@@ -102,13 +102,17 @@ export interface ShopSettingsUpdate_shopSettingsUpdate_shop {
    */
   description: string | null;
   /**
-   * Shop's domain data.
-   */
-  domain: ShopSettingsUpdate_shopSettingsUpdate_shop_domain;
-  /**
    * Shop's name.
    */
   name: string;
+  /**
+   * Header text.
+   */
+  headerText: string | null;
+  /**
+   * Shop's domain data.
+   */
+  domain: ShopSettingsUpdate_shopSettingsUpdate_shop_domain;
 }
 
 export interface ShopSettingsUpdate_shopSettingsUpdate {

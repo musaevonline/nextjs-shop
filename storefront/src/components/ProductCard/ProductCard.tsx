@@ -78,7 +78,7 @@ const ProductCard:React.FC<ProductCardProps> = ({item, isNew, isDiscount}) =>{
                             size="small"
                             name="simple-controlled"
                             value={item.rating.ratingAvg}
-                            disabled
+                            readOnly
                         />
                         }
                         {!item.rating.count && <Typography variant="caption" color="textSecondary">Нет отзывов</Typography>}

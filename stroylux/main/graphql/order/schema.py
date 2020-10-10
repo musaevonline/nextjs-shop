@@ -5,7 +5,7 @@ from .filters import OrderFilter, DraftOrderFilter
 from .mutations.draft_orders import DraftOrderComplete, DraftOrderCreate, DraftOrderDelete, DraftOrderLinesCreate, \
     DraftOrderLineDelete, DraftOrderLineUpdate, DraftOrderUpdate
 from .mutations.orders import OrderAddNote, OrderCancel, OrderCapture, OrderMarkAsPaid, OrderRefund, OrderUpdate, \
-    OrderUpdateShipping, OrderVoid
+    OrderUpdateShipping, OrderVoid, OrderFulfill
 from .resolvers import resolve_order_by_token, resolve_draft_orders, resolve_orders, resolve_order, \
     resolve_homepage_events, resolve_orders_total
 from .sorters import OrderSortingInput
@@ -135,3 +135,4 @@ class OrderMutations(graphene.ObjectType):
     order_update = OrderUpdate.Field()
     order_update_shipping = OrderUpdateShipping.Field()
     order_void = OrderVoid.Field()
+    order_fulfill = OrderFulfill.Field()

@@ -577,6 +577,7 @@ export enum ProductErrorCode {
 export enum ProductOrderField {
   DATE = "DATE",
   NAME = "NAME",
+  ORDER_COUNT = "ORDER_COUNT",
   PUBLISHED = "PUBLISHED",
   TYPE = "TYPE",
 }
@@ -737,6 +738,7 @@ export interface AttributeUpdateInput {
 
 export interface AttributeValueCreateInput {
   name: string;
+  slug: string;
 }
 
 export interface AttributeValueInput {
@@ -838,6 +840,15 @@ export interface OrderFilterInput {
   customer?: string | null;
   created?: DateRangeInput | null;
   search?: string | null;
+}
+
+export interface OrderFulfillInput {
+  lines: OrderFulfillLineInput[];
+  notifyCustomer?: boolean | null;
+}
+
+export interface OrderFulfillLineInput {
+  orderLineId?: string | null;
 }
 
 export interface OrderLineCreateInput {

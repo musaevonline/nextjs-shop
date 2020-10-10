@@ -2,6 +2,8 @@
 
 header{
   background-color: #fff;
+  z-index: 1001;
+  position: relative;
   .header{
     &__top{
       background-color: $header-background-color;

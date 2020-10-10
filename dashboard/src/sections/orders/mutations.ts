@@ -44,11 +44,13 @@ import {
 import { OrderUpdate, OrderUpdateVariables } from "./types/OrderUpdate";
 import { OrderVoid, OrderVoidVariables } from "./types/OrderVoid";
 import {OrderDraftBulkCancel, OrderDraftBulkCancelVariables} from "@temp/sections/orders/types/OrderDraftBulkCancel";
+import {FulfillOrder, FulfillOrderVariables} from "@temp/sections/orders/types/FulfillOrder";
 
 export const orderErrorFragment = gql`
   fragment OrderErrorFragment on OrderError {
     code
     field
+    message
   }
 `;
 
@@ -379,3 +381,22 @@ export const TypedOrderLineUpdateMutation = TypedMutation<
   OrderLineUpdateVariables
 >(orderLineUpdateMutation);
 
+
+const fulfillOrder = gql`
+  ${fragmentOrderDetails}
+  ${orderErrorFragment}
+  mutation FulfillOrder($orderId: ID!, $input: OrderFulfillInput!) {
+    orderFulfill(order: $orderId, input: $input) {
+      errors: orderErrors {
+        ...OrderErrorFragment
+      }
+      order {
+        ...OrderDetailsFragment
+      }
+    }
+  }
+`;
+export const TypedOrderFulfillMutation = TypedMutation<
+  FulfillOrder,
+  FulfillOrderVariables
+>(fulfillOrder);
