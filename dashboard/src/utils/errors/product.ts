@@ -10,15 +10,15 @@ const messages = defineMessages({
   attributeAlreadyAssigned: {
     id: 'attribute_has_already_exist',
     defaultMessage:
-      "This attribute has already been assigned to this product type"
+      "This attribute has already been assigned to this shop type"
   },
   attributeCannotBeAssigned: {
     id: 'attribute_cannot_be_assigned',
-    defaultMessage: "This attribute cannot be assigned to this product type"
+    defaultMessage: "This attribute cannot be assigned to this shop type"
   },
   attributeVariantsDisabled: {
     id: 'attribute_variants_disabled',
-    defaultMessage: "Variants are disabled in this product type"
+    defaultMessage: "Variants are disabled in this shop type"
   },
   skuUnique: {
     id: 'sku_unique',

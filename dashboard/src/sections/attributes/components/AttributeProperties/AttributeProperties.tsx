@@ -58,7 +58,7 @@ const AttributeProperties: React.FC<AttributePropertiesProps> = ({
               />
               <Typography variant="caption">
                 <FormattedMessage
-                  defaultMessage="If enabled, you'll be able to use this attribute to create product variants"
+                  defaultMessage="If enabled, you'll be able to use this attribute to create shop variants"
                   
                 />
               </Typography>

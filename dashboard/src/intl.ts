@@ -9,6 +9,10 @@ export const commonMessages = defineMessages({
     id:'description',
     defaultMessage: "Description"
   },
+  alt: {
+    id:'alt',
+    defaultMessage: "Alt"
+  },
   categoryCreated: {
     id:'category_created',
     defaultMessage: "Category created"

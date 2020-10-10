@@ -1,7 +1,11 @@
 import graphene
+import graphene_django_optimizer
 from django.conf import settings
+from graphene_federation import key
 from phonenumbers import COUNTRY_CODE_TO_REGION_CODE
 
+from ..core.connection import CountableDjangoObjectType
+from ...product.templatetags.product_images import get_thumbnail
 from ...site import models as site_models
 from .enums import AuthorizationKeyType
 from ..account.types import Address
@@ -18,6 +22,35 @@ class AuthorizationKey(graphene.ObjectType):
         description="Name of the authorization backend.", required=True
     )
     key = graphene.String(description="Authorization key (client ID).", required=True)
+
+
+@key(fields="id")
+class SiteBannerImage(CountableDjangoObjectType):
+    url = graphene.String(
+        required=True,
+        description="The URL of the image.",
+        size=graphene.Int(description="Size of the image."),
+    )
+
+    class Meta:
+        description = (
+            "Represents a site banner image."
+        )
+        interfaces = [graphene.relay.Node, ]
+        model = site_models.BannerImage
+        only_fields = ["id", "alt", "description", 'sort_order']
+
+    @staticmethod
+    def resolve_url(root: site_models.BannerImage, info, *, size=None):
+        if size:
+            url = get_thumbnail(root.image, size, method="thumbnail")
+        else:
+            url = root.image.url
+        return info.context.build_absolute_uri(url)
+
+    @staticmethod
+    def __resolve_reference(root, _info, **_kwargs):
+        return graphene.Node.get_node_from_global_id(_info, root.id)
 
 
 class Domain(graphene.ObjectType):
@@ -97,6 +130,10 @@ class Shop(graphene.ObjectType):
         required=False,
     )
 
+    images = graphene.List(
+        lambda: SiteBannerImage, description="List of images for the site."
+    )
+
     class Meta:
         description = (
             "Represents a shop resource containing general shop data and configuration."
@@ -159,10 +196,12 @@ class Shop(graphene.ObjectType):
     def resolve_include_taxes_in_prices(_, info):
         # return info.context.site.settings.include_taxes_in_prices
         return True
+
     @staticmethod
     def resolve_display_gross_prices(_, info):
         # return info.context.site.settings.display_gross_prices
         return True
+
     @staticmethod
     def resolve_charge_taxes_on_shipping(_, info):
         return info.context.site.settings.charge_taxes_on_shipping
@@ -171,6 +210,7 @@ class Shop(graphene.ObjectType):
     def resolve_track_inventory_by_default(_, info):
         # return info.context.site.settings.track_inventory_by_default
         return True
+
     @staticmethod
     def resolve_default_weight_unit(_, info):
         return info.context.site.settings.default_weight_unit
@@ -193,7 +233,6 @@ class Shop(graphene.ObjectType):
     def resolve_customer_set_password_url(_, info):
         return info.context.site.settings.customer_set_password_url
 
-
     @staticmethod
     @permission_required(SitePermissions.MANAGE_SETTINGS)
     def resolve_automatic_fulfillment_digital_products(_, info):
@@ -205,4 +244,6 @@ class Shop(graphene.ObjectType):
     def resolve_default_digital_max_downloads(_, info):
         return info.context.site.settings.default_digital_max_downloads
 
-
+    @staticmethod
+    def resolve_images(_, info):
+        return info.context.site.settings.images.all()

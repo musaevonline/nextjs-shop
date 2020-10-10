@@ -25,6 +25,8 @@ import SiteSettingsMailing, {
   SiteSettingsMailingFormData
 } from "../SiteSettingsMailing";
 import {useFormik} from "formik";
+import ShopImages from "@temp/sections/siteSettings/components/ShopImages";
+import {ShopImageFragment} from "@temp/sections/siteSettings/types/ShopImageFragment";
 
 export interface SiteSettingsPageAddressFormData {
   city: string;
@@ -55,6 +57,14 @@ export interface SiteSettingsPageProps {
   onKeyAdd: () => void;
   onKeyRemove: (keyType: AuthorizationKeyType) => void;
   onSubmit: (data: SiteSettingsPageFormData) => void;
+
+  placeholderImage: string;
+  onImageEdit?(id: string);
+  onImageReorder?(event: { oldIndex: number; newIndex: number });
+  onImageUpload(file: File);
+  images: ShopImageFragment[];
+  onImageDelete: (id: string) => () => void;
+  loadingImages: boolean;
 }
 
 export function areAddressInputFieldsModified(
@@ -95,7 +105,14 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
     onBack,
     onKeyAdd,
     onKeyRemove,
-    onSubmit
+    onSubmit,
+    images,
+    placeholderImage,
+    onImageEdit,
+    onImageReorder,
+    onImageUpload,
+    onImageDelete,
+    loadingImages
   } = props;
   const classes = useStyles(props);
   const intl = useIntl();
@@ -173,6 +190,24 @@ const SiteSettingsPage: React.FC<SiteSettingsPageProps> = props => {
                 errors={errors}
                 disabled={disabled}
                 onChange={form.handleChange}
+            />
+            <Hr className={classes.hr} />
+            <div>
+              <Typography>
+                <FormattedMessage id="banner_images"
+                                  defaultMessage="Banner Images"
+                                  description="section header"
+                />
+              </Typography>
+            </div>
+            <ShopImages
+                images={images}
+                placeholderImage={placeholderImage}
+                onImageDelete={onImageDelete}
+                onImageReorder={onImageReorder}
+                onImageEdit={onImageEdit}
+                onImageUpload={onImageUpload}
+                loading={loadingImages}
             />
             <Hr className={classes.hr} />
             <div>

@@ -7,7 +7,9 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import ImproperlyConfigured
 from django.core.validators import MaxLengthValidator, RegexValidator
 from django.db import models
+from versatileimagefield.fields import VersatileImageField, PPOIField
 
+from ..core.models import SortableModel
 from ..core.permissions import SitePermissions
 from ..core.weight import WeightUnits
 from . import AuthenticationBackends
@@ -90,3 +92,22 @@ class AuthorizationKey(models.Model):
 
     def key_and_secret(self):
         return self.key, self.password
+
+
+class BannerImage(SortableModel):
+    site = models.ForeignKey(
+        SiteSettings, related_name="images", on_delete=models.CASCADE
+    )
+    image = VersatileImageField(upload_to="site", ppoi_field="ppoi", blank=False)
+    ppoi = PPOIField()
+    alt = models.CharField(max_length=128, blank=True)
+    description = models.TextField()
+
+    class Meta:
+        ordering = ("sort_order",)
+
+    def __str__(self):
+        return f"Изображение - {self.product.name}"
+
+    def get_ordering_queryset(self):
+        return self.site.images.all()

@@ -36,14 +36,14 @@ const AttributeDetails: React.FC<AttributeDetailsProps> = ({
     {
       label: intl.formatMessage({ id: 'dropdown',
         defaultMessage: "Dropdown",
-        description: "product attribute type"
+        description: "shop attribute type"
       }),
       value: AttributeInputTypeEnum.DROPDOWN
     },
     {
       label: intl.formatMessage({ id: 'multiple_select',
         defaultMessage: "Multiple Select",
-        description: "product attribute type"
+        description: "shop attribute type"
       }),
       value: AttributeInputTypeEnum.MULTISELECT
     }

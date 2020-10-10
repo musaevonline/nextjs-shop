@@ -1,9 +1,9 @@
 import graphene
 from django.core.exceptions import ValidationError
 
-from .enums import AuthorizationKeyType
-from ...account import models as account_models
-from ...site import models as site_models
+from main.graphql.shop.enums import AuthorizationKeyType
+from main.account import models as account_models
+from main.site import models as site_models
 
 from main.core.error_codes import ShopErrorCode
 from main.core.permissions import SitePermissions

@@ -3,13 +3,25 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AuthorizationKeyType } from "./../../../types/globalTypes";
+import { ShopErrorCode, AuthorizationKeyType } from "./../../../types/globalTypes";
 
 // ====================================================
-// GraphQL query operation: SiteSettings
+// GraphQL mutation operation: ShopImageReorder
 // ====================================================
 
-export interface SiteSettings_shop_authorizationKeys {
+export interface ShopImageReorder_shopImageReorder_errors {
+  __typename: "ShopError";
+  /**
+   * The error code.
+   */
+  code: ShopErrorCode;
+  /**
+   * Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
+   */
+  field: string | null;
+}
+
+export interface ShopImageReorder_shopImageReorder_shop_authorizationKeys {
   __typename: "AuthorizationKey";
   /**
    * Authorization key (client ID).
@@ -21,7 +33,7 @@ export interface SiteSettings_shop_authorizationKeys {
   name: AuthorizationKeyType;
 }
 
-export interface SiteSettings_shop_companyAddress_country {
+export interface ShopImageReorder_shopImageReorder_shop_companyAddress_country {
   __typename: "CountryDisplay";
   /**
    * Country code.
@@ -33,7 +45,7 @@ export interface SiteSettings_shop_companyAddress_country {
   country: string;
 }
 
-export interface SiteSettings_shop_companyAddress {
+export interface ShopImageReorder_shopImageReorder_shop_companyAddress {
   __typename: "Address";
   city: string;
   cityArea: string;
@@ -41,7 +53,7 @@ export interface SiteSettings_shop_companyAddress {
   /**
    * Shop's default country.
    */
-  country: SiteSettings_shop_companyAddress_country;
+  country: ShopImageReorder_shopImageReorder_shop_companyAddress_country;
   countryArea: string;
   firstName: string;
   /**
@@ -55,7 +67,7 @@ export interface SiteSettings_shop_companyAddress {
   streetAddress2: string;
 }
 
-export interface SiteSettings_shop_domain {
+export interface ShopImageReorder_shopImageReorder_shop_domain {
   __typename: "Domain";
   /**
    * The host name of the domain.
@@ -63,7 +75,7 @@ export interface SiteSettings_shop_domain {
   host: string;
 }
 
-export interface SiteSettings_shop_images {
+export interface ShopImageReorder_shopImageReorder_shop_images {
   __typename: "SiteBannerImage";
   /**
    * The ID of the object.
@@ -78,16 +90,16 @@ export interface SiteSettings_shop_images {
   sortOrder: number | null;
 }
 
-export interface SiteSettings_shop {
+export interface ShopImageReorder_shopImageReorder_shop {
   __typename: "Shop";
   /**
    * List of configured authorization keys. Authorization keys are used to enable third-party OAuth authorization (currently Facebook or Google).
    */
-  authorizationKeys: (SiteSettings_shop_authorizationKeys | null)[];
+  authorizationKeys: (ShopImageReorder_shopImageReorder_shop_authorizationKeys | null)[];
   /**
    * Company address.
    */
-  companyAddress: SiteSettings_shop_companyAddress | null;
+  companyAddress: ShopImageReorder_shopImageReorder_shop_companyAddress | null;
   /**
    * URL of a view where customers can set their password.
    */
@@ -115,16 +127,26 @@ export interface SiteSettings_shop {
   /**
    * Shop's domain data.
    */
-  domain: SiteSettings_shop_domain;
+  domain: ShopImageReorder_shopImageReorder_shop_domain;
   /**
    * List of images for the site.
    */
-  images: (SiteSettings_shop_images | null)[] | null;
+  images: (ShopImageReorder_shopImageReorder_shop_images | null)[] | null;
 }
 
-export interface SiteSettings {
+export interface ShopImageReorder_shopImageReorder {
+  __typename: "ShopImageReorder";
+  errors: ShopImageReorder_shopImageReorder_errors[];
+  shop: ShopImageReorder_shopImageReorder_shop | null;
+}
+
+export interface ShopImageReorder {
   /**
-   * Return information about the shop.
+   * Changes ordering of the site image.
    */
-  shop: SiteSettings_shop;
+  shopImageReorder: ShopImageReorder_shopImageReorder | null;
+}
+
+export interface ShopImageReorderVariables {
+  imagesIds: (string | null)[];
 }
