@@ -59,7 +59,7 @@ const Footer:React.FC = () =>{
                                 <SvgIcon className="mr-10" fontSize="small">
                                     <MailOutlineOutlinedIcon/>
                                 </SvgIcon>
-                                <a href={`mailto:${shop?.defaultMailSenderAddress}`}>{shop?.defaultMailSenderAddress}</a>
+                                <a href={`mailto:test@gmail.com`}>test@gmail.com</a>
                             </div>
                             <div className="flex align-center py-5">
                                 <SvgIcon className="mr-10" fontSize="small">

@@ -88,14 +88,6 @@ export interface ShopInfo_shop {
    */
   defaultCurrency: string;
   /**
-   * Default shop's email sender's address.
-   */
-  defaultMailSenderAddress: string | null;
-  /**
-   * Default shop's email sender's name.
-   */
-  defaultMailSenderName: string | null;
-  /**
    * Default weight unit.
    */
   defaultWeightUnit: WeightUnitsEnum | null;

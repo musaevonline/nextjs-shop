@@ -16,8 +16,6 @@ export const ShopBaseFragment = gql`
         description
         headerText
         defaultCurrency
-        defaultMailSenderAddress
-        defaultMailSenderName
         defaultWeightUnit
         domain{
             host
