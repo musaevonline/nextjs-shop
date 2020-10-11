@@ -258,7 +258,7 @@ class WebpThumbnailImage(ThumbnailImage, NewSizedImage):
 
 class CustomCroppedImage(CroppedImage, NewSizedImage):
     def __init__(self, path_to_image, storage, create_on_demand, ppoi=(0.5, 0.5)):
-        _, ext = os.path.splitext(path_to_image)
+        _, ext = os.path.splitext(path_to_image or '')
         self.ext = ext[1:]
         super(CustomCroppedImage, self).__init__(path_to_image, storage, create_on_demand, ppoi=ppoi)
 
@@ -266,7 +266,7 @@ class CustomCroppedImage(CroppedImage, NewSizedImage):
 class CustomThumbnailImage(ThumbnailImage, NewSizedImage):
     def __init__(self, path_to_image, storage, create_on_demand,
                  ppoi=(0.5, 0.5)):
-        _, ext = os.path.splitext(path_to_image)
+        _, ext = os.path.splitext(path_to_image or '')
         self.ext = ext[1:]
         super(CustomThumbnailImage, self).__init__(path_to_image, storage,
                                                    create_on_demand, ppoi=ppoi)
