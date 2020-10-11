@@ -98,6 +98,8 @@ const View:React.FC = () => {
             meta={{
                 description: shop ? shop.description : "",
                 title: shop ? shop.name : "",
+                type: 'product.category',
+                custom: [<link key="canonical" rel="canonical" href={window.location.href} />]
             }}
         >
             {(!productsResponse || !categoryResponse) && <Loader full={true}/>}

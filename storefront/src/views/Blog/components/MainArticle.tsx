@@ -26,12 +26,7 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         maxWidth: "100%",
-        objectFit: "cover",
-        height: 400,
         width: "100%",
-        [theme.breakpoints.down('xs')]: {
-            height: 250
-        }
     },
     title: {
         padding: "18px 0 12px 0"
@@ -88,7 +83,7 @@ const MainArticleCard: React.FC<IProps> = ({article, loading}) => {
         <div className={classes.root}>
             {!article && loading &&
             <>
-                <Skeleton className={classes.image} variant="rect"/>
+                <Skeleton className={classes.image} variant="rect" height={400} width={"100%"}/>
                 <Skeleton variant="text" width="60%"/>
                 <Skeleton variant="text" width="30%"/>
             </>

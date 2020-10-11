@@ -359,6 +359,10 @@ export interface ProductDetails_product_reviews_edges {
 
 export interface ProductDetails_product_reviews {
   __typename: "ProductReviewCountableConnection";
+  /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
   edges: ProductDetails_product_reviews_edges[];
 }
 

@@ -13,6 +13,7 @@ import {CheckoutContext} from "@temp/components/CheckoutProvider/context";
 import {ProductReviews, ProductReviewsVariables} from "@sdk/queries/types/ProductReviews";
 import {productReviewsQuery} from "@sdk/queries/product-review";
 import _ from "lodash";
+import {productStructuredData} from "@temp/core/SEO/productStructuredData";
 
 const PAGINATE_BY_REVIEWS = 5;
 
@@ -79,13 +80,18 @@ const View:React.FC = () =>{
         >
             {(!data || loading) &&  <Loader full={!data} absolute={!!data}/>}
             {data?.product &&
-            <Page product={data.product}
-                  addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}
-                  checkoutVariantQuantity={checkoutVariantQuantity}
-                  reviews={reviews?.productReviews}
-                  reviewsLoading={reviewsLoading}
-                  loadMoreReviews={loadMoreReviews}
-            />
+            <>
+                <script className="structured-data-list" type="application/ld+json">
+                    {productStructuredData(data?.product)}
+                </script>
+                <Page product={data.product}
+                      addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}
+                      checkoutVariantQuantity={checkoutVariantQuantity}
+                      reviews={reviews?.productReviews}
+                      reviewsLoading={reviewsLoading}
+                      loadMoreReviews={loadMoreReviews}
+                />
+            </>
             }
         </MetaWrapper>
     )

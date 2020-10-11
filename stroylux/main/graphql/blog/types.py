@@ -7,6 +7,7 @@ from main.blog import models
 from main.graphql.core.types.common import Image
 from main.product.templatetags.product_images import get_thumbnail
 from ..core.connection import CountableDjangoObjectType
+from ..core.enums import VersatileImageMethod
 
 
 @key(fields="id")
@@ -15,7 +16,8 @@ class BlogCategoryType(CountableDjangoObjectType):
     thumbnail = graphene.Field(
         Image,
         description="The main thumbnail for a blog category.",
-        size=graphene.Argument(graphene.Int, description="Size of thumbnail."),
+        size=graphene.String(description="Size of thumbnail. Default 255x255"),
+        method=graphene.Argument(VersatileImageMethod, description="VersatileImageMethod")
     )
 
     class Meta:
@@ -34,8 +36,8 @@ class BlogCategoryType(CountableDjangoObjectType):
 
     @staticmethod
     @graphene_django_optimizer.resolver_hints(only=["image"])
-    def resolve_thumbnail(root: models.BlogCategory, info, *, size=255):
-        url = get_thumbnail(root.image, size, method="thumbnail")
+    def resolve_thumbnail(root: models.BlogCategory, info, size='255x255', method='crop_webp'):
+        url = get_thumbnail(root.image, size, method=method)
         return Image(alt=root.name, url=info.context.build_absolute_uri(url))
 
 
@@ -45,7 +47,8 @@ class BlogArticleType(CountableDjangoObjectType):
     thumbnail = graphene.Field(
         Image,
         description="The main thumbnail for a blog article.",
-        size=graphene.Argument(graphene.Int, description="Size of thumbnail."),
+        size=graphene.String(description="Size of thumbnail. Default 255x255"),
+        method=graphene.Argument(VersatileImageMethod, description="VersatileImageMethod")
     )
     author_name = graphene.String()
 
@@ -70,8 +73,8 @@ class BlogArticleType(CountableDjangoObjectType):
         ]
 
     @graphene_django_optimizer.resolver_hints(only=["image"])
-    def resolve_thumbnail(self: models.BlogArticle, info, *, size=255):
-        url = get_thumbnail(self.image, size, method="thumbnail")
+    def resolve_thumbnail(self: models.BlogArticle, info, size='255x255', method='crop_webp'):
+        url = get_thumbnail(self.image, size, method=method)
         return Image(alt=self.title, url=info.context.build_absolute_uri(url))
 
     @graphene_django_optimizer.resolver_hints(select_related=["author"])

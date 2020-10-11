@@ -5,22 +5,23 @@ import NukaCarousel from "nuka-carousel";
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from "@material-ui/core/IconButton";
+import {ShopInfo_shop_images} from "@sdk/queries/types/ShopInfo";
+import {Skeleton} from "@material-ui/lab";
+import {makeStyles} from "@material-ui/core/styles";
 
+const useStyles = makeStyles(theme => ({
+    imgDescription: {
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        padding: "2.5% 5%",
+        borderRadius: 5,
+        color: "#fff"
+    }
+}))
 
-const HomeCarousel:React.FC = () =>{
-
-    const images = [
-        {
-            url: "https://stroy-lux.by/wp-content/uploads/2019/07/%D1%84%D0%BE%D0%BD1.jpg",
-            alt: "Второй слайд"
-        },
-        {
-            url: "https://avatars.mds.yandex.net/get-pdb/752643/361918da-d020-40a8-92fe-fe96ec14c9c3/s1200",
-            alt: "Первый слайд"
-        },
-
-    ];
-
+const HomeCarousel:React.FC<{
+    images: ShopInfo_shop_images[] | null
+}> = ({images}) =>{
+    const classes = useStyles();
     const settings = {
         className: "carousel",
         renderBottomCenterControls: () => null,
@@ -51,14 +52,29 @@ const HomeCarousel:React.FC = () =>{
 
     return(
         <div className="home-carousel">
+            {!images &&
+            <Skeleton variant="rect" height={600}/>
+            }
+            {images &&
             <NukaCarousel {...settings}>
-                {images.map((img, i) => <div key={i} style={{
-                    backgroundImage: `url(${img.url})`,
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
-                    height: 600
-                }} />)}
+                {images.map((img, i) =>
+                    <div key={i} style={{
+                        backgroundImage: `url(${img.url})`,
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                        height: 600
+                    }}>
+                        {img.description &&
+                        <div className="flex flex-column items-center justify-center h-full"
+                             style={{paddingTop: "10%"}}>
+                            <div dangerouslySetInnerHTML={{__html: img.description}}
+                                 className={classes.imgDescription}/>
+                        </div>
+                        }
+                    </div>
+                )}
             </NukaCarousel>
+            }
         </div>
     );
 };

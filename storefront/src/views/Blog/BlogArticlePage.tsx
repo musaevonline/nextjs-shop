@@ -40,9 +40,7 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     '& img': {
       maxWidth: "100%",
-      maxHeight: 500,
       width: "100%",
-      objectFit: "cover"
     },
     '&:hover $icons': {
       opacity: 1

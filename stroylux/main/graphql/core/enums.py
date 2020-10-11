@@ -65,6 +65,13 @@ class OrderDirection(graphene.Enum):
         raise ValueError("Unsupported enum value: %s" % self.value)
 
 
+class VersatileImageMethod(graphene.Enum):
+    THUMBNAIL = "thumbnail"
+    CROP = "crop"
+    CROP_WEBP = "crop_webp"
+    THUMBNAIL_WEBP = "thumbnail_webp"
+
+
 PermissionEnum = graphene.Enum("PermissionEnum", get_permissions_enum_list())
 
 AccountErrorCode = graphene.Enum.from_enum(account_error_codes.AccountErrorCode)

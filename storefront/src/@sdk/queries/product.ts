@@ -24,7 +24,8 @@ export const productQuery = gql`
                     }
                 }
             }
-            reviews(first: 2){
+            reviews(first: 5){
+                totalCount
                 edges{
                     node{
                         ...ProductReview                        

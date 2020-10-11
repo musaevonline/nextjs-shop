@@ -81,7 +81,7 @@ services:
       - ./stroylux/main/:/app/main:Z,cached
       - ./stroylux/templates/:/app/templates:Z,cached
       - /app/templates/templated_email/compiled
-      - stroylux-media:/app/media
+      - ./stroylux/media/:/app/media:Z
 
   smtp:
     image: mailhog/mailhog:v1.0.0

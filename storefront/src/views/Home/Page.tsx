@@ -3,15 +3,13 @@ import "./scss/index.scss";
 import React from "react";
 import _ from 'lodash';
 
-import { structuredData } from "../../core/SEO/Homepage/structuredData";
+import { homeStructuredData } from "../../core/SEO/homeStructuredData";
 import {Container} from "@material-ui/core";
 import {HomeCarousel} from "@temp/components/HomeCarousel";
 import {NewsCarousel} from "@temp/components/NewsCarousel";
 import Carousel from "react-multi-carousel";
 import {ProductCard} from "@temp/components/ProductCard";
-import Loader from "@temp/components/Loader";
 import Typography from "@material-ui/core/Typography";
-import {Shop_shop} from "@sdk/queries/types/Shop";
 import {ProductsCardDetails_products} from "@sdk/queries/types/ProductsCardDetails";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
@@ -19,6 +17,8 @@ import {BlogArticleList_blogArticleList_edges} from "@sdk/queries/types/BlogArti
 import {IArticleCard} from "@temp/components/ArticleCard/ArticleCard";
 import {dateToShortString} from "@temp/core/utils";
 import {Skeleton} from "@material-ui/lab";
+import {ShopInfo_shop} from "@sdk/queries/types/ShopInfo";
+import {logoStructuredData} from "@temp/core/SEO/logoStructuredData";
 
 const responsive = {
     large:{
@@ -69,7 +69,7 @@ const CarouselSkeleton: React.FC = () => {
 
 const Page: React.FC<{
     loading: boolean;
-    shop: Shop_shop,
+    shop: ShopInfo_shop,
     newProducts: ProductsCardDetails_products,
     popularProducts: ProductsCardDetails_products,
     articlesEdges: BlogArticleList_blogArticleList_edges[],
@@ -100,10 +100,12 @@ const Page: React.FC<{
     return (
         <div className="home-page">
             <script className="structured-data-list" type="application/ld+json">
-                {shop ? structuredData(shop) : ''}
+                {shop ? homeStructuredData(shop) : ''}
             </script>
-            {loading && <Loader absolute full/>}
-            <HomeCarousel />
+            <script className="structured-data-list" type="application/ld+json">
+                {logoStructuredData()}
+            </script>
+            <HomeCarousel images={shop?.images}/>
             <Container maxWidth="xl">
 
                 <Card className="my-20">

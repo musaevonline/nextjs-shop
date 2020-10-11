@@ -8,7 +8,10 @@ type ShopContext = ShopInfo_shop;
 export const ShopContext = React.createContext<ShopContext>(undefined);
 
 export const ShopProvider: React.FC = ({ children }) => {
-  const {data} = useQuery<ShopInfo>(shopQuery);
+  const {data} = useQuery<ShopInfo>(shopQuery, {
+      fetchPolicy: "cache-and-network",
+      nextFetchPolicy: "cache-first"
+  });
   return (
       <>
         <ShopContext.Provider value={data ? data.shop : undefined}>

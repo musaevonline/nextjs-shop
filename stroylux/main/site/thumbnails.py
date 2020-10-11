@@ -6,4 +6,4 @@ from .models import BannerImage
 @app.task
 def create_site_thumbnails(image_id: str):
     """Take a BannerImage model and create thumbnails for it."""
-    create_thumbnails(pk=image_id, model=BannerImage, size_set="products")
+    create_thumbnails(pk=image_id, model=BannerImage, size_set="shop_banner")

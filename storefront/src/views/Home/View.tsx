@@ -34,14 +34,14 @@ const View: React.FC = () => {
     })
     return(
         <MetaWrapper meta={{}}>
-                <Page
-                    loading={!newProductsData}
-                    newProducts={newProductsData?.products}
-                    popularProducts={popularProductsData?.products}
-                    articlesEdges={articlesData?.blogArticleList.edges}
-                    articlesLoading={articlesLoading}
-                    shop={shop}
-                />
+            <Page
+                loading={!newProductsData}
+                newProducts={newProductsData?.products}
+                popularProducts={popularProductsData?.products}
+                articlesEdges={articlesData?.blogArticleList.edges}
+                articlesLoading={articlesLoading}
+                shop={shop}
+            />
 
         </MetaWrapper>
     );

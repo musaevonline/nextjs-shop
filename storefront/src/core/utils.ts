@@ -1,8 +1,6 @@
 import { Base64 } from "js-base64";
 import { each } from "lodash";
 import { parse as parseQs } from "query-string";
-
-import {PRICE_CURRENCY} from "@temp/core/constants";
 import {MoneyRange} from "@sdk/fragments/types/MoneyRange";
 import {OrderDirection, ProductOrderField} from "@temp/types/globalTypes";
 import {useLocation} from "react-router";
@@ -122,19 +120,19 @@ export const parseQueryString = (
 };
 
 
-const getPriceCurrency = (currency: string | null):string => {
-  if (!currency){
-    return ''
-  }
-  return PRICE_CURRENCY[currency] || currency;
-};
+// const getPriceCurrency = (currency: string | null):string => {
+//   if (!currency){
+//     return ''
+//   }
+//   return PRICE_CURRENCY[currency] || currency;
+// };
 
 export const showPriceRange = (priceRange: MoneyRange) =>{
   const isDifferentPrice = priceRange.start.amount !== priceRange.stop.amount;
   if (isDifferentPrice) {
-    return `${priceRange.start.amount} - ${priceRange.stop.amount} ${getPriceCurrency(priceRange.start.currency)}`;
+    return `${priceToString(priceRange.start)} - ${priceToString(priceRange.stop)}`;
   }
-  return `${priceRange.start.amount} ${getPriceCurrency(priceRange.start.currency)}`;
+  return `${priceToString(priceRange.start)}`;
 };
 
 export const dateToString = (stringDate: string): string =>{

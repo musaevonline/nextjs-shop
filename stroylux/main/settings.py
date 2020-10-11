@@ -237,22 +237,57 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ("product_small_2x", "thumbnail__120x120"),
         ("product_list", "thumbnail__255x255"),
         ("product_list_2x", "thumbnail__510x510"),
+
+        ("product_gallery_webp", "thumbnail_webp__540x540"),
+        ("product_gallery_2x_webp", "thumbnail_webp__1080x1080"),
+        ("product_small_webp", "thumbnail_webp__60x60"),
+        ("product_small_2x_webp", "thumbnail_webp__120x120"),
+        ("product_list_webp", "thumbnail_webp__255x255"),
+        ("product_list_2x_webp", "thumbnail_webp__510x510"),
     ],
-    "background_images": [("header_image", "thumbnail__1080x440")],
-    "user_avatars": [("default", "thumbnail__445x445")],
+    "background_images": [
+        ("header_image", "thumbnail__1080x440"),
+        ("header_image_webp", "thumbnail_webp__1080x440")
+    ],
+    "user_avatars": [
+        ("default", "thumbnail__445x445"),
+        ("default_crop", "crop__445x445"),
+        ("default_crop_webp", "crop_webp__445x445"),
+    ],
     "blog": [
-        ("default", "thumbnail__1080x1080"),
-        ("lg", "thumbnail__510x510"),
-        ("md", "thumbnail__255x255"),
-        ("sm", "thumbnail__120x120"),
-        ("xs", "thumbnail__60x60"),
+        ("default", "thumbnail__1600x900"),
+        ("lg", "thumbnail__800x450"),
+        ("md", "thumbnail__400x225"),
+        ("sm", "thumbnail__200x110"),
+        ("xs", "thumbnail__100x55"),
+
+        ("default_crop_webp", "crop_webp__1600x900"),
+        ("lg_crop_webp", "crop_webp__800x450"),
+        ("md_crop_webp", "crop_webp__400x225"),
+        ("sm_crop_webp", "crop_webp__200x110"),
+        ("xs_crop_webp", "crop_webp__100x55"),
 
     ],
+    'shop_banner': [
+        ("default", "thumbnail__1080x600"),
+        ("lg", "thumbnail__1600x900"),
+        ("sm", "thumbnail__120x120"),
+
+        ("default_webp", "thumbnail_webp__1080x600"),
+        ("lg_webp", "thumbnail_webp__1600x900"),
+        ("sm_webp", "thumbnail_webp__120x120"),
+
+        ("default_crop_webp", "crop_webp__1080x600"),
+        ("lg_crop_webp", "crop_webp__1600x900"),
+        ("sm_crop_webp", "crop_webp__120x120"),
+
+    ]
 }
 
 VERSATILEIMAGEFIELD_SETTINGS = {
     # Images should be pre-generated on Production environment
-    "create_images_on_demand": get_bool_from_env("CREATE_IMAGES_ON_DEMAND", DEBUG)
+    "create_images_on_demand": get_bool_from_env("CREATE_IMAGES_ON_DEMAND", DEBUG),
+    'jpeg_resize_quality': 70
 }
 
 PLACEHOLDER_IMAGES = {

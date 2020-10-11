@@ -54,6 +54,21 @@ export interface ShopInfo_shop_companyAddress {
   phone: string;
 }
 
+export interface ShopInfo_shop_images {
+  __typename: "SiteBannerImage";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  alt: string;
+  description: string;
+  sortOrder: number | null;
+  /**
+   * The URL of the image.
+   */
+  url: string;
+}
+
 export interface ShopInfo_shop {
   __typename: "Shop";
   /**
@@ -92,6 +107,10 @@ export interface ShopInfo_shop {
    * Company address.
    */
   companyAddress: ShopInfo_shop_companyAddress | null;
+  /**
+   * List of images for the site.
+   */
+  images: (ShopInfo_shop_images | null)[] | null;
 }
 
 export interface ShopInfo {

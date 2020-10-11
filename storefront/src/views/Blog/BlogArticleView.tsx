@@ -5,6 +5,7 @@ import {useParams} from "react-router";
 import {useBlogArticleQuery} from "@sdk/queries/blog";
 import BlogArticlePage from "@temp/views/Blog/BlogArticlePage";
 import NotFound from "@temp/components/NotFound";
+import {articleStructuredData} from "@temp/core/SEO/articleStructuredData";
 
 
 const BlogCategoryView:React.FC = () => {
@@ -25,6 +26,9 @@ const BlogCategoryView:React.FC = () => {
                 title: shop ? `${data?.blogArticle?.title} - ${shop.name}` : "",
             }}
         >
+            <script className="structured-data-list" type="application/ld+json">
+                {articleStructuredData(data?.blogArticle, shop)}
+            </script>
             <BlogArticlePage article={data?.blogArticle} loading={loading}/>
         </MetaWrapper>
     )

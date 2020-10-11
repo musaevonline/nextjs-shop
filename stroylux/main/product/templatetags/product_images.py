@@ -73,8 +73,8 @@ def get_thumbnail_size(size, method, rendition_key_set):
     elif smaller:
         return "%sx%s" % (smaller[-1], smaller[-1])
     msg = (
-        "Thumbnail size %s is not defined in settings "
-        "and it won't be generated automatically" % size_name
+            "Thumbnail size %s is not defined in settings "
+            "and it won't be generated automatically" % size_name
     )
     warnings.warn(msg)
     return None
@@ -92,7 +92,11 @@ def get_thumbnail(image_file, size, method, rendition_key_set="products"):
             )
         else:
             return thumbnail.url
-    return static(choose_placeholder("%sx%s" % (size, size)))
+    if isinstance(size, int):
+        size_str = "%sx%s" % (size, size)
+    else:
+        size_str = size
+    return static(choose_placeholder(size_str))
 
 
 @register.simple_tag()

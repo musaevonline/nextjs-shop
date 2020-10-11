@@ -45,8 +45,6 @@ const View:React.FC = () => {
         })
     };
 
-    console.log(data);
-
     return(
         <>
             <Page products={data?.products}

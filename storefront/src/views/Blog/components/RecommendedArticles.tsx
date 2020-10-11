@@ -27,8 +27,8 @@ const useStyles = makeStyles(theme => ({
             paddingTop: 0
         },
         '& > a': {
-            paddingRight: 24,
-            flexBasis: "30%",
+            marginRight: 24,
+            flexBasis: 200,
             minWidth: 200
         },
         '&:hover $title': {
@@ -36,17 +36,15 @@ const useStyles = makeStyles(theme => ({
             color: theme.palette.secondary.main
         },
         [theme.breakpoints.down('xs')]: {
-            flexDirection: "column"
+            flexDirection: "column",
+            '& > a': {
+                marginRight: 0
+            },
         }
     },
     itemsImage: {
-        height: 90,
-        backgroundColor: "#F0F0F0",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        backgroundSize: "cover",
+        width: "100%",
         [theme.breakpoints.down('xs')]: {
-            height: 180,
             marginBottom: 10
         }
     },
@@ -114,7 +112,7 @@ const RecommendedArticles:React.FC<IProps> = ({
             <div className={classes.items}>
                 {!articlesData?.edges.length && loading && skeletonEdges.map(i =>
                     <div key={i} className={classes.item}>
-                        <a><Skeleton className={classes.itemsImage} variant="rect" /></a>
+                        <a><Skeleton className={classes.itemsImage} variant="rect" height={110}/></a>
                         <div className={classes.itemContent}>
                             <Skeleton variant="text" width="60%"/>
                             <Skeleton variant="text" width="50%"/>
@@ -127,7 +125,7 @@ const RecommendedArticles:React.FC<IProps> = ({
                     return(
                         <div key={i} className={classes.item}>
                             <Link to={getBlogArticleUrl(article.category.slug, article.slug)}>
-                                <div className={classes.itemsImage} style={{backgroundImage: `url(${article.thumbnail?.url})`}}/>
+                                <img className={classes.itemsImage} src={article.thumbnail?.url} alt={article.title}/>
                             </Link>
                             <div className={classes.itemContent}>
                                 <Typography component={Link}

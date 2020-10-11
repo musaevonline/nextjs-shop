@@ -6,7 +6,7 @@ export const blogCategoryFragment = gql`
     slug
     name
     description
-    thumbnail(size: 600) {
+    thumbnail(size: "800x450", method: CROP_WEBP) {
       url
       alt
     }
@@ -30,7 +30,7 @@ export const blogArticleFragment = gql`
       id
       slug
     }
-    thumbnail(size: 600) {
+    thumbnail(size: "800x450", method: CROP_WEBP) {
       url
       alt
     }

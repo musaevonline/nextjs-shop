@@ -90,8 +90,8 @@ const useStyles = makeStyles(theme => ({
   },
   image: {
     maxWidth: "100%",
-    objectFit: "cover",
-    height: 160,
+    // objectFit: "cover",
+    // height: 160,
     width: "100%",
     marginBottom: 15
   },
