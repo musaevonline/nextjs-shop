@@ -72,7 +72,6 @@ const shopSettingsUpdate = gql`
   ${shopErrorFragment}
   ${shopFragment}
   ${fragmentAddress}
-  ${shopImageFragment}
   mutation ShopSettingsUpdate(
     $shopDomainInput: SiteDomainInput!
     $shopSettingsInput: ShopSettingsInput!
