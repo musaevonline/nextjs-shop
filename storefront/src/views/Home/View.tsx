@@ -31,14 +31,14 @@ const View: React.FC = () => {
             filter: {isPublished: true},
             sortBy: {direction: OrderDirection.DESC, field: BlogArticleOrderField.DATE}
         }
-    })
+    });
     return(
         <MetaWrapper meta={{}}>
             <Page
                 loading={!newProductsData}
                 newProducts={newProductsData?.products}
                 popularProducts={popularProductsData?.products}
-                articlesEdges={articlesData?.blogArticleList.edges}
+                articlesEdges={articlesData?.blogArticleList?.edges}
                 articlesLoading={articlesLoading}
                 shop={shop}
             />

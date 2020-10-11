@@ -171,7 +171,7 @@ const Header: React.FC = () =>{
                     <Container maxWidth="xl">
                         <div className="header__top_left">
                             <ul className="list_inline">
-                                {pagesData?.pages.edges.map(edge => <li key={edge.node.id}><Link
+                                {pagesData?.pages?.edges.map(edge => <li key={edge.node.id}><Link
                                     to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></li>)}
                             </ul>
                         </div>

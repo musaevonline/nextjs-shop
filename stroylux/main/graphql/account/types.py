@@ -8,6 +8,7 @@ from .enums import CountryCodeEnum
 from .utils import can_user_manage_group, get_groups_which_user_can_manage
 from ..checkout.types import Checkout
 from ..core.connection import DjangoPkInterface
+from ..core.enums import VersatileImageMethod
 from ..core.fields import PrefetchingConnectionField
 from ..core.types import CountryDisplay, Permission
 from ..core.types.common import Image
@@ -18,6 +19,7 @@ from ...account import models
 from ...checkout.utils import get_user_checkout
 from ..core.connection import CountableDjangoObjectType
 from ...core.permissions import AccountPermissions, OrderPermissions
+from ...product.templatetags.product_images import get_thumbnail
 
 
 class UserPermission(Permission):
@@ -65,7 +67,11 @@ class User(CountableDjangoObjectType):
         "main.graphql.account.types.Group",
         description="List of user's permission groups which user can manage.",
     )
-    avatar = graphene.Field(Image, size=graphene.Int(description="Size of the avatar."))
+    avatar = graphene.Field(
+        Image,
+        size=graphene.String(description="Size of the avatar. Default 445x445"),
+        method=graphene.Argument(VersatileImageMethod, description="VersatileImageMethod")
+    )
 
     orders = PrefetchingConnectionField(
         "main.graphql.order.types.Order", description="List of user's orders."
@@ -115,15 +121,10 @@ class User(CountableDjangoObjectType):
         return root.note
 
     @staticmethod
-    def resolve_avatar(root: models.User, info, size=None, **_kwargs):
+    def resolve_avatar(root: models.User, info, size='445x445', method='thumbnail', **_kwargs):
         if root.avatar:
-            return Image.get_adjusted(
-                image=root.avatar,
-                alt=None,
-                size=size,
-                rendition_key_set="user_avatars",
-                info=info,
-            )
+            url = get_thumbnail(root.avatar, size, method=method, rendition_key_set='user_avatars')
+            return Image(alt=None, url=info.context.build_absolute_uri(url))
 
     @staticmethod
     def resolve_editable_groups(root: models.User, _info, **_kwargs):

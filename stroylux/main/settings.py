@@ -1,6 +1,7 @@
 import ast
 import os
 import warnings
+from datetime import timedelta
 
 import dj_database_url
 import dj_email_url
@@ -286,7 +287,7 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
 VERSATILEIMAGEFIELD_SETTINGS = {
     # Images should be pre-generated on Production environment
-    "create_images_on_demand": get_bool_from_env("CREATE_IMAGES_ON_DEMAND", DEBUG),
+    "create_images_on_demand": get_bool_from_env("CREATE_IMAGES_ON_DEMAND", False),
     'jpeg_resize_quality': 70
 }
 
@@ -310,9 +311,10 @@ AUTHENTICATION_BACKENDS = [
 # Django GraphQL JWT settings
 GRAPHQL_JWT = {
     "JWT_PAYLOAD_HANDLER": "main.graphql.utils.create_jwt_payload",
+    "JWT_EXPIRATION_DELTA": timedelta(days=7)
 }
 if not DEBUG:
-    GRAPHQL_JWT["JWT_VERIFY_EXPIRATION"] = True  # type: ignore
+    GRAPHQL_JWT["JWT_VERIFY_EXPIRATION"] = True
 
 # CELERY SETTINGS
 CELERY_BROKER_URL = (

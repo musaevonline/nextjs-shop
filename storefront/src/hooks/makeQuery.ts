@@ -62,7 +62,9 @@ function makeQuery<TData, TVariables>(
 
     if (queryData.error) {
       if (queryData.error.graphQLErrors.some(isJwtError)) {
-        user.logout();
+        if (user.token && user.user){
+            user.logout();
+        }
         enqueueSnackbar( "Сессия истекла", {variant: "info"});
       } else if (
           !queryData.error.graphQLErrors.every(

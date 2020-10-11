@@ -145,7 +145,6 @@ class BlogArticleCreate(ModelMutation):
         cleaned_input['author'] = info.context.user
         if not cleaned_input['date_published']:
             cleaned_input['date_published'] = datetime.now().isoformat()
-        print(cleaned_input)
         return cleaned_input
 
     @classmethod

@@ -75,7 +75,7 @@ const Footer:React.FC = () =>{
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__links">
                         <Typography variant="h5" gutterBottom>О магазине:</Typography>
-                        {pagesData?.pages.edges.map(edge => <div key={edge.node.id}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></div>)}
+                        {pagesData?.pages?.edges.map(edge => <div key={edge.node.id}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></div>)}
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__categories">
                         <div className="categories-group">

@@ -88,20 +88,19 @@ const startApp = async () => {
             const { enqueueSnackbar } = useSnackbar();
 
             // const { updateAvailable } = React.useContext(ServiceWorkerContext);
-            const updateAvailable = false;
 
-            React.useEffect(() => {
-                if (updateAvailable) {
-                    enqueueSnackbar(
-                        "To update the application to the latest version, please refresh the page!",
-                        {
-                            variant: 'warning',
-                            autoHideDuration: 3000,
-                            action: true,
-                        }
-                    );
-                }
-            }, [updateAvailable]);
+            // React.useEffect(() => {
+            //     if (updateAvailable) {
+            //         enqueueSnackbar(
+            //             "To update the application to the latest version, please refresh the page!",
+            //             {
+            //                 variant: 'warning',
+            //                 autoHideDuration: 3000,
+            //                 action: true,
+            //             }
+            //         );
+            //     }
+            // }, []);
 
             useAuth((authenticated: boolean) => {
                 if (authenticated) {

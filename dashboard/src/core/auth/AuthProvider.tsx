@@ -145,10 +145,10 @@ class AuthProvider extends React.Component<
     if (!!token && !user) {
       this.verifyToken(token)
           .then(res => {
-            if (!res.data.tokenVerify.user){
+            if (!res.data.tokenVerify?.user){
               this.logout();
             }
-            this.setState({user: res.data.tokenVerify.user})
+            this.setState({user: res.data.tokenVerify?.user})
           })
           .catch(err => {
             console.log(err);

@@ -17,7 +17,7 @@ import {FetchMoreProps} from "@temp/types";
 import {ChangeEvent} from "@temp/hooks/useForm";
 import {maybe} from "@temp/misc";
 import {FormData} from "@temp/sections/pages/components/PageDetailsPage";
-import RichTextEditor from "@temp/components/RichTextEditor";
+import {RichCKEditor} from "@temp/components/RichCkeditor";
 
 const useStyles = makeStyles(
     theme => ({
@@ -121,19 +121,7 @@ const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
                     {...fetchMoreCategories}
                 />
                 <Hr />
-                <RichTextEditor
-                    disabled={disabled}
-                    error={!!formErrors.contentJson}
-                    helperText={getBlogErrorMessage(formErrors.body, intl)}
-                    initial={maybe(() => data.body)}
-                    label={intl.formatMessage({
-                        id: "article_body",
-                        defaultMessage: "Body",
-                        description: "article body"
-                    })}
-                    name={"body" as keyof FormData}
-                    onChange={onChange}
-                />
+                <RichCKEditor disabled={disabled} data={maybe(() => data.body)} name={"body" as keyof FormData} onChange={onChange}/>
                 <Hr/>
                 <>
                     <Button
