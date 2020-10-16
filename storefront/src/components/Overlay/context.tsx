@@ -40,7 +40,7 @@ export interface OverlayContextInterface {
   hide(): void;
 }
 
-/* tslint:disable:no-empty */
+// /* tslint:disable:no-empty */
 export const OverlayContext = React.createContext<OverlayContextInterface>({
   context: null,
   hide: () => {},
@@ -48,6 +48,6 @@ export const OverlayContext = React.createContext<OverlayContextInterface>({
   theme: null,
   type: null,
 });
-/* tslint:enable:no-empty */
+// /* tslint:enable:no-empty */
 
 OverlayContext.displayName = "OverlayContext";

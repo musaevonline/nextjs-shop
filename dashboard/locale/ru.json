@@ -415,5 +415,1220 @@
   },
   "use_variants_for_products": {
     "string": "Используйте варианты для продуктов, которые бывают разных версий, например, разных размеров или цветов"
+  },
+  "attributes_product_types": {
+    "string": "Атрибуты и типы продуктов"
+  },
+  "configurationMenuAttributes": {
+    "string": "Определите атрибуты, используемые для создания типов продуктов"
+  },
+  "configurationMenuProductTypes": {
+    "string": "Определите типы продуктов, которые вы продаете"
+  },
+  "productTypes": {
+    "string": "Типы продуктов"
+  },
+  "shippingSettings": {
+    "string": "Настройки оплаты доставки"
+  },
+  "configurationMenuShipping": {
+    "string": "Управляйте тем, как вы отправляете заказы"
+  },
+  "shipping": {
+    "string": "Доставка"
+  },
+  "configurationMenuPaymentMethod": {
+    "string": "Управляйте тем, как вы отправляете заказы"
+  },
+  "paymentMethods": {
+    "string": "Методы оплаты"
+  },
+  "staff_settings": {
+    "string": "Настройки персонала"
+  },
+  "configurationMenuStaff": {
+    "string": "Управляйте своими сотрудниками и их разрешениями"
+  },
+  "staff": {
+    "string": "Персонал"
+  },
+  "configurationMenuPermissionGroups": {
+    "string": "Управляйте своими группами разрешений и их разрешениями"
+  },
+  "permission_groups": {
+    "string": "Группы разрешений"
+  },
+  "configurationMenuSiteSettings": {
+    "string": "Просмотр и обновление настроек вашего сайта"
+  },
+  "site_settings": {
+    "string": "Настройки сайта"
+  },
+  "orders": {
+    "string": "Заказы"
+  },
+  "drafts": {
+    "string": "Заказы-черновики"
+  },
+  "blogCategories": {
+    "string": "Категории блога"
+  },
+  "blogArticles": {
+    "string": "Статьи блога"
+  },
+  "blog": {
+    "string": "Блог"
+  },
+  "homeHeaderText": {
+    "string": "Привет, {userName}"
+  },
+  "homeHeaderTextCaption": {
+    "string": "Вот некоторая информация, которую мы собрали о вашем магазине"
+  },
+  "homeAnalyticsCardHeader": {
+    "string": "Сегодня"
+  },
+  "homeProductsListCardHeader": {
+    "string": "Лучшие продукты"
+  },
+  "homeActivityCardHeader": {
+    "string": "Деятельность"
+  },
+  "homeNotificationTableNoOrders": {
+    "string": "Нет заказов, готовых к выполнению"
+  },
+  "homeNotificationTablePayments": {
+    "string": "{amount, plural,one {Один платеж для принятия}other {{amount} платежей для принятия}}"
+  },
+  "homeNotificationTableProducts": {
+    "string": "{amount, plural,one {Одного товара нет в наличии}other {{amount} товаров нет в наличии}}"
+  },
+  "homeProductsListCardNoProducts": {
+    "string": "Товаров не найдено"
+  },
+  "orderWasFullPaid": {
+    "string": "Заказ №{orderId} был полностью оплачен"
+  },
+  "orderWasPlaced": {
+    "string": "Заказ № {orderId} размещен"
+  },
+  "orderWasPlacedFromDraft": {
+    "string": "Заказ № {orderId} был размещен из черновика {userEmail}"
+  },
+  "configuration": {
+    "string": "Конфигурация"
+  },
+  "№": {
+    "string": "№"
+  },
+  "add_stock": {
+    "string": "Добавить склад"
+  },
+  "min0": {
+    "string": "Минимальное значение 0"
+  },
+  "save_variant": {
+    "string": "Сохранить вариант"
+  },
+  "all_attributes_value": {
+    "string": "Все атрибуты должны иметь значение"
+  },
+  "variant_exist": {
+    "string": "Этот вариант уже существует"
+  },
+  "duplicated_input": {
+    "string": "Повторяющиеся значения атрибутов для варианта продукта"
+  },
+  "selling_price": {
+    "string": "Цена отмены продаж"
+  },
+  "productVariantPriceOptionalPriceOverrideField": {
+    "string": "Необязательный"
+  },
+  "cost_price": {
+    "string": "Себестоимость"
+  },
+  "productVariantPriceOptionalCostPriceField": {
+    "string": "Необязательный"
+  },
+  "delete_variant": {
+    "string": "Удалить вариант"
+  },
+  "new_variant": {
+    "string": "Новый вариант"
+  },
+  "add_variant": {
+    "string": "Добавить вариант"
+  },
+  "choose_photos": {
+    "string": "Выберите изображения"
+  },
+  "select_variant_image_text": {
+    "string": "Выберите конкретный вариант изображения из изображений продуктов"
+  },
+  "image_selection": {
+    "string": "Выбор изображения"
+  },
+  "all_orders": {
+    "string": "Все заказы"
+  },
+  "search_orders...": {
+    "string": "Поиск заказов..."
+  },
+  "create_order": {
+    "string": "Создать заказ"
+  },
+  "num_of_order": {
+    "string": "Номер заказа"
+  },
+  "date": {
+    "string": "Дата"
+  },
+  "customer": {
+    "string": "Клиент"
+  },
+  "payment": {
+    "string": "Платеж"
+  },
+  "fulfillment_status": {
+    "string": "Статус выполнения"
+  },
+  "fully_refunded": {
+    "string": "Полностью возвращено"
+  },
+  "cancelled": {
+    "string": "Отменен"
+  },
+  "fully_paid": {
+    "string": "Полностью оплечен"
+  },
+  "fulfilled": {
+    "string": "Выполнено"
+  },
+  "unpaid": {
+    "string": "Неоплаченный"
+  },
+  "unfulfilled": {
+    "string": "Невыполненный"
+  },
+  "total": {
+    "string": "Всего"
+  },
+  "order{orderNumber}": {
+    "string": "Заказ №{orderNumber}"
+  },
+  "cancel_order": {
+    "string": "Отменить заказ"
+  },
+  "order_lines({quantity})": {
+    "string": "Товары ({quantity})"
+  },
+  "product": {
+    "string": "Продукт"
+  },
+  "subtotal": {
+    "string": "Промежуточный итог"
+  },
+  "vat": {
+    "string": "НДС"
+  },
+  "pre_authorized_amount": {
+    "string": "Предварительно авторизованная сумма"
+  },
+  "capture_amount": {
+    "string": "Полученная сумма"
+  },
+  "outstanding_balance": {
+    "string": "Непогашенный остаток"
+  },
+  "order_history": {
+    "string": "История заказов"
+  },
+  "shipping_address": {
+    "string": "Адрес доставки"
+  },
+  "notes": {
+    "string": "Заметки"
+  },
+  "mark_order_as_paid": {
+    "string": "Отметить заказ как оплаченный"
+  },
+  "edit_shipping_address": {
+    "string": "Изменить адрес доставки"
+  },
+  "orderPaymentVATDoesNotApply": {
+    "string": "НДС не включен в стоимость заказа"
+  },
+  "{quantity}items": {
+    "string": "{quantity} товаров"
+  },
+  "order_was_cancelled": {
+    "string": "Заказ был отменен"
+  },
+  "payment_was_refunded": {
+    "string": "Платеж возвращен"
+  },
+  "payment_was_captured": {
+    "string": "Платеж получен"
+  },
+  "payment_confirmation_was_sent_to_customer": {
+    "string": "Подтверждение оплаты отправлено клиенту"
+  },
+  "order_was_fully_paid": {
+    "string": "Заказ полностью оплачен"
+  },
+  "order_confirmation_was_sent_to_customer": {
+    "string": "Подтверждение заказа отправлено покупателю"
+  },
+  "order_wasa_placed": {
+    "string": "Заказ был размещен"
+  },
+  "leave_your-note_here": {
+    "string": "Оставьте здесь свою заметку ..."
+  },
+  "send": {
+    "string": "Отправить"
+  },
+  "view_profile": {
+    "string": "Посмотреть профиль"
+  },
+  "contact_information": {
+    "string": "Контакты"
+  },
+  "no_notes_from_customer": {
+    "string": "Нет заметок от клиента"
+  },
+  "delete_draft_orders": {
+    "string": "Удалить заказы-черновики"
+  },
+  "draftOrders": {
+    "string": "Заказы-черновики"
+  },
+  "all_drafts": {
+    "string": "Все заказы-черновики"
+  },
+  "search_draft": {
+    "string": "Поиск заказов-черновиков"
+  },
+  "no_of_order": {
+    "string": "Номер заказа"
+  },
+  "no_draft_orders_found": {
+    "string": "Не найдены заказы-черновики"
+  },
+  "order_draft_successfully_created": {
+    "string": "Заказ-черновик успешно создан"
+  },
+  "draft_order{orderNumber}": {
+    "string": "Заказ-черновик {orderNumber}"
+  },
+  "finalize": {
+    "string": "Завершить"
+  },
+  "order_details": {
+    "string": "Детали заказа"
+  },
+  "add_products": {
+    "string": "Добавить продукты"
+  },
+  "no_products_added_to_order": {
+    "string": "Нет продуктов в заказе"
+  },
+  "draft_order_was_created": {
+    "string": "Заказ-черновик создан"
+  },
+  "orderCustomerShippingAddressNotSet": {
+    "string": "Адрес доставки не указан в черновике заказа"
+  },
+  "delete_draft_order": {
+    "string": "Удалить заказ-черновик"
+  },
+  "no_shipping_address": {
+    "string": "Нет адреса доставки"
+  },
+  "some_products_required_shipping_method": {
+    "string": "Нужен адрес доставки"
+  },
+  "no_user_information": {
+    "string": "Нет контактов пользователя"
+  },
+  "shipping_method_provided_but_no_product_requires_it": {
+    "string": "Способ доставки предоставляется, но продукт не требует его"
+  },
+  "finalize_draft_order": {
+    "string": "Завершить черновик заказа"
+  },
+  "finalize_anyway": {
+    "string": "Все равно завершить"
+  },
+  "search_by_product_name_attribute_type": {
+    "string": "Поиск по названию продукта, атрибуту, типу продукта и т.д."
+  },
+  "company": {
+    "string": "Компания"
+  },
+  "phone": {
+    "string": "Телефон"
+  },
+  "address_line_1": {
+    "string": "Адрес 1"
+  },
+  "address_line_2": {
+    "string": "Адрес 2"
+  },
+  "city": {
+    "string": "Город"
+  },
+  "zip/postal_code": {
+    "string": "Почтовый индекс"
+  },
+  "country": {
+    "string": "Страна"
+  },
+  "country_area": {
+    "string": "Область"
+  },
+  "search_customers": {
+    "string": "Поиск клиентов"
+  },
+  "no_applicable_shipping_carriers": {
+    "string": "Нет применимых перевозчиков"
+  },
+  "taxes": {
+    "string": "Налоги"
+  },
+  "products_were_added_to_draft_order": {
+    "string": "Товары добавлены в черновик заказа"
+  },
+  "order_line_added": {
+    "string": "Строка заказа добавлена"
+  },
+  "sure_delete_draft{orderNumber}": {
+    "string": "Вы действительно хотите удалить черновик № {orderNumber}?"
+  },
+  "couldnt_cancel_order": {
+    "string": "Магазин не может отменить заказ"
+  },
+  "cancel_fulfillment_first_before_cancel_order_text": {
+    "string": "По этому заказу еще есть исполнения. Прежде чем отменить заказ, отмените выполнение заказов."
+  },
+  "ok": {
+    "string": "Ок"
+  },
+  "OrderCancelDialogHeader": {
+    "string": "Отменить Заказ"
+  },
+  "order_cancel_dialog_text": {
+    "string": "Отмена этого заказа приведет к освобождению неисполненных запасов, чтобы их могли купить другие клиенты. <b> Заказ не будет возвращен при отмене заказа - вам нужно сделать это вручную. </b> Вы действительно хотите отменить этот заказ?"
+  },
+  "accept": {
+    "string": "Принять"
+  },
+  "order_successfully_cancelled": {
+    "string": "Заказ успешно отменен"
+  },
+  "refund": {
+    "string": "Вернуть деньги"
+  },
+  "delete_customers": {
+    "string": "Удалить клиентов"
+  },
+  "all_customers": {
+    "string": "Все клиенты"
+  },
+  "search_customer": {
+    "string": "Поиск клиентов"
+  },
+  "create_customer": {
+    "string": "Создать клиента"
+  },
+  "customer_name": {
+    "string": "Имя клиента"
+  },
+  "customer_email": {
+    "string": "Email клиента"
+  },
+  "no_of_orders": {
+    "string": "Количество заказов"
+  },
+  "sure_bulk_delete_customers{displayQuantity}": {
+    "string": "{counter, plural, one {Вы действительно хотите удалить этого клиента?} other {Вы действительно хотите удалить клиентов {displayQuantity}?}}"
+  },
+  "delete_customer": {
+    "string": "Удалить клиента"
+  },
+  "user_account_active": {
+    "string": "Активный аккаунт клиента"
+  },
+  "note": {
+    "string": "Заметка"
+  },
+  "personal_information": {
+    "string": "Персональная информация"
+  },
+  "recent_orders": {
+    "string": "Последние Заказы"
+  },
+  "view_all_orders": {
+    "string": "Просмотреть все заказы"
+  },
+  "status": {
+    "string": "Статус"
+  },
+  "address_information": {
+    "string": "Адрес"
+  },
+  "manage": {
+    "string": "Управлять"
+  },
+  "customer_has_no_addresses_yet": {
+    "string": "У этого клиента еще нет адресов"
+  },
+  "customer_history": {
+    "string": "История клиента"
+  },
+  "last_login": {
+    "string": "Последний вход"
+  },
+  "last_order": {
+    "string": "Последний заказ"
+  },
+  "activer_member_since{date}": {
+    "string": "Активный участник с {date}"
+  },
+  "delete_address": {
+    "string": "Удалить адрес"
+  },
+  "{fullName}'s_address_book": {
+    "string": "{fullName} адреса"
+  },
+  "add_address": {
+    "string": "Добавить адрес"
+  },
+  "set_as_default_shipping_address": {
+    "string": "Установить адрес по умолчанию"
+  },
+  "details{fullName}": {
+    "string": "Детали {fullName}"
+  },
+  "default_address": {
+    "string": "Адрес по умолчанию"
+  },
+  "edit_address": {
+    "string": "Изменить адрес"
+  },
+  "sure_delete_address_text": {
+    "string": "Вы уверены, что хотите удалить этот адрес из адресной книги пользователей?"
+  },
+  "deleteBlogCategory": {
+    "string": "Удалить категорию блога"
+  },
+  "deleteBlogCategories": {
+    "string": "Удалить категории блога"
+  },
+  "blogCategory": {
+    "string": "Категория блога"
+  },
+  "createBlogCategory": {
+    "string": "Создать категорию"
+  },
+  "blogCategoryName": {
+    "string": "Название категории"
+  },
+  "createNewBlogCategory": {
+    "string": "Создать новую категорию блога"
+  },
+  "blogName": {
+    "string": "Название"
+  },
+  "blogDescription": {
+    "string": "Описание"
+  },
+  "isPublished": {
+    "string": "Опубликовано"
+  },
+  "updateBlogCategory": {
+    "string": "Изменить категорию блога"
+  },
+  "deleteBlogArticle": {
+    "string": "Удалить статью"
+  },
+  "deleteBlogArticles": {
+    "string": "Удалить статьи"
+  },
+  "blogArticle": {
+    "string": "Статья"
+  },
+  "createBlogArticle": {
+    "string": "Создать статью"
+  },
+  "blogArticleTitle": {
+    "string": "Название статьи"
+  },
+  "body": {
+    "string": "Описание"
+  },
+  "updateBlogArticle": {
+    "string": "Изменить статью"
+  },
+  "will_be_visible_from{date}": {
+    "string": "Будет видно с {date}"
+  },
+  "since{date}": {
+    "string": "с {date}"
+  },
+  "createNewBlogArticle": {
+    "string": "Создать новую статью"
+  },
+  "all_attributes": {
+    "string": "Все атрибуты"
+  },
+  "search_attribute": {
+    "string": "Поиск атрибутов"
+  },
+  "create_attribute": {
+    "string": "Создать атрибут"
+  },
+  "attribute_code": {
+    "string": "Код атрибута"
+  },
+  "default_label": {
+    "string": "Метка по умолчанию"
+  },
+  "searchable": {
+    "string": "Доступный для поиска"
+  },
+  "use_faceted_search": {
+    "string": "Использование в фасетном поиске"
+  },
+  "delete_attributes": {
+    "string": "Удалить атрибуты"
+  },
+  "yes": {
+    "string": "Да"
+  },
+  "no": {
+    "string": "Нет"
+  },
+  "sure_bulk_delete_attributes_text": {
+    "string": "{counter, plural, one {Вы уверены, что хотите удалить этот атрибут?} other {Вы действительно хотите удалить атрибуты {displayQuantity}?}}"
+  },
+  "dropdown": {
+    "string": "Список"
+  },
+  "multiple_select": {
+    "string": "Множественный выбор"
+  },
+  "used_internally": {
+    "string": "Используется внутри"
+  },
+  "catalog_input_type": {
+    "string": "Тип ввода каталога"
+  },
+  "value_required": {
+    "string": "Значение обязательно"
+  },
+  "attribute_values": {
+    "string": "Значение атрибутов"
+  },
+  "assign_value": {
+    "string": "Присвоить значение"
+  },
+  "admin": {
+    "string": "Админ"
+  },
+  "default_store_view": {
+    "string": "Вид магазина по умолчанию"
+  },
+  "properties": {
+    "string": "Свойства"
+  },
+  "used_faceted_navigation": {
+    "string": "Использование в фасетной навигации"
+  },
+  "position_faceted_navigation": {
+    "string": "Позиция в фасетной навигации"
+  },
+  "visible_in_storefront": {
+    "string": "Видно на витрине"
+  },
+  "storefront_properties": {
+    "string": "Свойства панели админа"
+  },
+  "use_in_filtering": {
+    "string": "Использовать в фильтрации"
+  },
+  "able_use_attribute_to_filter": {
+    "string": "Если этот параметр включен, вы сможете использовать этот атрибут для фильтрации товаров в списке товаров."
+  },
+  "add_to_column_options": {
+    "string": "Добавить в параметры столбца"
+  },
+  "attribute_can_be_used_as_column": {
+    "string": "Если этот атрибут включен, этот атрибут можно использовать как столбец в таблице товаров."
+  },
+  "delete_attribute": {
+    "string": "Удалить атрибут"
+  },
+  "delete_attribute_value": {
+    "string": "Удалить значение атрибута"
+  },
+  "dashboard_properties": {
+    "string": "Свойства панели инструментов"
+  },
+  "add_value": {
+    "string": "Добавить значение"
+  },
+  "sure_delete_attribute_value_text": {
+    "string": "Вы действительно хотите удалить значение \"{name}\"? Если вы удалите его, вы не сможете назначить его ни одному из продуктов с атрибутом \"{attributeName}\"."
+  },
+  "sure_delete_attribute_value_text1": {
+    "string": "Добавить значение"
+  },
+  "create_new_attribute": {
+    "string": "Создать новый атрибут"
+  },
+  "no_values_found": {
+    "string": "Не найдено значений"
+  },
+  "delete_product_types": {
+    "string": "Удалить типы продуктов"
+  },
+  "all_product_types": {
+    "string": "Удалить все типы продуктов"
+  },
+  "search_product_type": {
+    "string": "Поиск типа продукта"
+  },
+  "create_product_type": {
+    "string": "Создать тип продукта"
+  },
+  "type_name": {
+    "string": "Название типа"
+  },
+  "type": {
+    "string": "Тип"
+  },
+  "physical": {
+    "string": "Физический"
+  },
+  "sure_delete_product_types_text": {
+    "string": "{counter, plural, one {Вы действительно хотите удалить этот тип продукта?} other {Вы действительно хотите удалить {displayQuantity} типы продуктов?}}"
+  },
+  "product_type_uses_variant_attributes": {
+    "string": "Тип продукта использует атрибуты варианта"
+  },
+  "product_type_name": {
+    "string": "Тип продукта Название"
+  },
+  "product_attributes": {
+    "string": "Атрибуты продукта"
+  },
+  "assign_attribute": {
+    "string": "Назначить атрибут"
+  },
+  "attribute_name": {
+    "string": "Имя атрибута"
+  },
+  "slug": {
+    "string": "slug"
+  },
+  "is_product_shippable": {
+    "string": "Продукт физический"
+  },
+  "delete_product_type": {
+    "string": "Удалить тип продукта"
+  },
+  "unassign_attribute_title": {
+    "string": "Отменить присвоение заголовка атрибута"
+  },
+  "no_attributes_found": {
+    "string": "Не найдены атрибуты"
+  },
+  "search_attributes": {
+    "string": "Поиск атрибутов"
+  },
+  "search_by_attribute_name": {
+    "string": "Поиск по названию атрибута"
+  },
+  "variant_attributes": {
+    "string": "Атрибуты варианта"
+  },
+  "weight": {
+    "string": "Вес"
+  },
+  "used_calculate_rates_shipping": {
+    "string": "Использовать тарифы на доставку"
+  },
+  "sure_unassign_attribute_{attributeName}{productTypeName}": {
+    "string": "Вы действительно хотите отменить назначение {attributeName} для {productTypeName}?"
+  },
+  "assign_attributes": {
+    "string": "Назначить атрибуты"
+  },
+  "productTypeCreateHeader": {
+    "string": "Создать тип продукта"
+  },
+  "productTypeCreatePageHeader": {
+    "string": "Создать тип продукта"
+  },
+  "deleteShippingMethod": {
+    "string": "Удалить метод доставки"
+  },
+  "deleteShippingMethods": {
+    "string": "Удалить методы доставки"
+  },
+  "shippingMethod": {
+    "string": "Метод доставки"
+  },
+  "createShippingMethod": {
+    "string": "Создать метод доставки"
+  },
+  "shippingName": {
+    "string": "Название метода доставки"
+  },
+  "shippingWeightUnit": {
+    "string": "Единица веса"
+  },
+  "unitWillBeUsedAsDefault": {
+    "string": "Эта единица измерения будет использоваться в качестве веса доставки по умолчанию."
+  },
+  "{counter,plural,one}sureDeleteShippingMethodText{displayQuantity}": {
+    "string": "{counter, plural, one {Вы действительно хотите удалить этот метод доставки?} other {Вы действительно хотите удалить {displayQuantity} способы доставки?}}"
+  },
+  "createNewShippingMethod": {
+    "string": "Создать способ доставки"
+  },
+  "willBeShownCustomersAtCheckout": {
+    "string": "Показывать клиентам"
+  },
+  "shippingMethodName": {
+    "string": "Название способа доставки"
+  },
+  "shippingMethodDescription": {
+    "string": "Описание способа доставки"
+  },
+  "shippingType": {
+    "string": "Тип способа доставки"
+  },
+  "valueRange": {
+    "string": "Диапазон значений"
+  },
+  "shippingMethodWillApplyToAllOrdersOfAllPrices": {
+    "string": "Этот способ доставки будет применяться ко всем заказам любой цены."
+  },
+  "minimalOrderValue": {
+    "string": "Минимальная сумма заказа"
+  },
+  "maximalOrderValue": {
+    "string": "Максимальная сумма заказа"
+  },
+  "freeShipping": {
+    "string": "Бесплатная доставка"
+  },
+  "noValueLimits": {
+    "string": "Нет лимита значений"
+  },
+  "updateShippingMethod": {
+    "string": "Обновить способ доставки"
+  },
+  "deletePaymentMethod": {
+    "string": "Удалить метод оплаты"
+  },
+  "deletePaymentMethods": {
+    "string": "Удалить методы оплаты"
+  },
+  "paymentMethod": {
+    "string": "Метод оплаты"
+  },
+  "createPaymentMethod": {
+    "string": "Создать метод оплаты"
+  },
+  "paymentName": {
+    "string": "Название метода оплаты"
+  },
+  "{counter,plural,one}sureDeletePaymentMethodText{displayQuantity}": {
+    "string": "{counter, plural, one {Вы действительно хотите удалить этот способ оплаты?} other {Вы действительно хотите удалить {displayQuantity} способы оплаты?}}"
+  },
+  "createNewPaymentMethod": {
+    "string": "Создать метод оплаты"
+  },
+  "paymentMethodName": {
+    "string": "Название метода оплаты"
+  },
+  "paymentMethodDescription": {
+    "string": "Описание метода оплаты"
+  },
+  "updatePaymentMethod": {
+    "string": "Обновить метод оплаты"
+  },
+  "all_staff_members": {
+    "string": "Все сотрудники"
+  },
+  "search_staff_member": {
+    "string": "Поиск сотрудника"
+  },
+  "invite_staff_member": {
+    "string": "Пригласить сотрудника"
+  },
+  "email_address": {
+    "string": "Email"
+  },
+  "active": {
+    "string": "Активный"
+  },
+  "delete_staff_user": {
+    "string": "Удалить сотрудника"
+  },
+  "delete_staff_user_avatar": {
+    "string": "Удалить аватар сотрудника"
+  },
+  "permissions": {
+    "string": "Разрешения"
+  },
+  "user_is_assigned_to": {
+    "string": "Пользователь назначен:"
+  },
+  "user_active": {
+    "string": "Пользователь активный"
+  },
+  "staff_member_information": {
+    "string": "Информация о сотрудниках"
+  },
+  "account_status": {
+    "string": "Статус аккаунта"
+  },
+  "if_you_want_disable_this_account_uncheck_the_box_below": {
+    "string": "Если вы хотите отключить эту учетную запись, снимите флажок ниже"
+  },
+  "previous_password": {
+    "string": "Предыдущий пароль"
+  },
+  "new_password_least_8_characters": {
+    "string": "Новый пароль должен содержать не менее 8 символов."
+  },
+  "change_photo": {
+    "string": "Изменить фото"
+  },
+  "delete_photo": {
+    "string": "Удалить фото"
+  },
+  "change_your_password": {
+    "string": "Изменить пароль"
+  },
+  "you_should_change_password_every_month": {
+    "string": "Вы должны менять свой пароль каждый месяц, чтобы избежать проблем с безопасностью."
+  },
+  "preferences": {
+    "string": "Предпочтения"
+  },
+  "selecting_change_language": {
+    "string": "Выбор этого изменит язык вашей панели инструментов."
+  },
+  "preferred_language": {
+    "string": "Предпочтительный язык"
+  },
+  "language_translations_are_at_varying_degrees": {
+    "string": "Обратите внимание: несмотря на то, что все настройки валюты и даты завершены, языковые переводы находятся в разной степени."
+  },
+  "change_password": {
+    "string": "Изменить пароль"
+  },
+  "send_invite": {
+    "string": "Отправить приглашение"
+  },
+  "create_permission_group": {
+    "string": "создать группу разрешений"
+  },
+  "permission_group_name": {
+    "string": "Имя группы разрешений"
+  },
+  "members": {
+    "string": "пользователи"
+  },
+  "actions": {
+    "string": "Действия"
+  },
+  "delete_permission_group": {
+    "string": "Удалить группу разрешений"
+  },
+  "group_has_full_access": {
+    "string": "Группа имеет полный доступ к магазину"
+  },
+  "expand_or_restrict_group's_permissions": {
+    "string": "Расширьте или ограничьте права группы на доступ к определенной части системы продаж."
+  },
+  "group_name's_permissions": {
+    "string": "Разрешения групы"
+  },
+  "group_name": {
+    "string": "Название групы"
+  },
+  "unassign": {
+    "string": "Отменить"
+  },
+  "group_has_full_access_to_the_store": {
+    "string": "Группа имеет полный доступ к магазину"
+  },
+  "expand_or_restrict_group's_permissions_to_access": {
+    "string": "Расширьте или ограничьте права группы на доступ к определенной части системы продаж."
+  },
+  "group_members": {
+    "string": "Участники группы"
+  },
+  "assign_members": {
+    "string": "Назначить участников"
+  },
+  "you_haven't_assigned_any_member_to_this_permission_group": {
+    "string": "Вы еще не назначили ни одного участника этой группе разрешений."
+  },
+  "search_staff_members": {
+    "string": "Поиск сотрудников"
+  },
+  "search_by_name,email": {
+    "string": "Поиск по имени, электронной почте и т. д."
+  },
+  "unassign_users": {
+    "string": "Отменить назначение пользователей"
+  },
+  "use_assigned_button": {
+    "string": "Для этого используйте кнопку «Назначить участников»."
+  },
+  "assign_staff_members": {
+    "string": "Назначить сотрудников"
+  },
+  "assign": {
+    "string": "Назначить"
+  },
+  "publish_pages": {
+    "string": "Опубликовать страницы"
+  },
+  "unpublish_pages": {
+    "string": "Отменить публикацию страниц"
+  },
+  "delete_pages": {
+    "string": "Удалить страницы"
+  },
+  "create_page": {
+    "string": "Создать страницу"
+  },
+  "title": {
+    "string": "Название страницы"
+  },
+  "delete_page": {
+    "string": "Удалить страницу"
+  },
+  "publish": {
+    "string": "Опубликовать"
+  },
+  "dialog_delete_pages_text": {
+    "string": "{counter, plural, one {Вы уверены, что хотите удалить эту страницу?} other {Вы действительно хотите удалить страницы {displayQuantity}?}}"
+  },
+  "url": {
+    "string": "Ссылка"
+  },
+  "form_page_slug_helper_text": {
+    "string": "Если пусто, URL будет автоматически сгенерирован из названия страницы."
+  },
+  "store_information": {
+    "string": "Информация о магазине"
+  },
+  "general_information_store": {
+    "string": "Это общая информация о вашем магазине. Они определяют, какой URL у вашего магазина и что отображается на панели задач браузеров."
+  },
+  "name_tour_store": {
+    "string": "Название вашего магазина"
+  },
+  "name_your_store_tab": {
+    "string": "Название вашего магазина"
+  },
+  "header_text_store": {
+    "string": "Текст заголовка вашего магазина"
+  },
+  "header_text_your_store_tab": {
+    "string": "Текст заголовка вашего магазина отображается на вкладке в веб-браузере."
+  },
+  "url_online_store": {
+    "string": "URL вашего интернет-магазина"
+  },
+  "store_description": {
+    "string": "Описание магазина"
+  },
+  "store_description_taskbar": {
+    "string": "Описание магазина отображается на панели задач после названия вашего магазина."
+  },
+  "banner_images": {
+    "string": "Баннерные изображения"
+  },
+  "mailing_configuration": {
+    "string": "Конфигурация рассылки"
+  },
+  "find_all_settings_stores_emails": {
+    "string": "Здесь вы найдете все настройки, определяющие электронную почту вашего магазина. Вы можете определить основной адрес электронной почты и часть содержимого ваших писем."
+  },
+  "mailing_email_address": {
+    "string": "Электронный адрес"
+  },
+  "mailing_email_sender": {
+    "string": "Email отправителя"
+  },
+  "will_be_visible_from_name": {
+    "string": "Это будет отображаться как имя \"от\""
+  },
+  "customer_password_reset_url": {
+    "string": "URL для сброса пароля клиента"
+  },
+  "url_address": {
+    "string": "URL-адрес"
+  },
+  "customer_set_password_helper_text": {
+    "string": "Этот URL-адрес будет использоваться в качестве основного URL-адреса для сброса пароля. Он будет отправлен по электронной почте."
+  },
+  "siteSettingsMailingHelperText": {
+    "string": "Конфигурация рассылки"
+  },
+  "siteSettingsMailingText": {
+    "string": "Настройте свой адрес электронной почты, с которого все автоматические электронные письма будут отправляться вашим клиентам."
+  },
+  "company_information": {
+    "string": "Информация о компании"
+  },
+  "address_used_generate_invoices": {
+    "string": "Этот адрес будет использоваться для выставления счетов и расчета стоимости доставки."
+  },
+  "email_address_contact_customers": {
+    "string": "Адрес электронной почты, который вы здесь укажете, будет использоваться в качестве контактного адреса для ваших клиентов."
+  },
+  "postal_code": {
+    "string": "Почтовый индекс"
+  },
+  "authentication_methods": {
+    "string": "Методы аутентификации"
+  },
+  "authentication_method_customers_log_in": {
+    "string": "Метод аутентификации определяет дополнительные способы, которыми клиенты могут войти в вашу электронную торговлю."
+  },
+  "authentication_keys": {
+    "string": "Ключи аутентификации"
+  },
+  "add_key": {
+    "string": "Добавить ключ"
+  },
+  "authentication_type": {
+    "string": "Тип аутентификации"
+  },
+  "key": {
+    "string": "Ключ"
+  },
+  "no_keys": {
+    "string": "Нет ключей"
+  },
+  "authorization_type": {
+    "string": "Тип аутентификации"
+  },
+  "add_new_authorization_key": {
+    "string": "Добавить новый ключ авторизации"
+  },
+  "add_authentication": {
+    "string": "Добавить аутентификацию"
+  },
+  "delete_image": {
+    "string": "Удалить изображение"
+  },
+  "edit_photo": {
+    "string": "Изменить фото"
+  },
+  "photo_information": {
+    "string": "Информация о фото"
+  },
+  "alt": {
+    "string": "alt"
+  },
+  "photo_view": {
+    "string": "Просмотр фотографий"
+  },
+  "all_photos": {
+    "string": "Все фото"
+  },
+  "choose_values": {
+    "string": "Выберите значения"
+  },
+  "product_variant_creator_values": {
+    "string": "Выбранные значения будут использоваться для создания вариантов настраиваемого продукта."
+  },
+  "select_values": {
+    "string": "Выбрать значения"
+  },
+  "prices_and_sku": {
+    "string": "Цены и артикул"
+  },
+  "summary": {
+    "string": "Резюме"
+  },
+  "next": {
+    "string": "Дальше"
+  },
+  "price_and_sku": {
+    "string": "Цена и артикул"
+  },
+  "product_variant_creator_prices": {
+    "string": "На основе вашего выбора мы создадим {counter} продуктов. Используйте этот шаг, чтобы настроить цену и запасы для ваших новых продуктов."
+  },
+  "previous": {
+    "string": "Предыдущий"
+  },
+  "apply": {
+    "string": "Принять"
+  },
+  "productVariantCreatePricesPriceInputLabel": {
+    "string": "Цена"
+  },
+  "apply_unique_prices": {
+    "string": "Применяйте уникальные цены по атрибуту к каждому артикулу"
+  },
+  "stock": {
+    "string": "Склад"
+  },
+  "apply_single_quantity": {
+    "string": "Применить единое количество ко всем артикулам"
+  },
+  "productVariantCreatePricesQuantityInputLabel": {
+    "string": "Количество"
+  },
+  "apply_unique_stock": {
+    "string": "Применение уникальное количество по атрибуту к каждому артикулу"
+  },
+  "skip_stock": {
+    "string": "Пропустить склад"
+  },
+  "productVariantCreatorStockSectionHeader": {
+    "string": "Склад"
+  },
+  "product_variant_creator_summary": {
+    "string": "Вот сводка вариантов, которые будут созданы. Вы можете изменить цены, запасы артикула для каждого созданного."
+  },
+  "create": {
+    "string": "Создать"
+  },
+  "created_variants": {
+    "string": "Создать варианты"
+  },
+  "attribute": {
+    "string": "Атрибут"
+  },
+  "choose_attribute": {
+    "string": "Выбрать атрибут"
+  },
+  "select_attribute": {
+    "string": "Выбрать атрибут"
+  },
+  "productVariantCreatePricesSetPricePlaceholder": {
+    "string": "Цена"
+  },
+  "productVariantCreatePricesStockInputLabel": {
+    "string": "Количество"
+  },
+  "successfully_created": {
+    "string": "Успешно создан"
   }
 }

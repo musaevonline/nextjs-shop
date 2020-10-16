@@ -154,9 +154,9 @@ const AccountPermissions: React.FC<AccountPermissionsProps> = props => {
                 {permissions === undefined ? (
                   <Skeleton />
                 ) : (
-                  permissions.map(perm => (
+                  permissions.map((perm, i) => (
                     <ListItem
-                      key={perm.code}
+                      key={i}
                       disabled={perm.disabled}
                       role={undefined}
                       dense

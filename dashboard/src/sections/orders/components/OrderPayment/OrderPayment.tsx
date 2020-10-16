@@ -132,7 +132,7 @@ const OrderPayment: React.FC<OrderPaymentProps> = props => {
             </tr>
             <tr>
               <td>
-                <FormattedMessage id="skipping"
+                <FormattedMessage id="shipping"
                   defaultMessage="Shipping"
                   description="order shipping method name"
                 />
