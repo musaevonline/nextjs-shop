@@ -40,6 +40,14 @@ services:
         DASHBOARD_URL: "https://stroylux-drev.xyz/dashboard/"
         STOREFRONT_URL: "https://stroylux-drev.xyz/"
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 50M
+        reservations:
+          cpus: '0.0001'
+          memory: 20M
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.entrypoints=websecure"
