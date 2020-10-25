@@ -100,6 +100,21 @@ services:
       - ./stroylux/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
       - ./stroylux/userlist.txt:/etc/pgbouncer/userlist.txt:ro
 
+#  dbbackup:
+#    image: kartoza/pg-backup:9.4
+#    hostname: pg-backups
+#    volumes:
+#      - ./backups:/backups
+#    links:
+#      - db:db
+#    environment:
+#      - DUMPPREFIX=PG_STROYLUXDREV
+#      - POSTGRES_USER=stroylux
+#      - POSTGRES_PASS=stroylux
+#      - POSTGRES_PORT=5432
+#      - POSTGRES_HOST=db
+#      - POSTGRES_DBNAME=stroylux
+
 
 volumes:
   stroylux-db:
