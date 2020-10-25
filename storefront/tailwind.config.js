@@ -381,6 +381,7 @@ module.exports = {
       full: '100%',
       screen: "100vh",
       ...breakpoints(theme('screens')),
+      ...theme('spacing')
     }),
     maxWidth: (theme, { breakpoints }) => ({
       none: 'none',

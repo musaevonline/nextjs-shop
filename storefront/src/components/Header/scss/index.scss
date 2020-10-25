@@ -30,8 +30,8 @@ header{
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .logo{
-
+      .logo svg{
+        height: 60px;
       }
       svg{
         color: $gray;

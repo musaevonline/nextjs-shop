@@ -1630,5 +1630,29 @@
   },
   "successfully_created": {
     "string": "Успешно создан"
+  },
+  "invalid_password": {
+    "string": "Неверный пароль"
+  },
+  "group_out_permission": {
+    "string": "Группа выходит за рамки ваших разрешений"
+  },
+  "user_out_permission": {
+    "string": "Пользователь выходит за рамки ваших разрешений"
+  },
+  "password_cannot_only_numeric": {
+    "string": "Пароль не может быть полностью числовым"
+  },
+  "password_used": {
+    "string": "Этот пароль слишком часто используется"
+  },
+  "password_short": {
+    "string": "Этот пароль слишком короткий"
+  },
+  "passwords_too_similar": {
+    "string": "Эти пароли слишком похожи"
+  },
+  "need_unique": {
+    "string": "Это должно быть уникальным"
   }
 }

@@ -141,10 +141,10 @@ const useStyles = makeStyles(
         },
         logo: {
             "& svg": {
-                left: "50%",
+                left: "30%",
                 position: "absolute",
                 top: "50%",
-                transform: "translate(-50%,-50%)",
+                transform: "translate(-20%,-50%)",
                 "& image":{
                     transition: "all .2s ease-in-out",
                     width: 150,
@@ -168,7 +168,7 @@ const useStyles = makeStyles(
             "& svg": {
                 margin: 0,
                 padding: 0,
-                width: "80px",
+                width: 60,
                 "& image":{
                     width: 70,
                     transform: "translate(60px, 0)"
