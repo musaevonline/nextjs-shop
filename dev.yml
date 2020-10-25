@@ -20,7 +20,6 @@ services:
       - ./stroylux/templates/:/app/templates:Z
       # prevents overshadowing of build-time assets
       - /app/main/static/assets
-      - /app/templates/templated_email/compiled
       - stroylux-media:/app/media
     command: gunicorn main.wsgi:application --timeout 300 --bind 0.0.0.0:8000
     env_file: ./stroylux/prod.env
@@ -108,8 +107,7 @@ services:
       - redis
     volumes:
       - ./stroylux/main/:/app/main:Z,cached
-      - ./stroylux/templates/:/app/templates:Z,cached
-      - /app/templates/templated_email/compiled
+      - ./stroylux/templates/:/app/templates:Z
       - stroylux-media:/app/media
 
 #  smtp:
