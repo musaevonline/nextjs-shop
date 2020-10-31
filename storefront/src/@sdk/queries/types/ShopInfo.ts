@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { WeightUnitsEnum } from "./../../../types/globalTypes";
+import { WeightUnitsEnum, AuthorizationKeyType } from "./../../../types/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ShopInfo
@@ -69,6 +69,18 @@ export interface ShopInfo_shop_images {
   url: string;
 }
 
+export interface ShopInfo_shop_authorizationKeys {
+  __typename: "AuthorizationKey";
+  /**
+   * Name of the authorization backend.
+   */
+  name: AuthorizationKeyType;
+  /**
+   * Authorization key (client ID).
+   */
+  key: string;
+}
+
 export interface ShopInfo_shop {
   __typename: "Shop";
   /**
@@ -103,6 +115,10 @@ export interface ShopInfo_shop {
    * List of images for the site.
    */
   images: (ShopInfo_shop_images | null)[] | null;
+  /**
+   * List of configured authorization keys. Authorization keys are used to enable third-party OAuth authorization (currently Facebook or Google).
+   */
+  authorizationKeys: (ShopInfo_shop_authorizationKeys | null)[];
 }
 
 export interface ShopInfo {

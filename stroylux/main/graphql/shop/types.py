@@ -156,7 +156,6 @@ class Shop(graphene.ObjectType):
         )
 
     @staticmethod
-    @permission_required(SitePermissions.MANAGE_SETTINGS)
     def resolve_authorization_keys(_, _info):
         return site_models.AuthorizationKey.objects.all()
 

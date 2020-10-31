@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 import {addressFragment} from "@sdk/fragments/address";
 import {shippingMethodFragment} from "@sdk/fragments/shipping-method";
-import {userFragment} from "@sdk/fragments/user";
 import {TaxedMoney} from "@sdk/fragments/money";
 import {productVariantFragment} from "@sdk/fragments/product-variant";
 import {paymentMethodFragment} from "@sdk/fragments/payment-method";
@@ -55,7 +54,6 @@ export const orderBaseFragment = gql`
 export const orderFragment = gql`
     ${addressFragment}
     ${shippingMethodFragment}
-    ${userFragment}
     ${TaxedMoney}
     ${orderLineFragment}
     ${paymentMethodFragment}
@@ -79,9 +77,6 @@ export const orderFragment = gql`
         }
         total{
             ...TaxedMoney
-        }
-        user{
-            ...User
         }
         shippingAddress{
             ...Address

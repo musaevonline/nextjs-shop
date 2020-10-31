@@ -14,6 +14,10 @@ export const shopQuery = gql`
             },
             images{
                 ...ShopImageFragment
+            },
+            authorizationKeys{
+                name
+                key
             }
             
         }

@@ -148,7 +148,7 @@ const OrderCard:React.FC<OrderCardProps> = ({ order, addReview }) => {
                                                 </div>
                                                 <div className="flex flex-wrap mb-5 px-10">
                                                     <div className="w-200 font-medium">Эл. почта:</div>
-                                                    <div className="flex-1 min-w-200">{order.userEmail || order.user?.email}</div>
+                                                    <div className="flex-1 min-w-200">{order.userEmail}</div>
                                                 </div>
                                                 <Divider/>
                                             </div>

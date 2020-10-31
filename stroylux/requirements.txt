@@ -72,6 +72,8 @@ pytz==2019.3
 redis==3.4.1
 requests==2.23.0
 Rx==1.6.1
+social-auth-app-django==4.0.0
+social-auth-core==3.3.3
 singledispatch==3.4.0.3
 six==1.14.0
 sqlparse==0.3.1

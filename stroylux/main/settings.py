@@ -194,9 +194,10 @@ INSTALLED_APPS = [
     "django_filters",
     "django_countries",
     "phonenumber_field",
-    'captcha'
+    'captcha',
+    'social_django'
 ]
-
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
 
@@ -305,6 +306,7 @@ SEARCH_BACKEND = "main.search.backends.postgresql"
 
 AUTHENTICATION_BACKENDS = [
     "graphql_jwt.backends.JSONWebTokenBackend",
+    'social_core.backends.google.GoogleOAuth2',
     "django.contrib.auth.backends.ModelBackend",
 ]
 

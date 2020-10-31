@@ -113,90 +113,6 @@ export interface Order_total {
   currency: string;
 }
 
-export interface Order_user_defaultShippingAddress_country {
-  __typename: "CountryDisplay";
-  /**
-   * Country code.
-   */
-  code: string;
-  /**
-   * Country name.
-   */
-  country: string;
-}
-
-export interface Order_user_defaultShippingAddress {
-  __typename: "Address";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  streetAddress1: string;
-  streetAddress2: string;
-  city: string;
-  postalCode: string;
-  /**
-   * Shop's default country.
-   */
-  country: Order_user_defaultShippingAddress_country;
-  countryArea: string;
-  phone: string;
-}
-
-export interface Order_user_addresses_country {
-  __typename: "CountryDisplay";
-  /**
-   * Country code.
-   */
-  code: string;
-  /**
-   * Country name.
-   */
-  country: string;
-}
-
-export interface Order_user_addresses {
-  __typename: "Address";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  streetAddress1: string;
-  streetAddress2: string;
-  city: string;
-  postalCode: string;
-  /**
-   * Shop's default country.
-   */
-  country: Order_user_addresses_country;
-  countryArea: string;
-  phone: string;
-}
-
-export interface Order_user {
-  __typename: "User";
-  /**
-   * The ID of the object.
-   */
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  isStaff: boolean;
-  isActive: boolean;
-  defaultShippingAddress: Order_user_defaultShippingAddress | null;
-  /**
-   * List of all user's addresses.
-   */
-  addresses: (Order_user_addresses | null)[] | null;
-}
-
 export interface Order_shippingAddress_country {
   __typename: "CountryDisplay";
   /**
@@ -557,7 +473,6 @@ export interface Order {
    * Total amount of the order.
    */
   total: Order_total | null;
-  user: Order_user | null;
   shippingAddress: Order_shippingAddress | null;
   shippingMethod: Order_shippingMethod | null;
   /**

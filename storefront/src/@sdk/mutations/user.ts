@@ -151,3 +151,23 @@ export const confirmEmailChangeMutation = gql`
     }
 `;
 
+export const socialAuthMutation = gql`
+    ${userFragment}
+    mutation SocialAuth($provider: String!, $accessToken: String!) {
+        socialAuth(provider: $provider, accessToken: $accessToken) {
+            token
+            social{
+                id
+                created
+                extraData
+                uid
+                provider
+                modified
+                user{
+                    ...User
+                }
+            }
+        }
+    }
+`;
+

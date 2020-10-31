@@ -53,6 +53,14 @@ export enum AttributeSortField {
   VISIBLE_IN_STOREFRONT = "VISIBLE_IN_STOREFRONT",
 }
 
+/**
+ * An enumeration.
+ */
+export enum AuthorizationKeyType {
+  FACEBOOK = "FACEBOOK",
+  GOOGLE_OAUTH2 = "GOOGLE_OAUTH2",
+}
+
 export enum BlogArticleOrderField {
   DATE = "DATE",
   PUBLISHED = "PUBLISHED",
