@@ -68,7 +68,8 @@ const Footer:React.FC = () =>{
                                 <div className="flex flex-col">
                                     <div>Режим работы магазина:</div>
                                     <div>ПН - ПТ: с 9:00 до 18:00</div>
-                                    <div>СБ - НД: с 9:00 до 15:00</div>
+                                    <div>СБ: с 9:00 до 15:00</div>
+                                    <div>ВС: выходной</div>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +122,7 @@ const Footer:React.FC = () =>{
                                 </a>
                             </div>
                             <Link to={baseUrl}>
-                                <img src={Logo} alt="СтройЛюксДрев"/>
+                                <img src={Logo} alt="СтройЛюксДрев" className="max-w-250"/>
                             </Link>
                         </div>
                     </Grid>

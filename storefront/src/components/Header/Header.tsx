@@ -210,7 +210,7 @@ const Header: React.FC = () =>{
                                 <Typography variant="h6">Режим работы</Typography>
                                 <div className="work_time__schedule">
                                     <div>ПН - ПТ: с 9:00 до 18:00</div>
-                                    <div>СБ - НД: с 9:00 до 15:00</div>
+                                    <div>СБ: с 9:00 до 15:00</div>
                                 </div>
                             </div>
 
