@@ -20,6 +20,9 @@ container=shop_db_1
 
 backup_file=${backup_folder_path}/${file_name}
 
-docker exec -it ${container} pg_dump -U ${username} -d ${dbname} > ${backup_file}
+docker exec ${container} pg_dump -U ${username} -d ${dbname} > ${backup_file}
+
+#restore
+#docker exec -i ${container} psql -U ${username} -d ${dbname} < ${backup_file}
 
 echo "Dump successful"
