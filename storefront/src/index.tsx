@@ -32,6 +32,15 @@ import {BatchHttpLink} from "@apollo/client/link/batch-http";
 import {ApolloClient, ApolloLink, ApolloProvider, defaultDataIdFromObject, InMemoryCache} from "@apollo/client";
 import {ErrorResponse, onError} from "@apollo/client/link/error";
 import {ShopProvider} from "@temp/components/Shop";
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+    gtmId: 'GTM-W53SN2W'
+}
+// const isDev = process.env.NODE_ENV === 'development';
+// if (!isDev){
+    TagManager.initialize(tagManagerArgs)
+// }
 
 interface ResponseError extends ErrorResponse {
     networkError?: Error & {
