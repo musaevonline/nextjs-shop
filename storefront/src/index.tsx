@@ -37,10 +37,10 @@ import TagManager from 'react-gtm-module';
 const tagManagerArgs = {
     gtmId: 'GTM-W53SN2W'
 }
-// const isDev = process.env.NODE_ENV === 'development';
-// if (!isDev){
+const isDev = process.env.NODE_ENV === 'development';
+if (!isDev){
     TagManager.initialize(tagManagerArgs)
-// }
+}
 
 interface ResponseError extends ErrorResponse {
     networkError?: Error & {
