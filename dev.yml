@@ -127,6 +127,8 @@ services:
     image: "traefik:v2.2"
     restart: always
     container_name: "traefik"
+    env_file:
+      - prod.env
     command:
       - "--log.level=ERROR"
       - "--api.insecure=true"
