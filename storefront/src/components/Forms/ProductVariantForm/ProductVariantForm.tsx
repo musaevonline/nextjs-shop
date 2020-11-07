@@ -84,7 +84,7 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
         onSubmit: (values:TFormProductVariantData) => {
             addVariantToCheckoutSubmit(values);
             form.resetForm();
-            setSelectedAttrs({});
+            setSelectedAttrs(getInitialAttributes(product.variants[0]?.attributes));
         }
     });
 

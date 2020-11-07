@@ -44,6 +44,7 @@ interface FormData {
     description: string;
     isPublished: boolean;
     name: string;
+    unit: string;
     productType: string;
     sku: string;
     stockQuantity: number;
@@ -115,6 +116,7 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
         description: {} as any,
         isPublished: false,
         name: "",
+        unit: "",
         productType: "",
         publicationDate: "",
         sku: null,

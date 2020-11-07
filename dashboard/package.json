@@ -50,6 +50,7 @@
     "apollo-cache-persist": "^0.1.1",
     "apollo-upload-client": "^14.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "ckeditor4-react": "^1.2.0",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
     "crc-32": "^1.2.0",

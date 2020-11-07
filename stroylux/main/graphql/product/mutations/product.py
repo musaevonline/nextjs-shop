@@ -42,6 +42,7 @@ class ProductInput(graphene.InputObjectType):
         description="Determines if product is visible to customers."
     )
     name = graphene.String(description="Product name.")
+    unit = graphene.String(description="Product unit.")
     slug = graphene.String(description="Product slug.")
     # base_price = Decimal(description="Product price.")
     sku = graphene.String(

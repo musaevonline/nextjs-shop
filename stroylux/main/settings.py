@@ -372,3 +372,36 @@ RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY", '') # '6LcGQ_gUA
 RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 RECAPTCHA_REQUIRED_SCORE = 0.85
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+# CKEDITOR_BASEPATH = os.path.join(STATIC_URL, "ckeditor/ckeditor/")
+CKEDITOR_CONFIGS = {
+
+    'default': {
+        'toolbar': [
+            ['Undo', 'Redo',
+             '-', 'Bold', 'Italic', 'Underline',
+             '-', 'Link', 'Unlink', 'Anchor',
+             '-', 'Format',
+             '-', 'SpellChecker', 'Scayt',
+             '-', 'Maximize',
+             '-', 'Language',
+             ],
+        ],
+        'height': '100%',
+        'width': '100%',
+        'toolbarCanCollapse': False,
+    },
+    'full': {
+        'toolbar': None,
+        'width': '100%',
+        'height': '250px',
+        'toolbarCanCollapse': False,
+    },
+    'disable': {
+        'toolbar': [],
+        'width': '100%',
+        'height': '600px',
+        'toolbarCanCollapse': False,
+    },
+}

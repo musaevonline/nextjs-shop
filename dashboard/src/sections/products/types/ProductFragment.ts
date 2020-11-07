@@ -79,6 +79,7 @@ export interface ProductFragment {
    */
   id: string;
   name: string;
+  unit: string | null;
   /**
    * The main thumbnail for a product.
    */

@@ -272,6 +272,7 @@ export interface ProductCreate_productCreate_product {
   attributes: ProductCreate_productCreate_product_attributes[];
   productType: ProductCreate_productCreate_product_productType;
   name: string;
+  unit: string | null;
   descriptionJson: any;
   description: string;
   category: ProductCreate_productCreate_product_category | null;
@@ -315,6 +316,7 @@ export interface ProductCreateVariables {
   description?: string | null;
   isPublished: boolean;
   name: string;
+  unit?: string | null;
   productType: string;
   sku?: string | null;
   stocks: StockInput[];

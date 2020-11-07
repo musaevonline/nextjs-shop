@@ -272,6 +272,7 @@ export interface ProductImageUpdate_productImageUpdate_product {
   attributes: ProductImageUpdate_productImageUpdate_product_attributes[];
   productType: ProductImageUpdate_productImageUpdate_product_productType;
   name: string;
+  unit: string | null;
   descriptionJson: any;
   description: string;
   category: ProductImageUpdate_productImageUpdate_product_category | null;

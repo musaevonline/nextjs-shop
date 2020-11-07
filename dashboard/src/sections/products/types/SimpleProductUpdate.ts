@@ -272,6 +272,7 @@ export interface SimpleProductUpdate_productUpdate_product {
   attributes: SimpleProductUpdate_productUpdate_product_attributes[];
   productType: SimpleProductUpdate_productUpdate_product_productType;
   name: string;
+  unit: string | null;
   descriptionJson: any;
   description: string;
   category: SimpleProductUpdate_productUpdate_product_category | null;

@@ -63,6 +63,7 @@ export const ProductCreateView: React.FC = () => {
               description: formData.description,
               isPublished: formData.isPublished,
               name: formData.name,
+              unit: formData.unit,
               productType: formData.productType,
               publicationDate:
                 formData.publicationDate !== ""

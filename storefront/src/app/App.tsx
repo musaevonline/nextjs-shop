@@ -1,5 +1,4 @@
 import "../globalStyles/scss/index.scss";
-import './editor-styles';
 
 import React from "react";
 import { RouteComponentProps } from "react-router";

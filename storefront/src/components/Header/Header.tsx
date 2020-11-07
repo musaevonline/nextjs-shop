@@ -39,8 +39,7 @@ import {usePages} from "@sdk/queries/page";
 import { Sticky } from 'react-sticky';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useShop from "@temp/hooks/useShop";
-import {BsAlarm, BsHeart, BsPhone, BsSearch} from "react-icons/bs";
-import {GiShoppingCart} from "react-icons/gi";
+import {BsAlarm, BsHeart, BsPhone, BsSearch, BsBag} from "react-icons/bs";
 import AccountIcon from "@temp/icons/Account";
 
 
@@ -215,7 +214,7 @@ const Header: React.FC = () =>{
                         <div className="cart-icon">
                             <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
                                 <IconButton onClick={toggleCartDrawer(true)}>
-                                    <GiShoppingCart />
+                                    <BsBag />
                                 </IconButton>
                             </Badge>
                         </div>
@@ -251,7 +250,7 @@ const Header: React.FC = () =>{
                                         {isSticky &&
                                         <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
                                             <IconButton onClick={toggleCartDrawer(true)}>
-                                                <GiShoppingCart/>
+                                                <BsBag/>
                                             </IconButton>
                                         </Badge>
                                         }
@@ -292,7 +291,7 @@ const Header: React.FC = () =>{
                                     <div className="mobile-header__cart">
                                         <IconButton onClick={toggleCartDrawer(true)}>
                                             <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                                <GiShoppingCart />
+                                                <BsBag />
                                             </Badge>
                                         </IconButton>
                                     </div>

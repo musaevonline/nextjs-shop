@@ -3,15 +3,20 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.views import serve
+from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import RedirectView, TemplateView
 
 from .graphql.api import schema
 from .graphql.views import GraphQLView
+from ckeditor_uploader.views import upload, browse
 
 urlpatterns = [
     url(r"^graphql/", csrf_exempt(GraphQLView.as_view(schema=schema)), name="api"),
     url(r"^admin/", admin.site.urls),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls'))
+    # url(r'^ckeditor/upload/', upload, name='ckeditor_upload'),
+    # url(r'^ckeditor/browse/', never_cache(browse), name='ckeditor_browse'),
 ]
 
 if settings.DEBUG:
