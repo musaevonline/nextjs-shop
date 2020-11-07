@@ -67,6 +67,10 @@ export interface ShopInfo_shop_images {
    * The URL of the image.
    */
   url: string;
+  /**
+   * The URL of the image.
+   */
+  mobileUrl: string;
 }
 
 export interface ShopInfo_shop_authorizationKeys {

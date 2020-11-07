@@ -16,8 +16,7 @@ import classNames from "classnames";
 import {FavoritesContext} from "@temp/components/FavoritesProvider/context";
 import Badge from "@material-ui/core/Badge";
 import Tooltip from "@material-ui/core/Tooltip";
-import HeartIcon from "@temp/icons/HeartIcon";
-import HeartIconFilled from "@temp/icons/HeartIconFilled";
+import {BsHeart, BsHeartFill} from "react-icons/bs";
 
 const useStyles = makeStyles(theme => ({
     favoritesIcon: {
@@ -121,8 +120,8 @@ const ProductCard:React.FC<ProductCardProps> = ({item, isNew, isDiscount}) =>{
                 classes.favoritesIcon)}
                  data-active={favorites.includes(id)}
                  onClick={toggleFavorites}>
-                {favorites.includes(id) ? <HeartIconFilled viewBox="0 -28 512.00002 512"/> :
-                    <HeartIcon viewBox="0 -28 512.001 512"/>
+                {favorites.includes(id) ? <BsHeartFill /> :
+                    <BsHeart />
                 }
             </div>
 

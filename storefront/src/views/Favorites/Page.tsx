@@ -33,7 +33,7 @@ const Page:React.FC<{
                 {loading && <Loader absolute={true}/>}
                 <Card className="mt-10">
                     <CardContent>
-                        <Container maxWidth="lg">
+                        <Container maxWidth="xl">
                             {products &&
                             <InfiniteScroll
                                 pageStart={0}

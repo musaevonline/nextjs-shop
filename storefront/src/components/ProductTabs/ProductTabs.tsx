@@ -78,7 +78,7 @@ const ProductTabs:React.FC<{
                                                             <Typography key={val.id}
                                                                         variant="body1"
                                                                         component="li"
-                                                                        className="font-medium">
+                                                                        className="font-medium list-none">
                                                                 {val.name}
                                                             </Typography>
                                                         )}
@@ -98,7 +98,7 @@ const ProductTabs:React.FC<{
                                                             <Typography key={val.id}
                                                                         variant="body1"
                                                                         component="li"
-                                                                        className="font-medium">
+                                                                        className="font-medium list-none">
                                                                 {val.name}
                                                             </Typography>
                                                         )}

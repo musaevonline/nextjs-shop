@@ -20,4 +20,8 @@ export interface ShopImageFragment {
    * The URL of the image.
    */
   url: string;
+  /**
+   * The URL of the image.
+   */
+  mobileUrl: string;
 }

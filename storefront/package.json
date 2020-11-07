@@ -54,6 +54,8 @@
     "react-google-recaptcha": "^2.1.0",
     "react-gtm-module": "^2.0.11",
     "react-helmet": "^6.1.0",
+    "react-icons": "^3.11.0",
+    "react-image-gallery": "^1.0.8",
     "react-images-viewer": "^1.6.2",
     "react-infinite-scroller": "^1.2.4",
     "react-inlinesvg": "^2.0.1",

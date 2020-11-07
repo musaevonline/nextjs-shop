@@ -4,7 +4,7 @@ import React from "react";
 import _ from 'lodash';
 
 import { homeStructuredData } from "../../core/SEO/homeStructuredData";
-import {Container} from "@material-ui/core";
+import {Container, useTheme} from "@material-ui/core";
 import {HomeCarousel} from "@temp/components/HomeCarousel";
 import {NewsCarousel} from "@temp/components/NewsCarousel";
 import Carousel from "react-multi-carousel";
@@ -19,6 +19,7 @@ import {dateToShortString} from "@temp/core/utils";
 import {Skeleton} from "@material-ui/lab";
 import {ShopInfo_shop} from "@sdk/queries/types/ShopInfo";
 import {logoStructuredData} from "@temp/core/SEO/logoStructuredData";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const responsive = {
     large:{
@@ -79,7 +80,8 @@ const Page: React.FC<{
           loading, shop, newProducts,
           popularProducts, articlesEdges, articlesLoading
       }) => {
-
+    const theme = useTheme();
+    const sm = useMediaQuery(theme.breakpoints.down('sm'));
     const news: IArticleCard[] = articlesEdges?.map(edge => ({
         id: edge.node.id,
         categorySlug: edge.node.category.slug,
@@ -94,9 +96,6 @@ const Page: React.FC<{
         tags: edge.node.tags
     })) || [];
 
-    // const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    //     setTabValue(newValue);
-    // };
     return (
         <div className="home-page">
             <script className="structured-data-list" type="application/ld+json">
@@ -120,6 +119,7 @@ const Page: React.FC<{
                                   customTransition="transform 300ms ease-in-out"
                                   transitionDuration={500}
                                   containerClass="carousel-container"
+                                  showDots={sm}
                                   removeArrowOnDeviceType={["tablet", "mobile"]}>
                             {newProducts?.edges.map((item, i) => <ProductCard key={i} item={item.node}/>)}
                         </Carousel>
@@ -141,6 +141,7 @@ const Page: React.FC<{
                                   customTransition="transform 300ms ease-in-out"
                                   transitionDuration={500}
                                   containerClass="carousel-container"
+                                  showDots={sm}
                                   removeArrowOnDeviceType={["tablet", "mobile"]}>
                             {popularProducts?.edges.map((item, i) => <ProductCard key={i} item={item.node}/>)}
                         </Carousel>

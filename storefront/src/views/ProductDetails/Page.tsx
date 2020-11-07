@@ -76,7 +76,7 @@ const Page:React.FC<{
                 </div>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={7}>
-                        <Card className="sticky top-0">
+                        <Card className="sticky" style={{top: 70}}>
                             <CardContent>
                                 <div className="product-carousel">
                                     {product.images && <ProductCarousel images={product.images}/>}
@@ -85,7 +85,7 @@ const Page:React.FC<{
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={12} md={5}>
-                        <Card>
+                        <Card className="sticky" style={{top: 70}}>
                             <CardContent>
                                 <ProductDetails product={product}
                                                 addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}

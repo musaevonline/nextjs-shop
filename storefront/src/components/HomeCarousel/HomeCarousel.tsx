@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import {ShopInfo_shop_images} from "@sdk/queries/types/ShopInfo";
 import {Skeleton} from "@material-ui/lab";
 import {makeStyles} from "@material-ui/core/styles";
+import {useTheme} from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(theme => ({
     imgDescription: {
@@ -22,6 +24,8 @@ const HomeCarousel:React.FC<{
     images: ShopInfo_shop_images[] | null
 }> = ({images}) =>{
     const classes = useStyles();
+    const theme = useTheme();
+    const sm = useMediaQuery(theme.breakpoints.down('sm'));
     const settings = {
         className: "carousel",
         renderBottomCenterControls: () => null,
@@ -53,16 +57,16 @@ const HomeCarousel:React.FC<{
     return(
         <div className="home-carousel">
             {!images &&
-            <Skeleton variant="rect" height={600}/>
+            <Skeleton variant="rect" height={sm ? 400 : 600}/>
             }
             {images &&
             <NukaCarousel {...settings}>
                 {images.map((img, i) =>
                     <div key={i} style={{
-                        backgroundImage: `url(${img.url})`,
+                        backgroundImage: `url(${sm ? img.mobileUrl : img.url})`,
                         backgroundPosition: 'center',
                         backgroundSize: 'cover',
-                        height: 600
+                        height: sm ? 400 : 600
                     }}>
                         {img.description &&
                         <div className="flex flex-column items-center justify-center h-full"

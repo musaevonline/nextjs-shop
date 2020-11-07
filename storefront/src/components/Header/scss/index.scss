@@ -34,8 +34,8 @@ header{
         height: 60px;
       }
       svg{
-        color: $gray;
-        font-size: 4.8rem;
+        //color: $gray;
+        font-size: 4rem;
         margin-right: 15px;
       }
       .mobile, .work_time{
@@ -48,10 +48,16 @@ header{
           }
         }
       }
+      .work_time__schedule {
+        font-size: 1.2rem;
+      }
       .cart-icon{
         padding-right: 15px;
         display: flex;
         align-items: center;
+        & svg{
+          font-size: 5rem;
+        }
         &:hover{
           svg{
             color: $link-color-hover;
@@ -92,13 +98,13 @@ header{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .menu{
-      width: 150px;
-      flex: 1;
-    }
+    //.menu{
+    //  width: 150px;
+    //  flex: 1;
+    //}
     &__logo{
       img{
-        max-width: 100%;
+        max-width: 120px;
       }
     }
     &__utilities{

@@ -5,10 +5,6 @@ import SVG from 'react-inlinesvg';
 import {Container} from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
-import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
-import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
-import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import SwipeableViews from 'react-swipeable-views';
 import {
@@ -31,10 +27,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import {Categories, CategoriesVariables} from "@sdk/queries/types/Categories";
 import Drawer from "@material-ui/core/Drawer";
-import AccountIcon from "@temp/icons/Account";
 import {AuthenticatedPage, ForgotPasswordPage, LoginPage, SignUpPage} from "@temp/components/Auth";
-import HeartIcon from "@temp/icons/HeartIcon";
-import ShoppingCartIcon from "@temp/icons/ShoppingCartIcon";
 import Divider from "@material-ui/core/Divider";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
@@ -46,6 +39,10 @@ import {usePages} from "@sdk/queries/page";
 import { Sticky } from 'react-sticky';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useShop from "@temp/hooks/useShop";
+import {BsAlarm, BsHeart, BsPhone, BsSearch} from "react-icons/bs";
+import {GiShoppingCart} from "react-icons/gi";
+import AccountIcon from "@temp/icons/Account";
+
 
 const Header: React.FC = () =>{
     const theme = useTheme();
@@ -193,7 +190,7 @@ const Header: React.FC = () =>{
                             </Link>
                         </div>
                         <div className="mobile">
-                            <PhoneAndroidIcon/>
+                            <BsPhone/>
                             <div className="mobile__body">
                                 <Typography variant="h6">{shop?.companyAddress.phone}</Typography>
                                 <div className="mobile__call">
@@ -205,7 +202,7 @@ const Header: React.FC = () =>{
                             </div>
                         </div>
                         <div className="work_time">
-                            <AccessAlarmIcon/>
+                            <BsAlarm/>
                             <div className="work_time__body">
                                 <Typography variant="h6">Режим работы</Typography>
                                 <div className="work_time__schedule">
@@ -215,9 +212,11 @@ const Header: React.FC = () =>{
                             </div>
 
                         </div>
-                        <div className="cart-icon pointer" onClick={toggleCartDrawer(true)}>
+                        <div className="cart-icon">
                             <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                <ShoppingCartIcon fillRule="evenodd" clipRule="evenodd"/>
+                                <IconButton onClick={toggleCartDrawer(true)}>
+                                    <GiShoppingCart />
+                                </IconButton>
                             </Badge>
                         </div>
                     </div>
@@ -227,7 +226,7 @@ const Header: React.FC = () =>{
                           style,
                           isSticky
                       }) => (
-                        <div className={`header__bottom bg-white ${isSticky ? "shadow-xl": "" }`} style={style}>
+                        <div className={`header__bottom bg-white ${isSticky ? "shadow-lg": "" }`} style={style}>
                             <Container maxWidth="xl">
                                 <div className="flex items-center h-60">
                                     <div className="w-300">
@@ -242,13 +241,20 @@ const Header: React.FC = () =>{
                                     </div>
                                     <div className="w-200 flex">
                                         <IconButton onClick={e => {setAccountDrawerState(true)}}>
-                                            <AccountIcon fillRule="evenodd" clipRule="evenodd"/>
+                                            <AccountIcon fillRule="evenodd"/>
                                         </IconButton>
                                         <Link to={userProfileFavoritesUrl}>
                                             <IconButton>
-                                                <HeartIcon viewBox="0 -28 512.001 512"/>
+                                                <BsHeart/>
                                             </IconButton>
                                         </Link>
+                                        {isSticky &&
+                                        <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
+                                            <IconButton onClick={toggleCartDrawer(true)}>
+                                                <GiShoppingCart/>
+                                            </IconButton>
+                                        </Badge>
+                                        }
                                     </div>
                                 </div>
                             </Container>
@@ -262,12 +268,12 @@ const Header: React.FC = () =>{
                           style,
                           isSticky
                       }) => (
-                        <Container maxWidth="lg" style={style} className={`bg-white ${isSticky ? "shadow-xl": "" }`}>
+                        <Container maxWidth="lg" style={style} className={`bg-white ${isSticky ? "shadow-lg": "" }`}>
                             <div className="mobile-header">
                                 <div className="menu">
                                     <MenuMobile categories={dataCategories?.categories}/>
                                 </div>
-                                <div className="mobile-header__logo">
+                                <div className="mobile-header__logo flex-1">
                                     <Link to={baseUrl}>
                                         <img src={Logo} alt="СтройЛюксДрев"/>
                                     </Link>
@@ -275,18 +281,18 @@ const Header: React.FC = () =>{
                                 <div className="mobile-header__utilities">
                                     <div className="mobile-header__search-icon">
                                         <IconButton onClick={e => {setIsActiveSearch(prev => !prev)}}>
-                                            {isActiveSearch ? <CloseIcon/> : <SearchIcon/>}
+                                            {isActiveSearch ? <CloseIcon/> : <BsSearch/>}
                                         </IconButton>
                                     </div>
                                     <div className="mobile-header__account-icon">
                                         <IconButton onClick={e => setAccountDrawerState(true)}>
-                                            <AccountIcon fillRule="evenodd" clipRule="evenodd"/>
+                                            <AccountIcon fillRule="evenodd"/>
                                         </IconButton>
                                     </div>
                                     <div className="mobile-header__cart">
                                         <IconButton onClick={toggleCartDrawer(true)}>
                                             <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                                <ShoppingCartOutlinedIcon />
+                                                <GiShoppingCart />
                                             </Badge>
                                         </IconButton>
                                     </div>

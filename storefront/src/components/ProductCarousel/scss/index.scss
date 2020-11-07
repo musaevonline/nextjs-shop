@@ -47,4 +47,19 @@
       border-radius: 50%;
     }
   }
+  .gallery-thumb {
+    border: 1px solid transparent;
+    &:hover, &.active{
+      border: 1px solid #000;
+    }
+    img{
+      max-height: 100px;
+    }
+  }
+  .image-gallery-icon:hover{
+    color: gray;
+  }
+  .gallery-img.image-gallery-slide .image-gallery-image{
+    max-height: 600px;
+  }
 }

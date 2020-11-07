@@ -5,14 +5,14 @@ import React from "react";
 import Carousel from "react-multi-carousel";
 import {IArticleCard} from "@temp/components/ArticleCard/ArticleCard";
 import {ArticleCard} from "@temp/components/ArticleCard";
+import {useTheme} from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const NewsCarousel:React.FC<{
     news: IArticleCard[]
 }> = ({news}) =>{
-    // let isMobile = false;
-    // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    //     isMobile = true;
-    // }
+    const theme = useTheme();
+    const sm = useMediaQuery(theme.breakpoints.down('sm'));
     if (!news.length) return null;
     const responsive = {
         large:{
@@ -46,6 +46,7 @@ const NewsCarousel:React.FC<{
                       customTransition="transform 300ms ease-in-out"
                       transitionDuration={500}
                       containerClass="carousel-container news-carousel"
+                      showDots={sm}
                       removeArrowOnDeviceType={["tablet", "mobile"]}>
                 {news.map((node, i) => <ArticleCard key={i} article={node}/>)}
 

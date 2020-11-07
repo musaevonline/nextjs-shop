@@ -24,7 +24,7 @@ export const getProductVariantsAttributes = (product: ProductDetails_product | P
 
 export const selectVariantByAttributes = (
     variants: ProductWithVariants_variants[],
-    attrs: {[key: string]: {label: string, value: string}}
+    attrs: {[key: string]: string}
 ): ProductWithVariants_variants | null => {
     const attrsKeys = Object.keys(attrs);
     const filteredVariants = variants.filter(variant => {
@@ -35,7 +35,7 @@ export const selectVariantByAttributes = (
             for (let i = 0; i < attrsKeys.length; i++){
                 const attributeId = attrsKeys[i];
                 const attr = attrs[attributeId];
-                const variantAttr = variant.attributes.find(el => !!el.values.find(val => val.id === attr.value));
+                const variantAttr = variant.attributes.find(el => !!el.values.find(val => val.id === attr));
                 if (!variantAttr) {
                     found = false;
                     break;

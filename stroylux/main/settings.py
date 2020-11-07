@@ -277,10 +277,12 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
         ("default_webp", "thumbnail_webp__1080x600"),
         ("lg_webp", "thumbnail_webp__1600x900"),
+        ("md_webp", "thumbnail_webp__960x540"),
         ("sm_webp", "thumbnail_webp__120x120"),
 
         ("default_crop_webp", "crop_webp__1080x600"),
         ("lg_crop_webp", "crop_webp__1600x900"),
+        ("md_crop_webp", "crop_webp__960x540"),
         ("sm_crop_webp", "crop_webp__120x120"),
 
     ]

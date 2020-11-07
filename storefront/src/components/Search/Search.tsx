@@ -79,7 +79,6 @@ const renderInputComponent = ({loading, ...inputProps}) => (
 const PAGINATE_BY = 5;
 
 const debounced = _.debounce((cb:() => void) => {
-        console.log('here');
         cb();
     },
     1000);

@@ -137,6 +137,9 @@ export const defaultTheme = createMuiTheme({
 				'&$marginDense':{
 					transform: "translate(14px, 16px) scale(1)"
 				}
+			},
+			shrink: {
+				transform: "translate(14px, -6px) scale(0.75)"
 			}
 		},
 		MuiFormLabel:{

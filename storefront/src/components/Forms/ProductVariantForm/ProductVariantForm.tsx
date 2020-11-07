@@ -11,7 +11,16 @@ import _ from "lodash";
 import Button from "@material-ui/core/Button";
 import {ProductWithVariants, ProductWithVariants_variants_attributes} from "@sdk/fragments/types/ProductWithVariants";
 import {getProductVariantsAttributes, selectVariantByAttributes} from "@temp/views/ProductDetails/utils";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+    select: {
+        padding: "10px 14px"
+    }
+}))
 
 export type TFormProductVariantData = {
     variant: string,
@@ -32,7 +41,7 @@ const getInitialAttributes = (attrs: ProductWithVariants_variants_attributes[]) 
     if (attrs){
         attrs.forEach(attr => {
             if (!!attr.values.length) {
-                data[attr.attribute.id] = {value: attr.values[0].id, label: attr.values[0].name}
+                data[attr.attribute.id] = attr.values[0].id
             }
         })
     }
@@ -43,8 +52,8 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
                                                                   setSelectedVariant, setSelectedQuantity,
                                                                   selectedVariant, checkoutVariantQuantity
                                                               }) =>{
-    const isManyVariants = product.variants?.length > 1;
-    const [selectedAttrs, setSelectedAttrs] = React.useState(isManyVariants ? {} : getInitialAttributes(product.variants[0]?.attributes))
+    const classes = useStyles();
+    const [selectedAttrs, setSelectedAttrs] = React.useState(getInitialAttributes(product.variants[0]?.attributes))
     let selectedVariantStockQuantity = 0;
     let availableQuantity = MAX_CHECKOUT_VARIANT_LINES;
     if (selectedVariant){
@@ -68,7 +77,7 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
     const form = useFormik({
         enableReinitialize: true,
         initialValues: {
-            variant: isManyVariants ? '' : product.variants[0]?.id || '',
+            variant: product.variants[0]?.id || '',
             quantity: 1
         },
         validationSchema: schema,
@@ -92,61 +101,80 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
     useEffect(() =>{
         form.resetForm();
     }, [product]);
-    let variantsOptions = product.variants.map(variant => ({
-        label: variant.name,
-        value: variant.id
-    }));
-    if (isManyVariants){
-        variantsOptions = [{
-            label: 'Вариант...',
-            value: ''
-        }, ...variantsOptions];
-    }
 
-    const onChangeAttribute = (attrId) => (e, value) => {
+    const onChangeAttribute = (attrId) => (e) => {
         const newAttrs = {
             ...selectedAttrs,
-            [attrId]: value
+            [attrId]: e.target.value
         }
         setSelectedAttrs(newAttrs);
         const newSelectedVariant = selectVariantByAttributes(product.variants, newAttrs);
         form.setFieldValue('variant', newSelectedVariant?.id);
     }
+
     return(
         <div className="product-form">
             <form onSubmit={form.handleSubmit}>
-                <Grid container spacing={2}>
+                <Grid container spacing={0}>
                     {attributes.map(attr => {
                         const options = attr.values.map(val => ({label: val.name, value: val.id}));
                         if (!options.length) return null;
                         return(
                             <Grid key={attr.id} item xs={12}>
-                                <Autocomplete
-                                    id={attr.id}
-                                    options={options}
-                                    onChange={onChangeAttribute(attr.id)}
-                                    value={selectedAttrs[attr.id] || null}
-                                    disableClearable
-                                    autoHighlight
-                                    getOptionLabel={option => option?.label || null}
-                                    renderOption={option => option?.label || null}
-                                    getOptionSelected={(option, value) => option?.value === value.value}
-                                    renderInput={params => (
-                                        <TextField
-                                            {...params}
-                                            label={attr.name}
-                                            variant="outlined"
-                                            fullWidth
-                                            inputProps={{
-                                                ...params.inputProps
-                                            }}
-                                        />
-                                    )}
-                                    fullWidth
-                                />
+                                <FormControl margin="normal" fullWidth>
+                                    <InputLabel id={`variant-select-label_${attr.id}`}>{attr.name}</InputLabel>
+                                    <Select
+                                        labelId={`variant-select-label_${attr.id}`}
+                                        id="variant-select"
+                                        value={selectedAttrs[attr.id] || null}
+                                        onChange={onChangeAttribute(attr.id)}
+                                        variant="outlined"
+                                        label={attr.name}
+                                        MenuProps={{
+                                            variant: "menu"
+                                        }}
+                                        classes={{
+                                            outlined: classes.select
+                                        }}
+                                        fullWidth
+                                    >
+                                        {options.map((opt, i) => {
+                                            return(
+                                                <MenuItem key={i} value={opt.value}>{opt.label}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormControl>
+                                {/*<Autocomplete*/}
+                                {/*    id={attr.id}*/}
+                                {/*    options={options}*/}
+                                {/*    onChange={onChangeAttribute(attr.id)}*/}
+                                {/*    value={selectedAttrs[attr.id] || null}*/}
+                                {/*    disableClearable*/}
+                                {/*    autoHighlight*/}
+                                {/*    getOptionLabel={option => option?.label || null}*/}
+                                {/*    renderOption={option => option?.label || null}*/}
+                                {/*    getOptionSelected={(option, value) => option?.value === value.value}*/}
+                                {/*    size="small"*/}
+                                {/*    noOptionsText="Нет вариантов"*/}
+                                {/*    renderInput={params => (*/}
+                                {/*        <TextField*/}
+                                {/*            {...params}*/}
+                                {/*            label={attr.name}*/}
+                                {/*            variant="outlined"*/}
+                                {/*            fullWidth*/}
+                                {/*            inputProps={{*/}
+                                {/*                ...params.inputProps*/}
+                                {/*            }}*/}
+                                {/*        />*/}
+                                {/*    )}*/}
+                                {/*    fullWidth*/}
+                                {/*/>*/}
                             </Grid>
                         )
                     })}
+                </Grid>
+                <Grid container spacing={1}>
                     <Grid item xs={12} sm={4}>
                         <div className="product-form__quantity">
                             <FormControl margin="normal" fullWidth>
