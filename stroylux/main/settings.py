@@ -195,7 +195,9 @@ INSTALLED_APPS = [
     "django_countries",
     "phonenumber_field",
     'captcha',
-    'social_django'
+    'social_django',
+    'ckeditor_uploader',
+    'ckeditor'
 ]
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 if DEBUG:
