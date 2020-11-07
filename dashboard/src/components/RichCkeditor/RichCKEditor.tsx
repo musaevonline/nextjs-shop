@@ -24,6 +24,7 @@ import React from "react";
 import {ChangeEvent} from "@temp/hooks/useForm";
 import {makeStyles} from "@material-ui/core/styles";
 import CKEditor from "ckeditor4-react";
+import {IS_DEV} from "@temp/core/config";
 
 const useStyles = makeStyles(theme => ({
     editor: {
@@ -32,6 +33,8 @@ const useStyles = makeStyles(theme => ({
         }
     }
 }));
+const UPLOAD_URL = IS_DEV ? "http://localhost:8000/ckeditor/upload/" : '/ckeditor/upload/'
+const BROWSE_URL = IS_DEV ? "http://localhost:8000/ckeditor/browse/" : '/ckeditor/browse/'
 
 const editorOpts = {
   // toolbar: [{
@@ -85,13 +88,13 @@ const editorOpts = {
 
   // Adding drag and drop image upload.
   extraPlugins: 'print,format,font,colorbutton,justify,uploadimage',
-  uploadUrl: '/ckeditor/upload/',
+  uploadUrl: UPLOAD_URL,
 
   // Configure your file manager integration. This example uses CKFinder 3 for PHP.
-  filebrowserBrowseUrl: '/ckeditor/browse/',
-  filebrowserImageBrowseUrl: '/ckeditor/browse/',
-  filebrowserUploadUrl: '/ckeditor/upload/',
-  filebrowserImageUploadUrl: '/ckeditor/upload/',
+  filebrowserBrowseUrl: BROWSE_URL,
+  filebrowserImageBrowseUrl: BROWSE_URL,
+  filebrowserUploadUrl: UPLOAD_URL,
+  filebrowserImageUploadUrl: UPLOAD_URL,
 
   height: 400,
 
