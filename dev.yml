@@ -26,7 +26,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backendssl.entrypoints=websecure"
-      - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/graphql/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/admin/`)"
+      - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/graphql/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/admin/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/ckeditor/`)"
       - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
 
   storefront:
