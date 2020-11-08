@@ -1,12 +1,10 @@
 import { gql } from "@apollo/client";
 import {productCardFragment} from "@sdk/fragments/product";
 import {productVariantFragment} from "@sdk/fragments/product-variant";
-import {productReviewFragment} from "@sdk/fragments/product-review";
 
 export const productQuery = gql`
     ${productCardFragment}
     ${productVariantFragment}
-    ${productReviewFragment}
     query ProductDetails($id: ID!) {
         product(id: $id) {
             ...ProductCardInfo
@@ -16,21 +14,10 @@ export const productQuery = gql`
                 id
                 name
                 slug
-                products(first: 6){
-                    edges{
-                        node{
-                            ...ProductCardInfo
-                        }
-                    }
-                }
             }
-            reviews(first: 5){
+            reviews(first: 1){
                 totalCount
-                edges{
-                    node{
-                        ...ProductReview                        
-                    }
-                }
+               
             }
             variants{
                 ...ProductVariant

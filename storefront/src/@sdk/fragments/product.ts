@@ -17,7 +17,7 @@ export const productCardFragment = gql`
             ratingAvg
             count
         }
-        thumbnail(size: 540){
+        thumbnail(size: "540x540", method: THUMBNAIL_WEBP){
             url
             alt
         }

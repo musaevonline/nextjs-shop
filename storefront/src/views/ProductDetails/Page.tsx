@@ -20,6 +20,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import {ProductReviews_productReviews} from "@sdk/queries/types/ProductReviews";
 import Typography from "@material-ui/core/Typography";
+import {CategoryProducts_category_products} from "@sdk/queries/types/CategoryProducts";
 
 const Page:React.FC<{
     product: ProductDetails_product,
@@ -27,26 +28,27 @@ const Page:React.FC<{
     checkoutVariantQuantity: (selectedVariantId:string) => number,
     reviews: ProductReviews_productReviews | null,
     reviewsLoading: boolean,
-    loadMoreReviews():void
+    loadMoreReviews():void,
+    categoryProducts: CategoryProducts_category_products
 }> = ({
           product, addVariantToCheckoutSubmit, checkoutVariantQuantity,
-          reviews, reviewsLoading, loadMoreReviews
+          reviews, reviewsLoading, loadMoreReviews, categoryProducts
       }) =>{
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
     const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
 
-    const relatedProducts = product.category?.products.edges.filter(edge => edge.node.id !== product?.id);
+    const relatedProducts = categoryProducts?.edges.filter(edge => edge.node.id !== product?.id);
 
     const responsive = {
         large:{
             breakpoint: { max: 3000, min: 1376 },
             items: 5,
-            slidesToSlide: 5 // optional, default to 1.
+            slidesToSlide: 3 // optional, default to 1.
         },
         desktop: {
             breakpoint: { max: 1376, min: 1024 },
             items: 4,
-            slidesToSlide: 4 // optional, default to 1.
+            slidesToSlide: 2 // optional, default to 1.
         },
         tablet: {
             breakpoint: { max: 1024, min: 500 },
@@ -76,7 +78,7 @@ const Page:React.FC<{
                 </div>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={7}>
-                        <Card className="sticky" style={{top: 70}}>
+                        <Card className="sticky top-70">
                             <CardContent>
                                 <div className="product-carousel">
                                     {product.images && <ProductCarousel images={product.images}/>}
@@ -85,7 +87,7 @@ const Page:React.FC<{
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={12} md={5}>
-                        <Card className="sticky" style={{top: 70}}>
+                        <Card className="sticky top-70">
                             <CardContent>
                                 <ProductDetails product={product}
                                                 addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}

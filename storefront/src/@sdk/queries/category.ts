@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import {categoryBaseFragment} from "@sdk/fragments/category";
+import {productCardFragment} from "@sdk/fragments/product";
 
 export const categoryQuery = gql`
     ${categoryBaseFragment}
@@ -33,6 +34,23 @@ export const categoriesQuery = gql`
                 }
             }
 
+        }
+    }
+`;
+
+export const categoryProducts = gql`
+    ${productCardFragment}
+    query CategoryProducts($categoryId: ID!, $firstProducts: Int!){
+        category(id: $categoryId){
+            id
+            name
+            products(first: $firstProducts){
+                edges{
+                    node{
+                        ...ProductCardInfo
+                    }
+                }
+            }
         }
     }
 `;

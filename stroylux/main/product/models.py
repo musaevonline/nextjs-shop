@@ -170,12 +170,10 @@ class Product(PublishableModel):
         return images[0] if images else None
 
     def get_price_range(
-            self, discounts=None
+            self
     ) -> MoneyRange:
-        if self.variants.all():
-            prices = [variant.base_price for variant in self]
-            return MoneyRange(min(prices), max(prices))
-        return MoneyRange(start=zero_money(), stop=zero_money())
+        prices = [variant.base_price for variant in self]
+        return MoneyRange(min(prices) or zero_money(), max(prices) or zero_money())
 
     @property
     def stock_status(self) -> str:

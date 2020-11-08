@@ -330,6 +330,7 @@ module.exports = {
     }),
     inset: {
       '0': '0',
+      '70': '7rem',
       auto: 'auto',
     },
     letterSpacing: {

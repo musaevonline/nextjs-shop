@@ -105,10 +105,6 @@ export interface ProductVariant_attributes_values {
    */
   id: string;
   /**
-   * The input type to use for entering attribute values in the dashboard.
-   */
-  inputType: AttributeInputTypeEnum | null;
-  /**
    * Name of a value displayed in the interface.
    */
   name: string | null;

@@ -8,78 +8,83 @@ from graphene import relay
 from graphene_federation import key
 from graphql import GraphQLError
 
-from main.product.availability import is_product_in_stock
-from main.product.utils import calculate_revenue_for_variant
-from ..sorters import ProductReviewOrderField
+from main import settings
+from main.core.permissions import ProductPermissions
 from main.graphql.core.connection import DjangoPkInterface
 from main.graphql.core.fields import PrefetchingConnectionField, FilterInputConnectionField
 from main.graphql.core.types import Money, MoneyRange
 from main.graphql.core.types.common import Image
 from main.graphql.decorators import permission_required
-from main import settings
-from ...core.connection import CountableDjangoObjectType
-from main.core.permissions import ProductPermissions
 from main.product import models
+from main.product.availability import is_product_in_stock
 from main.product.templatetags.product_images import get_thumbnail, get_product_image_thumbnail
+from main.product.utils import calculate_revenue_for_variant
+from .attributes import SelectedAttribute, Attribute
+from .. import StockStatus
+from ..dataloaders.products import ProductVariantsByProductIdLoader, ImagesByProductIdLoader, CategoryByIdLoader, \
+    ProductByIdLoader, ImagesByProductVariantIdLoader
+from ..dataloaders.stocks import StocksByVariantIdLoader
+from ..dataloaders.attributes import SelectedAttributesByProductVariantIdLoader, SelectedAttributesByProductIdLoader
 from ..filters import ProductReviewFilterInput, AttributeFilterInput
 from ..resolvers import resolve_attributes
-from .attributes import SelectedAttribute, Attribute
-from ...core.enums import ReportingPeriod
+from ..sorters import ProductReviewOrderField
+from ...core.connection import CountableDjangoObjectType
+from ...core.enums import ReportingPeriod, VersatileImageMethod
 from ...core.types.money import TaxedMoney
 from ...utils import get_database_id, reporting_period_to_date
 
 
-def resolve_attribute_list(
-        instance: Union[models.Product, models.ProductVariant], *, user
-) -> List[SelectedAttribute]:
-    """Resolve attributes from a product into a list of `SelectedAttribute`s.
-    Note: you have to prefetch the below M2M fields.
-        - product_type -> attribute[rel] -> [rel]assignments -> values
-        - product_type -> attribute[rel] -> attribute
-    """
-    resolved_attributes = []
-    attributes_qs = None
-
-    # Retrieve the product type
-    if isinstance(instance, models.Product):
-        product_type = instance.product_type
-        product_type_attributes_assoc_field = "attributeproduct"
-        assigned_attribute_instance_field = "productassignments"
-        assigned_attribute_instance_filters = {"product_id": instance.pk}
-        if hasattr(product_type, "storefront_attributes"):
-            attributes_qs = product_type.storefront_attributes  # type: ignore
-    elif isinstance(instance, models.ProductVariant):
-        product_type = instance.product.product_type
-        product_type_attributes_assoc_field = "attributevariant"
-        assigned_attribute_instance_field = "variantassignments"
-        assigned_attribute_instance_filters = {"variant_id": instance.pk}
-    else:
-        raise AssertionError(f"{instance.__class__.__name__} is unsupported")
-
-    # Retrieve all the product attributes assigned to this product type
-    if not attributes_qs:
-        attributes_qs = getattr(product_type, product_type_attributes_assoc_field)
-        attributes_qs = attributes_qs.get_visible_to_user(user)
-
-    # An empty QuerySet for unresolved values
-    empty_qs = models.AttributeValue.objects.none()
-
-    # Goes through all the attributes assigned to the product type
-    # The assigned values are returned as a QuerySet, but will assign a
-    # dummy empty QuerySet if no values are assigned to the given instance.
-    for attr_data_rel in attributes_qs:
-        attr_instance_data = getattr(attr_data_rel, assigned_attribute_instance_field)
-        # Retrieve the instance's associated data
-        attr_data = attr_instance_data.filter(**assigned_attribute_instance_filters)
-        attr_data = attr_data.first()
-
-        # Return the instance's attribute values if the assignment was found,
-        # otherwise it sets the values as an empty QuerySet
-        values = attr_data.values.all() if attr_data is not None else empty_qs
-        resolved_attributes.append(
-            SelectedAttribute(attribute=attr_data_rel.attribute, values=values)
-        )
-    return resolved_attributes
+# def resolve_attribute_list(
+#         instance: Union[models.Product, models.ProductVariant], *, user
+# ) -> List[SelectedAttribute]:
+#     """Resolve attributes from a product into a list of `SelectedAttribute`s.
+#     Note: you have to prefetch the below M2M fields.
+#         - product_type -> attribute[rel] -> [rel]assignments -> values
+#         - product_type -> attribute[rel] -> attribute
+#     """
+#     resolved_attributes = []
+#     attributes_qs = None
+#
+#     # Retrieve the product type
+#     if isinstance(instance, models.Product):
+#         product_type = instance.product_type
+#         product_type_attributes_assoc_field = "attributeproduct"
+#         assigned_attribute_instance_field = "productassignments"
+#         assigned_attribute_instance_filters = {"product_id": instance.pk}
+#         if hasattr(product_type, "storefront_attributes"):
+#             attributes_qs = product_type.storefront_attributes  # type: ignore
+#     elif isinstance(instance, models.ProductVariant):
+#         product_type = instance.product.product_type
+#         product_type_attributes_assoc_field = "attributevariant"
+#         assigned_attribute_instance_field = "variantassignments"
+#         assigned_attribute_instance_filters = {"variant_id": instance.pk}
+#     else:
+#         raise AssertionError(f"{instance.__class__.__name__} is unsupported")
+#
+#     # Retrieve all the product attributes assigned to this product type
+#     if not attributes_qs:
+#         attributes_qs = getattr(product_type, product_type_attributes_assoc_field)
+#         attributes_qs = attributes_qs.get_visible_to_user(user)
+#
+#     # An empty QuerySet for unresolved values
+#     empty_qs = models.AttributeValue.objects.none()
+#
+#     # Goes through all the attributes assigned to the product type
+#     # The assigned values are returned as a QuerySet, but will assign a
+#     # dummy empty QuerySet if no values are assigned to the given instance.
+#     for attr_data_rel in attributes_qs:
+#         attr_instance_data = getattr(attr_data_rel, assigned_attribute_instance_field)
+#         # Retrieve the instance's associated data
+#         attr_data = attr_instance_data.filter(**assigned_attribute_instance_filters)
+#         attr_data = attr_data.first()
+#
+#         # Return the instance's attribute values if the assignment was found,
+#         # otherwise it sets the values as an empty QuerySet
+#         values = attr_data.values.all() if attr_data is not None else empty_qs
+#         resolved_attributes.append(
+#             SelectedAttribute(attribute=attr_data_rel.attribute, values=values)
+#         )
+#     return resolved_attributes
 
 
 class Margin(graphene.ObjectType):
@@ -102,20 +107,13 @@ class ProductVariant(CountableDjangoObjectType):
             "Override the base price of a product."
         ),
     )
-
-    images = graphene_django_optimizer.field(
-        graphene.List(
-            lambda: ProductImage, description="List of images for the product variant."
-        ),
-        model_field="images",
+    images = graphene.List(
+        lambda: ProductImage, description="List of images for the product variant."
     )
-
     cost_price = graphene.Field(Money, description="Cost price of the variant.")
     stocks = graphene_django_optimizer.field(
-        graphene.Field(
-            graphene.List(lambda: Stock),
-            description="Stocks for the product variant.",
-        )
+        graphene.List(lambda: Stock, description="Stocks for the product variant."),
+        model_field="stocks"
     )
     attributes = graphene.List(
         graphene.NonNull(SelectedAttribute),
@@ -143,9 +141,7 @@ class ProductVariant(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_stocks(root: models.ProductVariant, info):
-        return graphene_django_optimizer.query(
-            root.stocks.annotate_available_quantity().all(), info
-        )
+        return StocksByVariantIdLoader(info.context).load(root.pk)
 
     @staticmethod
     @permission_required(ProductPermissions.MANAGE_PRODUCTS)
@@ -162,8 +158,8 @@ class ProductVariant(CountableDjangoObjectType):
         return root.base_price
 
     @staticmethod
-    def resolve_images(root: models.ProductVariant, *_args):
-        return root.images.all()
+    def resolve_images(root: models.ProductVariant, info):
+        return ImagesByProductVariantIdLoader(info.context).load(root.id)
 
     @classmethod
     def get_node(cls, info, id):
@@ -176,7 +172,7 @@ class ProductVariant(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_attributes(root: models.ProductVariant, info):
-        return resolve_attribute_list(root, user=info.context.user)
+        return SelectedAttributesByProductVariantIdLoader(info.context).load(root.id)
 
     @staticmethod
     @permission_required(ProductPermissions.MANAGE_PRODUCTS)
@@ -191,6 +187,10 @@ class ProductVariant(CountableDjangoObjectType):
         # `resolve_report_product_sales` resolver.
         return getattr(root, "quantity_ordered", None)
 
+    @staticmethod
+    def resolve_product(root: models.ProductVariant, info):
+        return ProductByIdLoader(info.context).load(root.product_id)
+
 
 class Rating(graphene.ObjectType):
     rating_avg = graphene.Float(description="Product avg rating")
@@ -199,20 +199,15 @@ class Rating(graphene.ObjectType):
 
 @key(fields="id")
 class Product(CountableDjangoObjectType):
-    variants = graphene_django_optimizer.field(
-        graphene.List(ProductVariant, description="List of variants for the product."),
-        model_field="variants",
-    )
+    variants = graphene.List(ProductVariant, description="List of variants for the product.")
     thumbnail = graphene.Field(
         Image,
         description="The main thumbnail for a product.",
-        size=graphene.Argument(graphene.Int, description="Size of thumbnail."),
+        size=graphene.String(description="Size of thumbnail. Default 800x450"),
+        method=graphene.Argument(VersatileImageMethod, description="VersatileImageMethod")
     )
-    images = graphene_django_optimizer.field(
-        graphene.List(
-            lambda: ProductImage, description="List of images for the product."
-        ),
-        model_field="images",
+    images = graphene.List(
+        lambda: ProductImage, description="List of images for the product."
     )
     price_range = graphene.Field(MoneyRange, description='Product price range')
     stock_status = graphene.String(description="Product variants stock status")
@@ -255,29 +250,45 @@ class Product(CountableDjangoObjectType):
         ]
 
     @staticmethod
-    def resolve_variants(root: models.Product, *_args, **_kwargs):
-        return root.variants.all()
+    def resolve_variants(root: models.Product, info, **_kwargs):
+        return ProductVariantsByProductIdLoader(info.context).load(root.id)
 
     @staticmethod
     @graphene_django_optimizer.resolver_hints(prefetch_related="images")
-    def resolve_thumbnail(root: models.Product, info, *, size=255):
-        image = root.get_first_image()
-        url = get_product_image_thumbnail(image, size, method="thumbnail")
-        alt = image.alt if image else ''
-        return Image(alt=alt, url=info.context.build_absolute_uri(url))
+    def resolve_thumbnail(root: models.Product, info, size='255x255', method='thumbnail_webp'):
+        def return_first_thumbnail(images):
+            image = images[0] if images else None
+            url = get_product_image_thumbnail(image, size, method=method)
+            alt = image.alt if image else ''
+            return Image(alt=alt, url=info.context.build_absolute_uri(url))
+
+        return (
+            ImagesByProductIdLoader(info.context)
+                .load(root.id)
+                .then(return_first_thumbnail)
+        )
 
     @staticmethod
-    @graphene_django_optimizer.resolver_hints(model_field="images")
-    def resolve_images(root: models.Product, *_args, **_kwargs):
-        return root.images.all()
+    def resolve_images(root: models.Product, info, **_kwargs):
+        return ImagesByProductIdLoader(info.context).load(root.id)
 
     @staticmethod
     def resolve_price_range(root: models.Product, *_args, **_kwargs):
-        return root.get_price_range()
+        return MoneyRange(root.minimal_variant_price, root.maximal_variant_price)
 
     @staticmethod
     def resolve_stock_status(root: models.Product, *_args, **_kwargs):
-        return root.stock_status
+        ids = root.variants.all().values_list('id')
+        stocks = models.Stock.objects.filter(product_variant__pk__in=ids).annotate(
+            quantity_allocated=Coalesce(Sum("allocations__quantity_allocated"), 0)
+        )
+        for s in stocks:
+            quantity_allocated = s.quantity_allocated
+            available_quantity = max(s.quantity - quantity_allocated, 0)
+            is_available = min(available_quantity, settings.MAX_CHECKOUT_LINE_QUANTITY)
+            if is_available:
+                return StockStatus.IN_STOCK
+        return StockStatus.OUT_STOCK
 
     @staticmethod
     def resolve_rating(root: models.Product, *_args, **_kwargs):
@@ -288,7 +299,7 @@ class Product(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_attributes(root: models.Product, info):
-        return resolve_attribute_list(root, user=info.context.user)
+        return SelectedAttributesByProductIdLoader(info.context).load(root.id)
 
     @staticmethod
     def resolve_image_by_id(root: models.Product, info, id):
@@ -302,6 +313,14 @@ class Product(CountableDjangoObjectType):
     def resolve_is_available(root: models.Product, info):
         in_stock = is_product_in_stock(root)
         return root.is_visible and in_stock
+
+    @staticmethod
+    def resolve_category(root: models.Product, info):
+        category_id = root.category_id
+        if category_id is None:
+            return None
+
+        return CategoryByIdLoader(info.context).load(category_id)
 
 
 class ProductType(CountableDjangoObjectType):
@@ -474,11 +493,7 @@ class Stock(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_stock_quantity(root: models.Stock, *_args):
-        quantity_allocated = root.allocations.aggregate(
-            quantity_allocated=Coalesce(Sum("quantity_allocated"), 0)
-        )["quantity_allocated"]
-        available_quantity = max(root.quantity - quantity_allocated, 0)
-        return min(available_quantity, settings.MAX_CHECKOUT_LINE_QUANTITY)
+        return min(root.available_quantity, settings.MAX_CHECKOUT_LINE_QUANTITY)
 
     @staticmethod
     @permission_required(ProductPermissions.MANAGE_PRODUCTS)

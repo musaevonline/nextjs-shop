@@ -3,6 +3,7 @@ import re
 import graphene
 from graphene import relay
 
+from ..dataloaders.attributes import AttributeValuesByAttributeIdLoader
 from ..descriptions import AttributeValueDescriptions, AttributeDescriptions
 from ....core.permissions import ProductPermissions
 from ....product import models
@@ -89,7 +90,7 @@ class Attribute(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_values(root: models.Attribute, info):
-        return root.values.all()
+        return AttributeValuesByAttributeIdLoader(info.context).load(root.id)
 
     @staticmethod
     @permission_required(ProductPermissions.MANAGE_PRODUCTS)

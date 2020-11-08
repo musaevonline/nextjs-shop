@@ -30,7 +30,6 @@ export const productVariantFragment = gql`
             }
             values{
                 id
-                inputType
                 name
                 slug
             }

@@ -1,10 +1,10 @@
 import {
     ProductDetails_product,
-    ProductDetails_product_reviews,
     ProductDetails_product_variants
 } from "@sdk/queries/types/ProductDetails";
 import {getProductUrl} from "@temp/app/routes";
 import _ from 'lodash';
+import {ProductReviews_productReviews} from "@sdk/queries/types/ProductReviews";
 
 type TSchemaAvailability = "https://schema.org/Discontinued" |
     "https://schema.org/InStock" |
@@ -88,7 +88,7 @@ const RATING = {
     A_5: 5,
 };
 
-const getReviewList = (review: ProductDetails_product_reviews): ISchemaReview[] => {
+const getReviewList = (review: ProductReviews_productReviews): ISchemaReview[] => {
     if (!review) return [];
 
     return review.edges.map(edge => {
@@ -132,8 +132,8 @@ const getOffers = (product: ProductDetails_product, variants: ProductDetails_pro
         }))
     }
 }
-export const productStructuredData = (product: ProductDetails_product| null) => {
-    if (!product) return null;
+export const productStructuredData = (product: ProductDetails_product| null, review: ProductReviews_productReviews | null) => {
+    if (!product || !review) return null;
 
     const data: ISchemaProductStructuredData = {
         "@context": "https://schema.org/",
@@ -151,13 +151,13 @@ export const productStructuredData = (product: ProductDetails_product| null) => 
 
     };
 
-    if (product.reviews?.edges.length > 0){
+    if (review.edges.length > 0){
         data.aggregateRating = {
             "@type": "AggregateRating",
             ratingValue: product.rating.ratingAvg || 5,
             reviewCount: product.reviews.totalCount
         };
-        data.review = getReviewList(product.reviews)
+        data.review = getReviewList(review)
     }
     return JSON.stringify(data);
 }

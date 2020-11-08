@@ -16,7 +16,7 @@ export const productVariantsQuery = gql`
                         id
                         name
                         slug
-                        thumbnail(size: 60){
+                        thumbnail(size: "60x60", method: THUMBNAIL_WEBP){
                             url
                             alt
                         }

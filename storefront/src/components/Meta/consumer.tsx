@@ -15,7 +15,6 @@ const Consumer: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
               <meta name="og:description" content={description} />
               <meta name="og:type" content={type} />
               <meta name="og:image" content={image} />
-              <meta name="google-site-verification" content="mSVa4XmnP_RfM5M9HmsHch3lb-1kukQwy9Lrcy9eoww" />
               {custom?.map(el => el)}
             </Helmet>
             {children}

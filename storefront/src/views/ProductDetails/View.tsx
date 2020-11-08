@@ -14,6 +14,8 @@ import {ProductReviews, ProductReviewsVariables} from "@sdk/queries/types/Produc
 import {productReviewsQuery} from "@sdk/queries/product-review";
 import _ from "lodash";
 import {productStructuredData} from "@temp/core/SEO/productStructuredData";
+import {categoryProducts} from "@sdk/queries/category";
+import {CategoryProducts, CategoryProductsVariables} from "@sdk/queries/types/CategoryProducts";
 
 const PAGINATE_BY_REVIEWS = 5;
 
@@ -26,7 +28,8 @@ const View:React.FC = () =>{
         variables:{
             id
         },
-        fetchPolicy: "cache-and-network"
+        fetchPolicy: "cache-and-network",
+        nextFetchPolicy: "cache-first"
     });
     const { data:reviews, loading:reviewsLoading, fetchMore } = useQuery<ProductReviews, ProductReviewsVariables>(productReviewsQuery, {
         variables:{
@@ -36,7 +39,17 @@ const View:React.FC = () =>{
             }
         },
         skip: !data,
-        fetchPolicy: "cache-and-network"
+        fetchPolicy: "cache-and-network",
+        nextFetchPolicy: "cache-first"
+    });
+    const { data:categoryProductsData } = useQuery<CategoryProducts, CategoryProductsVariables>(categoryProducts, {
+        variables:{
+            categoryId: data?.product.category.id,
+            firstProducts: 10,
+        },
+        skip: !data,
+        fetchPolicy: "cache-and-network",
+        nextFetchPolicy: "cache-first"
     });
     const loadMoreReviews = async (): Promise<void> =>{
         await fetchMore({
@@ -82,7 +95,7 @@ const View:React.FC = () =>{
             {data?.product &&
             <>
                 <script className="structured-data-list" type="application/ld+json">
-                    {productStructuredData(data?.product)}
+                    {productStructuredData(data?.product, reviews?.productReviews)}
                 </script>
                 <Page product={data.product}
                       addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}
@@ -90,6 +103,7 @@ const View:React.FC = () =>{
                       reviews={reviews?.productReviews}
                       reviewsLoading={reviewsLoading}
                       loadMoreReviews={loadMoreReviews}
+                      categoryProducts={categoryProductsData?.category?.products}
                 />
             </>
             }
