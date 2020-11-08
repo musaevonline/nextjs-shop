@@ -60,7 +60,7 @@ const Page:React.FC<{
             items: 1,
             slidesToSlide: 1 // optional, default to 1.
         }
-    };
+    }
 
     return(
         <div className="product-page">
@@ -81,7 +81,7 @@ const Page:React.FC<{
                         <Card className="sticky top-70">
                             <CardContent>
                                 <div className="product-carousel">
-                                    {product.images && <ProductCarousel images={product.images}/>}
+                                    <ProductCarousel images={!!selectedVariant?.images.length ? selectedVariant?.images : product?.images}/>
                                 </div>
                             </CardContent>
                         </Card>

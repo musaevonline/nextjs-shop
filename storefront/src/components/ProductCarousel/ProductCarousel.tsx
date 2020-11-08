@@ -11,12 +11,13 @@ type TImage = {
 }
 
 type ProductCarouselProps = {
-    images: TImage[]
+    images: TImage[] | null
 }
 
 const ProductCarousel:React.FC<ProductCarouselProps> = ({images}) =>{
     const theme = useTheme();
     const xs = useMediaQuery(theme.breakpoints.down('xs'));
+    if (!images) return null;
     const galleryImages = images.map(img => ({
         original: img.url,
         thumbnail: img.url,
