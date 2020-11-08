@@ -40,7 +40,7 @@ class ImagesByProductVariantIdLoader(DataLoader):
     context_key = "images_by_variant"
 
     def batch_load(self, keys):
-        images = VariantImage.objects.filter(variant_id__in=keys).select_related('image')
+        images = VariantImage.objects.filter(variant_id__in=keys).select_related('image').distinct()
         image_map = defaultdict(list)
         for image in images:
             image_map[image.variant_id].append(image.image)
