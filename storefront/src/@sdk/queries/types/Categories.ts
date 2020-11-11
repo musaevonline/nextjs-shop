@@ -41,6 +41,7 @@ export interface Categories_categories_edges_node_children_edges_node_children_e
   id: string;
   name: string;
   slug: string;
+  description: string;
   backgroundImage: Categories_categories_edges_node_children_edges_node_children_edges_node_backgroundImage | null;
 }
 
@@ -65,6 +66,7 @@ export interface Categories_categories_edges_node_children_edges_node {
   id: string;
   name: string;
   slug: string;
+  description: string;
   backgroundImage: Categories_categories_edges_node_children_edges_node_backgroundImage | null;
   /**
    * List of children of the category.
@@ -93,6 +95,7 @@ export interface Categories_categories_edges_node {
   id: string;
   name: string;
   slug: string;
+  description: string;
   backgroundImage: Categories_categories_edges_node_backgroundImage | null;
   /**
    * List of children of the category.

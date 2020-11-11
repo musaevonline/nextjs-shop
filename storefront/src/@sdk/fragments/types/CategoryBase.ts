@@ -23,5 +23,6 @@ export interface CategoryBase {
   id: string;
   name: string;
   slug: string;
+  description: string;
   backgroundImage: CategoryBase_backgroundImage | null;
 }

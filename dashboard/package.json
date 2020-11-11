@@ -88,6 +88,7 @@
     "slugify": "^1.4.5",
     "subscriptions-transport-ws": "^0.9.18",
     "tailwindcss": "^1.7.3",
+    "uniqid": "^5.2.0",
     "url-join": "^4.0.1",
     "use-query-params": "^1.1.6",
     "use-react-router": "^1.0.7",

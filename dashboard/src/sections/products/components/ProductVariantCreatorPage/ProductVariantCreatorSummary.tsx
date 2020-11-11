@@ -15,8 +15,9 @@ import { ProductVariantBulkCreateInput } from "@temp/types/globalTypes";
 import { getFormErrors } from "@temp/utils/errors";
 import { getBulkProductErrorMessage } from "@temp/utils/errors/product";
 import classNames from "classnames";
-import React from "react";
+import React, {useEffect} from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import uniqid from 'uniqid';
 
 import { ProductDetails_product_productType_variantAttributes } from "../../types/ProductDetails";
 import { ProductVariantCreateFormData } from "./form";
@@ -142,6 +143,14 @@ const ProductVariantCreatorSummary: React.FC<ProductVariantCreatorSummaryProps> 
     } = props;
     const classes = useStyles(props);
     const intl = useIntl();
+
+    useEffect(() => {
+      if (data.variants){
+        data.variants.map((variant, i) => {
+          onVariantDataChange(i, "sku", uniqid.time('sku_'))
+        })
+      }
+    }, [])
 
     return (
         <Card className={classes.card}>

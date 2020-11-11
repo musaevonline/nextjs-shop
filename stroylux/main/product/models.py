@@ -159,9 +159,11 @@ class Product(PublishableModel):
     def save(
             self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        # Make sure the "minimal_variant_price_amount" is set
+        # Make sure the "variant_price_amount" is set
         if self.minimal_variant_price_amount is None:
             self.minimal_variant_price_amount = 0
+        if self.maximal_variant_price_amount is None:
+            self.maximal_variant_price_amount = 0
 
         return super().save(force_insert, force_update, using, update_fields)
 

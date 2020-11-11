@@ -5,6 +5,7 @@ export const categoryBaseFragment = gql`
         id
         name
         slug
+        description
         backgroundImage {
             url
         }

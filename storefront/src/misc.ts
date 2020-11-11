@@ -15,3 +15,9 @@ export function maybe(exp: any, d?: any) {
     return d;
   }
 }
+
+export function removeTags(str: string | null): string {
+  if (!str)
+    return '';
+  return str.replace( /(<([^>]+)>)/ig, '');
+}

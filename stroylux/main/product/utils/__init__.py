@@ -4,7 +4,7 @@ from django.db import transaction
 from datetime import date, datetime
 
 from .variant_prices import collect_categories_tree_products
-from ..tasks import update_products_minimal_variant_prices_task
+from ..tasks import update_products_variant_prices_task
 from ..models import ProductVariant
 from ...core.taxes import TaxedMoney, zero_taxed_money
 
@@ -27,7 +27,7 @@ def delete_categories(categories_ids: List[str]):
     products.update(is_published=False, publication_date=None)
     product_ids = list(products.values_list("id", flat=True))
     categories.delete()
-    update_products_minimal_variant_prices_task.delay(product_ids=product_ids)
+    update_products_variant_prices_task.delay(product_ids=product_ids)
 
 
 def calculate_revenue_for_variant(

@@ -17,7 +17,7 @@ from main.graphql.utils import get_database_id
 from main.product import models
 from main.product.error_codes import ProductErrorCode
 from main.product.models import AssignedVariantAttribute
-from main.product.tasks import update_product_minimal_variant_price_task
+from main.product.tasks import update_product_variant_price_task, update_products_variant_prices_task
 from main.product.utils.attributes import generate_name_for_variant
 
 
@@ -171,7 +171,7 @@ class ProductVariantCreate(ModelMutation):
     def save(cls, info, instance, cleaned_input):
         instance.save()
         # Recalculate the "minimal variant price" for the parent product
-        update_product_minimal_variant_price_task.delay(instance.product_id)
+        update_product_variant_price_task.delay(instance.product_id)
         stocks = cleaned_input.get("stocks")
         if stocks:
             cls.create_variant_stocks(instance, stocks)
@@ -235,7 +235,7 @@ class ProductVariantDelete(ModelDeleteMutation):
     @classmethod
     def success_response(cls, instance):
         # Update the "minimal_variant_prices" of the parent product
-        update_product_minimal_variant_price_task.delay(instance.product_id)
+        update_product_variant_price_task.delay(instance.product_id)
         return super().success_response(instance)
 
 
@@ -414,8 +414,8 @@ class ProductVariantBulkCreate(BaseMutation):
             raise ValidationError(errors)
         cls.save_variants(info, instances, cleaned_inputs)
 
-        # Recalculate the "minimal variant price" for the parent product
-        update_product_minimal_variant_price_task.delay(product.pk)
+        # Recalculate the "variant price" for the parent product
+        update_product_variant_price_task.delay(product.pk)
 
         return ProductVariantBulkCreate(
             count=len(instances), product_variants=instances

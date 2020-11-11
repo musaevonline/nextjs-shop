@@ -21,14 +21,14 @@ const useStyles = makeStyles({
 function valuetext(value: number) {
     return `${value}`;
 }
-
+const MAX_PRICE = 10000;
 const ProductsFilter:React.FC<{
     attributes: Attributes_attributes | null,
     filters: TUrlQuery,
     setFilters(values: TUrlQuery):void,
 }> = ({attributes, filters,  setFilters}) =>{
     const classes = useStyles();
-    const priceRange = filters.priceRange || [0, 1000];
+    const priceRange = filters.priceRange || [0, MAX_PRICE];
     const [collapse, setCollapse] = useState([]);
     const [localPriceRange, setLocalPriceRange] = useState<number | number[]>(priceRange);
 
@@ -94,8 +94,8 @@ const ProductsFilter:React.FC<{
                 <Collapse in={!collapse.includes('priceId')}>
                 <Slider
                     value={localPriceRange}
-                    step={0.5}
-                    max={100}
+                    step={1}
+                    max={MAX_PRICE}
                     onChange={handleChangePrice}
                     onChangeCommitted={(e, newValue) => {setFilters({priceRange: newValue as number[]});}}
                     valueLabelDisplay="auto"

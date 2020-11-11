@@ -23,6 +23,7 @@ export interface Category_category {
   id: string;
   name: string;
   slug: string;
+  description: string;
   backgroundImage: Category_category_backgroundImage | null;
 }
 

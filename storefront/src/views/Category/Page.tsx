@@ -3,10 +3,10 @@ import React from "react";
 import {Container} from "@material-ui/core";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {Link} from "react-router-dom";
-import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from 'react-infinite-scroller';
+// import Loader from "@temp/components/Loader";
 import {baseUrl} from "@temp/app/routes";
 import {ProductList} from "@temp/components/ProductList";
-import Loader from "@temp/components/Loader";
 import Hidden from "@material-ui/core/Hidden";
 import {TUrlQuery} from "@temp/views/Category/View";
 import {ProductsFilter} from "@temp/components/ProductsFilter";
@@ -28,8 +28,9 @@ const Page:React.FC<{
     loadMore(): Promise<void>,
     filters: TUrlQuery,
     setFilters(values: TUrlQuery):void,
+    loading: boolean;
 }> = ({products, category, attributes,
-          loadMore, filters, setFilters
+          loadMore, filters, setFilters, loading
       }) => {
 
     const handleChangeSortBy = (key: ProductOrderField | null) => {
@@ -90,14 +91,21 @@ const Page:React.FC<{
                                     </div>
                                     <Divider/>
                                     <div className="my-20"/>
-                                    <InfiniteScroll
-                                        pageStart={0}
-                                        loadMore={loadMore}
-                                        hasMore={products.pageInfo.hasNextPage}
-                                        loader={<Loader key={0}/>}
-                                    >
-                                        <ProductList items={products.edges}/>
-                                    </InfiniteScroll>
+                                    <ProductList items={products.edges}/>
+                                    {products.pageInfo.hasNextPage &&
+                                    <div className="my-20 flex justify-center">
+                                        <div className="w-512 max-w-full">
+                                            <Button variant="contained"
+                                                    color="primary"
+                                                    onClick={loadMore}
+                                                    fullWidth
+                                                    disabled={loading}
+                                            >
+                                                Показать еще
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    }
                                 </CardContent>
                             </Card>
 

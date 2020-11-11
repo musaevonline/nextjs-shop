@@ -2,7 +2,7 @@ from typing import List, Iterable
 
 from .models import Product, ProductType, Attribute, ProductVariant
 from .utils.attributes import generate_name_for_variant
-from .utils.variant_prices import update_products_minimal_variant_prices, update_product_minimal_variant_price
+from .utils.variant_prices import update_products_variant_prices, update_product_variant_price
 from ..celeryconf import app
 
 
@@ -27,16 +27,18 @@ def _update_variants_names(instance: ProductType, saved_attributes: Iterable):
         variant.name = generate_name_for_variant(variant)
         variant.save(update_fields=["name"])
 
+
 @app.task
-def update_product_minimal_variant_price_task(product_pk: int):
+def update_product_variant_price_task(product_pk: int):
     product = Product.objects.get(pk=product_pk)
-    update_product_minimal_variant_price(product)
+    update_product_variant_price(product)
 
 
 @app.task
-def update_products_minimal_variant_prices_task(product_ids: List[int]):
+def update_products_variant_prices_task(product_ids: List[int]):
     products = Product.objects.filter(pk__in=product_ids)
-    update_products_minimal_variant_prices(products)
+    update_products_variant_prices(products)
+
 
 @app.task
 def update_variants_names(product_type_pk: int, saved_attributes_ids: List[int]):

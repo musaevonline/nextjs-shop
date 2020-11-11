@@ -14,7 +14,7 @@ from ...core.utils import validate_slug_and_generate_if_needed
 from ....core.permissions import ProductPermissions
 from ....product import models
 from ....product.error_codes import ProductErrorCode
-from ....product.tasks import update_product_minimal_variant_price_task
+from ....product.tasks import update_product_variant_price_task
 from ....product.utils.attributes import associate_attribute_values_to_instance
 
 
@@ -533,7 +533,7 @@ class ProductUpdate(ProductCreate):
             if update_fields:
                 variant.save(update_fields=update_fields)
         # Recalculate the "minimal variant price"
-        update_product_minimal_variant_price_task.delay(instance.pk)
+        update_product_variant_price_task.delay(instance.pk)
 
         attributes = cleaned_input.get("attributes")
         if attributes:
