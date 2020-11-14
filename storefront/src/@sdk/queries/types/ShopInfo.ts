@@ -70,6 +70,10 @@ export interface ShopInfo_shop_images {
   /**
    * The URL of the image.
    */
+  largeUrl: string;
+  /**
+   * The URL of the image.
+   */
   mobileUrl: string;
 }
 

@@ -23,5 +23,9 @@ export interface ShopImageFragment {
   /**
    * The URL of the image.
    */
+  largeUrl: string;
+  /**
+   * The URL of the image.
+   */
   mobileUrl: string;
 }

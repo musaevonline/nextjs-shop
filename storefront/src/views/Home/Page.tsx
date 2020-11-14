@@ -104,7 +104,11 @@ const Page: React.FC<{
             <script className="structured-data-list" type="application/ld+json">
                 {logoStructuredData()}
             </script>
-            <HomeCarousel images={shop?.images}/>
+            <div className="bg-white mt-20">
+                <Container maxWidth="xl" disableGutters>
+                    <HomeCarousel images={shop?.images}/>
+                </Container>
+            </div>
             <Container maxWidth="xl">
 
                 <Card className="my-20">

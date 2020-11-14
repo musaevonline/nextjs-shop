@@ -7,6 +7,7 @@ fragment ShopImageFragment on SiteBannerImage{
     description
     sortOrder
     url(size: "1600x900", method: THUMBNAIL_WEBP)
+    largeUrl: url(size: "1920x600", method: THUMBNAIL_WEBP)
     mobileUrl: url(size: "960x540", method: THUMBNAIL_WEBP)
 }
 `;

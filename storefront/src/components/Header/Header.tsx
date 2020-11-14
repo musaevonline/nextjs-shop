@@ -9,7 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import SwipeableViews from 'react-swipeable-views';
 import {
     blogPath,
-    callBackModalUrl, baseUrl, userProfileFavoritesUrl, getPageUrl
+    baseUrl, userProfileFavoritesUrl, getPageUrl
 } from "@temp/app/routes";
 
 import Logo from "../../images/logo.svg";
@@ -31,7 +31,7 @@ import {AuthenticatedPage, ForgotPasswordPage, LoginPage, SignUpPage} from "@tem
 import Divider from "@material-ui/core/Divider";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import {useTheme} from "@material-ui/core/styles";
+import {makeStyles, useTheme} from "@material-ui/core/styles";
 import TabPanel from "@temp/components/TabPanel";
 import {UserContext} from "@temp/components/User/context";
 import {CheckoutContext} from "@temp/components/CheckoutProvider/context";
@@ -42,8 +42,14 @@ import useShop from "@temp/hooks/useShop";
 import {BsAlarm, BsHeart, BsPhone, BsSearch, BsBag} from "react-icons/bs";
 import AccountIcon from "@temp/icons/Account";
 
+const useStyles = makeStyles(theme => ({
+    largeBagIcon: {
+        padding: 0
+    }
+}))
 
 const Header: React.FC = () =>{
+    const classes = useStyles();
     const theme = useTheme();
     const shop = useShop();
     const xs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -179,6 +185,7 @@ const Header: React.FC = () =>{
                         </div>
                     </Container>
                 </div>
+                <Divider />
             </Hidden>
             <Hidden smDown>
                 <Container maxWidth="xl">
@@ -190,19 +197,21 @@ const Header: React.FC = () =>{
                         </div>
                         <div className="mobile">
                             <BsPhone/>
-                            <div className="mobile__body">
+                            <div className="mobile__body pl-10">
                                 <Typography variant="h6">{shop?.companyAddress.phone}</Typography>
                                 <div className="mobile__call">
-                                    <Button component={Link}
-                                            to={callBackModalUrl}
-                                            size="small"
-                                            color="primary">Заказать звонок</Button>
+                                    <Button size="small"
+                                            color="primary"
+                                            variant="text"
+                                    >
+                                        <span className="normal-case">Заказать</span>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                         <div className="work_time">
                             <BsAlarm/>
-                            <div className="work_time__body">
+                            <div className="work_time__body pl-10">
                                 <Typography variant="h6">Режим работы</Typography>
                                 <div className="work_time__schedule">
                                     <div>ПН - ПТ: с 9:00 до 18:00</div>
@@ -213,7 +222,7 @@ const Header: React.FC = () =>{
                         </div>
                         <div className="cart-icon">
                             <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                <IconButton onClick={toggleCartDrawer(true)}>
+                                <IconButton onClick={toggleCartDrawer(true)} className={classes.largeBagIcon}>
                                     <BsBag />
                                 </IconButton>
                             </Badge>
