@@ -180,8 +180,8 @@ class Product(PublishableModel):
         prices = [variant.base_price for variant in self]
         return MoneyRange(min(prices) or zero_money(), max(prices) or zero_money())
 
-    def get_absolute_url(self):
-        return f'product/{self.slug}/{self.pk}/'
+    def get_absolute_url(self) -> str:
+        return f'/product/{self.slug}/{self.pk}/'
 
     @property
     def stock_status(self) -> str:
