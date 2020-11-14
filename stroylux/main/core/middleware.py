@@ -51,7 +51,10 @@ def country(get_response):
         client_ip = get_client_ip(request)
         if client_ip:
             request.country = get_country_by_ip(client_ip)
-        if not request.country:
+        try:
+            if not request.country:
+                request.country = Country(settings.DEFAULT_COUNTRY)
+        except AttributeError:
             request.country = Country(settings.DEFAULT_COUNTRY)
         return get_response(request)
 

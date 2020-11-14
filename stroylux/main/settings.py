@@ -172,6 +172,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.auth",
     "django.contrib.postgres",
+    'django.contrib.sitemaps',
 
     'django.contrib.messages',
     'django.contrib.sessions',
@@ -197,7 +198,8 @@ INSTALLED_APPS = [
     'captcha',
     'social_django',
     'ckeditor_uploader',
-    'ckeditor'
+    'ckeditor',
+    'sitemap_generate'
 ]
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 if DEBUG:
@@ -407,3 +409,6 @@ CKEDITOR_CONFIGS = {
         'toolbarCanCollapse': False,
     },
 }
+
+SITEMAP_MAPPING = 'main.core.sitemaps.sitemaps'
+SITEMAP_INDEX_URL = 'sitemap-index'

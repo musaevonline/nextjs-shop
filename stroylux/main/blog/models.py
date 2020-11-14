@@ -65,8 +65,8 @@ class BlogCategory(MPTTModel):
 
 class BlogArticleQueryset(models.QuerySet):
 
-    def published(self, user):
-        if user.is_authenticated:
+    def published(self, user=None):
+        if user and user.is_authenticated:
             return self.filter(Q(is_published=True) | Q(author=user),
                                category__is_published=True
                                )
@@ -78,8 +78,8 @@ class BlogArticleQueryset(models.QuerySet):
     def user_has_access_to_all(user):
         return user.is_active and user.has_perm(BlogPermissions.MANAGE_BLOG)
 
-    def visible_to_user(self, user):
-        if self.user_has_access_to_all(user):
+    def visible_to_user(self, user=None):
+        if user and self.user_has_access_to_all(user):
             return self.all()
         return self.published(user)
 
@@ -120,6 +120,9 @@ class BlogArticle(models.Model):
     def average_rating(self):
         rating = self.blogarticlemeasure_set.aggregate(Sum('value'))
         return rating['value__sum'] or 0
+
+    def get_absolute_url(self) -> str:
+        return f'/blog/{self.category.slug}/{self.slug}/'
 
 
 class ArticleComment(models.Model):

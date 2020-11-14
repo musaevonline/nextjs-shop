@@ -70,7 +70,7 @@ services:
       #      - "traefik.docker.network=proxy"
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.entrypoints=websecure"
-      - "traefik.http.routers.nginx.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/static/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/media/`)"
+      - "traefik.http.routers.nginx.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/static/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/media/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/sitemap`)"
       - "traefik.http.routers.nginx.tls.certresolver=letsencrypt"
 
   db:

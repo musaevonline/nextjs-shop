@@ -25,6 +25,7 @@ django-phonenumber-field==2.4.0
 django-prices==2.2.0
 django-recaptcha==2.0.6
 django-render-block==0.6
+django-sitemap-generate==0.2.1
 django-storages==1.9.1
 django-templated-email==2.3.0
 django-versatileimagefield==2.0

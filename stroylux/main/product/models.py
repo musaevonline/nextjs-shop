@@ -49,6 +49,9 @@ class Category(MPTTModel):
     def __str__(self) -> str:
         return self.name
 
+    def get_absolute_url(self) -> str:
+        return f'/category/{self.slug}/{self.pk}/'
+
 
 class ProductType(models.Model):
     name = models.CharField(max_length=250)
@@ -176,6 +179,9 @@ class Product(PublishableModel):
     ) -> MoneyRange:
         prices = [variant.base_price for variant in self]
         return MoneyRange(min(prices) or zero_money(), max(prices) or zero_money())
+
+    def get_absolute_url(self):
+        return f'product/{self.slug}/{self.pk}/'
 
     @property
     def stock_status(self) -> str:
