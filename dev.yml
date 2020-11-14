@@ -26,7 +26,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backendssl.entrypoints=websecure"
-      - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/graphql/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/admin/`) || Host(`stroyluxdrev.by`)&&PathPrefix(`/ckeditor/`)"
+      - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((graphql)|(admin)|(ckeditor))+}/`)"
       - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
 
   storefront:
@@ -71,7 +71,7 @@ services:
       #      - "traefik.docker.network=proxy"
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.entrypoints=websecure"
-      - "traefik.http.routers.nginx.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((sitemap[-a-z]*.xml)|(robots.txt)|(\/media\/)|(\/static\/))+}`)"
+      - "traefik.http.routers.nginx.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((sitemap[-a-z]*.xml)|(robots.txt)|(media\/)|(static\/))+}`)"
       - "traefik.http.routers.nginx.tls.certresolver=letsencrypt"
 
   db:
