@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /user/
+Disallow: /order/
+Disallow: /search/
+Disallow: /checkout/
+Disallow: /ckeditor/
+Disallow: /favorites/
+Host: https://stroyluxdrev.by
+Sitemap: https://stroyluxdrev.by/sitemap.xml

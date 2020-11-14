@@ -64,6 +64,7 @@ services:
     restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./robots.txt:/app/robots.txt:ro
       - static_volume:/app/static
       - stroylux-media:/app/media
     labels:
