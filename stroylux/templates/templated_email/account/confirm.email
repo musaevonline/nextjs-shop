@@ -1,14 +1,14 @@
 {% load i18n %}
 
 {% block subject %}
-  {% trans "Account confirmation e-mail" context "Account confirmation e-mail subject" %}
+  {% trans "Электронное письмо с подтверждением аккаунта" context "Account confirmation e-mail subject" %}
 {% endblock %}
 
 {% block plain %}
 {% include 'templated_email/shared/_header.email' %}
 {% blocktrans context "Account confirmation e-mail text" %}
-In order to log into {{ domain }}, you have to confirm your email address first.
-Please click the link below to do so and log into your account.
+Чтобы войти в {{ domain }}, вы должны сначала подтвердить свой адрес электронной почты.
+Для этого нажмите ссылку ниже и войдите в свою учетную запись.
 {% endblocktrans %}
 
 {{ confirm_url | safe }}

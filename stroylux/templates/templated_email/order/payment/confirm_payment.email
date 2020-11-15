@@ -1,14 +1,14 @@
 {% load i18n %}
 
 {% block subject %}
-	{% trans "Payment details" context "Payment confirmation subject" %}
+	{% trans "Детали оплаты" context "Payment confirmation subject" %}
 {% endblock %}
 
 {% block plain %}
 {% include 'templated_email/shared/_header.email' %}
 {% blocktrans context "Payment confirmation email text" %}
-Thank you for your payment.
-Your payment was successfully charged.
+Спасибо за оплату.
+Ваш платеж был успешно списан.
 {% endblocktrans %}
 {% include 'templated_email/shared/_footer.email' %}
 {% endblock %}

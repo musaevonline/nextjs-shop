@@ -1,7 +1,7 @@
 {% load i18n %}
 {% blocktrans trimmed context "Base email text" %}
-This is an automatically generated e-mail, please do not reply.
+Это автоматически сгенерированное электронное письмо, не отвечайте.
 {% endblocktrans %}
 {% blocktrans trimmed context "Base email footer" %}
-Sincerely, {{ site_name }}
+С уважением, {{ site_name }}
 {% endblocktrans %}

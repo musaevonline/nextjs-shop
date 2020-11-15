@@ -1,15 +1,15 @@
 {% load i18n %}
 
 {% block subject %}
-  {% trans "Email change e-mail" context "Email change e-mail subject" %}
+  {% trans "Изменить адрес электронной почты" context "Email change e-mail subject" %}
 {% endblock %}
 
 {% block plain %}
 {% include 'templated_email/shared/_header.email' %}
 {% blocktrans context "Email change e-mail text" %}
 
-You're receiving this e-mail because you or someone else has changed email for your user account at {{ domain }}.
-If you didn't request this change, please contact the administrator.
+Вы получили это письмо, потому что вы или кто-то другой изменил адрес электронной почты для вашей учетной записи на {{ domain }}.
+Если вы не запрашивали это изменение, обратитесь к администратору.
 {% endblocktrans %}
 
 {% include 'templated_email/shared/_footer.email' %}

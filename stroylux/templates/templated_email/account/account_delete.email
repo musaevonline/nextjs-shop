@@ -1,16 +1,16 @@
 {% load i18n %}
 
 {% block subject %}
-  {% trans "Delete your account" context "Account delete reset e-mail subject" %}
+  {% trans "Удалить свой аккаунт" context "Account delete reset e-mail subject" %}
 {% endblock %}
 
 {% block plain %}
 {% include 'templated_email/shared/_header.email' %}
 {% blocktrans context "Account delete reset e-mail text" %}
-You're receiving this e-mail because you or someone else has requested a deletion of your user account at {{ domain }}.
-Click the link below to delete your account.
+Вы получили это письмо, потому что вы или кто-то другой запросил удаление вашей учетной записи на {{ domain }}.
+Щелкните ссылку ниже, чтобы удалить свою учетную запись.
 
-Please note that this action is permanent and cannot be reversed.
+Обратите внимание, что это действие является постоянным и не может быть отменено.
 {% endblocktrans %}
 
 {{ delete_url }}
