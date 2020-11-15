@@ -3,11 +3,7 @@ import slugify from "slugify";
 
 export const slugifyStr = (text: string): string => {
 
-  return slugify(text
-          .toString()
-          .toLowerCase()
-          .trim()
-          .replace(/&/g, "-and-"),
+  return slugify(text.replace(/&/g, "-and-"),
       {
         lower: true,
         remove: /[*+~.()'"!:@,ь]/g
