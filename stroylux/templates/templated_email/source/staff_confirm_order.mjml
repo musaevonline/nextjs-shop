@@ -10,11 +10,11 @@
     <mj-section>
       <mj-column>
         <mj-text font-size="16px">
-          {% trans "Hi!" context "Standard e-mail greeting" %}
+          {% trans "Здравствуйте!" context "Standard e-mail greeting" %}
         </mj-text>
         <mj-text>
           {% blocktrans trimmed context "Order confirmation staff e-mail text" %}
-            Someone placed a new order in your store. To see order details please visit: <a href="{{ order_details_url }}">{{ order_details_url }}</a>
+            Кто-то разместил новый заказ в вашем магазине. Чтобы увидеть детали заказа, посетите: <a href="{{ order_details_url }}">{{ order_details_url }}</a>
           {% endblocktrans %}
         </mj-text>
       </mj-column>
@@ -25,17 +25,21 @@
         <mj-table>
           <thead class="table-header-row">
             <tr>
-              <th>{% trans "Billing address" context "Order confirmation e-mail billing address" %}</th>
-              <th>{% trans "Shipping address" context "Order confirmation e-mail shipping address" %}</th>
+              <th>{% trans "Адрес доставки" context "Order confirmation e-mail shipping address" %}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td css-class="address">
                 {% if order.shipping_address %}
-                  {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}
+                  {% with address=order.shipping_address %}
+                    <div>{{ address.first_name }} {{ address.last_name }}</div>
+                    <div>{{ address.city }}</div>
+                    <div>{{ address.street_address_1 }}</div>
+                    <div>{{ address.phone }}</div>
+                  {% endwith %}
                 {% else %}
-                  {% trans "No shipping required" context "Order confirmation e-mail text" %}
+                  {% trans "Доставка не требуется" context "Order confirmation e-mail text" %}
                 {% endif %}
               </td>
             </tr>

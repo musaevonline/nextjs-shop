@@ -10,14 +10,14 @@
     <mj-section>
       <mj-column>
         <mj-text font-size="16px">
-          {% trans "Hi!" context "Standard e-mail greeting" %}
+          {% trans "Здравствуйте!" context "Standard e-mail greeting" %}
         </mj-text>
         <mj-text>
           {% blocktrans trimmed context "Account delete e-mail text" %}
-            You're receiving this e-mail because you or someone else has requested a deletion of your user account at {{ domain }}.<br/>
-            Click the link below to delete your account.
+            Вы получили это письмо, потому что вы или кто-то другой запросил удаление вашей учетной записи на {{ domain }}.<br/>
+            Нажмите на ссылку ниже, чтобы удалить свою учетную запись.
 
-            Please note that this action is permanent and cannot be reversed.
+            Обратите внимание, что это действие является постоянным и не может быть отменено.
           {% endblocktrans %}
         </mj-text>
         <mj-text>

@@ -10,12 +10,12 @@
     <mj-section>
       <mj-column>
         <mj-text font-size="16px">
-          {% trans "Hi!" context "Standard e-mail greeting" %}
+          {% trans "Здравствуйте!" context "Standard e-mail greeting" %}
         </mj-text>
         <mj-text>
           {% blocktrans trimmed context "Account confirmation e-mail text" %}
-            In order to log into {{ domain }}, you have to confirm your email address first.
-            Please click the link below to do so and log into your account.
+          Чтобы войти в {{ domain }}, вы должны сначала подтвердить свой адрес электронной почты.
+          Для этого нажмите ссылку ниже и войдите в свою учетную запись.
           {% endblocktrans %}
         </mj-text>
         <mj-text>

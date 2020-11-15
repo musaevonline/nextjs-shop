@@ -2,7 +2,7 @@
   <mj-column>
     <mj-text>
       {% blocktrans trimmed context "Base email text" %}
-        This is an automatically generated e-mail, please do not reply.
+        Это автоматически сгенерированное электронное письмо, не отвечайте.
       {% endblocktrans %}
     </mj-text>
   </mj-column>
@@ -11,7 +11,7 @@
   <mj-column>
     <mj-text align="center">
       {% blocktrans trimmed context "Base email footer" %}
-        Sincerely, {{ site_name }}
+        C уважением, {{ site_name }}
       {% endblocktrans %}
     </mj-text>
   </mj-column>

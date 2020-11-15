@@ -8,7 +8,7 @@
       <tfoot>
         <tr>
           <td colspan="3" style="text-align: right;">
-            {% trans "Subtotal" context "E-mail order lines summary table" %}
+            {% trans "Промежуточный итог" context "E-mail order lines summary table" %}
           </td>
           <td style="text-align: right;">
             {% price order.get_subtotal display_gross=order.display_gross_prices html=False %}
@@ -16,7 +16,7 @@
         </tr>
         <tr>
           <td colspan="3" style="text-align: right;">
-            {% trans "Shipping" context "E-mail order lines summary table" %}
+            {% trans "Доставка" context "E-mail order lines summary table" %}
           </td>
           <td style="text-align: right;">
             {% price order.shipping_price display_gross=order.display_gross_prices html=False %}
@@ -25,9 +25,9 @@
         <tr>
           <td colspan="3" style="text-align: right;">
             {% if order.display_gross_prices %}
-              {% trans "Taxes (included)" context "E-mail order lines summary table" %}
+              {% trans "Налоги (включены)" context "E-mail order lines summary table" %}
             {% else %}
-              {% trans "Taxes" context "E-mail order lines summary table" %}
+              {% trans "Налоги" context "E-mail order lines summary table" %}
             {% endif %}
           </td>
           <td style="text-align: right;">
@@ -37,7 +37,7 @@
         {% if order.discount_amount %}
           <tr>
             <td colspan="3" style="text-align: right;">
-              {% trans "Discount" context "E-mail order lines summary table" %}
+              {% trans "Скидка" context "E-mail order lines summary table" %}
             </td>
             <td style="text-align: right;">
               {{ order.discount }}
@@ -46,7 +46,7 @@
         {% endif %}
         <tr>
           <td colspan="3" style="text-align: right;">
-            <strong>{% trans "Total" context "E-mail order lines summary table" %}</strong>
+            <strong>{% trans "Общее" context "E-mail order lines summary table" %}</strong>
           </td>
           <td style="text-align: right;">
             <strong>{% price order.total display_gross=order.display_gross_prices html=False %}</strong>
@@ -55,10 +55,10 @@
       </tfoot>
       <thead class="table-header-row">
         <tr>
-          <th>{% trans "Item" context "Ordered item name" %}</th>
-          <th>{% trans "Quantity" context "Quantity ordered of a product" %}</th>
-          <th>{% trans "Per unit" context "Unit price of a product" %}</th>
-          <th>{% trans "Subtotal" context "Ordered item subtotal (unit price * quantity)" %}</th>
+          <th>{% trans "Товар" context "Ordered item name" %}</th>
+          <th>{% trans "Количество" context "Quantity ordered of a product" %}</th>
+          <th>{% trans "За единицу" context "Unit price of a product" %}</th>
+          <th>{% trans "Промежуточный итог" context "Ordered item subtotal (unit price * quantity)" %}</th>
         </tr>
       </thead>
       <tbody>

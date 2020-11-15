@@ -10,12 +10,12 @@
     <mj-section>
       <mj-column>
         <mj-text font-size="16px">
-          {% trans "Hi!" context "Standard e-mail greeting" %}
+          {% trans "Здравствуйте!" context "Standard e-mail greeting" %}
         </mj-text>
         <mj-text>
           {% blocktrans trimmed context "Email change e-mail text" %}
-          You're receiving this e-mail because you or someone else has changed email for your user account at {{ domain }}.<br />
-          If you didn't request this change, please contact the administrator.
+          Вы получили это письмо, потому что вы или кто-то другой изменил адрес электронной почты для вашей учетной записи в {{ domain }}. <br />
+          Если вы не запрашивали это изменение, обратитесь к администратору.
           {% endblocktrans %}
         </mj-text>
       </mj-column>

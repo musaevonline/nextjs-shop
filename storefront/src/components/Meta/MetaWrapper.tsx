@@ -2,8 +2,9 @@ import * as React from "react";
 
 import { META_DEFAULTS } from "../../core/config";
 import { default as MetaConsumer } from "./consumer";
-import { MetaContextInterface, Provider as MetaProvider } from "./context";
 import useShop from "@temp/hooks/useShop";
+import {MetaProvider} from "@temp/components";
+import {MetaContextInterface} from "@temp/components/Meta/context";
 
 const removeEmpty = obj => {
     const newObj = {};

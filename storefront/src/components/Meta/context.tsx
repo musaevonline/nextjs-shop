@@ -1,5 +1,5 @@
-import * as React from "react";
-import { META_DEFAULTS } from "../../core/config";
+import React from "react";
+import { META_DEFAULTS } from "@temp/core/config";
 
 type MetaProps = JSX.IntrinsicElements["meta"];
 
