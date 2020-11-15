@@ -43,6 +43,7 @@ const BlogArticleCreatePage: React.FC<BlogArticleCreatePageProps> = ({
     const [selectedCategory, setSelectedCategory] = useStateFromProps("");
     const initialForm: BlogArticleDetailsFormData = {
         title: "",
+        subtitle: "",
         body: "",
         isPublished: false,
         image: null,

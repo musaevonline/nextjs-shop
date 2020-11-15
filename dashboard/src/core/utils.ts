@@ -1,18 +1,22 @@
 import { Base64 } from "js-base64";
 import slugify from "slugify";
 
-export const slugifyStr = (text: string): string => slugify(text, {
-  lower: true,
-  remove: /[*+~.()'"!:@,]/g
-})
-    // text
-    //     .toString()
-    //     .toLowerCase()
-    //     .trim()
-    //     .replace(/\s+/g, "-") // Replace spaces with -
-    //     .replace(/&/g, "-and-") // Replace & with 'and'
-    //     .replace(/[^\w\-]+/g, "") // Remove all non-word chars
-    //     .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+export const slugifyStr = (text: string): string => {
+
+  return slugify(text
+          .toString()
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, "-") // Replace spaces with -
+          .replace(/&/g, "-and-") // Replace & with 'and'
+          .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+          .replace(/\-\-+/g, "-"), // Replace multiple - with single -
+      {
+        lower: true,
+        remove: /[*+~.()'"!:@,ь]/g
+      })
+}
+
 
 export const getDBIdFromGraphqlId = (
     graphqlId: string,

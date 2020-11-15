@@ -96,7 +96,7 @@ const editorOpts = {
   filebrowserUploadUrl: UPLOAD_URL,
   filebrowserImageUploadUrl: UPLOAD_URL,
 
-  height: 400,
+  height: 100,
 
   // removeDialogTabs: 'image:advanced;link:advanced'
 }

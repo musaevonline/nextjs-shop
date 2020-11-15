@@ -28,6 +28,7 @@ const useStyles = makeStyles(
 );
 export interface BlogArticleDetailsFormData {
     title: string;
+    subtitle: string;
     body: string;
     isPublished: boolean;
     image: File | null;
@@ -70,6 +71,7 @@ const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
 
     const formFields = [
         "title",
+        "subtitle",
         "body",
         "category"
     ];
@@ -84,9 +86,7 @@ const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
     const formErrors = getFormErrors(formFields, errors);
     return (
         <Card>
-            <CardTitle
-                title={intl.formatMessage(commonMessages.generalInformation)}
-            />
+            <CardTitle title={intl.formatMessage(commonMessages.generalInformation)}/>
             <CardContent>
                 <TextField
                     disabled={disabled}
@@ -100,6 +100,21 @@ const BlogArticleDetailsForm: React.FC<BlogArticleDetailsFormProps> = props => {
                     })}
                     name={"title" as keyof FormData}
                     value={data.title}
+                    onChange={onChange}
+                />
+                <Hr />
+                <TextField
+                    disabled={disabled}
+                    error={!!formErrors.subtitle}
+                    fullWidth
+                    helperText={getBlogErrorMessage(formErrors.subtitle, intl)}
+                    label={intl.formatMessage({
+                        id: "blogArticleSubtitle",
+                        defaultMessage: "Blog Article subtitle",
+                        description: "blog article subtitle"
+                    })}
+                    name={"subtitle" as keyof FormData}
+                    value={data.subtitle}
                     onChange={onChange}
                 />
                 <Hr />

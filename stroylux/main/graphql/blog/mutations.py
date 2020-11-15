@@ -105,6 +105,7 @@ class BlogCategoryDelete(ModelDeleteMutation):
 
 class BlogArticleInput(graphene.InputObjectType):
     title = graphene.String(description="Blog article name.")
+    subtitle = graphene.String(description="Blog article subtitle.")
     body = graphene.String(description="Blog article description (HTML/text).")
     slug = graphene.String(description="Blog article slug.")
     is_published = graphene.Boolean(description="Blog article is published.")

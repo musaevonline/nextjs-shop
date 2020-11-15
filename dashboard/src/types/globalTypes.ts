@@ -753,6 +753,7 @@ export interface AuthorizationKeyInput {
 
 export interface BlogArticleInput {
   title?: string | null;
+  subtitle?: string | null;
   body?: string | null;
   slug?: string | null;
   isPublished?: boolean | null;

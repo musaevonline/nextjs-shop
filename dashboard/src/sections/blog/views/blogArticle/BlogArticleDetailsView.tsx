@@ -68,6 +68,7 @@ const BlogArticleDetailsView: React.FC<BlogArticleDetailsProps> = ({
     const onSubmit = (formData: BlogArticleDetailsFormData) => {
         const input = {
             title: formData.title,
+            subtitle: formData.subtitle,
             body: formData.body,
             isPublished: formData.isPublished,
             slug: slugifyStr(formData.title),

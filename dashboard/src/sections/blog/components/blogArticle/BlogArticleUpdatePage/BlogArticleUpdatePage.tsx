@@ -49,6 +49,7 @@ const BlogArticleUpdatePage: React.FC<BlogArticleUpdatePageProps> = ({
     const [selectedCategory, setSelectedCategory] = useStateFromProps(maybe(() => blogArticle.category.name, ''));
     const initialForm: BlogArticleDetailsFormData = {
         title: maybe(() => blogArticle.title, ""),
+        subtitle: maybe(() => blogArticle.subtitle, ""),
         body: maybe(() => blogArticle.body, ""),
         isPublished: maybe(() => blogArticle.isPublished, false),
         image: null,

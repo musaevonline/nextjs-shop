@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/TextField";
 import { ProductErrorFragment } from "@temp/sections/products/types/ProductErrorFragment";
 import CardTitle from "@temp/components/CardTitle";
 import FormSpacer from "@temp/components/FormSpacer";
-import RichTextEditor from "@temp/components/RichTextEditor";
 import {commonMessages, formMessages} from "@temp/intl";
 import { getFormErrors, getProductErrorMessage } from "@temp/utils/errors";
 import { RawDraftContentState } from "draft-js";
@@ -13,6 +12,8 @@ import { useIntl } from "react-intl";
 
 import { maybe } from "@temp/misc";
 import { CategoryDetails_category } from "../../types/CategoryDetails";
+import {FormData} from "@temp/sections/pages/components/PageDetailsPage";
+import {RichCKEditor} from "@temp/components/RichCkeditor";
 
 interface CategoryDetailsFormProps {
   category?: CategoryDetails_category;
@@ -55,15 +56,10 @@ export const CategoryDetailsForm: React.FC<CategoryDetailsFormProps> = ({
           />
         </div>
         <FormSpacer />
-        <RichTextEditor
-          disabled={disabled}
-          error={!!formErrors.description}
-          helperText={getProductErrorMessage(formErrors.description, intl)}
-          label={intl.formatMessage(formMessages.categoryDescription)}
-          initial={maybe(() => category.description)}
-          name="description"
-          onChange={onChange}
-        />
+        <RichCKEditor disabled={disabled}
+                      data={maybe(() => data.description)}
+                      name={"description" as keyof FormData}
+                      onChange={onChange}/>
       </CardContent>
     </Card>
   );
