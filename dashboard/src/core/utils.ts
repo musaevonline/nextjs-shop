@@ -6,7 +6,7 @@ export const slugifyStr = (text: string): string => {
   return slugify(text.replace(/&/g, "-and-"),
       {
         lower: true,
-        remove: /[*+~.()'"!:@,ь]/g
+        remove: /[*+~.()'"!:@,ь?]/g
       })
 }
 

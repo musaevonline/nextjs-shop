@@ -82,7 +82,7 @@ const MenuMobile:React.FC<MenuProps> = ({categories}) =>{
           <div className="menu-mobile__body">
             <div className="z-10 sticky top-0 bg-white text-center">
               <Link to={baseUrl}>
-                <img src={Logo} alt="СтройЛюксДрев" className="max-w-150"/>
+                <img src={Logo} alt="СтройЛюкс" className="max-w-150"/>
               </Link>
             </div>
             {categories &&

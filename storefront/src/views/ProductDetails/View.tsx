@@ -21,7 +21,7 @@ const PAGINATE_BY_REVIEWS = 5;
 
 const View:React.FC = () =>{
     const { enqueueSnackbar } = useSnackbar();
-    const {pk} = useParams();
+    const {pk} = useParams<{pk: string}>();
     const checkout = useContext(CheckoutContext);
     const id = getGraphqlIdFromDBId(pk, "Product");
     const { data, loading } = useQuery<ProductDetails, ProductDetailsVariables>(productQuery, {

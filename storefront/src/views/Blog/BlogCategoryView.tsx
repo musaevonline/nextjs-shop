@@ -14,7 +14,7 @@ const PAGINATE_BY = 20;
 
 const BlogCategoryView:React.FC = () => {
     const shop = useShop();
-    const {categorySlug} = useParams()
+    const {categorySlug} = useParams<{categorySlug: string}>()
     const {data, loading, loadMore} = useBlogArticleListQuery({
         variables: {
             first: PAGINATE_BY,

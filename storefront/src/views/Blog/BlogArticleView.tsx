@@ -10,7 +10,7 @@ import {articleStructuredData} from "@temp/core/SEO/articleStructuredData";
 
 const BlogCategoryView:React.FC = () => {
     const shop = useShop();
-    const {articleSlug} = useParams()
+    const {articleSlug} = useParams<{articleSlug: string}>()
     const {data, loading} = useBlogArticleQuery({
         variables: {
             slug: articleSlug

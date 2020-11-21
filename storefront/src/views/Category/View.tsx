@@ -33,7 +33,7 @@ export type stateAttribute = {
 }
 
 const View:React.FC = () => {
-    const {pk} = useParams();
+    const {pk} = useParams<{pk: string}>();
     const id = getGraphqlIdFromDBId(pk, "Category");
 
     const [query, setQuery] = useQueryParams({

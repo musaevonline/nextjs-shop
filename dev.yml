@@ -39,6 +39,7 @@ services:
         DASHBOARD_URL: "https://stroyluxdrev.by/dashboard/"
         STOREFRONT_URL: "https://stroyluxdrev.by/"
     restart: always
+    env_file: prod.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.entrypoints=websecure"

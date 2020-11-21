@@ -13,11 +13,7 @@ import {
     getPageUrl,
 } from "@temp/app/routes";
 import Logo from "images/logo.svg";
-import FacebookLogo from 'images/facebook.svg';
-import InstagramLogo from 'images/instagram.svg';
-import VKLogo from 'images/vk.svg';
 import {Link} from "react-router-dom";
-import { ReactSVG } from 'react-svg'
 import {useQuery} from "@apollo/client";
 import {categoriesQuery} from "@sdk/queries/category";
 import {Categories, CategoriesVariables} from "@sdk/queries/types/Categories";
@@ -28,8 +24,8 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import {usePages} from "@sdk/queries/page";
 import Typography from "@material-ui/core/Typography";
 import useShop from "@temp/hooks/useShop";
-
-
+import { FaFacebookF, FaInstagram, FaVk } from "react-icons/fa";
+import {ReactSVG} from "react-svg";
 
 const Footer:React.FC = () =>{
     const [isOpenAllCategories, setOpenAllCategories] = useState(false);
@@ -112,17 +108,17 @@ const Footer:React.FC = () =>{
                             <Typography variant="h5" gutterBottom>Мы в соцсетях:</Typography>
                             <div className="flex align-center">
                                 <a href="https://www.facebook.com/stroy.lux.by/?modal=admin_todo_tour" target="_blank" rel="noopener">
-                                    <ReactSVG src={FacebookLogo} title="Facebook"/>
+                                    <FaFacebookF/>
                                 </a>
                                 <a href="https://www.instagram.com/stroy_lux.by/" target="_blank" rel="noopener">
-                                    <ReactSVG src={InstagramLogo} title="Instagram"/>
+                                    <FaInstagram/>
                                 </a>
                                 <a href="www.vk.com" target="_blank" rel="noopener">
-                                    <ReactSVG src={VKLogo} title="VK"/>
+                                    <FaVk/>
                                 </a>
                             </div>
-                            <Link to={baseUrl}>
-                                <img src={Logo} alt="СтройЛюксДрев" className="max-w-250"/>
+                            <Link to={baseUrl} className="logo">
+                                <ReactSVG src={Logo} title="СтройЛюкс" className="max-w-250"/>
                             </Link>
                         </div>
                     </Grid>

@@ -11,7 +11,10 @@
     color: #9595a0;
   }
   .social{
-    svg{
+    a {
+      font-size: 2rem;
+    }
+    a:not(.logo) svg{
       margin: 0 5px;
       fill: $white;
       transition: all .3s;

@@ -1,7 +1,5 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HotModulePlugin = require("webpack").HotModuleReplacementPlugin;
-const autoprefixer = require('autoprefixer');
-const tailwind = require('tailwindcss');
 const webpack = require('webpack');
 
 module.exports = ({ sourceDir, distDir }) => {
@@ -29,9 +27,9 @@ module.exports = ({ sourceDir, distDir }) => {
             {
               loader: 'postcss-loader',
               options: {
-                'sourceMap': true,
-                'plugins': function () {
-                  return [tailwind, autoprefixer];
+                sourceMap: true,
+                postcssOptions: {
+                  plugins: ["tailwindcss", "autoprefixer"]
                 }
               }
             },

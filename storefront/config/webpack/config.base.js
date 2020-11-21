@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const webpack = require("webpack");
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 if (!process.env.API_URI) {
   throw new Error("Environment variable API_URI not set");
@@ -88,6 +89,7 @@ module.exports = ({ sourceDir, distDir }) => ({
     ],
   },
   plugins: [
+    new webpack.ProgressPlugin(),
     new CleanWebpackPlugin({
       // dry: isDev,
       cleanOnceBeforeBuildPatterns: distDir,
@@ -107,9 +109,12 @@ module.exports = ({ sourceDir, distDir }) => ({
       logo: `${sourceDir}/images/favicon.png`,
       prefix: 'images/favicons/',
       mode: 'webapp', // optional can be 'webapp' or 'light' - 'webapp' by default
-      devMode: 'webapp',
+      devMode: 'webapp'
     }),
     new webpack.EnvironmentPlugin(['API_URI', 'DASHBOARD_URL']),
+      new LodashModuleReplacementPlugin({
+      chaining: true
+    }),
     // new webpack.DefinePlugin({ 'process.env.API_URI': JSON.stringify(process.env.API_URI) })
   ],
   node: {

@@ -1,8 +1,10 @@
 import { generatePageUrl } from "./utils";
 
 export const BASE_URL = "/";
-export const PRODUCTS_PER_PAGE = 6;
-export const SUPPORT_EMAIL = "support@example.com";
+export const PRODUCTS_PER_PAGE = 20;
+export const SUPPORT_EMAIL = "support@stroyluxdrev.by";
+export const isDev = process.env.NODE_ENV === 'development';
+export const gtmId = process.env.GTM_ID;
 
 export const STATIC_PAGES = {
       about: {
@@ -19,9 +21,9 @@ export const STATIC_PAGES = {
 export const META_DEFAULTS = {
   custom: [],
   description:
-    "СтройЛюксДрев - магазин строительных материалов.",
+    "СтройЛюкс - магазин строительных материалов.",
   image: `${window.location.origin}${require("../images/logo.svg")}`,
-  title: "СтройЛюксДрев",
+  title: "СтройЛюкс",
   type: "website",
   url: window.location.origin,
 };

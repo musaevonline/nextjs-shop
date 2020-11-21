@@ -6,7 +6,7 @@ import {getDBIdFromGraphqlId} from "@temp/core/utils";
 import {useParams} from "react-router";
 
 const View:React.FC = () => {
-    const {token} = useParams();
+    const {token} = useParams<{token: string}>();
     const {data, loading} = useOrder({
         variables: {
             token

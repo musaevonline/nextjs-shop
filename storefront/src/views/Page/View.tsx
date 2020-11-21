@@ -5,7 +5,7 @@ import {usePage} from "@sdk/queries/page";
 import {useParams} from "react-router";
 
 const View:React.FC = () => {
-    const {slug} = useParams();
+    const {slug} = useParams<{slug: string}>();
     const {data: pageData, loading: pageLoading} = usePage({
         variables: {
             slug

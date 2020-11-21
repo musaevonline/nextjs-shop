@@ -33,12 +33,12 @@ import {ApolloClient, ApolloLink, ApolloProvider, defaultDataIdFromObject, InMem
 import {ErrorResponse, onError} from "@apollo/client/link/error";
 import {ShopProvider} from "@temp/components/Shop";
 import TagManager from 'react-gtm-module';
+import {gtmId, isDev} from "@temp/core/config";
 
 const tagManagerArgs = {
-    gtmId: 'GTM-W53SN2W'
+    gtmId: gtmId
 }
-const isDev = process.env.NODE_ENV === 'development';
-if (!isDev){
+if (!isDev && !!gtmId){
     TagManager.initialize(tagManagerArgs)
 }
 
@@ -136,11 +136,6 @@ const startApp = async () => {
                 </div>
             )
         }
-        const errorHandler = (error: Error, componentStack: string) => {
-            // Do something with the error
-            // E.g. log to an error logging client here
-            console.log('error handler', error);
-        };
 
         return (
             <BrowserRouter>
@@ -165,7 +160,6 @@ const startApp = async () => {
                                             <FavoritesProvider>
                                                 <ErrorBoundary
                                                     FallbackComponent={ErrorFallback}
-                                                    onError={errorHandler}
                                                     // onReset={() => {
                                                     //     apolloClient.resetStore()
                                                     // }}

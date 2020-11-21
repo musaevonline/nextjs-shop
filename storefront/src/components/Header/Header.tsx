@@ -1,7 +1,7 @@
 import './scss/index.scss';
 
 import React, {useContext, useState} from "react";
-import SVG from 'react-inlinesvg';
+import { ReactSVG } from 'react-svg'
 import {Container} from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
@@ -192,7 +192,7 @@ const Header: React.FC = () =>{
                     <div className="header__center">
                         <div className="logo">
                             <Link to={baseUrl}>
-                                <SVG src={Logo} alt="СтройЛюксДрев"/>
+                                <ReactSVG src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
                             </Link>
                         </div>
                         <div className="mobile">
@@ -283,7 +283,7 @@ const Header: React.FC = () =>{
                                 </div>
                                 <div className="mobile-header__logo flex-1">
                                     <Link to={baseUrl}>
-                                        <img src={Logo} alt="СтройЛюксДрев"/>
+                                        <img src={Logo} alt="СтройЛюкс"/>
                                     </Link>
                                 </div>
                                 <div className="mobile-header__utilities">
