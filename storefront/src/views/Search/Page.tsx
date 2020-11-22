@@ -49,7 +49,7 @@ const Page:React.FC<{
                             }
                             {products?.pageInfo.hasNextPage &&
                             <div className="my-20 flex justify-center">
-                                <div className="w-512 max-w-full">
+                                <div className="w-full sm:w-512 max-w-full">
                                     <Button variant="contained"
                                             color="primary"
                                             onClick={loadMore}

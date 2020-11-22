@@ -18,11 +18,13 @@ const useStyles = makeStyles({
         margin: '1rem 0'
     }
 });
+const FILTER_HEIGHT = 300;
 
 function valuetext(value: number) {
     return `${value}`;
 }
 const MAX_PRICE = 10000;
+
 const ProductsFilter:React.FC<{
     attributes: Attributes_attributes | null,
     filters: TUrlQuery,
@@ -126,7 +128,10 @@ const ProductsFilter:React.FC<{
                                 </div>
                             </div>
                             <Collapse in={collapsed}>
-                                <Scrollbars style={{ width: "100%", height: 200 }}>
+                                <Scrollbars
+                                            autoHeight
+                                            autoHeightMax={FILTER_HEIGHT}
+                                >
                                     {node.values.map(val => {
                                         const selected = index !== -1 ? filters.attributes[index].values.includes(val.slug) : false;
                                         return(

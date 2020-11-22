@@ -306,7 +306,7 @@ PLACEHOLDER_IMAGES = {
     60: "images/placeholder60x60.png",
     120: "images/placeholder120x120.png",
     255: "images/placeholder255x255.png",
-    540: "images/placeholder540x540.png",
+    540: "images/placeholder.svg",
     1080: "images/placeholder1080x1080.png",
 }
 

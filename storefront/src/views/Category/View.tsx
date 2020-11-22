@@ -5,14 +5,14 @@ import {useParams} from "react-router";
 import {getGraphqlIdFromDBId} from "@temp/core/utils";
 import {useQuery} from "@apollo/client";
 import {productsCardQuery} from "@sdk/queries/product";
-import Page from "@temp/views/Category/Page";
+import Page, {PRODUCTS_SORT_BY_ENUM} from "@temp/views/Category/Page";
 import {categoryQuery} from "@sdk/queries/category";
 import _ from "lodash";
 import {attributesQuery} from "@sdk/queries/attribute";
 import {Attributes, AttributesVariables} from "@sdk/queries/types/Attributes";
 import {Category, CategoryVariables} from "@sdk/queries/types/Category";
 import {ProductsCardDetails, ProductsCardDetailsVariables} from "@sdk/queries/types/ProductsCardDetails";
-import {DelimitedNumericArrayParam, JsonParam, ObjectParam, useQueryParams} from "use-query-params";
+import {DelimitedNumericArrayParam, JsonParam, StringParam, useQueryParams} from "use-query-params";
 import {OrderDirection, ProductOrderField} from "@temp/types/globalTypes";
 import {removeTags} from "@temp/misc";
 
@@ -21,10 +21,7 @@ const PAGINATE_BY = 20;
 export type TUrlQuery = {
     attributes?: stateAttribute[] | null,
     priceRange?: number[],
-    sortBy?:{
-        field: ProductOrderField,
-        direction: OrderDirection
-    }
+    sortBy?: PRODUCTS_SORT_BY_ENUM
 }
 
 export type stateAttribute = {
@@ -32,12 +29,25 @@ export type stateAttribute = {
     values: string[]
 }
 
+const getSortBy = (sortBy: PRODUCTS_SORT_BY_ENUM | null): {field: ProductOrderField, direction: OrderDirection} => {
+  switch (sortBy) {
+    case PRODUCTS_SORT_BY_ENUM.BY_NAME:
+      return {field: ProductOrderField.NAME, direction: OrderDirection.ASC};
+    case PRODUCTS_SORT_BY_ENUM.DATE:
+      return {field: ProductOrderField.DATE, direction: OrderDirection.DESC};
+    case PRODUCTS_SORT_BY_ENUM.ORDER_COUNT:
+      return {field: ProductOrderField.ORDER_COUNT, direction: OrderDirection.DESC};
+    default:
+      return {field: ProductOrderField.DATE, direction: OrderDirection.DESC};
+  }
+};
+
 const View:React.FC = () => {
     const {pk} = useParams<{pk: string}>();
     const id = getGraphqlIdFromDBId(pk, "Category");
 
     const [query, setQuery] = useQueryParams({
-        sortBy: ObjectParam,
+        sortBy: StringParam as PRODUCTS_SORT_BY_ENUM | any,
         attributes: JsonParam,
         priceRange: DelimitedNumericArrayParam
     });
@@ -53,10 +63,7 @@ const View:React.FC = () => {
                     gte: query.priceRange ? query.priceRange[1] : 99999
                 },
             },
-            sortBy: query.sortBy ? {
-                field: query.sortBy?.field as ProductOrderField,
-                direction: query.sortBy?.direction as OrderDirection,
-            }: null
+            sortBy: getSortBy(query.sortBy)
         },
         fetchPolicy: "cache-and-network",
         nextFetchPolicy: "cache-first",

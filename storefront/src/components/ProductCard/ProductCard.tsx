@@ -62,8 +62,7 @@ const ProductCard:React.FC<ProductCardProps> = ({item, isNew, isDiscount}) =>{
                 <div className="product-card__img">
                     {isNew && !isDiscount && <div className="label_new">Новинка</div>}
                     {isDiscount && <div className="label_discount">Скидка 15%</div>}
-                    <img src={thumbnail.url}
-                         alt={thumbnail.alt}/>
+                    <img src={thumbnail.url} alt={thumbnail.alt}/>
                 </div>
                 <div className="product-card__body">
                     <div className="product-card__title">

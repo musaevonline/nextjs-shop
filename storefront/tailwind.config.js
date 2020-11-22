@@ -24,7 +24,8 @@ module.exports = {
       sm: '600px',
       md: '960px',
       lg: '1280px',
-      xl: '1920px',
+      xl: '1600px',
+      '2xl': '1920px',
     },
     colors: {
       transparent: 'transparent',
@@ -405,10 +406,11 @@ module.exports = {
       full: '100%',
       screen: '100vh',
     },
-    minWidth: {
+    minWidth: (theme, { breakpoints }) => ({
       '0': '0',
       full: '100%',
-    },
+      ...theme('spacing')
+    }),
     objectPosition: {
       bottom: 'bottom',
       center: 'center',

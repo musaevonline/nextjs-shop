@@ -55,11 +55,11 @@ const useStyles = makeStyles(theme => ({
       overflow: "hidden"
     },
     "& a:not($submenuLink)": {
-      color: "#3e77aa"
+      color: "#484848"
     },
     "& a:hover": {
       textDecoration: "underline",
-      color: "#f84147"
+      color: theme.palette.secondary.main
     }
   },
   menuCategoriesLink: {
@@ -206,7 +206,7 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
                             {node.backgroundImage?.url &&
                             <ReactSVG src={node.backgroundImage?.url}
                                       title={node.name}
-                                      className="flex items-center"
+                                      className="flex items-center hidden"
                             />
                             }
                           </span>
@@ -231,7 +231,7 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
                                           {childNode1.name}
                                         </Link>
                                         {!!childNode1.children.edges.length &&
-                                        <ul className="list-none p-0">
+                                        <ul className="list-none p-0 pl-5">
                                           {childNode1.children.edges.map((childEdge2, i) => {
                                             const childNode2 = childEdge2.node;
                                             return(
