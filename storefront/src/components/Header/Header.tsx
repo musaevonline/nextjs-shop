@@ -40,6 +40,11 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useShop from "@temp/hooks/useShop";
 import {BsAlarm, BsHeart, BsPhone, BsSearch, BsBag} from "react-icons/bs";
 import AccountIcon from "@temp/icons/Account";
+import PhoneIcon from '@material-ui/icons/Phone';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
 
 const useStyles = makeStyles(theme => ({
     largeBagIcon: {
@@ -67,6 +72,7 @@ const Header: React.FC = () =>{
     const [accountDrawerState, setAccountDrawerState] = useState(false);
     const [tabIndex, setTabIndex] = useState(0);
     const [forgotPassword, setForgotPassword] = useState(false);
+    const [isOpenContactsDialog, setOpenContactsDialog] = useState(false);
 
     const {quantity:checkoutQuantity} = useContext(CheckoutContext);
     const user = useContext(UserContext);
@@ -97,8 +103,165 @@ const Header: React.FC = () =>{
         setTabIndex(newValue);
     };
 
+    const handleOpenContactsDialog = (e) => {
+        setOpenContactsDialog(true);
+    }
+
     return(
         <>
+            {/*Pages Block*/}
+            <Hidden xsDown>
+                <div className="header__top">
+                    <Container maxWidth="xl">
+                        <div className="header__top_left flex items-center">
+                            <div className="mr-5">
+                                <Button size="small"
+                                        variant="text"
+                                        startIcon={<PhoneIcon/>}
+                                        endIcon={<KeyboardArrowDownIcon/>}
+                                        onClick={handleOpenContactsDialog}
+                                >
+                                    {shop?.companyAddress.phone}
+                                </Button>
+                            </div>
+                            <ul className="list_inline">
+                                {pagesData?.pages?.edges.map(edge => <li key={edge.node.id}><Link
+                                    to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></li>)}
+                            </ul>
+                        </div>
+                        <div className="header__top_right">
+                            <ul className="list_inline">
+                                <li><Link to={blogPath}>Блог</Link></li>
+                            </ul>
+                        </div>
+                    </Container>
+                </div>
+                <Divider />
+            </Hidden>
+
+
+            <Hidden smDown>
+                <Container maxWidth="xl">
+                    <div className="header__center" style={{display: "none"}}>
+                        <div className="logo">
+                            <Link to={baseUrl}>
+                                <ReactSVG src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
+                            </Link>
+                        </div>
+                        <div className="mobile">
+                            <BsPhone/>
+                            <div className="mobile__body pl-10">
+                                <Typography variant="h6">{shop?.companyAddress.phone}</Typography>
+                                <div className="mobile__call">
+                                    <Button size="small"
+                                            color="primary"
+                                            variant="text"
+                                    >
+                                        <span className="normal-case">Заказать</span>
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="work_time">
+                            <BsAlarm/>
+                            <div className="work_time__body pl-10">
+                                <Typography variant="h6">Режим работы</Typography>
+                                <div className="work_time__schedule">
+                                    <div>ПН - ПТ: с 9:00 до 18:00</div>
+                                    <div>СБ: с 9:00 до 15:00</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="cart-icon">
+                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
+                                <IconButton onClick={toggleCartDrawer(true)} className={classes.largeBagIcon}>
+                                    <BsBag />
+                                </IconButton>
+                            </Badge>
+                        </div>
+                    </div>
+                </Container>
+
+                <div className={`header__bottom bg-white`}>
+                    <Container maxWidth="xl">
+                        <div className="relative flex items-center py-10">
+                            <div className="logo mr-10">
+                                <Link to={baseUrl}>
+                                    <ReactSVG className={classes.logo} src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
+                                </Link>
+                            </div>
+                            <div className="header__categories">
+                                <Menu categories={dataCategories?.categories}/>
+                            </div>
+                            <div className="flex-1">
+                                <div className="header__search">
+                                    <Search />
+                                </div>
+                            </div>
+                            <div className="w-200 flex justify-between">
+                                <IconButton onClick={e => {setAccountDrawerState(true)}} className={classes.utilityIcon}>
+                                    <AccountIcon fillRule="evenodd"/>
+                                </IconButton>
+                                <Link to={userProfileFavoritesUrl}>
+                                    <IconButton className={classes.utilityIcon}>
+                                        <BsHeart/>
+                                    </IconButton>
+                                </Link>
+                                <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
+                                    <IconButton onClick={toggleCartDrawer(true)} className={classes.utilityIcon}>
+                                        <BsBag/>
+                                    </IconButton>
+                                </Badge>
+                            </div>
+                        </div>
+                    </Container>
+                </div>
+            </Hidden>
+            <Hidden mdUp>
+                <Sticky topOffset={xs ? 0 : 50}>
+                    {({
+                          style,
+                          isSticky
+                      }) => (
+                        <Container maxWidth="lg" style={style} className={`bg-white ${isSticky ? "shadow-lg": "" }`}>
+                            <div className="mobile-header">
+                                <div className="menu">
+                                    <MenuMobile categories={dataCategories?.categories}/>
+                                </div>
+                                <div className="mobile-header__logo flex-1">
+                                    <Link to={baseUrl}>
+                                        <img src={Logo} alt="СтройЛюкс"/>
+                                    </Link>
+                                </div>
+                                <div className="mobile-header__utilities">
+                                    <div className="mobile-header__search-icon">
+                                        <IconButton onClick={e => {setIsActiveSearch(prev => !prev)}}>
+                                            {isActiveSearch ? <CloseIcon/> : <BsSearch/>}
+                                        </IconButton>
+                                    </div>
+                                    <div className="mobile-header__account-icon">
+                                        <IconButton onClick={e => setAccountDrawerState(true)}>
+                                            <AccountIcon fillRule="evenodd"/>
+                                        </IconButton>
+                                    </div>
+                                    <div className="mobile-header__cart">
+                                        <IconButton onClick={toggleCartDrawer(true)}>
+                                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
+                                                <BsBag />
+                                            </Badge>
+                                        </IconButton>
+                                    </div>
+                                </div>
+                            </div>
+                            <Collapse in={isActiveSearch}>
+                                <Search />
+                            </Collapse>
+                        </Container>
+                    )}
+                </Sticky>
+            </Hidden>
+
             <CartRightPanel isOpen={isOpenCartPanel} toggleCartDrawer={toggleCartDrawer}/>
             <Drawer anchor="right"
                     PaperProps={{
@@ -172,149 +335,34 @@ const Header: React.FC = () =>{
                     }
                 </div>
             </Drawer>
-
-            {/*Pages Block*/}
-            <Hidden xsDown>
-                <div className="header__top">
-                    <Container maxWidth="xl">
-                        <div className="header__top_left">
-                            <ul className="list_inline">
-                                {pagesData?.pages?.edges.map(edge => <li key={edge.node.id}><Link
-                                    to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></li>)}
-                            </ul>
-                        </div>
-                        <div className="header__top_right">
-                            <ul className="list_inline">
-                                <li><Link to={blogPath}>Блог</Link></li>
-                            </ul>
-                        </div>
-                    </Container>
-                </div>
-                <Divider />
-            </Hidden>
-
-
-            <Hidden smDown>
-                <Container maxWidth="xl">
-                    <div className="header__center" style={{display: "none"}}>
-                        <div className="logo">
-                            <Link to={baseUrl}>
-                                <ReactSVG src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
-                            </Link>
-                        </div>
-                        <div className="mobile">
-                            <BsPhone/>
-                            <div className="mobile__body pl-10">
-                                <Typography variant="h6">{shop?.companyAddress.phone}</Typography>
-                                <div className="mobile__call">
-                                    <Button size="small"
-                                            color="primary"
-                                            variant="text"
-                                    >
-                                        <span className="normal-case">Заказать</span>
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="work_time">
-                            <BsAlarm/>
-                            <div className="work_time__body pl-10">
-                                <Typography variant="h6">Режим работы</Typography>
-                                <div className="work_time__schedule">
-                                    <div>ПН - ПТ: с 9:00 до 18:00</div>
-                                    <div>СБ: с 9:00 до 15:00</div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className="cart-icon">
-                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                <IconButton onClick={toggleCartDrawer(true)} className={classes.largeBagIcon}>
-                                    <BsBag />
-                                </IconButton>
-                            </Badge>
-                        </div>
+            <Dialog open={isOpenContactsDialog}
+                    onClose={e => setOpenContactsDialog(false)}
+                    maxWidth="xs"
+                    fullWidth
+            >
+                <DialogTitle disableTypography>
+                    <Typography variant="h3" className="flex-1"><strong>Контактные телефоны</strong></Typography>
+                    <span className="absolute" style={{top: 10, right: 5}}>
+                        <IconButton aria-label="close"
+                                    onClick={e => setOpenContactsDialog(false)}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                        </span>
+                </DialogTitle>
+                <DialogContent dividers>
+                    <div className="mb-20">
+                        <Typography gutterBottom variant="h5">Консультации и заказ:</Typography>
+                        <a className="pl-5 hover:underline text-xl" href={`tel:${shop?.companyAddress.phone}`}>{shop?.companyAddress.phone}</a>
                     </div>
-                </Container>
-
-                            <div className={`header__bottom bg-white`}>
-                                <Container maxWidth="xl">
-                                    <div className="relative flex items-center py-10">
-                                        <div className="logo mr-10">
-                                            <Link to={baseUrl}>
-                                                <ReactSVG className={classes.logo} src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
-                                            </Link>
-                                        </div>
-                                        <div className="header__categories">
-                                            <Menu categories={dataCategories?.categories}/>
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="header__search">
-                                                <Search />
-                                            </div>
-                                        </div>
-                                        <div className="w-200 flex justify-between">
-                                            <IconButton onClick={e => {setAccountDrawerState(true)}} className={classes.utilityIcon}>
-                                                <AccountIcon fillRule="evenodd"/>
-                                            </IconButton>
-                                            <Link to={userProfileFavoritesUrl}>
-                                                <IconButton className={classes.utilityIcon}>
-                                                    <BsHeart/>
-                                                </IconButton>
-                                            </Link>
-                                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                                <IconButton onClick={toggleCartDrawer(true)} className={classes.utilityIcon}>
-                                                    <BsBag/>
-                                                </IconButton>
-                                            </Badge>
-                                        </div>
-                                    </div>
-                                </Container>
-                            </div>
-            </Hidden>
-            <Hidden mdUp>
-                <Sticky topOffset={xs ? 0 : 50}>
-                    {({
-                          style,
-                          isSticky
-                      }) => (
-                        <Container maxWidth="lg" style={style} className={`bg-white ${isSticky ? "shadow-lg": "" }`}>
-                            <div className="mobile-header">
-                                <div className="menu">
-                                    <MenuMobile categories={dataCategories?.categories}/>
-                                </div>
-                                <div className="mobile-header__logo flex-1">
-                                    <Link to={baseUrl}>
-                                        <img src={Logo} alt="СтройЛюкс"/>
-                                    </Link>
-                                </div>
-                                <div className="mobile-header__utilities">
-                                    <div className="mobile-header__search-icon">
-                                        <IconButton onClick={e => {setIsActiveSearch(prev => !prev)}}>
-                                            {isActiveSearch ? <CloseIcon/> : <BsSearch/>}
-                                        </IconButton>
-                                    </div>
-                                    <div className="mobile-header__account-icon">
-                                        <IconButton onClick={e => setAccountDrawerState(true)}>
-                                            <AccountIcon fillRule="evenodd"/>
-                                        </IconButton>
-                                    </div>
-                                    <div className="mobile-header__cart">
-                                        <IconButton onClick={toggleCartDrawer(true)}>
-                                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                                <BsBag />
-                                            </Badge>
-                                        </IconButton>
-                                    </div>
-                                </div>
-                            </div>
-                            <Collapse in={isActiveSearch}>
-                                <Search />
-                            </Collapse>
-                        </Container>
-                    )}
-                </Sticky>
-            </Hidden>
+                    <div className="text-lg leading-10">
+                        <Typography gutterBottom variant="h5">График работы:</Typography>
+                        <div className="pl-5 flex items-center justify-between"><span>В будние:</span> <span>с 9:00 до 18:00</span></div>
+                        <div className="pl-5 flex items-center justify-between"><span>Суббота:</span> <span>с 9:00 до 15:00</span></div>
+                        <div className="pl-5 flex items-center justify-between"><span>Воскресенье:</span> <span>выходной</span></div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </>
     );
 };
