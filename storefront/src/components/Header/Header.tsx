@@ -113,7 +113,7 @@ const Header: React.FC = () =>{
             <Hidden xsDown>
                 <div className="header__top">
                     <Container maxWidth="xl">
-                        <div className="header__top_left flex items-center">
+                        <div className="header__top_left flex items-center truncate flex-1">
                             <div className="mr-5">
                                 <Button size="small"
                                         variant="text"
