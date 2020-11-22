@@ -2,7 +2,6 @@ import './scss/index.scss';
 
 import React, {useContext} from "react";
 import Loader from "@temp/components/Loader";
-import {AnimateGroup} from "@temp/components/AnimateGroup";
 import _ from "lodash";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -75,16 +74,7 @@ const CartItems:React.FC<CartItemsProps> = ({
     return(
         <div className="cart flex-1 py-10">
             { !items && quantity > 0 && <Loader absolute/>}
-            {quantity > 0 &&
-            <AnimateGroup
-                enter={{
-                    animation: 'transition.slideUpBigIn'
-                }}
-                leave={{
-                    animation: 'transition.slideLeftBigOut'
-                }}
-            >
-                {items?.edges.map((edge, i) => {
+            {quantity > 0 && items?.edges.map((edge, i) => {
                     const localLine = checkout.cart[_.findIndex(checkout.cart, ['variant', edge.node.id])];
                     if (!localLine) return null;
                     const node = edge.node;
@@ -163,8 +153,6 @@ const CartItems:React.FC<CartItemsProps> = ({
                         </div>
                     );
                 })}
-            </AnimateGroup>
-            }
             {quantity === 0 &&
             <div className="mt-20">
                 <Typography variant="h6">Корзина пустая</Typography>

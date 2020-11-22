@@ -21,7 +21,6 @@ import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import {useQuery} from "@apollo/client";
 import {categoriesQuery} from "@sdk/queries/category";
-import {Overlay, OverlayContext} from "@temp/components";
 import {CartRightPanel} from "@temp/components/CartRightPanel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -45,6 +44,16 @@ import AccountIcon from "@temp/icons/Account";
 const useStyles = makeStyles(theme => ({
     largeBagIcon: {
         padding: 0
+    },
+    logo: {
+        '& svg': {
+            height: 40
+        }
+    },
+    utilityIcon: {
+        "& svg":{
+            fontSize: 30
+        }
     }
 }))
 
@@ -70,8 +79,6 @@ const Header: React.FC = () =>{
             first: 5
         }
     })
-
-    const overlay = useContext(OverlayContext);
     const toggleCartDrawer = (open: boolean) => (
         event: React.KeyboardEvent | React.MouseEvent,
     ) => {
@@ -92,7 +99,6 @@ const Header: React.FC = () =>{
 
     return(
         <>
-            {overlay.type && <Overlay context={overlay}/>}
             <CartRightPanel isOpen={isOpenCartPanel} toggleCartDrawer={toggleCartDrawer}/>
             <Drawer anchor="right"
                     PaperProps={{
@@ -167,7 +173,7 @@ const Header: React.FC = () =>{
                 </div>
             </Drawer>
 
-
+            {/*Pages Block*/}
             <Hidden xsDown>
                 <div className="header__top">
                     <Container maxWidth="xl">
@@ -180,16 +186,17 @@ const Header: React.FC = () =>{
                         <div className="header__top_right">
                             <ul className="list_inline">
                                 <li><Link to={blogPath}>Блог</Link></li>
-                                {/*<li><Link to={galleryUrl}>Фотогалерея</Link></li>*/}
                             </ul>
                         </div>
                     </Container>
                 </div>
                 <Divider />
             </Hidden>
+
+
             <Hidden smDown>
                 <Container maxWidth="xl">
-                    <div className="header__center">
+                    <div className="header__center" style={{display: "none"}}>
                         <div className="logo">
                             <Link to={baseUrl}>
                                 <ReactSVG src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
@@ -229,46 +236,41 @@ const Header: React.FC = () =>{
                         </div>
                     </div>
                 </Container>
-                <Sticky topOffset={140}>
-                    {({
-                          style,
-                          isSticky
-                      }) => (
-                        <div className={`header__bottom bg-white ${isSticky ? "shadow-lg": "" }`} style={style}>
-                            <Container maxWidth="xl">
-                                <div className="flex items-center h-60">
-                                    <div className="w-300">
+
+                            <div className={`header__bottom bg-white`}>
+                                <Container maxWidth="xl">
+                                    <div className="relative flex items-center py-10">
+                                        <div className="logo mr-10">
+                                            <Link to={baseUrl}>
+                                                <ReactSVG className={classes.logo} src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
+                                            </Link>
+                                        </div>
                                         <div className="header__categories">
                                             <Menu categories={dataCategories?.categories}/>
                                         </div>
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="header__search">
-                                            <Search />
+                                        <div className="flex-1">
+                                            <div className="header__search">
+                                                <Search />
+                                            </div>
+                                        </div>
+                                        <div className="w-200 flex justify-between">
+                                            <IconButton onClick={e => {setAccountDrawerState(true)}} className={classes.utilityIcon}>
+                                                <AccountIcon fillRule="evenodd"/>
+                                            </IconButton>
+                                            <Link to={userProfileFavoritesUrl}>
+                                                <IconButton className={classes.utilityIcon}>
+                                                    <BsHeart/>
+                                                </IconButton>
+                                            </Link>
+                                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
+                                                <IconButton onClick={toggleCartDrawer(true)} className={classes.utilityIcon}>
+                                                    <BsBag/>
+                                                </IconButton>
+                                            </Badge>
                                         </div>
                                     </div>
-                                    <div className="w-200 flex">
-                                        <IconButton onClick={e => {setAccountDrawerState(true)}}>
-                                            <AccountIcon fillRule="evenodd"/>
-                                        </IconButton>
-                                        <Link to={userProfileFavoritesUrl}>
-                                            <IconButton>
-                                                <BsHeart/>
-                                            </IconButton>
-                                        </Link>
-                                        {isSticky &&
-                                        <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                            <IconButton onClick={toggleCartDrawer(true)}>
-                                                <BsBag/>
-                                            </IconButton>
-                                        </Badge>
-                                        }
-                                    </div>
-                                </div>
-                            </Container>
-                        </div>
-                    )}
-                </Sticky>
+                                </Container>
+                            </div>
             </Hidden>
             <Hidden mdUp>
                 <Sticky topOffset={xs ? 0 : 50}>

@@ -26,6 +26,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.10.0",
     "classnames": "^2.2.6",
+    "core-js": "^3.7.0",
     "currency-formatter": "^1.5.6",
     "date-time": "^3.1.0",
     "dompurify": "^2.2.2",
@@ -61,7 +62,6 @@
     "url-join": "^4.0.1",
     "use-query-params": "^1.1.9",
     "use-react-router": "^1.0.7",
-    "velocity-react": "^1.4.3",
     "yup": "^0.30.0"
   },
   "devDependencies": {

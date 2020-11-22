@@ -155,6 +155,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
 
     "django.middleware.security.SecurityMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.common.CommonMiddleware",
 
     "main.core.middleware.google_analytics",
@@ -199,7 +200,8 @@ INSTALLED_APPS = [
     'social_django',
     'ckeditor_uploader',
     'ckeditor',
-    'sitemap_generate'
+    'sitemap_generate',
+    'corsheaders'
 ]
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 if DEBUG:
@@ -414,3 +416,4 @@ CKEDITOR_CONFIGS = {
 
 SITEMAP_MAPPING = 'main.core.sitemaps.sitemaps'
 SITEMAP_INDEX_URL = 'sitemap-index'
+CORS_ALLOWED_ORIGINS = get_list(os.environ.get("CORS_ALLOWED_ORIGINS") or "")

@@ -3,8 +3,6 @@ import React from "react";
 import {Container} from "@material-ui/core";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {Link} from "react-router-dom";
-// import InfiniteScroll from 'react-infinite-scroller';
-// import Loader from "@temp/components/Loader";
 import {baseUrl} from "@temp/app/routes";
 import {ProductList} from "@temp/components/ProductList";
 import Hidden from "@material-ui/core/Hidden";
@@ -20,6 +18,7 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {OrderDirection, ProductOrderField} from "@temp/types/globalTypes";
+import HomeIcon from '@material-ui/icons/Home';
 
 const Page:React.FC<{
     products: ProductsCardDetails_products,
@@ -47,8 +46,8 @@ const Page:React.FC<{
             <Container maxWidth="xl">
                 <div className="my-20">
                     <Breadcrumbs separator="›" aria-label="breadcrumb">
-                        <Link color="inherit" to={baseUrl}>
-                            Главная
+                        <Link className="flex items-center" color="inherit" to={baseUrl}>
+                            <HomeIcon fontSize="small"/>
                         </Link>
                         <span>{category.name}</span>
                     </Breadcrumbs>

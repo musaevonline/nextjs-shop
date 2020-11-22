@@ -39,7 +39,7 @@ class Provider extends React.Component<
     context?: InnerOverlayContextInterface
   ) => {
     this.setState({ type, theme, context });
-    document.body.style.overflow = type !== OverlayType.message ? "hidden" : "";
+    // document.body.style.overflow = type !== OverlayType.message ? "hidden" : "";
     if (type === OverlayType.message) {
       setTimeout(this.hide, this.notificationCloseDelay);
     }
@@ -47,7 +47,7 @@ class Provider extends React.Component<
 
   hide = () => {
     this.setState({ type: null });
-    document.body.style.overflow = "";
+    // document.body.style.overflow = "";
   };
 
   render() {

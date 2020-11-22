@@ -1,5 +1,4 @@
 import React from "react";
-import InfiniteScroll from 'react-infinite-scroller';
 import Loader from "@temp/components/Loader";
 import {ProductCard} from "@temp/components/ProductCard";
 import {ProductsCardDetails_products} from "@sdk/queries/types/ProductsCardDetails";
@@ -10,6 +9,7 @@ import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import {Link} from "react-router-dom";
 import {baseUrl} from "@temp/app/routes";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 const Page:React.FC<{
     products: ProductsCardDetails_products | null,
@@ -32,27 +32,34 @@ const Page:React.FC<{
                 {loading && <Loader absolute={true}/>}
                 <Card className="mt-10">
                     <CardContent>
-                        <Container maxWidth="lg">
+                        <Container maxWidth="xl">
                             {products &&
-                            <InfiniteScroll
-                                pageStart={0}
-                                loadMore={loadMore}
-                                hasMore={products?.pageInfo.hasNextPage}
-                                loader={<Loader key={0}/>}
-                            >
-                                <div
-                                    className="flex-1 flex-wrap grid gap-10 xs:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                            <div
+                                className="flex-1 flex-wrap grid gap-10 xs:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
 
-                                    {products.edges.map((item, i) => {
-                                        return (
-                                            <div key={i} className="flex flex-col">
-                                                <ProductCard item={item.node}/>
-                                            </div>
-                                        );
-                                    })
-                                    }
+                                {products.edges.map((item, i) => {
+                                    return (
+                                        <div key={i} className="flex flex-col">
+                                            <ProductCard item={item.node}/>
+                                        </div>
+                                    );
+                                })
+                                }
+                            </div>
+                            }
+                            {products?.pageInfo.hasNextPage &&
+                            <div className="my-20 flex justify-center">
+                                <div className="w-512 max-w-full">
+                                    <Button variant="contained"
+                                            color="primary"
+                                            onClick={loadMore}
+                                            fullWidth
+                                            disabled={loading}
+                                    >
+                                        Показать еще
+                                    </Button>
                                 </div>
-                            </InfiniteScroll>
+                            </div>
                             }
                             {!products && !loading &&
                             <div className="text-xl">Список пуст</div>

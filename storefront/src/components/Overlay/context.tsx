@@ -44,7 +44,7 @@ export interface OverlayContextInterface {
 export const OverlayContext = React.createContext<OverlayContextInterface>({
   context: null,
   hide: () => {},
-  show: type => {},
+  show: () => {},
   theme: null,
   type: null,
 });

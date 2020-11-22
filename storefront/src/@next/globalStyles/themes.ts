@@ -162,6 +162,12 @@ export const defaultTheme = createMuiTheme({
 				paddingLeft: 15
 			}
 		},
+		MuiFormControlLabel: {
+			root: {
+				paddingRight: 16,
+				marginRight: 0
+			}
+		}
 	}
 } as any);
 

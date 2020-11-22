@@ -1,6 +1,6 @@
 import './scss/index.scss';
 
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import _ from "lodash";
 import Autosuggest from 'react-autosuggest';
 import {TextField} from "@material-ui/core";
@@ -9,16 +9,14 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
 import {useLazyQuery} from "@apollo/client";
 import {productsCardQuery} from "@sdk/queries/product";
-import {
-    ProductsCardDetails,
-    ProductsCardDetailsVariables
-} from "@sdk/queries/types/ProductsCardDetails";
+import {ProductsCardDetails, ProductsCardDetailsVariables} from "@sdk/queries/types/ProductsCardDetails";
 import {getProductUrl, searchUrl} from "@temp/app/routes";
 import {showPriceRange} from "@temp/core/utils";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
+import {OverlayContext, OverlayType} from "@temp/components";
 
 const getSuggestionValue = edge => edge.node?.name || edge.name || "";
 
@@ -71,7 +69,7 @@ const renderInputComponent = ({loading, ...inputProps}) => (
                    )
                }}
                fullWidth
-               placeholder="Поиск"
+               placeholder="Я ищу..."
                variant="outlined"
     />
 );
@@ -87,6 +85,7 @@ const Search:React.FC = () =>{
     const [value, setValue] = useState("");
     const [search, setSearch] = useState("");
     const [suggestions, setSuggestions] = useState<any[]>([]);
+    const overlay = useContext(OverlayContext);
 
     const [loadProducts, {data, loading}] = useLazyQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
         variables:{
@@ -117,6 +116,12 @@ const Search:React.FC = () =>{
     const onChange = (event, { newValue }) => {
         setValue(newValue);
     };
+    const onFocus = ( event ) => {
+        overlay.show(OverlayType.search)
+    };
+    const onBlur = ( event ) => {
+        overlay.hide()
+    };
     const onSuggestionsFetchRequested = async ({ value }) => {
         if (!!value && value.length > 1) {
             debounced(() => {
@@ -132,7 +137,9 @@ const Search:React.FC = () =>{
     const inputProps = {
         value,
         onChange,
-        loading
+        loading,
+        onFocus,
+        onBlur
     };
 
     return(

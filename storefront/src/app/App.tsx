@@ -9,9 +9,10 @@ import {Footer} from "@temp/components/Footer";
 import {ScrollTopButton} from "@temp/components/ScrollTopButton";
 import ScrollToTop from "@temp/components/ScrollToTop/ScrollToTop";
 import { StickyContainer } from 'react-sticky';
+import {Overlay, OverlayContext} from "@temp/components";
 
 const App: React.FC<RouteComponentProps> = ({history: {location: { pathname }}}) => {
-
+    const overlay = React.useContext(OverlayContext);
     return (
         <>
             <ScrollToTop/>
@@ -22,6 +23,7 @@ const App: React.FC<RouteComponentProps> = ({history: {location: { pathname }}})
                 </main>
                 <ScrollTopButton/>
                 <Footer/>
+                <Overlay context={overlay}/>
             </StickyContainer>
         </>
     );

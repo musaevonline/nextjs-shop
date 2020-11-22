@@ -11,6 +11,7 @@ import Divider from "@material-ui/core/Divider";
 import {makeStyles} from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import {Attributes_attributes} from "@sdk/queries/types/Attributes";
+import { Scrollbars } from 'react-custom-scrollbars';
 
 const useStyles = makeStyles({
     divider: {
@@ -59,9 +60,9 @@ const ProductsFilter:React.FC<{
             setFilters({attributes:newAttributes});
         }else{
             setFilters({attributes: [{
-                slug: attributeSlug,
-                values: [value]
-            }]});
+                    slug: attributeSlug,
+                    values: [value]
+                }]});
         }
     };
 
@@ -92,16 +93,16 @@ const ProductsFilter:React.FC<{
                     </div>
                 </div>
                 <Collapse in={!collapse.includes('priceId')}>
-                <Slider
-                    value={localPriceRange}
-                    step={1}
-                    max={MAX_PRICE}
-                    onChange={handleChangePrice}
-                    onChangeCommitted={(e, newValue) => {setFilters({priceRange: newValue as number[]});}}
-                    valueLabelDisplay="auto"
-                    aria-labelledby="range-slider"
-                    getAriaValueText={valuetext}
-                />
+                    <Slider
+                        value={localPriceRange}
+                        step={1}
+                        max={MAX_PRICE}
+                        onChange={handleChangePrice}
+                        onChangeCommitted={(e, newValue) => {setFilters({priceRange: newValue as number[]});}}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider"
+                        getAriaValueText={valuetext}
+                    />
                 </Collapse>
                 <Divider variant="fullWidth" classes={{root: classes.divider}}/>
             </div>
@@ -125,23 +126,25 @@ const ProductsFilter:React.FC<{
                                 </div>
                             </div>
                             <Collapse in={collapsed}>
-                                {node.values.map(val => {
-                                    const selected = index !== -1 ? filters.attributes[index].values.includes(val.slug) : false;
-                                    return(
-                                        <div key={val.id}>
-                                            <FormControlLabel
-                                                className="w-full"
-                                                aria-label={val.name}
-                                                onClick={handleChangeAttributes(node.slug, val.slug)}
-                                                // onFocus={(event) => event.stopPropagation()}
-                                                control={<Checkbox checked={selected}
-                                                                   size="small"
-                                                />}
-                                                label={`${val.name}`}
-                                            />
-                                        </div>
-                                    )
-                                })}
+                                <Scrollbars style={{ width: "100%", height: 200 }}>
+                                    {node.values.map(val => {
+                                        const selected = index !== -1 ? filters.attributes[index].values.includes(val.slug) : false;
+                                        return(
+                                            <div key={val.id}>
+                                                <FormControlLabel
+                                                    className="w-full"
+                                                    aria-label={val.name}
+                                                    onClick={handleChangeAttributes(node.slug, val.slug)}
+                                                    // onFocus={(event) => event.stopPropagation()}
+                                                    control={<Checkbox checked={selected}
+                                                                       size="small"
+                                                    />}
+                                                    label={`${val.name}`}
+                                                />
+                                            </div>
+                                        )
+                                    })}
+                                </Scrollbars>
                             </Collapse>
                             <Divider variant="fullWidth" classes={{root: classes.divider}}/>
                         </div>
