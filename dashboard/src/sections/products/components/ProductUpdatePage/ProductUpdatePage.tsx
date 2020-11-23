@@ -45,6 +45,7 @@ import ProductStocks, { ProductStockInput } from "../ProductStocks";
 import ProductVariants from "../ProductVariants";
 import {useFormik} from "formik";
 import * as yup from 'yup';
+import {slugifyStr} from "@temp/core/utils";
 
 const schema = yup.object().shape({
   category: yup.string(),
@@ -172,7 +173,7 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
     validationSchema: schema,
     enableReinitialize: true,
     onSubmit: values => {
-      handleSubmit(values);
+      handleSubmit({...values, slug: slugifyStr(values.name)});
     }
   });
   const triggerChange = () => {

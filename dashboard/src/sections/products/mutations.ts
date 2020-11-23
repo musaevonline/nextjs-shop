@@ -214,6 +214,7 @@ export const productCreateMutation = gql`
         $description: String
         $isPublished: Boolean!
         $name: String!
+        $slug: String
         $unit: String
         $productType: ID!
         $sku: String
@@ -227,6 +228,7 @@ export const productCreateMutation = gql`
                 description: $description
                 isPublished: $isPublished
                 name: $name
+                slug: $slug
                 productType: $productType
                 sku: $sku
                 stocks: $stocks
@@ -259,6 +261,7 @@ export const productUpdateMutation = gql`
         $description: String
         $isPublished: Boolean!
         $name: String
+        $slug: String
         $unit: String
     ) {
         productUpdate(
@@ -269,7 +272,8 @@ export const productUpdateMutation = gql`
                 category: $category
                 description: $description
                 isPublished: $isPublished
-                name: $name,
+                name: $name
+                slug: $slug
                 unit: $unit
             }
         ) {

@@ -272,6 +272,7 @@ export interface ProductImageCreate_productImageCreate_product {
   attributes: ProductImageCreate_productImageCreate_product_attributes[];
   productType: ProductImageCreate_productImageCreate_product_productType;
   name: string;
+  slug: string;
   unit: string | null;
   descriptionJson: any;
   description: string;

@@ -256,6 +256,7 @@ export interface Product {
   attributes: Product_attributes[];
   productType: Product_productType;
   name: string;
+  slug: string;
   unit: string | null;
   descriptionJson: any;
   description: string;

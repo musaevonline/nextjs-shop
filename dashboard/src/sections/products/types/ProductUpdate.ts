@@ -272,6 +272,7 @@ export interface ProductUpdate_productUpdate_product {
   attributes: ProductUpdate_productUpdate_product_attributes[];
   productType: ProductUpdate_productUpdate_product_productType;
   name: string;
+  slug: string;
   unit: string | null;
   descriptionJson: any;
   description: string;
@@ -317,5 +318,6 @@ export interface ProductUpdateVariables {
   description?: string | null;
   isPublished: boolean;
   name?: string | null;
+  slug?: string | null;
   unit?: string | null;
 }

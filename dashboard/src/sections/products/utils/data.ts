@@ -155,6 +155,7 @@ export interface ProductUpdatePageFormData {
     description: string;
     isPublished: boolean;
     name: string;
+    slug: string;
     unit: string;
     publicationDate: string;
     sku: string;
@@ -169,6 +170,7 @@ export function getProductUpdatePageFormData(
         description: maybe(() => product.description),
         isPublished: maybe(() => product.isPublished, false),
         name: maybe(() => product.name, ""),
+        slug: maybe(() => product.slug, ""),
         unit: maybe(() => product.unit, ""),
         publicationDate: "",
         sku: maybe(

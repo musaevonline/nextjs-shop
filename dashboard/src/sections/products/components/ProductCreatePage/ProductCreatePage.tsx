@@ -36,6 +36,7 @@ import ProductDetailsForm from "../ProductDetailsForm";
 import ProductOrganization from "../ProductOrganization";
 import ProductStocks, { ProductStockInput } from "../ProductStocks";
 import {useFormik} from "formik";
+import {slugifyStr} from "@temp/core/utils";
 
 interface FormData {
     publicationDate: string;
@@ -44,6 +45,7 @@ interface FormData {
     description: string;
     isPublished: boolean;
     name: string;
+    slug: string;
     unit: string;
     productType: string;
     sku: string;
@@ -116,6 +118,7 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
         description: {} as any,
         isPublished: false,
         name: "",
+        slug: "",
         unit: "",
         productType: "",
         publicationDate: "",
@@ -144,7 +147,9 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
     const form = useFormik({
         enableReinitialize: true,
         initialValues: initialData,
-        onSubmit:handleSubmit
+        onSubmit: values => {
+            handleSubmit({...values, slug: slugifyStr(values.name)})
+        }
     });
     const triggerChange = () => {
         console.log('trigger change');

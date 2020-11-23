@@ -24,6 +24,7 @@ export function createUpdateHandler(
       id: product.id,
       isPublished: data.isPublished,
       name: data.name,
+      slug: data.slug,
       unit: data.unit,
       publicationDate:
         data.publicationDate !== "" ? data.publicationDate : null,
