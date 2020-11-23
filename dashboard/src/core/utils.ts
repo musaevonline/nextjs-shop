@@ -3,10 +3,10 @@ import slugify from "slugify";
 
 export const slugifyStr = (text: string): string => {
 
-  return slugify(text.replace(/&/g, "-and-"),
+  return slugify(text.toLowerCase().replace(/&/g, "-and-"),
       {
         lower: true,
-        remove: /[*+~.()'"!:@,ь?=№;%]/g
+        remove: /[*+~.()'"!:@,ь?=№;%/]/g
       })
 }
 
