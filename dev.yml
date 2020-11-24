@@ -29,6 +29,7 @@ services:
       - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((graphql)|(admin)|(ckeditor))+}/`)"
       - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
       - "traefik.http.middlewares.test-compress.compress=true"
+      - "traefik.http.routers.backendssl.middlewares=gzip-compress@file"
 
   storefront:
     container_name: "shop_storefront"
@@ -156,6 +157,9 @@ services:
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    labels:
+      - "traefik.http.middlewares.gzip-compress.compress=true"
+      - "traefik.http.routers.backendssl.middlewares=gzip-compress@docker"
 
   pgbouncer:
     image: edoburu/pgbouncer:1.11.0
