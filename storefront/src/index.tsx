@@ -38,6 +38,7 @@ import {gtmId, isDev} from "@temp/core/config";
 const tagManagerArgs = {
     gtmId: gtmId
 }
+console.log("GTM_ID", gtmId);
 if (!isDev && !!gtmId){
     TagManager.initialize(tagManagerArgs)
 }
