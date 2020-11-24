@@ -31,6 +31,7 @@ services:
 
   storefront:
     container_name: "shop_storefront"
+    env_file: ./prod.env
     build:
       context: ./storefront
       dockerfile: ./Dockerfile
@@ -40,7 +41,6 @@ services:
         STOREFRONT_URL: "https://stroyluxdrev.by/"
         GTM_ID: ${GTM_ID}
     restart: always
-    env_file: ./prod.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.entrypoints=websecure"
