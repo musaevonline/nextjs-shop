@@ -111,7 +111,7 @@ module.exports = ({ sourceDir, distDir }) => ({
       mode: 'webapp', // optional can be 'webapp' or 'light' - 'webapp' by default
       devMode: 'webapp'
     }),
-    new webpack.EnvironmentPlugin(['API_URI', 'DASHBOARD_URL']),
+    new webpack.EnvironmentPlugin(['API_URI', 'DASHBOARD_URL', 'GTM_ID']),
       new LodashModuleReplacementPlugin({
       chaining: true
     }),
