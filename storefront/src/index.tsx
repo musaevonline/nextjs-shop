@@ -35,12 +35,11 @@ import {ShopProvider} from "@temp/components/Shop";
 import TagManager from 'react-gtm-module';
 import {gtmId, isDev} from "@temp/core/config";
 
-const tagManagerArgs = {
-    gtmId: gtmId
-}
-console.log("GTM_ID", gtmId);
-if (!isDev && !!gtmId){
-    TagManager.initialize(tagManagerArgs)
+
+async function initTagManager() {
+    TagManager.initialize({
+        gtmId: gtmId
+    })
 }
 
 interface ResponseError extends ErrorResponse {
@@ -208,3 +207,6 @@ const startApp = async () => {
 };
 
 startApp();
+if (!isDev && !!gtmId){
+    initTagManager();
+}
