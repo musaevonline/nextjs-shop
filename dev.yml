@@ -28,7 +28,7 @@ services:
       - "traefik.http.routers.backendssl.entrypoints=websecure"
       - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((graphql)|(admin)|(ckeditor))+}/`)"
       - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.backendssl.middlewares.compress=true"
+      - "traefik.http.middlewares.test-compress.compress=true"
 
   storefront:
     container_name: "shop_storefront"
