@@ -39,7 +39,7 @@ services:
         API_URI: "https://stroyluxdrev.by/graphql/"
         DASHBOARD_URL: "https://stroyluxdrev.by/dashboard/"
         STOREFRONT_URL: "https://stroyluxdrev.by/"
-        GTM_ID: ${GTM_ID}
+        GTM_ID: "GTM-W53SN2W"
     restart: always
     labels:
       - "traefik.enable=true"
