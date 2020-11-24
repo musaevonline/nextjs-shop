@@ -206,7 +206,10 @@ const startApp = async () => {
     }
 };
 
-startApp();
-if (!isDev && !!gtmId){
-    initTagManager();
-}
+startApp().finally(() => {
+    if (!isDev && !!gtmId){
+        initTagManager().then(() => {
+            console.log('App started! GTM initialized!')
+        });
+    }
+});
