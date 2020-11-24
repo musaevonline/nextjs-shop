@@ -26,7 +26,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backendssl.entrypoints=websecure"
-      - "traefik.http.middlewares.backendssl.compress=true"
+      - "traefik.http.middlewares.shop_api.compress=true"
       - "traefik.http.middlewares.test-compress.compress=true"
       - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((graphql)|(admin)|(ckeditor))+}/`)"
       - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
