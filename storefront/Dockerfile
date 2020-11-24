@@ -5,6 +5,8 @@ RUN yarn install
 COPY . .
 ARG API_URI
 ENV API_URI ${API_URI:-http://localhost:8000/graphql/}
+ARG GTM_ID
+ENV GTM_ID ${GTM_ID:-GTM-TEST}
 RUN API_URI=${API_URI} yarn run build
 
 FROM nginx:stable
