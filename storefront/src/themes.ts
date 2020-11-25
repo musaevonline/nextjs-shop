@@ -1,6 +1,6 @@
 // import * as C from "./constants";
 import { createMuiTheme } from "@material-ui/core";
-import {red, orange, grey} from "@material-ui/core/colors";
+import {red, orange} from "@material-ui/core/colors";
 
 export const defaultTheme = createMuiTheme({
 	palette: {
@@ -10,7 +10,11 @@ export const defaultTheme = createMuiTheme({
 			main: "#222",
 			dark: "#000"
 		},
-		secondary: grey,
+		secondary: {
+			light: red["500"],
+			main: "#e31837",
+			dark: red["900"]
+		},
 		background: {
 			paper: '#FFFFFF',
 			default: '#F7F7F7'

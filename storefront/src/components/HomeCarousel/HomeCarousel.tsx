@@ -39,7 +39,7 @@ const HomeCarousel:React.FC<{
   return(
       <div className="home-carousel">
         {!images &&
-        <Skeleton variant="rect" height={sm ? 400 : 600}/>
+        <Skeleton variant="rect" height={sm ? 400 : 500}/>
         }
         {images &&
         <Carousel swipeable
@@ -55,7 +55,7 @@ const HomeCarousel:React.FC<{
               <div key={i}
                    className="flex justify-center"
               >
-                <img key={i} src={sm ? img.mobileUrl : img.largeUrl} alt="homeimg" className="max-w-full"/>
+                <img key={i} src={sm ? img.mobileUrl : img.largeUrl} alt="homeimg" className="max-w-full max-h-500"/>
                 {img.description &&
                 <div className="flex flex-column items-center justify-center h-full absolute"
                      style={{paddingTop: "10%"}}>

@@ -98,7 +98,7 @@ const Page:React.FC = () =>{
 
     return(
         <div className="checkout-page">
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 {loading && <Loader full={true}/>}
                 <div className="mt-20 mb-10">
                     <Breadcrumbs separator="›" aria-label="breadcrumb">

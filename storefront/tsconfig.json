@@ -18,8 +18,6 @@
       "@temp/*": ["./src/*"],
       "@app/*": ["./src/@next/*"],
       "@sdk/*": ["./src/@sdk/*"],
-      "@styles": ["./src/@next/globalStyles/index.ts"],
-      "@styles/*": ["./src/@next/globalStyles/*"],
       "images/*": ["./src/images/*"]
     },
     "skipLibCheck": true

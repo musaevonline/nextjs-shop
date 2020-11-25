@@ -74,7 +74,7 @@ const UserProfileRouter:React.FC = () => {
     return(
         <>
             {!user.user && !user.loading && <Redirect to={baseUrl}/>}
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 <div className="my-20">
                     <Breadcrumbs separator="›" aria-label="breadcrumb">
                         <Link color="inherit" to={baseUrl}>

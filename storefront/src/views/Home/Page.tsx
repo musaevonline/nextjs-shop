@@ -105,11 +105,11 @@ const Page: React.FC<{
                 {logoStructuredData()}
             </script>
             <div className="bg-white mt-20">
-                <Container maxWidth="xl" disableGutters>
+                <Container maxWidth="lg" disableGutters>
                     <HomeCarousel images={shop?.images}/>
                 </Container>
             </div>
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
 
                 <Card className="my-20">
                     <CardContent>

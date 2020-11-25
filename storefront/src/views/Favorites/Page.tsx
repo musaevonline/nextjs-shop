@@ -20,7 +20,7 @@ const Page:React.FC<{
 
     return(
         <div className="favorites-page relative">
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 <div className="my-20">
                     <Breadcrumbs separator="›" aria-label="breadcrumb">
                         <Link color="inherit" to={baseUrl}>
@@ -33,7 +33,7 @@ const Page:React.FC<{
                 {loading && <Loader absolute={true}/>}
                 <Card className="mt-10">
                     <CardContent>
-                        <Container maxWidth="xl">
+                        <Container maxWidth="lg">
                             {products &&
                             <InfiniteScroll
                                 pageStart={0}

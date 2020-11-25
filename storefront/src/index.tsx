@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import {
     useAuth
 } from "@sdk/react";
-import { defaultTheme } from "@styles";
+import { defaultTheme } from "./themes";
 
 // import { persistCache } from "apollo-cache-persist";
 import * as React from "react";

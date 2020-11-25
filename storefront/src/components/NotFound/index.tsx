@@ -12,7 +12,7 @@ interface NotFoundProps {
 
 const NotFound: React.FC<NotFoundProps> = () => (
     <div className="not-found-page">
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
             <h2 className="not-found-page__header">404</h2>
             <div className="not-found-page__ruler" />
             <div className="not-found-page__message">

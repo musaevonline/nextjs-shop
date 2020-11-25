@@ -144,7 +144,7 @@ const BlogArticlePage:React.FC<IProps> = ({article, loading}) => {
   const classes = useStyles();
 
   return(
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         {article &&
         <div className="my-20">
           <Breadcrumbs separator="›" aria-label="breadcrumb">

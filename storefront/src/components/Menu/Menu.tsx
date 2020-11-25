@@ -6,27 +6,30 @@ import {Link} from "react-router-dom";
 import {getCategoryUrl} from "@temp/app/routes";
 import {Categories_categories} from "@sdk/queries/types/Categories";
 import {Button} from "@material-ui/core";
-import {BsFillGridFill} from "react-icons/bs";
 import {makeStyles} from "@material-ui/core/styles";
-import {ReactSVG} from "react-svg";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {OverlayContext, OverlayType} from "@temp/components";
+import AppsIcon from '@material-ui/icons/Apps';
+import CategoryPlaceHolder from "images/category_menu_placeholder.png";
 
 const useStyles = makeStyles(theme => ({
   menuWrapper: {
     position: "absolute",
     zIndex: 999,
-    top: "100%",
+    top: "calc(100% + 8px)",
     left: 0,
     display: "none",
     marginTop: -8,
     borderRadius: 5,
     backgroundColor: "#fff",
+    width: 272,
+    boxShadow: "0 1px 6px 0 rgba(0,0,0,.4)",
+    border: "1px solid #e0e0e0",
     "&::before": {
       display: "inline-block",
       position: "absolute",
       top: -6,
-      left: 161,
+      left: 28,
       zIndex: 1000,
       width: 0,
       height: 0,
@@ -37,68 +40,54 @@ const useStyles = makeStyles(theme => ({
       content: "''",
     }
   },
-  menu: {
-    padding: "24px 0"
-  },
   menuCategories: {
     position: "relative",
-    width: 345,
-    maxWidth: 1920,
     borderRadius: 3,
-    padding: "24px 0",
+    padding: "10px 0",
     margin: 0,
     backgroundColor: "#fff",
     boxShadow: "0 2px 20px rgba(0,0,0,.2)",
     border: "1px solid #d2d2d2",
+    listStyleType: "none",
+    minHeight: 350,
     '& > li': {
       borderRadius: "5px 5px 0 0",
-      overflow: "hidden"
     },
-    "& a:not($submenuLink)": {
-      color: "#484848"
+    "& > a:not($submenuLink)": {
+      color: "#595959",
+      fontSize: 14
     },
-    "& a:hover": {
-      textDecoration: "underline",
-      color: theme.palette.secondary.main
+    "& > a:hover": {
+      fontWeight: 700,
+      letterSpacing: 0
     }
   },
   menuCategoriesLink: {
     width: "100%",
     position: "relative",
     zIndex: 10,
-    display: "inline-block",
+    display: "flex",
+    alignItems: "center",
     verticalAlign: "bottom",
     paddingLeft: 15,
-    paddingRight: 24,
+    paddingRight: 0,
     fontSize: 14,
-    lineHeight: "31px",
+    lineHeight: "28px",
     transition: "all .3s ease",
     '&.active': {
-      backgroundColor: "#fcfcee"
+      boxShadow: "4px 1px 7px -2px #c5c5c5, 0 2px 7px -2px #c5c5c5"
     }
   },
   menuCategoriesIcon: {
     position: "relative",
     display: "inline-block",
     verticalAlign: "middle",
-    marginTop: -4,
     marginRight: 8,
     textAlign: "center",
-    width: 24,
-    height: 24,
-    "& > div > div": {
-      display: "flex"
-    },
-    '& svg': {
-      width: "2.4rem",
-      height: "2.4rem",
-      fill: "#9e9e9e"
-    }
+    width: 20,
+    height: 20
   },
   chevronRight: {
-    position: "absolute",
-    right: 5,
-    top: 9,
     fill: "currentColor",
     fontSize: 18
   },
@@ -106,12 +95,13 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     left: 0,
     top: 0,
-    width: "calc(100vw - 50px)",
+    width: 1232,
+    maxWidth: "95vw",
     display: "none",
     flexDirection: "row",
     minHeight: 350,
-    maxHeight: 500,
-    padding: "8px 8px 8px 345px",
+    height: "100%",
+    padding: "8px 8px 8px 300px",
     borderRadius: 3,
     backgroundColor: "#fff",
     overflow: "hidden",
@@ -137,25 +127,45 @@ const useStyles = makeStyles(theme => ({
   },
   subCategoriesTitle: {
     position: "relative",
-    display: "block",
-    marginBottom: 4,
-    paddingLeft: 12,
-    paddingRight: 12,
-    fontSize: 16,
-    lineHeight: "18px",
-    marginTop: 10
+    display: "inline-block",
+    color: "#5285cc",
+    fontSize: 14,
+    fontWeight: 700,
+    letterSpacing: 0,
+    lineHeight: 1.3,
+    textDecoration: "inherit",
+    paddingLeft: 5,
+    paddingBottom: 5,
+    "&:hover": {
+      textDecoration: "underline"
+    }
+  },
+  submenuList: {
+    position: "relative",
+    paddingTop: 5,
+    paddingBottom: 5,
+    "&::before": {
+      content: "''",
+      display: "block",
+      position: "absolute",
+      top: 0,
+      left: 2,
+      width: 175,
+      height: 1,
+      backgroundColor: "#dadada",
+    }
   },
   submenuLink: {
-    position: "relative",
     display: "inline-block",
-    verticalAlign: "bottom",
-    width: "100%",
-    padding: "2px 12px",
-    overflow: "hidden",
-    fontSize: 13,
-    lineHeight: "15px",
-    whiteSpace: "nowrap",
-    color: "#333"
+    color: "#595959",
+    fontSize: 12,
+    lineHeight: "20px",
+    letterSpacing: 0,
+    padding: "0 2px 0 5px",
+    textDecoration: "inherit",
+    "&:hover": {
+      textDecoration: "underline"
+    }
   }
 }));
 
@@ -167,7 +177,7 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
   const overlay = React.useContext(OverlayContext);
   const classes = useStyles();
   const [isActiveMenu, setActiveMenu] = React.useState(false);
-  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [activeIndex, setActiveIndex] = React.useState(-1);
 
   React.useEffect(() => {
     if (isActiveMenu){
@@ -183,11 +193,13 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
 
   return(
       <ClickAwayListener onClickAway={e => setActiveMenu(false)}>
-        <div className="mr-10 mb-5">
-          <Button variant="outlined"
-                  size="large"
-                  startIcon={<BsFillGridFill/>}
+        <div className="menu__btn">
+          <Button variant="contained"
+                  size="medium"
+                  startIcon={<AppsIcon/>}
+                  color="secondary"
                   onClick={e => setActiveMenu(prev => !prev)}
+                  fullWidth
           >
             Каталог товаров
           </Button>
@@ -199,19 +211,19 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
                   return (
                       <li key={i}>
                         <Link to={getCategoryUrl(node.slug, node.id)}
-                              className={`${classes.menuCategoriesLink} ${i === activeIndex ? 'active' : ''}`}
+                              className={`${classes.menuCategoriesLink} ${i === activeIndex ? 'active' : ''} flex`}
                               onMouseEnter={e => setActiveIndex(i)}
                               onClick={handleClickLink}
                         >
                           <span className={classes.menuCategoriesIcon}>
-                            {node.backgroundImage?.url &&
-                            <ReactSVG src={node.backgroundImage?.url}
-                                      title={node.name}
-                                      className="flex items-center hidden"
+                            <img src={node.backgroundImage?.url || CategoryPlaceHolder}
+                                 alt={node.name}
+                                 className="flex items-center w-20 h-20"
                             />
-                            }
                           </span>
+                          <span className="flex-1">
                           {node.name}
+                          </span>
                           {node.children.edges.length > 0 &&
                           <ChevronRightIcon className={classes.chevronRight}/>
                           }
@@ -232,7 +244,7 @@ const Menu:React.FC<MenuProps> = ({categories}) =>{
                                           {childNode1.name}
                                         </Link>
                                         {!!childNode1.children.edges.length &&
-                                        <ul className="list-none p-0 pl-5">
+                                        <ul className={`list-none p-0 ${classes.submenuList}`}>
                                           {childNode1.children.edges.map((childEdge2, i) => {
                                             const childNode2 = childEdge2.node;
                                             return(

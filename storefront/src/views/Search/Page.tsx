@@ -19,7 +19,7 @@ const Page:React.FC<{
 
     return(
         <div className="search-page">
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 <div className="my-20">
                     <Breadcrumbs separator="›" aria-label="breadcrumb">
                         <Link color="inherit" to={baseUrl}>
@@ -32,7 +32,7 @@ const Page:React.FC<{
                 {loading && <Loader absolute={true}/>}
                 <Card className="mt-10">
                     <CardContent>
-                        <Container maxWidth="xl">
+                        <Container maxWidth="lg">
                             {products &&
                             <div
                                 className="flex-1 flex-wrap grid gap-10 xs:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

@@ -45,6 +45,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 const useStyles = makeStyles(theme => ({
     largeBagIcon: {
@@ -52,7 +53,14 @@ const useStyles = makeStyles(theme => ({
     },
     logo: {
         '& svg': {
-            height: 40
+            height: 70,
+            fill: theme.palette.secondary.main
+        }
+    },
+    logoMobile: {
+        '& svg': {
+            height: 35,
+            fill: theme.palette.secondary.main
         }
     },
     utilityIcon: {
@@ -112,11 +120,12 @@ const Header: React.FC = () =>{
             {/*Pages Block*/}
             <Hidden xsDown>
                 <div className="header__top">
-                    <Container maxWidth="xl">
-                        <div className="header__top_left flex items-center truncate flex-1">
-                            <div className="mr-5">
+                    <Container maxWidth="lg">
+                        <div className="header__top_left flex items-center truncate flex-1 justify-between">
+                            <div className="mr-5 header-phone">
                                 <Button size="small"
                                         variant="text"
+                                        color="inherit"
                                         startIcon={<PhoneIcon/>}
                                         endIcon={<KeyboardArrowDownIcon/>}
                                         onClick={handleOpenContactsDialog}
@@ -124,34 +133,35 @@ const Header: React.FC = () =>{
                                     {shop?.companyAddress.phone}
                                 </Button>
                             </div>
-                            <ul className="list_inline">
-                                {pagesData?.pages?.edges.map(edge => <li key={edge.node.id}><Link
-                                    to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></li>)}
-                            </ul>
-                        </div>
-                        <div className="header__top_right">
-                            <ul className="list_inline">
+                            <ul className="header-links">
                                 <li><Link to={blogPath}>Блог</Link></li>
+                                {pagesData?.pages?.edges.map(edge => <li key={edge.node.id}>
+                                        <Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link>
+                                    </li>
+                                )}
                             </ul>
                         </div>
                     </Container>
                 </div>
-                <Divider />
             </Hidden>
 
 
             <Hidden smDown>
-                <Container maxWidth="xl">
-                    <div className="header__center" style={{display: "none"}}>
+                <Container maxWidth="lg">
+                    <div className="flex justify-between items-center">
                         <div className="logo">
                             <Link to={baseUrl}>
-                                <ReactSVG src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
+                                <ReactSVG className={classes.logo} src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
                             </Link>
                         </div>
-                        <div className="mobile">
-                            <BsPhone/>
+                        <div className="flex items-center">
+                            <div className="text-6xl">
+                                <SvgIcon color="secondary" component="span" fontSize="inherit">
+                                    <BsPhone />
+                                </SvgIcon>
+                            </div>
                             <div className="mobile__body pl-10">
-                                <Typography variant="h6">{shop?.companyAddress.phone}</Typography>
+                                <Typography variant="h6"><span className="text-base font-semibold">{shop?.companyAddress.phone}</span></Typography>
                                 <div className="mobile__call">
                                     <Button size="small"
                                             color="primary"
@@ -162,35 +172,27 @@ const Header: React.FC = () =>{
                                 </div>
                             </div>
                         </div>
-                        <div className="work_time">
-                            <BsAlarm/>
+                        <div className="flex items-center">
+                            <div className="text-6xl">
+                                <SvgIcon color="secondary" component="span" fontSize="inherit">
+                                    <BsAlarm/>
+                                </SvgIcon>
+                            </div>
                             <div className="work_time__body pl-10">
-                                <Typography variant="h6">Режим работы</Typography>
-                                <div className="work_time__schedule">
+                                <Typography variant="h6"><span className="font-semibold">Режим работы</span></Typography>
+                                <div className="text-sm">
                                     <div>ПН - ПТ: с 9:00 до 18:00</div>
                                     <div>СБ: с 9:00 до 15:00</div>
                                 </div>
                             </div>
 
                         </div>
-                        <div className="cart-icon">
-                            <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
-                                <IconButton onClick={toggleCartDrawer(true)} className={classes.largeBagIcon}>
-                                    <BsBag />
-                                </IconButton>
-                            </Badge>
-                        </div>
                     </div>
                 </Container>
 
-                <div className={`header__bottom bg-white`}>
-                    <Container maxWidth="xl">
-                        <div className="relative flex items-center py-10">
-                            <div className="logo mr-10">
-                                <Link to={baseUrl}>
-                                    <ReactSVG className={classes.logo} src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
-                                </Link>
-                            </div>
+                <div className="bg-white">
+                    <Container maxWidth="lg">
+                        <div className="relative flex items-center header__line">
                             <div className="header__categories">
                                 <Menu categories={dataCategories?.categories}/>
                             </div>
@@ -231,7 +233,7 @@ const Header: React.FC = () =>{
                                 </div>
                                 <div className="mobile-header__logo flex-1">
                                     <Link to={baseUrl}>
-                                        <img src={Logo} alt="СтройЛюкс"/>
+                                        <ReactSVG className={classes.logoMobile} src={Logo} alt="СтройЛюкс" title="СтройЛюкс"/>
                                     </Link>
                                 </div>
                                 <div className="mobile-header__utilities">

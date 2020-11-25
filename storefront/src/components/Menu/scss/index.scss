@@ -1,107 +1,27 @@
 @import "../../../globalStyles/scss/variables";
 
 .menu{
-  position: relative;
-  &__head{
-    cursor: pointer;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: $primary-color;
-    color: $white;
-    padding: 10px 15px;
-  }
-  svg{
-    font-size: 2.6rem;
-  }
-  &__caption{
-    letter-spacing: .08rem;
-    font-weight: 500;
-    flex: 1;
-    text-transform: uppercase;
-    text-align: center;
-  }
-  &__toggle{
-
-  }
-  &__list{
-    z-index: 5;
-    position: absolute;
-    left: 0;
-    right: 0;
-    opacity: 0;
-    transform: scaleY(0);
-    transition: opacity .2s,bottom .2s;
-    margin-top: 0;
-    //box-shadow: inset 0 0 0 3px $primary-color;
-    box-shadow: 0 1px 4px 0 #222;
-    color: $black;
-    background-color: $white;
-    padding: 10px 5px;
-    li{
-      padding: 4px 0 4px 15px;
-      width: calc(100% + 5px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 30px;
-      position: relative;
-      a{
-        text-transform: uppercase;
-        font-size: 1.6rem;
-        width: 100%;
-        height: 100%;
-      }
-      &:hover{
-        background-color: $gray-light;
-      }
-      svg{
-        color: #d2d2d2;
-      }
-      .submenu[data-level='1']{
-        min-width: 200px;
-        position: absolute;
-        top: 0;
-        left: 95%;
-        transform: scaleY(0);
-        opacity: 0;
-        transition: opacity .4s, left .2s;
-        background-color: $gray-light;
-        padding-left: 0;
-        li{
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: center;
-          a{
-            text-transform: initial;
-            font-weight: 500;
-            font-size: 1.6rem;
-          }
-        }
-        a.submenu__link{
-          margin-top: 5px;
-          padding-left: 10px;
-          font-size: 1.4rem;
-          &:before{
-            content: '-';
-            padding-right: 5px;
-          }
-        }
-      }
-      &:hover{
-        .submenu[data-level='1']{
-          left: 100%;
-          opacity: 1;
-          transform: scaleY(1);
-        }
-      }
-    }
-  }
   &:hover{
     & .menu__list{
       transform: scaleY(1);
       opacity: 1;
+    }
+  }
+  &__btn{
+    display: inline-block;
+    min-width: 272px;
+    height: 48px;
+    background-color: #e31837;
+    position: relative;
+    button {
+      padding: 8px 16px;
+      justify-content: flex-start;
+      font-size: 18.5px;
+      text-transform: initial;
+      svg{
+        font-size: 28px !important;
+        margin-left: 10px;
+      }
     }
   }
 }

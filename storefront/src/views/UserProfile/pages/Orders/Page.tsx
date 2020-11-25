@@ -76,7 +76,7 @@ const Page:React.FC<PageProps> = ({
             <Dialog
                 open={isOpenReviewForm}
                 onClose={e => onCloseReviewForm()}
-                maxWidth="xl"
+                maxWidth="lg"
                 aria-labelledby="review-form"
                 aria-describedby="product review form"
             >

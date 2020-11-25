@@ -40,7 +40,7 @@ const Footer:React.FC = () =>{
     });
     return(
         <footer className="footer">
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6} md={3}>
                         <div className="footer__contacts flex flex-col">

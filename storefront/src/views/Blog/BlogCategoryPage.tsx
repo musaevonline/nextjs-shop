@@ -21,7 +21,7 @@ const BlogCategoryPage:React.FC<IProps> = ({articles, categoryName, loading}) =>
     if (loading && !articles) return null;
 
     return(
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
             <div className="my-20">
                 <Breadcrumbs separator="›" aria-label="breadcrumb">
                     <Link color="inherit" to={baseUrl}>

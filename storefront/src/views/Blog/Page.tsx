@@ -59,7 +59,7 @@ const Page:React.FC<IProps> = ({
     }
 
     return(
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
             <div className="my-20">
                 <Breadcrumbs separator="›" aria-label="breadcrumb">
                     <Link color="inherit" to={baseUrl}>
@@ -99,7 +99,7 @@ const Page:React.FC<IProps> = ({
                                         <div className="pb-10"/>
                                         <Divider/>
                                         <div className="pt-10"/>
-                                        <Container maxWidth="xl">
+                                        <Container maxWidth="lg">
                                             <ArticleCarousel category={categoryEdge.node}/>
                                         </Container>
                                     </React.Fragment>

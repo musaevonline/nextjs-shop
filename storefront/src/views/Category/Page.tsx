@@ -91,7 +91,7 @@ const Page:React.FC<{
     };
     return(
         <div className="category-page">
-            <Container maxWidth="xl" disableGutters={sm}>
+            <Container maxWidth="lg" disableGutters={sm}>
                 <div className="my-10">
                     <Breadcrumbs separator="›" aria-label="breadcrumb">
                         <Link className="flex items-center" color="inherit" to={baseUrl}>
@@ -111,7 +111,7 @@ const Page:React.FC<{
                     <Card>
                         <CardContent>
                             <Hidden smDown>
-                                <div className="xs:w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 pr-20 float-left">
+                                <div className="xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5 pr-20 float-left">
                                     <ProductsFilter attributes={attributes}
                                                     filters={filters}
                                                     setFilters={setFilters}
@@ -119,7 +119,7 @@ const Page:React.FC<{
                                 </div>
                             </Hidden>
 
-                            <div className="float-none inline-block xs:w-full sm:w-full md:w-2/3 lg:w-3/4 xl:w-5/6 p-5">
+                            <div className="float-none inline-block xs:w-full sm:w-full md:w-3/4 lg:w-4/5 p-5">
                                 <div className="mb-10 flex justify-end items-center">
                                     <div className="flex w-full xs:justify-between md:justify-end items-center">
                                         <Button variant="outlined"
@@ -186,7 +186,7 @@ const Page:React.FC<{
 
                             {products && products.edges.map((item, i) => {
                                 return (
-                                    <div key={i} className="float-none inline-block xs:w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-5">
+                                    <div key={i} className="float-none inline-block xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5 p-5">
                                         <ProductCard item={item.node}/>
                                     </div>
                                 );

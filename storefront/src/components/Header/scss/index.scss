@@ -16,83 +16,6 @@ header{
         justify-content: space-between;
         flex-wrap: wrap;
       }
-      ul{
-        padding-left: 0;
-        margin: 5px 0;
-      }
-      ul li{
-        list-style: none;
-        margin: 0 10px;
-      }
-    }
-    &__center{
-      padding: 5px 0;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .logo svg{
-        height: 60px;
-      }
-      svg{
-        //color: $gray;
-        font-size: 4rem;
-        //margin-right: 15px;
-      }
-      .mobile, .work_time{
-        display: flex;
-        align-items: center;
-        &__body{
-          //padding-top: 5px;
-          .mobile__call{
-            font-size: $small-font-size;
-          }
-        }
-      }
-      .work_time__schedule {
-        font-size: 1.2rem;
-      }
-      .cart-icon{
-        padding-right: 15px;
-        display: flex;
-        align-items: center;
-        & svg{
-          font-size: 5rem;
-        }
-        &:hover{
-          svg{
-            color: $link-color-hover;
-          }
-        }
-      }
-    }
-    &__account{
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      svg{
-        margin-right: 10px;
-      }
-      a{
-        font-size: $small-font-size;
-        color: $black;
-      }
-      &:hover{
-        svg, a{
-          color: $link-color-hover;
-        }
-      }
-    }
-    @media (max-width: 870px) {
-      &__center {
-        //padding: 10px 0;
-        .cart__body, .work_time, .mobile {
-          display: none;
-        }
-        .logo img {
-          max-width: 150px;
-        }
-      }
     }
   }
   .mobile-header{
@@ -115,5 +38,43 @@ header{
       justify-content: flex-end;
       flex: 1;
     }
+  }
+
+  .header-links{
+    padding-left: 0;
+    margin: 0;
+    & a{
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 12.5px;
+      letter-spacing: .23px;
+      color: #929292;
+      font-weight: 400;
+      line-height: 18px;
+      text-decoration: none;
+      &:hover{
+        color: #929292;
+      }
+    }
+    li{
+      list-style: none;
+      padding-left: 16px;
+      padding-right: 15px;
+      margin: 0;
+      display: inline-block;
+      line-height: 28px;
+      &:hover{
+        background-color: #fff;
+      }
+    }
+  }
+  .header-phone{
+    color: #929292;
+  }
+  .header__line{
+    background-color: #fff;
+    border-top: 1px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
+    box-shadow: 3px 3px 5px 0 hsla(0,0%,82.4%,.36);
   }
 }
