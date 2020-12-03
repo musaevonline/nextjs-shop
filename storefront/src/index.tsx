@@ -9,7 +9,7 @@ import { defaultTheme } from "./themes";
 // import { persistCache } from "apollo-cache-persist";
 import * as React from "react";
 import { render } from "react-dom";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter } from "react-router-dom";
 import { QueryParamProvider } from "use-query-params";
 
 import { App } from "./app";
@@ -96,21 +96,6 @@ const startApp = async () => {
         const Notifications = () => {
             const { enqueueSnackbar } = useSnackbar();
 
-            // const { updateAvailable } = React.useContext(ServiceWorkerContext);
-
-            // React.useEffect(() => {
-            //     if (updateAvailable) {
-            //         enqueueSnackbar(
-            //             "To update the application to the latest version, please refresh the page!",
-            //             {
-            //                 variant: 'warning',
-            //                 autoHideDuration: 3000,
-            //                 action: true,
-            //             }
-            //         );
-            //     }
-            // }, []);
-
             useAuth((authenticated: boolean) => {
                 if (authenticated) {
                     enqueueSnackbar("Вы вошли в свой аккаунт", {
@@ -164,9 +149,9 @@ const startApp = async () => {
                                                     //     apolloClient.resetStore()
                                                     // }}
                                                 >
-                                                    <Switch>
-                                                        <Route component={App} />
-                                                    </Switch>
+                                                    <App>
+                                                        Test
+                                                    </App>
                                                     <Notifications />
                                                 </ErrorBoundary>
                                             </FavoritesProvider>
@@ -188,11 +173,6 @@ const startApp = async () => {
                                   vertical: 'bottom',
                                   horizontal: 'left',
                               }}
-                // action={(key) => (
-                //     <IconButton onClick={() => closeSnackbar(key)}>
-                //         <CloseIcon/>
-                //     </IconButton>
-                // )}
                               domRoot={document.getElementById("react-notification")}
             >
                 <Root />
@@ -205,11 +185,11 @@ const startApp = async () => {
         module.hot.accept();
     }
 };
-
-startApp().finally(() => {
-    if (!isDev && !!gtmId){
-        initTagManager().then(() => {
-            console.log('App started! GTM initialized!')
-        });
-    }
-});
+console.log(startApp, isDev, initTagManager)
+// startApp().finally(() => {
+//     if (!isDev && !!gtmId){
+//         initTagManager().then(() => {
+//             console.log('App started! GTM initialized!')
+//         });
+//     }
+// });

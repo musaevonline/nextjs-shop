@@ -72,15 +72,15 @@ const Footer:React.FC = () =>{
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__links">
                         <Typography variant="h5" gutterBottom>О магазине:</Typography>
-                        {pagesData?.pages?.edges.map(edge => <div key={edge.node.id}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></div>)}
+                        {pagesData?.pages?.edges.map((edge, i) => <div key={i}><Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link></div>)}
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} className="footer__categories">
                         <div className="categories-group">
                             <Typography variant="h5" gutterBottom>Каталог товаров:</Typography>
                             <Collapse in={isOpenAllCategories} collapsedHeight={200}>
                                 <ul className="categories-group__list">
-                                    {dataCategories?.categories.edges.map(edge => (
-                                        <li key={edge.node.id}>
+                                    {dataCategories?.categories.edges.map((edge, i) => (
+                                        <li key={i}>
                                             <Link to={getCategoryUrl(edge.node.slug, edge.node.id)}
                                                   className="chevron-before relative">{edge.node.name}</Link>
                                         </li>

@@ -1,4 +1,5 @@
 import { generatePageUrl } from "./utils";
+import {ssrMode, STOREFRONT_URL} from "@temp/constants";
 
 export const BASE_URL = "/";
 export const PRODUCTS_PER_PAGE = 20;
@@ -22,10 +23,10 @@ export const META_DEFAULTS = {
   custom: [],
   description:
     "СтройЛюкс - магазин строительных материалов.",
-  image: `${window.location.origin}${require("../images/logo.svg")}`,
+  image: !ssrMode ? `${window.location.origin}${require("../images/logo.svg")}` : `${STOREFRONT_URL}`,
   title: "СтройЛюкс",
   type: "website",
-  url: window.location.origin,
+  url: !ssrMode ? window.location.origin : STOREFRONT_URL,
 };
 
 export enum CheckoutStep {

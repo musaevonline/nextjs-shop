@@ -29,11 +29,12 @@ interface IProductReviewProps {
     review: ProductReview
 }
 
-const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
+const ProductReviewComponent:React.FC<IProductReviewProps> = ({ review }) =>{
     const classes = useStyles();
-    const advantages = JSON.parse(review.advantages);
-    const flaws = JSON.parse(review.flaws);
-
+    // const advantages = JSON.parse(review.advantages);
+    // const flaws = JSON.parse(review.flaws);
+    const advantages = {advantages: ['']};
+    const flaws = {flaws: ['']};
     return(
         <>
             <div className="review p-2 flex flex-wrap items-start">
@@ -82,4 +83,4 @@ const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
     )
 };
 
-export default ProductReview;
+export default ProductReviewComponent;

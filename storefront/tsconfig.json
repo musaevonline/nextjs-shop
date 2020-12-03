@@ -4,8 +4,12 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "react",
-    "lib": ["es2017", "dom", "ESNext"],
+    "jsx": "preserve",
+    "lib": [
+      "es2017",
+      "dom",
+      "ESNext"
+    ],
     "sourceMap": true,
     "target": "es5",
     "noUnusedLocals": true,
@@ -13,14 +17,37 @@
     //    "noImplicitAny": true,
     //    "noImplicitThis": true,
     //    "strictNullChecks": true,
-    "types": ["webpack-env"],
+    "types": [
+      "webpack-env"
+    ],
     "paths": {
-      "@temp/*": ["./src/*"],
-      "@app/*": ["./src/@next/*"],
-      "@sdk/*": ["./src/@sdk/*"],
-      "images/*": ["./src/images/*"]
+      "@temp/*": [
+        "./src/*"
+      ],
+      "@app/*": [
+        "./src/@next/*"
+      ],
+      "@sdk/*": [
+        "./src/@sdk/*"
+      ],
+      "images/*": [
+        "./src/images/*"
+      ]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

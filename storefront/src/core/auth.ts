@@ -3,8 +3,9 @@ import {checkoutTokenEvent} from "@sdk/checkout";
 import {ErrorResponse, onError} from "@apollo/client/link/error";
 import {ApolloLink} from "@apollo/client";
 import {setContext} from "@apollo/client/link/context";
+import {ssrMode} from "@temp/constants";
 
-export const authEvent = new Event("auth");
+export const authEvent = !ssrMode ? new Event("auth") : null;
 
 export function getAuthToken(): string | null {
   try {

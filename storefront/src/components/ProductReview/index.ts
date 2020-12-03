@@ -1,1 +1,1 @@
-export {default as ProductReview} from './ProductReview';
+export {default as ProductReview} from './ProductReviewComponent';

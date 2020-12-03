@@ -2,6 +2,7 @@ import urljoin from "url-join";
 
 import { searchUrl } from "@temp/app/routes";
 import {ShopInfo_shop} from "@sdk/queries/types/ShopInfo";
+import {ssrMode, STOREFRONT_URL} from "@temp/constants";
 
 interface ISchemaPotentialAction {
   "@type": "SearchAction";
@@ -27,9 +28,9 @@ export const homeStructuredData = (shop: ShopInfo_shop | null) => {
     potentialAction: {
       "@type": "SearchAction",
       "query-input": "required name=q",
-      target: urljoin(location.href, searchUrl, "?q={q}"),
+      target: urljoin(!ssrMode ? location.href : STOREFRONT_URL, searchUrl, "?q={q}"),
     },
-    url: location.href,
+    url: !ssrMode ? location.href : STOREFRONT_URL,
   }
   return JSON.stringify(data);
 };

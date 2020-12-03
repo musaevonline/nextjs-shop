@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.7",
+    "@apollo/react-ssr": "^4.0.0",
     "@babel/runtime": "^7.12.5",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -29,12 +30,17 @@
     "core-js": "^3.7.0",
     "currency-formatter": "^1.5.6",
     "date-time": "^3.1.0",
+    "deepmerge": "^4.2.2",
     "dompurify": "^2.2.2",
     "formik": "^2.2.5",
     "graphql": "^15.4.0",
     "history": "^5.0.0",
     "js-base64": "^3.6.0",
     "lodash": "^4.17.20",
+    "next": "^10.0.3",
+    "next-compose-plugins": "^2.2.1",
+    "next-optimized-images": "^2.6.2",
+    "next-with-apollo": "^5.1.0",
     "notistack": "^1.0.1",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.3",
@@ -134,7 +140,7 @@
     "chokidar": "^3.4.1"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=develop API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ webpack-dev-server --history-api-fallback --watch --mode development",
+    "start": "cross-env NODE_ENV=development API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ webpack-dev-server --history-api-fallback --watch --mode development",
     "start:worker": "npm run start -- --service-worker",
     "build": "cross-env NODE_ENV=production webpack -p",
     "watch": "cross-env NODE_ENV=development webpack --mode development --watch -w",
@@ -144,6 +150,9 @@
     "heroku-postbuild": "cross-env NODE_ENV=production API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ webpack -p",
     "sitemap": "ts-node ./src/sitemap-builder.ts",
     "build-types": "apollo client:codegen --target=typescript types --globalTypesFile=src/types/globalTypes.ts",
-    "download-schema": "apollo client:download-schema schema.graphql"
+    "download-schema": "apollo client:download-schema schema.graphql",
+    "next-dev": "cross-env NODE_ENV=development API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ next dev",
+    "next-build": "cross-env NODE_ENV=production API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ next build",
+    "next-start": "cross-env NODE_ENV=production API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ next start"
   }
 }

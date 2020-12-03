@@ -86,7 +86,8 @@ const Header: React.FC = () =>{
     const user = useContext(UserContext);
     const authenticated = !!user.user;
     const {data:dataCategories} = useQuery<Categories, CategoriesVariables>(categoriesQuery, {
-        variables: {level: 0}
+        variables: {level: 0},
+        nextFetchPolicy: "cache-first"
     });
     const {data:pagesData} = usePages({
         variables: {

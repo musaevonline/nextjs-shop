@@ -13,17 +13,19 @@ import useShop from "@temp/hooks/useShop";
 
 const PAGINATE_BY = 12;
 
-const View: React.FC = () => {
+const View = () => {
     const shop = useShop();
     const {data:newProductsData} = useQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
         variables: {first: PAGINATE_BY, sortBy:{direction: OrderDirection.DESC, field: ProductOrderField.DATE }},
         fetchPolicy: "cache-and-network",
-        nextFetchPolicy: "cache-first"
+        nextFetchPolicy: "cache-first",
+        ssr: false
     });
     const {data:popularProductsData} = useQuery<ProductsCardDetails, ProductsCardDetailsVariables>(productsCardQuery, {
         variables: {first: PAGINATE_BY, sortBy:{direction: OrderDirection.DESC, field: ProductOrderField.ORDER_COUNT }},
         fetchPolicy: "cache-and-network",
-        nextFetchPolicy: "cache-first"
+        nextFetchPolicy: "cache-first",
+        ssr: false
     });
     const {data: articlesData, loading: articlesLoading} = useBlogArticleListQuery({
         variables: {

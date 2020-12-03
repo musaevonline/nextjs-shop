@@ -65,25 +65,6 @@ module.exports = ({ sourceDir, distDir }) => ({
               publicPath: "/images/",
             },
           },
-          // {
-          //   loader: "image-webpack-loader",
-          //   options: {
-          //     mozjpeg: {
-          //       progressive: true,
-          //       quality: 85,
-          //     },
-          //     optipng: {
-          //       enabled: false,
-          //     },
-          //     pngquant: {
-          //       quality: [0.65, 0.90],
-          //       speed: 4,
-          //     },
-          //     gifsicle: {
-          //       enabled: false,
-          //     },
-          //   },
-          // },
         ],
       },
     ],
@@ -106,7 +87,7 @@ module.exports = ({ sourceDir, distDir }) => ({
     }),
     // PWA plugins
     new FaviconsWebpackPlugin({
-      logo: `${sourceDir}/images/favicon.png`,
+      logo: `${sourceDir}/images/favicon.svg`,
       prefix: 'images/favicons/',
       mode: 'webapp', // optional can be 'webapp' or 'light' - 'webapp' by default
       devMode: 'webapp'

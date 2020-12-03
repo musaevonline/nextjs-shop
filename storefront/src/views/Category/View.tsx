@@ -15,6 +15,8 @@ import {ProductsCardDetails, ProductsCardDetailsVariables} from "@sdk/queries/ty
 import {DelimitedNumericArrayParam, JsonParam, StringParam, useQueryParams} from "use-query-params";
 import {OrderDirection, ProductOrderField} from "@temp/types/globalTypes";
 import {removeTags} from "@temp/misc";
+import {ssrMode, STOREFRONT_URL} from "@temp/constants";
+import {getCategoryUrl} from "@temp/app/routes";
 
 const PAGINATE_BY = 20;
 
@@ -107,7 +109,11 @@ const View:React.FC = () => {
                 description: removeTags(categoryResponse?.category?.description),
                 title: categoryResponse?.category?.name,
                 type: 'product.category',
-                custom: [<link key="canonical" rel="canonical" href={window.location.href} />]
+                custom: [
+                    <link key="canonical" rel="canonical" href={!ssrMode ?
+                        window.location.href : categoryResponse?.category ?
+                        `${STOREFRONT_URL}${getCategoryUrl(categoryResponse.category.slug, categoryResponse.category.id)}` :''} />
+                        ]
             }}
         >
             {(!productsResponse || !categoryResponse) && <Loader full={true}/>}
