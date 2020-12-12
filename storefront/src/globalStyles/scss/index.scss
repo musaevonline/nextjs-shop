@@ -3,12 +3,18 @@
 //@import "~tailwindcss/base";
 @import "~tailwindcss/components";
 @import "~tailwindcss/utilities";
-@import "~react-image-gallery/styles/scss/image-gallery.scss";
+@import '~swiper/swiper.scss';
+@import '~swiper/components/navigation/navigation.scss';
+@import '~swiper/components/pagination/pagination.scss';
+@import '~swiper/components/thumbs/thumbs.scss';
+@import '~swiper/components/scrollbar/scrollbar.scss';
+@import '~swiper/components/lazy/lazy.scss';
 
 @import "./variables";
 @import "./utils";
 @import "./components";
 @import "./misc";
+
 html {
   font-size: 62.5%; /* 62.5% of 16px = 10px */
 }
@@ -58,13 +64,11 @@ body, footer {
   }
 
   #root {
-    display: flex;
+    display: block;
     min-height: 100vh;
-    flex-direction: column;
     background-color: #fcfeff;
 
     & main{
-      flex: 1;
       min-height: calc(100vh - 400px);
     }
   }
@@ -81,9 +85,9 @@ body, footer {
   }
 
   table {
-    width: 100%;
-    margin: $spacer * 3 0;
-    font-size: $small-font-size;
+    //width: 100%;
+    //margin: $spacer * 3 0;
+    //font-size: $small-font-size;
 
     th {
       color: $gray-dark;
@@ -97,7 +101,7 @@ body, footer {
     }
 
     td {
-      padding: $spacer $spacer / 2;
+      //padding: $spacer $spacer / 2;
       vertical-align: middle;
 
       img {

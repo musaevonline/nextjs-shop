@@ -416,4 +416,8 @@ CKEDITOR_CONFIGS = {
 
 SITEMAP_MAPPING = 'main.core.sitemaps.sitemaps'
 SITEMAP_INDEX_URL = 'sitemap-index'
-CORS_ALLOWED_ORIGINS = get_list(os.environ.get("CORS_ALLOWED_ORIGINS") or "")
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = get_list(os.environ.get("CORS_ALLOWED_ORIGINS") or "")

@@ -451,6 +451,12 @@ class ProductImage(CountableDjangoObjectType):
         description="The URL of the image.",
         size=graphene.Int(description="Size of the image."),
     )
+    thumbnail = graphene.Field(
+        graphene.String,
+        description="The thumbnail image.",
+        size=graphene.String(description="Size of thumbnail. Default 540x450"),
+        method=graphene.Argument(VersatileImageMethod, description="VersatileImageMethod")
+    )
 
     class Meta:
         description = "Represents a product image."
@@ -469,6 +475,11 @@ class ProductImage(CountableDjangoObjectType):
     @staticmethod
     def __resolve_reference(root, _info, **_kwargs):
         return graphene.Node.get_node_from_global_id(_info, root.id)
+
+    @staticmethod
+    def resolve_thumbnail(root: models.ProductImage, info, size='540x540', method='thumbnail_webp'):
+        url = get_thumbnail(root.image, size, method=method)
+        return info.context.build_absolute_uri(url)
 
 
 class Stock(CountableDjangoObjectType):

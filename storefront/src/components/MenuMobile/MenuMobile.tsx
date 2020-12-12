@@ -13,6 +13,7 @@ import {Categories_categories, Categories_categories_edges} from "@sdk/queries/t
 import {Link} from "react-router-dom";
 import {baseUrl, getCategoryUrl} from "@temp/app/routes";
 import Logo from "images/logo.svg";
+import {ReactSVG} from "react-svg";
 
 const useStyles = makeStyles( theme => ({
       root: {
@@ -25,7 +26,13 @@ const useStyles = makeStyles( theme => ({
         "&:not(:last-of-type)": {
           borderBottom: "1px solid #e6e6e6"
         }
-      }
+      },
+      logo: {
+        '& svg': {
+          height: 50,
+          fill: theme.palette.secondary.main
+        }
+      },
     }),
 );
 
@@ -78,11 +85,14 @@ const MenuMobile:React.FC<MenuProps> = ({categories}) =>{
             open={state}
             onClose={toggleDrawer(false)}
             onOpen={toggleDrawer(true)}
+            PaperProps={{
+              className: "w-350 max-w-full"
+            }}
         >
           <div className="menu-mobile__body">
             <div className="z-10 sticky top-0 bg-white text-center">
-              <Link to={baseUrl}>
-                <img src={Logo} alt="СтройЛюкс" className="max-w-150"/>
+              <Link to={baseUrl} className={classes.logo}>
+                <ReactSVG src={Logo} title="СтройЛюкс" className="max-w-150 m-auto"/>
               </Link>
             </div>
             {categories &&

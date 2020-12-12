@@ -1,6 +1,6 @@
 // import * as C from "./constants";
 import { createMuiTheme } from "@material-ui/core";
-import {red, orange} from "@material-ui/core/colors";
+import {red} from "@material-ui/core/colors";
 
 export const defaultTheme = createMuiTheme({
 	palette: {
@@ -94,9 +94,9 @@ export const defaultTheme = createMuiTheme({
 			},
 			root:{
 				padding: 8,
-				'&:hover svg':{
-					fill: orange[800]
-				},
+				// '&:hover svg':{
+				// 	fill: orange[800]
+				// },
 				'&:hover': {
 					backgroundColor: 'transparent'
 				}
@@ -170,6 +170,19 @@ export const defaultTheme = createMuiTheme({
 			root: {
 				paddingRight: 16,
 				marginRight: 0
+			}
+		},
+		MuiPaper: {
+			elevation1: {
+				boxShadow: "0 2px 10px rgba(48,48,48,.05)"
+			}
+		},
+		MuiRating: {
+			root: {
+				color: "#e31837",
+			},
+			sizeSmall: {
+				fontSize: '1.4rem'
 			}
 		}
 	}

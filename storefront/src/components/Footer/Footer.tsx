@@ -1,7 +1,7 @@
 import "./scss/index.scss";
 
 import React, {useState} from "react";
-import {Container} from "@material-ui/core";
+import {Container, makeStyles} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import SvgIcon from '@material-ui/core/SvgIcon';
 import PhoneOutlinedIcon from '@material-ui/icons/PhoneOutlined';
@@ -27,7 +27,17 @@ import useShop from "@temp/hooks/useShop";
 import { FaFacebookF, FaInstagram, FaVk } from "react-icons/fa";
 import {ReactSVG} from "react-svg";
 
+const useStyles = makeStyles(theme => ({
+    logo: {
+        '& svg': {
+            height: 70,
+            fill: theme.palette.secondary.main
+        }
+    },
+}))
+
 const Footer:React.FC = () =>{
+    const classes = useStyles();
     const [isOpenAllCategories, setOpenAllCategories] = useState(false);
     const shop = useShop();
     const {data:dataCategories} = useQuery<Categories, CategoriesVariables>(categoriesQuery, {
@@ -117,7 +127,9 @@ const Footer:React.FC = () =>{
                                     <FaVk/>
                                 </a>
                             </div>
-                            <Link to={baseUrl} className="logo">
+                        </div>
+                        <div>
+                            <Link to={baseUrl} className={classes.logo}>
                                 <ReactSVG src={Logo} title="СтройЛюкс" className="max-w-250"/>
                             </Link>
                         </div>

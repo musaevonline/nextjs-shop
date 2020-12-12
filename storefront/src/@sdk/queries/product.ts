@@ -1,10 +1,12 @@
 import { gql } from "@apollo/client";
 import {productCardFragment} from "@sdk/fragments/product";
 import {productVariantFragment} from "@sdk/fragments/product-variant";
+import {productImageFragment} from "@sdk/fragments/product-image";
 
 export const productQuery = gql`
     ${productCardFragment}
     ${productVariantFragment}
+    ${productImageFragment}
     query ProductDetails($id: ID!) {
         product(id: $id) {
             ...ProductCardInfo
@@ -23,8 +25,7 @@ export const productQuery = gql`
                 ...ProductVariant
             }
             images{
-                url
-                alt
+                ...ProductImageFragment
             }
         }
     }

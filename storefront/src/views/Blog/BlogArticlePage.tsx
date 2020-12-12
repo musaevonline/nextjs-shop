@@ -147,7 +147,7 @@ const BlogArticlePage:React.FC<IProps> = ({article, loading}) => {
       <Container maxWidth="lg">
         {article &&
         <div className="my-20">
-          <Breadcrumbs separator="›" aria-label="breadcrumb">
+          <Breadcrumbs separator="/" aria-label="breadcrumb">
             <Link color="inherit" to={baseUrl}>
               Главная
             </Link>

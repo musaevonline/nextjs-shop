@@ -21,6 +21,7 @@ import Card from "@material-ui/core/Card";
 import {ProductReviews_productReviews} from "@sdk/queries/types/ProductReviews";
 import Typography from "@material-ui/core/Typography";
 import {CategoryProducts_category_products} from "@sdk/queries/types/CategoryProducts";
+import HomeIcon from "@material-ui/icons/Home";
 
 const Page:React.FC<{
     product: ProductDetails_product,
@@ -66,9 +67,9 @@ const Page:React.FC<{
         <div className="product-page">
             <Container maxWidth="lg">
                 <div className="mt-20 mb-10">
-                    <Breadcrumbs separator="›" aria-label="breadcrumb">
-                        <Link color="inherit" to={baseUrl}>
-                            Главная
+                    <Breadcrumbs separator="/" aria-label="breadcrumb">
+                        <Link className="flex items-center" color="inherit" to={baseUrl}>
+                            <HomeIcon fontSize="small"/>
                         </Link>
                         <Link color="inherit" to={getCategoryUrl(product.category.slug, product.category.id)}>
                             {product.category.name}

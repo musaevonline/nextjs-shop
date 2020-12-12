@@ -69,7 +69,7 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product, addVariantToChec
         <div className={classNames(classes.root, "flex flex-col")}>
             <div className="flex-1 mb-10">
                 <div>
-                    <Typography variant="h1" className={"break-words"} gutterBottom>{product.name}</Typography>
+                    <Typography variant="h2" className={"break-words"} gutterBottom>{product.name}</Typography>
                     <div className="flex items-center justify-between flex-wrap">
                         <div className="flex items-center flex-1 min-w-200">
                             <Rating

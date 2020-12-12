@@ -61,7 +61,7 @@ const Page:React.FC<IProps> = ({
     return(
         <Container maxWidth="lg">
             <div className="my-20">
-                <Breadcrumbs separator="›" aria-label="breadcrumb">
+                <Breadcrumbs separator="/" aria-label="breadcrumb">
                     <Link color="inherit" to={baseUrl}>
                         Главная
                     </Link>

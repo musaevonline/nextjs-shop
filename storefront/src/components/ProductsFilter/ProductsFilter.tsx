@@ -104,6 +104,7 @@ const ProductsFilter:React.FC<{
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider"
                         getAriaValueText={valuetext}
+                        color="secondary"
                     />
                 </Collapse>
                 <Divider variant="fullWidth" classes={{root: classes.divider}}/>
@@ -117,7 +118,7 @@ const ProductsFilter:React.FC<{
                     return(
                         <div key={node.id}>
                             <div className="flex justify-between items-center">
-                                <Typography variant="button">{node.name}</Typography>
+                                <Typography variant="button"><span className="normal-case">{node.name}</span></Typography>
                                 <div  className="transition ease-in-out duration-300"
                                       style={{transform: collapsed ? 'scaleY(-1)' : 'scaleY(1)'}}>
                                     <IconButton size="small"
@@ -143,6 +144,7 @@ const ProductsFilter:React.FC<{
                                                     // onFocus={(event) => event.stopPropagation()}
                                                     control={<Checkbox checked={selected}
                                                                        size="small"
+                                                                       color="secondary"
                                                     />}
                                                     label={`${val.name}`}
                                                 />
