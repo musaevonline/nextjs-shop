@@ -33,13 +33,12 @@ const ProductCarousel:React.FC<ProductCarouselProps> = ({images}) =>{
                 lazy={true}
                 preloadImages={false}
                 watchSlidesVisibility
-            // navigation
+                // navigation
         >
           {galleryImages.map((img, i) => {
             return(
                 <SwiperSlide key={i}>
-                  <img data-src={img.largeThumb} alt={img.originalAlt} className="swiper-lazy"/>
-                  <div className="swiper-lazy-preloader"/>
+                  <img src={img.largeThumb} alt={img.originalAlt} className="swiper-lazy"/>
                 </SwiperSlide>
             )
           })}
