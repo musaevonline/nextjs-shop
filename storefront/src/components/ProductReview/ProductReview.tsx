@@ -39,7 +39,7 @@ const ProductReview:React.FC<IProductReviewProps> = ({ review }) =>{
             <div className="review p-2 flex flex-wrap items-start">
                 <div className="review__user-data">
                     <div className="review__avatar mr-10">
-                        <Avatar src={review.userAvatar} alt={review.userName} variant="circle"/>
+                        <Avatar src={review.userAvatar} alt={review.userName} variant="circular"/>
                     </div>
 
                 </div>
