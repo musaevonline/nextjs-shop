@@ -8,6 +8,7 @@
   margin-bottom: 3px;
   font-size: 0;
   position: relative;
+  width: 100%;
   &:hover{
     z-index: 2;
     &:before {
@@ -87,7 +88,7 @@
     height: 36px;
     margin-bottom: 5px;
     color: #595959;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     letter-spacing: .56px;
     text-transform: inherit;

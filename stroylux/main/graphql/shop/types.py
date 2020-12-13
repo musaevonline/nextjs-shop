@@ -29,7 +29,7 @@ class SiteBannerImage(CountableDjangoObjectType):
     url = graphene.String(
         required=True,
         description="The URL of the image.",
-        size=graphene.String(description="Size of the image. Default 1080x600"),
+        size=graphene.String(description="Size of the image. Default 1080x500"),
         method=graphene.Argument(
             VersatileImageMethod,
             description="VersatileImageMethod")
@@ -44,7 +44,7 @@ class SiteBannerImage(CountableDjangoObjectType):
         only_fields = ["id", "alt", "description", 'sort_order']
 
     @staticmethod
-    def resolve_url(root: site_models.BannerImage, info, size='1080x600', method='thumbnail'):
+    def resolve_url(root: site_models.BannerImage, info, size='1080x500', method='thumbnail_webp'):
         if size:
             url = get_thumbnail(root.image, size, method, rendition_key_set='shop_banner')
         else:

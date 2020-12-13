@@ -4,10 +4,9 @@ import React from "react";
 import _ from 'lodash';
 
 import { homeStructuredData } from "../../core/SEO/homeStructuredData";
-import {Container, useTheme} from "@material-ui/core";
+import {Container} from "@material-ui/core";
 import {HomeCarousel} from "@temp/components/HomeCarousel";
 import {NewsCarousel} from "@temp/components/NewsCarousel";
-import Carousel from "react-multi-carousel";
 import {ProductCard} from "@temp/components/ProductCard";
 import Typography from "@material-ui/core/Typography";
 import {ProductsCardDetails_products} from "@sdk/queries/types/ProductsCardDetails";
@@ -19,52 +18,51 @@ import {dateToShortString} from "@temp/core/utils";
 import {Skeleton} from "@material-ui/lab";
 import {ShopInfo_shop} from "@sdk/queries/types/ShopInfo";
 import {logoStructuredData} from "@temp/core/SEO/logoStructuredData";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation } from 'swiper';
 
-const responsive = {
-    large:{
-        breakpoint: { max: 3000, min: 1376 },
-        items: 5,
-        slidesToSlide: 5 // optional, default to 1.
+SwiperCore.use([Navigation]);
+
+const breakPoints = {
+    0: {
+        slidesPerView: 1,
+        slidesPerGroup: 1
     },
-    desktop: {
-        breakpoint: { max: 1376, min: 1024 },
-        items: 4,
-        slidesToSlide: 4 // optional, default to 1.
+    500: {
+        slidesPerView: 2,
+        slidesPerGroup: 1
     },
-    tablet: {
-        breakpoint: { max: 1024, min: 500 },
-        items: 2,
-        slidesToSlide: 2 // optional, default to 1.
+    1024: {
+        slidesPerView: 4,
+        slidesPerGroup: 1
     },
-    mobile: {
-        breakpoint: { max: 500, min: 0 },
-        items: 1,
-        slidesToSlide: 1 // optional, default to 1.
+    1376: {
+        slidesPerView: 5,
+        slidesPerGroup: 1
     }
-};
+}
 
 const CarouselSkeleton: React.FC = () => {
     const items = _.fill(new Array(5), 1);
 
     return(
-        <Carousel swipeable
-                  draggable={false}
-                  responsive={responsive}
-                  keyBoardControl
-                  customTransition="transform 300ms ease-in-out"
-                  transitionDuration={500}
-                  containerClass="carousel-container"
-                  removeArrowOnDeviceType={["tablet", "mobile"]}>
-            {items.map((item, i) => <div key={i}>
-                    <Skeleton variant="rect" height={250}/>
-                    <Skeleton variant="text" width="40%"/>
-                    <Skeleton variant="text" width="60%"/>
-                    <Skeleton variant="rect" width="100%" height={25} className="my-15"/>
-                    <Skeleton variant="text" width="25%"/>
-                </div>
+        <Swiper spaceBetween={10}
+                slidesPerView={1}
+                navigation
+                breakpoints={breakPoints}
+        >
+            {items.map((item, i) =>
+                <SwiperSlide key={i}>
+                    <div className="w-full">
+                        <Skeleton variant="rect" height={250}/>
+                        <Skeleton variant="text" width="40%"/>
+                        <Skeleton variant="text" width="60%"/>
+                        <Skeleton variant="rect" width="100%" height={25} className="my-15"/>
+                        <Skeleton variant="text" width="25%"/>
+                    </div>
+                </SwiperSlide>
             )}
-        </Carousel>
+        </Swiper>
     )
 };
 
@@ -80,8 +78,6 @@ const Page: React.FC<{
           loading, shop, newProducts,
           popularProducts, articlesEdges, articlesLoading
       }) => {
-    const theme = useTheme();
-    const sm = useMediaQuery(theme.breakpoints.down('sm'));
     const news: IArticleCard[] = articlesEdges?.map(edge => ({
         id: edge.node.id,
         categorySlug: edge.node.category.slug,
@@ -116,17 +112,21 @@ const Page: React.FC<{
                         <Typography variant="h3" className="pt-20 pb-10 text-center">Новинки</Typography>
                         <div className="separator max-w-300"/>
                         {newProducts?.edges.length > 0 &&
-                        <Carousel swipeable
-                                  draggable={false}
-                                  responsive={responsive}
-                                  keyBoardControl
-                                  customTransition="transform 300ms ease-in-out"
-                                  transitionDuration={500}
-                                  containerClass="carousel-container"
-                                  showDots={sm}
-                                  removeArrowOnDeviceType={["tablet", "mobile"]}>
-                            {newProducts?.edges.map((item, i) => <ProductCard key={i} item={item.node}/>)}
-                        </Carousel>
+                        <div className="swiper-products">
+                            <Swiper spaceBetween={0}
+                                    slidesPerView={1}
+                                    navigation
+                                    breakpoints={breakPoints}
+                            >
+                                {newProducts.edges.map((edge, i) => {
+                                    return(
+                                        <SwiperSlide key={i}>
+                                            <ProductCard key={i} item={edge.node}/>
+                                        </SwiperSlide>
+                                    )}
+                                )}
+                            </Swiper>
+                        </div>
                         }
                         {!newProducts?.edges.length &&
                         <CarouselSkeleton/>
@@ -138,17 +138,21 @@ const Page: React.FC<{
                         <Typography variant="h3" className="pt-20 pb-10 text-center">Лучшие предложения</Typography>
                         <div className="separator max-w-500"/>
                         {popularProducts?.edges.length > 0 &&
-                        <Carousel swipeable
-                                  draggable={false}
-                                  responsive={responsive}
-                                  keyBoardControl
-                                  customTransition="transform 300ms ease-in-out"
-                                  transitionDuration={500}
-                                  containerClass="carousel-container"
-                                  showDots={sm}
-                                  removeArrowOnDeviceType={["tablet", "mobile"]}>
-                            {popularProducts?.edges.map((item, i) => <ProductCard key={i} item={item.node}/>)}
-                        </Carousel>
+                        <div className="swiper-products">
+                            <Swiper spaceBetween={0}
+                                    slidesPerView={1}
+                                    navigation
+                                    breakpoints={breakPoints}
+                            >
+                                {popularProducts.edges.map((edge, i) => {
+                                    return(
+                                        <SwiperSlide key={i}>
+                                            <ProductCard key={i} item={edge.node}/>
+                                        </SwiperSlide>
+                                    )}
+                                )}
+                            </Swiper>
+                        </div>
                         }
                         {!popularProducts?.edges.length &&
                         <CarouselSkeleton/>

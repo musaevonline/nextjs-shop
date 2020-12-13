@@ -1,13 +1,8 @@
 @import "src/globalStyles/scss/variables";
 
 .news-card{
-  //padding: 10px;
-  border: 1px solid #DCDEDD;
-  background-color: #fff;
-  transition: box-shadow .5s ease-in-out;
-  &:hover{
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.35);
-  }
+  position: relative;
+  padding: 20px 0;
   &__content{
     padding: 0 10px;
   }
@@ -54,6 +49,31 @@
     -webkit-line-clamp: 3;
     svg{
       color: $link-color-hover;
+    }
+  }
+}
+.article-layout{
+  box-shadow: 0 2px 5px rgba(48,48,48,.05);
+  border-radius: 2px;
+  background-color: #fff;
+  margin-right: 4px;
+  margin-bottom: 3px;
+  font-size: 0;
+  position: relative;
+  width: 100%;
+  &:hover{
+    z-index: 2;
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: -8px;
+      left: -16px;
+      right: -16px;
+      bottom: 0;
+      background: #fff;
+      border-radius: 3px 3px 0 0;
+      box-shadow: 0 8px 25px rgba(48, 48, 48, .2);
     }
   }
 }

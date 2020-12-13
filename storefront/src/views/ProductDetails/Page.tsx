@@ -11,7 +11,6 @@ import Grid from "@material-ui/core/Grid";
 import {ProductCarousel} from "@temp/components/ProductCarousel";
 import {ProductDetails} from "@temp/components/ProductDetails";
 import {TFormProductVariantData} from "@temp/components/Forms/ProductVariantForm/ProductVariantForm";
-import Carousel from "react-multi-carousel";
 import {ProductCard} from "@temp/components/ProductCard";
 import {ProductTabs} from "@temp/components/ProductTabs";
 import {ProductVariant} from "@sdk/fragments/types/ProductVariant";
@@ -22,6 +21,29 @@ import {ProductReviews_productReviews} from "@sdk/queries/types/ProductReviews";
 import Typography from "@material-ui/core/Typography";
 import {CategoryProducts_category_products} from "@sdk/queries/types/CategoryProducts";
 import HomeIcon from "@material-ui/icons/Home";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation } from 'swiper';
+
+SwiperCore.use([Navigation]);
+
+const breakPoints = {
+    0: {
+        slidesPerView: 1,
+        slidesPerGroup: 1
+    },
+    500: {
+        slidesPerView: 2,
+        slidesPerGroup: 1
+    },
+    1024: {
+        slidesPerView: 4,
+        slidesPerGroup: 1
+    },
+    1376: {
+        slidesPerView: 5,
+        slidesPerGroup: 1
+    }
+}
 
 const Page:React.FC<{
     product: ProductDetails_product,
@@ -39,29 +61,6 @@ const Page:React.FC<{
     const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
 
     const relatedProducts = categoryProducts?.edges.filter(edge => edge.node.id !== product?.id);
-
-    const responsive = {
-        large:{
-            breakpoint: { max: 3000, min: 1376 },
-            items: 5,
-            slidesToSlide: 3 // optional, default to 1.
-        },
-        desktop: {
-            breakpoint: { max: 1376, min: 1024 },
-            items: 4,
-            slidesToSlide: 2 // optional, default to 1.
-        },
-        tablet: {
-            breakpoint: { max: 1024, min: 500 },
-            items: 2,
-            slidesToSlide: 2 // optional, default to 1.
-        },
-        mobile: {
-            breakpoint: { max: 500, min: 0 },
-            items: 1,
-            slidesToSlide: 1 // optional, default to 1.
-        }
-    }
 
     return(
         <div className="product-page">
@@ -115,16 +114,21 @@ const Page:React.FC<{
                     <CardContent>
                         <Typography variant="h1" className="text-center" gutterBottom>Рекомендуемые товары</Typography>
                         <div className="separator max-w-300"/>
-                        <Carousel swipeable
-                                  draggable={false}
-                                  responsive={responsive}
-                                  keyBoardControl
-                                  customTransition="transform 300ms ease-in-out"
-                                  transitionDuration={500}
-                                  containerClass="carousel-container"
-                                  removeArrowOnDeviceType={["tablet", "mobile"]}>
-                            {relatedProducts.map((item, i) => <ProductCard key={i} item={item.node}/>)}
-                        </Carousel>
+                        <div className="swiper-products">
+                            <Swiper spaceBetween={0}
+                                    slidesPerView={1}
+                                    navigation
+                                    breakpoints={breakPoints}
+                            >
+                                {relatedProducts.map((edge, i) => {
+                                    return(
+                                        <SwiperSlide key={i}>
+                                            <ProductCard key={i} item={edge.node}/>
+                                        </SwiperSlide>
+                                    )}
+                                )}
+                            </Swiper>
+                        </div>
                     </CardContent>
                 </Card>
                 }

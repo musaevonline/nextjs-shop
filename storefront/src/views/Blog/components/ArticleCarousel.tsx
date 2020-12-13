@@ -1,10 +1,5 @@
 import React from "react";
-import Carousel from 'react-multi-carousel';
 import {makeStyles} from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import {Link} from "react-router-dom";
 import {
@@ -14,69 +9,15 @@ import {getBlogCategoryUrl} from "@temp/app/routes";
 import {ArticleCard} from "@temp/components/ArticleCard";
 import {IArticleCard} from "@temp/components/ArticleCard/ArticleCard";
 import {dateToShortString} from "@temp/core/utils";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation } from 'swiper';
 
-const useArrowsStyles = makeStyles(theme => ({
-  root: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    position: "absolute",
-    right: 0,
-    width: 100,
-    top: 10,
-    '& button':{
-      border: `1px solid transparent`
-    },
-    "& button:hover": {
-      borderColor: theme.palette.secondary.main
-    },
-    [theme.breakpoints.down('xs')]: {
-      display: "none"
-    }
-  },
-  arrows: {
-    display: "flex"
-  },
-  arrowLeft: {
-    marginRight: 20
-  },
-  arrowRight: {
-
-  }
-}));
-
-const CarouselArrows: React.FC<any> = ({ next, previous, carouselState })=>{
-  const classes = useArrowsStyles();
-  const hasNextSlides = (carouselState.slidesToShow + carouselState.currentSlide) < carouselState.totalItems;
-  const hasPrevSlides = carouselState.currentSlide > 0;
-  return(
-      <div className={classes.root}>
-        <div className={classes.arrows}>
-          <IconButton disabled={!hasPrevSlides} className={classes.arrowLeft} color="secondary" onClick={previous}>
-            <ChevronLeftIcon/>
-          </IconButton>
-          <IconButton disabled={!hasNextSlides} className={classes.arrowRight} color="secondary" onClick={next}>
-            <ChevronRightIcon/>
-          </IconButton>
-        </div>
-      </div>
-  );
-
-};
+SwiperCore.use([Navigation]);
 
 const useStyles = makeStyles(theme => ({
   root: {
     position: "relative",
     paddingTop: 20
-  },
-  carousel: {
-    // backgroundColor: "red"
-    '& .react-multi-carousel-track': {
-      margin: '0 auto'
-    },
-    "& li": {
-      padding: "10px 0"
-    }
   },
   item: {
     position: "relative",
@@ -195,35 +136,31 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const breakPoints = {
+  0: {
+    slidesPerView: 1,
+    slidesPerGroup: 1
+  },
+  500: {
+    slidesPerView: 2,
+    slidesPerGroup: 1
+  },
+  1024: {
+    slidesPerView: 4,
+    slidesPerGroup: 1
+  },
+  1376: {
+    slidesPerView: 5,
+    slidesPerGroup: 1
+  }
+}
+
 interface IArticleCarouselProps {
   category: BlogCategoryListWithArticles_blogCategoryList_edges_node
 }
 
 const ArticleCarousel:React.FC<IArticleCarouselProps> = ({category}) => {
   const classes = useStyles();
-  const mobileMatches = useMediaQuery('(max-width:600px)');
-  const responsive = {
-    large:{
-      breakpoint: { max: 3000, min: 1376 },
-      items: 5,
-      slidesToSlide: 5
-    },
-    desktop: {
-      breakpoint: { max: 1376, min: 1024 },
-      items: 4,
-      slidesToSlide: 4
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 500 },
-      items: 2,
-      slidesToSlide: 2
-    },
-    mobile: {
-      breakpoint: { max: 500, min: 0 },
-      items: 1,
-      slidesToSlide: 1
-    }
-  };
 
   const edges = category.articles.edges;
   return(
@@ -232,41 +169,40 @@ const ArticleCarousel:React.FC<IArticleCarouselProps> = ({category}) => {
           <Typography variant="h6">{category.name}</Typography>
           <Link to={getBlogCategoryUrl(category.slug)} className="mt-5">Еще {'>'}</Link>
         </div>
-        <Carousel responsive={responsive}
-                  className={classes.carousel}
-                  renderButtonGroupOutside={true}
-                  customButtonGroup={<CarouselArrows />}
-                  customTransition="transform 300ms ease-in-out"
-                  transitionDuration={500}
-                  containerClass="carousel-container"
-                  arrows={false}
-                  showDots={mobileMatches}
-                  draggable={false}
-                  partialVisible={true}
-        >
-          {edges.map((edge, i) => {
-            const node = edge.node;
-            const article: IArticleCard = {
-              articleSlug: node.slug,
-              id: node.id,
-              categorySlug: node.category.slug,
-              created: dateToShortString(node.dateAdded),
-              img: node.thumbnail?.url,
-              keywords: node.keywords,
-              status: node.status,
-              subtitle: node.subtitle,
-              tags: node.tags,
-              text: node.body,
-              title: node.title
-            }
 
-            return(
-                <div key={i} className={classes.item}>
-                  <ArticleCard  article={article} />
-                </div>
+        <div className="swiper-articles">
+          <Swiper spaceBetween={5}
+                  slidesPerView={1}
+                  navigation
+                  breakpoints={breakPoints}
+          >
+            {edges.map((edge, i) => {
+                  const node = edge.node;
+                  const article: IArticleCard = {
+                    articleSlug: node.slug,
+                    id: node.id,
+                    categorySlug: node.category.slug,
+                    created: dateToShortString(node.dateAdded),
+                    img: node.thumbnail?.url,
+                    keywords: node.keywords,
+                    status: node.status,
+                    subtitle: node.subtitle,
+                    tags: node.tags,
+                    text: node.body,
+                    title: node.title
+                  }
+                  return (
+                      <SwiperSlide key={i}>
+                        <div className="w-full">
+                          <ArticleCard article={article}/>
+                        </div>
+                      </SwiperSlide>
+                  )
+                }
             )
-          })}
-        </Carousel>
+            }
+          </Swiper>
+        </div>
       </div>
   )
 };
