@@ -21,7 +21,6 @@ interface ProductDetailsFormProps {
   errors: ProductErrorFragment[];
   // Draftail isn't controlled - it needs only initial input
   // because it's autosaving on its own.
-  // Ref https://github.com/mirumee/saleor/issues/4470
   initialDescription: string;
   onChange(event: any);
 }
