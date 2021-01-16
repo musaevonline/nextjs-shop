@@ -13,6 +13,7 @@ services:
     depends_on:
       - redis
       - pgbouncer
+#      - elasticsearch
     volumes:
       - static_volume:/app/static
       - ./stroylux/main/:/app/main:Z
@@ -99,6 +100,23 @@ services:
     volumes:
       - ./stroylux/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
       - ./stroylux/userlist.txt:/etc/pgbouncer/userlist.txt:ro
+
+#  elasticsearch:
+#    container_name: graphene_elastic_elasticsearch
+#    volumes:
+#      - es_data:/usr/share/elasticsearch/data
+#    image: elasticsearch:5.4.0
+#    environment:
+#      - discovery.type=single-node
+#      - http.host=0.0.0.0
+#      - transport.host=127.0.0.1
+#      - xpack.security.enabled=false
+#      - cluster.routing.allocation.disk.watermark.low=97%
+#      - cluster.routing.allocation.disk.watermark.high=98%
+#      - cluster.routing.allocation.disk.watermark.flood_stage=99%
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ports:
+#      - "9200:9200"
 
 #  dbbackup:
 #    image: kartoza/pg-backup:9.4
