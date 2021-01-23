@@ -1,13 +1,11 @@
-import functools
-import operator
 from collections import defaultdict
+from typing import List, Optional, Dict, Iterable
 
 import django_filters
 import graphene
-from django.db.models import Q, Sum, F, Subquery
+from django.db.models import Q, Sum, F, Subquery, Count
 from django.db.models.functions import Coalesce
 from graphene_django.filter import GlobalIDMultipleChoiceFilter, GlobalIDFilter
-from typing import List, Optional, Dict, Iterable
 
 from .descriptions import AttributeDescriptions, AttributeValueDescriptions
 from .enums import ProductTypeEnum, StockAvailability
@@ -16,7 +14,8 @@ from ..core.types import FilterInputObjectType
 from ..core.types.common import PriceRangeInput
 from ..core.utils import from_global_id_strict_type
 from ..utils import filter_by_query_param
-from ...product.models import Product, Category, ProductType, Stock, ProductReview, Attribute
+from ...product.models import Product, Category, ProductType, Stock, \
+    ProductReview, Attribute
 from ...search.backends import picker
 
 
@@ -29,6 +28,7 @@ def filter_search(qs, _, value):
 
 def filter_fields_containing_value(*search_fields: str):
     """Create a icontains filters through given fields on a given query set object."""
+
     def _filter_qs(qs, _, value):
         if value:
             qs = filter_by_query_param(qs, value, search_fields)
@@ -60,7 +60,8 @@ def filter_search_stock(qs, _, value):
 
 def filter_categories_products(qs, _, value):
     category_id = value[0]
-    pk = from_global_id_strict_type(category_id, 'Category', field="checkout_id")
+    pk = from_global_id_strict_type(category_id, 'Category',
+                                    field="checkout_id")
     root = Category.objects.filter(id=pk).first()
     tree = root.get_descendants(include_self=True)
     qs = Product.objects.published()
@@ -89,14 +90,36 @@ def filter_attributes_by_product_types(qs, field, value):
 
     product_types = set(product_qs.values_list("product_type_id", flat=True))
     return qs.filter(
-        Q(product_types__in=product_types) | Q(product_variant_types__in=product_types)
+        Q(product_types__in=product_types) | Q(
+            product_variant_types__in=product_types)
     )
+
+
+def filter_attributes_by_categories(qs, field, value):
+    if not value:
+        return qs
+    category_ids = [from_global_id_strict_type(
+        id, only_type="Category"
+    ) for id in value]
+    categories = Category.objects.filter(pk__in=category_ids)
+    all_categories = Category.tree.get_queryset_descendants(categories,
+                                                            include_self=True)
+    if all_categories is None:
+        return qs.none()
+    product_qs = Product.objects.filter(category__in=all_categories)
+    product_types = set(product_qs.values_list("product_type_id", flat=True))
+    qs = qs.filter(
+        Q(product_types__in=product_types) | Q(
+            product_variant_types__in=product_types)
+    )
+    return qs
 
 
 T_PRODUCT_FILTER_QUERIES = Dict[int, Iterable[int]]
 
 
-def filter_products_by_attributes_values(qs, queries: T_PRODUCT_FILTER_QUERIES):
+def filter_products_by_attributes_values(qs,
+                                         queries: T_PRODUCT_FILTER_QUERIES):
     # Combine filters of the same attribute with OR operator
     # and then combine full query with AND operator.
     # combine_and = [
@@ -106,14 +129,15 @@ def filter_products_by_attributes_values(qs, queries: T_PRODUCT_FILTER_QUERIES):
     # ]
     for _, values_pk in queries.items():
         qs = qs.filter(Q(**{"attributes__values__pk__in": values_pk})
-                       | Q(**{"variants__attributes__values__pk__in": values_pk}))
+                       | Q(
+            **{"variants__attributes__values__pk__in": values_pk}))
     # query = functools.reduce(operator.and_, combine_and)
     # qs = qs.filter(query).distinct()
     return qs.distinct()
 
 
 def _clean_product_attributes_filter_input(
-        filter_value,
+    filter_value,
 ) -> Dict[int, List[Optional[int]]]:
     attributes = Attribute.objects.prefetch_related("values")
     attributes_map: Dict[str, int] = {
@@ -169,17 +193,20 @@ def filter_price(qs, _, value):
     )
     return qs
 
+
 def filter_products_by_stock_availability(qs, stock_availability):
     total_stock = (
         Stock.objects.select_related("product_variant")
-        .values("product_variant__product_id")
-        .annotate(
-            total_quantity_allocated=Coalesce(Sum("allocations__quantity_allocated"), 0)
+            .values("product_variant__product_id")
+            .annotate(
+            total_quantity_allocated=Coalesce(
+                Sum("allocations__quantity_allocated"), 0)
         )
-        .annotate(total_quantity=Coalesce(Sum("quantity"), 0))
-        .annotate(total_available=F("total_quantity") - F("total_quantity_allocated"))
-        .filter(total_available__lte=0)
-        .values_list("product_variant__product_id", flat=True)
+            .annotate(total_quantity=Coalesce(Sum("quantity"), 0))
+            .annotate(total_available=F("total_quantity") - F(
+            "total_quantity_allocated"))
+            .filter(total_available__lte=0)
+            .values_list("product_variant__product_id", flat=True)
     )
     if stock_availability == StockAvailability.IN_STOCK:
         qs = qs.exclude(id__in=Subquery(total_stock))
@@ -195,22 +222,26 @@ def filter_stock_availability(qs, _, value):
 
 
 class AttributeInput(graphene.InputObjectType):
-    slug = graphene.String(required=True, description=AttributeDescriptions.SLUG)
+    slug = graphene.String(required=True,
+                           description=AttributeDescriptions.SLUG)
     values = graphene.List(
-        graphene.String, required=False, description=AttributeValueDescriptions.SLUG
+        graphene.String, required=False,
+        description=AttributeValueDescriptions.SLUG
     )
 
 
 class ProductFilter(django_filters.FilterSet):
     is_published = django_filters.BooleanFilter()
     product_types = GlobalIDMultipleChoiceFilter(field_name="product_type")
-    categories = GlobalIDMultipleChoiceFilter(method=filter_categories_products)
+    categories = GlobalIDMultipleChoiceFilter(
+        method=filter_categories_products)
     search = django_filters.CharFilter(method=filter_search)
     attributes = ListObjectTypeFilter(
         input_class=AttributeInput, method=filter_attributes
     )
     price = ObjectTypeFilter(
-        input_class=PriceRangeInput, method=filter_price, field_name="price_amount"
+        input_class=PriceRangeInput, method=filter_price,
+        field_name="price_amount"
     )
     stock_availability = EnumFilter(
         input_class=StockAvailability, method=filter_stock_availability
@@ -242,7 +273,8 @@ class ProductTypeFilter(django_filters.FilterSet):
         method=filter_fields_containing_value("name", "slug")
     )
 
-    product_type = EnumFilter(input_class=ProductTypeEnum, method=filter_product_type)
+    product_type = EnumFilter(input_class=ProductTypeEnum,
+                              method=filter_product_type)
     ids = GlobalIDMultipleChoiceFilter(field_name="id")
 
     class Meta:
@@ -277,6 +309,8 @@ class AttributeFilter(django_filters.FilterSet):
     ids = GlobalIDMultipleChoiceFilter(field_name="id")
 
     in_category = GlobalIDFilter(method=filter_attributes_by_product_types)
+    in_categories = GlobalIDMultipleChoiceFilter(
+        method=filter_attributes_by_categories)
 
     class Meta:
         model = Attribute

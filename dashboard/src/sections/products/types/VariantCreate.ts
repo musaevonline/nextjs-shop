@@ -111,6 +111,8 @@ export interface VariantCreate_productVariantCreate_productVariant_images {
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -157,6 +159,8 @@ export interface VariantCreate_productVariantCreate_productVariant_product_varia
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */

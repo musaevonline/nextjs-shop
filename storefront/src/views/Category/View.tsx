@@ -84,6 +84,7 @@ const View: React.FC = () => {
 				},
 			},
 			sortBy: getSortBy(query.sortBy),
+			includeCategory: false,
 		},
 		onCompleted: setProducts,
 		fetchPolicy: 'cache-and-network',
@@ -110,22 +111,22 @@ const View: React.FC = () => {
 				first: PAGINATE_BY,
 				after: productsResponse.products.pageInfo.endCursor,
 			},
-			updateQuery: (
-				previousResult: ProductsCardDetails,
-				{ fetchMoreResult = {} }
-			) => {
-				if (!previousResult) {
-					return fetchMoreResult
-				}
-				const copy = _.cloneDeep(previousResult)
-				return {
-					products: {
-						...copy.products,
-						edges: [...copy.products.edges, ...fetchMoreResult.products.edges],
-						pageInfo: fetchMoreResult.products.pageInfo,
-					},
-				}
-			},
+			// updateQuery: (
+			// 	previousResult: ProductsCardDetails,
+			// 	{ fetchMoreResult = {} }
+			// ) => {
+			// 	if (!previousResult) {
+			// 		return fetchMoreResult
+			// 	}
+			// 	const copy = _.cloneDeep(previousResult)
+			// 	return {
+			// 		products: {
+			// 			...copy.products,
+			// 			edges: [...copy.products.edges, ...fetchMoreResult.products.edges],
+			// 			pageInfo: fetchMoreResult.products.pageInfo,
+			// 		},
+			// 	}
+			// },
 		})
 	}
 	return (

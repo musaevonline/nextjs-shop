@@ -405,6 +405,8 @@ export interface SimpleProductUpdate_productVariantUpdate_productVariant_images 
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -451,6 +453,8 @@ export interface SimpleProductUpdate_productVariantUpdate_productVariant_product
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -647,6 +651,8 @@ export interface SimpleProductUpdate_productVariantStocksCreate_productVariant_i
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -693,6 +699,8 @@ export interface SimpleProductUpdate_productVariantStocksCreate_productVariant_p
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -888,6 +896,8 @@ export interface SimpleProductUpdate_productVariantStocksDelete_productVariant_i
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -934,6 +944,8 @@ export interface SimpleProductUpdate_productVariantStocksDelete_productVariant_p
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -1133,6 +1145,8 @@ export interface SimpleProductUpdate_productVariantStocksUpdate_productVariant_i
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -1179,6 +1193,8 @@ export interface SimpleProductUpdate_productVariantStocksUpdate_productVariant_p
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */

@@ -222,7 +222,6 @@ const Page: React.FC<{
 								</div>
 							)
 						})}
-					{/*<ProductList items={products.edges}/>*/}
 					{products?.pageInfo.hasNextPage && (
 						<div className='my-20 flex justify-center'>
 							<div className='w-full sm:w-512 max-w-full'>

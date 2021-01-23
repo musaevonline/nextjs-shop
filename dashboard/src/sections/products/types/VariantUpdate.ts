@@ -111,6 +111,8 @@ export interface VariantUpdate_productVariantUpdate_productVariant_images {
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -157,6 +159,8 @@ export interface VariantUpdate_productVariantUpdate_productVariant_product_varia
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -353,6 +357,8 @@ export interface VariantUpdate_productVariantStocksUpdate_productVariant_images 
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -399,6 +405,8 @@ export interface VariantUpdate_productVariantStocksUpdate_productVariant_product
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
