@@ -167,19 +167,19 @@ class ProductVariantCreate(ModelMutation):
         return super().get_instance(info, **data)
 
     @classmethod
-    @transaction.atomic()
     def save(cls, info, instance, cleaned_input):
-        instance.save()
+        with transaction.atomic():
+            instance.save()
+            stocks = cleaned_input.get("stocks")
+            if stocks:
+                cls.create_variant_stocks(instance, stocks)
+            attributes = cleaned_input.get("attributes")
+            if attributes:
+                AttributeAssignmentMixin.save(instance, attributes)
+                instance.name = generate_name_for_variant(instance)
+                instance.save(update_fields=["name"])
         # Recalculate the "minimal variant price" for the parent product
         update_product_variant_price_task.delay(instance.product_id)
-        stocks = cleaned_input.get("stocks")
-        if stocks:
-            cls.create_variant_stocks(instance, stocks)
-        attributes = cleaned_input.get("attributes")
-        if attributes:
-            AttributeAssignmentMixin.save(instance, attributes)
-            instance.name = generate_name_for_variant(instance)
-            instance.save(update_fields=["name"])
 
     @classmethod
     def create_variant_stocks(cls, variant, stocks):

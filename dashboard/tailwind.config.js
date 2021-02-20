@@ -7,12 +7,12 @@ module.exports = {
 			'./src/**/*.ts',
 			'./src/**/*.tsx',
 			'./src/**/*.js',
-			'./src/**/*.jsx'
-		]
+			'./src/**/*.jsx',
+		],
 	},
 	future: {
 		removeDeprecatedGapUtilities: true,
-		purgeLayersByDefault: true
+		purgeLayersByDefault: true,
 	},
 	prefix: '',
 	important: false,
@@ -23,7 +23,7 @@ module.exports = {
 			md: '960px',
 			lg: '1280px',
 			xl: '1920px',
-			print: { raw: 'print' }
+			print: { raw: 'print' },
 		},
 		colors: {
 			transparent: 'transparent',
@@ -44,7 +44,7 @@ module.exports = {
 				A100: '#D5D5D5',
 				A200: '#AAAAAA',
 				A400: '#303030',
-				A700: '#616161'
+				A700: '#616161',
 			},
 			gray: {
 				50: '#FAFAFA',
@@ -61,7 +61,7 @@ module.exports = {
 				A100: '#D5D5D5',
 				A200: '#AAAAAA',
 				A400: '#303030',
-				A700: '#616161'
+				A700: '#616161',
 			},
 			red: {
 				50: '#FFEBEE',
@@ -78,7 +78,7 @@ module.exports = {
 				A100: '#FF8A80',
 				A200: '#FF5252',
 				A400: '#FF1744',
-				A700: '#D50000'
+				A700: '#D50000',
 			},
 			orange: {
 				50: '#FFF3E0',
@@ -95,7 +95,7 @@ module.exports = {
 				A100: '#FFD180',
 				A200: '#FFAB40',
 				A400: '#FF9100',
-				A700: '#FF6D00'
+				A700: '#FF6D00',
 			},
 			'deep-orange': {
 				50: '#FBE9E7',
@@ -112,7 +112,7 @@ module.exports = {
 				A100: '#FF9E80',
 				A200: '#FF6E40',
 				A400: '#FF3D00',
-				A700: '#DD2C00'
+				A700: '#DD2C00',
 			},
 			yellow: {
 				50: '#FFFDE7',
@@ -129,7 +129,7 @@ module.exports = {
 				A100: '#FFFF8D',
 				A200: '#FFFF00',
 				A400: '#FFEA00',
-				A700: '#FFD600'
+				A700: '#FFD600',
 			},
 			green: {
 				50: '#E8F5E9',
@@ -146,7 +146,7 @@ module.exports = {
 				A100: '#B9F6CA',
 				A200: '#69F0AE',
 				A400: '#00E676',
-				A700: '#00C853'
+				A700: '#00C853',
 			},
 			'light-green': {
 				50: '#F1F8E9',
@@ -163,7 +163,7 @@ module.exports = {
 				A100: '#CCFF90',
 				A200: '#B2FF59',
 				A400: '#76FF03',
-				A700: '#64DD17'
+				A700: '#64DD17',
 			},
 			teal: {
 				50: '#E0F2F1',
@@ -180,7 +180,7 @@ module.exports = {
 				A100: '#A7FFEB',
 				A200: '#64FFDA',
 				A400: '#1DE9B6',
-				A700: '#00BFA5'
+				A700: '#00BFA5',
 			},
 			blue: {
 				50: '#E3F2FD',
@@ -197,7 +197,7 @@ module.exports = {
 				A100: '#82B1FF',
 				A200: '#448AFF',
 				A400: '#2979FF',
-				A700: '#2962FF'
+				A700: '#2962FF',
 			},
 			'light-blue': {
 				50: '#E1F5FE',
@@ -214,7 +214,7 @@ module.exports = {
 				A100: '#80D8FF',
 				A200: '#40C4FF',
 				A400: '#00B0FF',
-				A700: '#0091EA'
+				A700: '#0091EA',
 			},
 			indigo: {
 				50: '#E8EAF6',
@@ -231,7 +231,7 @@ module.exports = {
 				A100: '#8C9EFF',
 				A200: '#536DFE',
 				A400: '#3D5AFE',
-				A700: '#304FFE'
+				A700: '#304FFE',
 			},
 			purple: {
 				50: '#F3E5F5',
@@ -248,7 +248,7 @@ module.exports = {
 				A100: '#EA80FC',
 				A200: '#E040FB',
 				A400: '#D500F9',
-				A700: '#AA00FF'
+				A700: '#AA00FF',
 			},
 			'deep-purple': {
 				50: '#EDE7F6',
@@ -265,7 +265,7 @@ module.exports = {
 				A100: '#B388FF',
 				A200: '#7C4DFF',
 				A400: '#651FFF',
-				A700: '#6200EA'
+				A700: '#6200EA',
 			},
 			pink: {
 				50: '#FCE4EC',
@@ -282,7 +282,7 @@ module.exports = {
 				A100: '#FF80AB',
 				A200: '#FF4081',
 				A400: '#F50057',
-				A700: '#C51162'
+				A700: '#C51162',
 			},
 			lime: {
 				50: '#F9FBE7',
@@ -299,7 +299,7 @@ module.exports = {
 				A100: '#F4FF81',
 				A200: '#EEFF41',
 				A400: '#C6FF00',
-				A700: '#AEEA00'
+				A700: '#AEEA00',
 			},
 			amber: {
 				50: '#FFF8E1',
@@ -316,7 +316,7 @@ module.exports = {
 				A100: '#FFE57F',
 				A200: '#FFD740',
 				A400: '#FFC400',
-				A700: '#FFAB00'
+				A700: '#FFAB00',
 			},
 			brown: {
 				50: '#EFEBE9',
@@ -333,7 +333,7 @@ module.exports = {
 				A100: '#D7CCC8',
 				A200: '#BCAAA4',
 				A400: '#8D6E63',
-				A700: '#5D4037'
+				A700: '#5D4037',
 			},
 			'blue-gray': {
 				50: '#ECEFF1',
@@ -350,7 +350,7 @@ module.exports = {
 				A100: '#CFD8DC',
 				A200: '#B0BEC5',
 				A400: '#78909C',
-				A700: '#455A64'
+				A700: '#455A64',
 			},
 			cyan: {
 				50: '#E0F7FA',
@@ -367,8 +367,8 @@ module.exports = {
 				A100: '#84FFFF',
 				A200: '#18FFFF',
 				A400: '#00E5FF',
-				A700: '#00B8D4'
-			}
+				A700: '#00B8D4',
+			},
 		},
 		spacing: {
 			xs: '32rem',
@@ -381,54 +381,55 @@ module.exports = {
 			'4xl': '144rem',
 			'5xl': '160rem',
 			px: '1px',
-			'0': '0',
-			'2': '0.2rem',
-			'4': '0.4rem',
-			'6': '0.6rem',
-			'8': '0.8rem',
-			'10': '1.0rem',
-			'12': '1.2rem',
-			'16': '1.6rem',
-			'20': '2rem',
-			'24': '2.4rem',
-			'28': '2.8rem',
-			'32': '3.2rem',
-			'36': '3.6rem',
-			'37': '3.7rem',
-			'40': '4rem',
-			'44': '4.4rem',
-			'48': '4.8rem',
-			'52': '5.2rem',
-			'56': '5.6rem',
-			'58': '5.8rem',
-			'60': '6rem',
-			'64': '6.4rem',
-			'68': '6.8rem',
-			'72': '7.2rem',
-			'76': '7.6rem',
-			'80': '8rem',
-			'84': '8.4rem',
-			'88': '8.8rem',
-			'92': '9.2rem',
-			'96': '9.6rem',
-			'128': '12.8rem',
-			'136': '13.6rem',
-			'160': '16rem',
-			'192': '19.2rem',
-			'200': '20rem',
-			'208': '20.8rem',
-			'216': '21.6rem',
-			'224': '22.4rem',
-			'256': '25.6rem',
-			'288': '28.8rem',
-			'320': '32rem',
-			'360': '36rem',
-			'384': '38.4rem',
-			'400': '40rem',
-			'512': '51.2rem',
-			'640': '64rem'
+			0: '0',
+			2: '0.2rem',
+			4: '0.4rem',
+			6: '0.6rem',
+			8: '0.8rem',
+			10: '1.0rem',
+			12: '1.2rem',
+			16: '1.6rem',
+			20: '2rem',
+			24: '2.4rem',
+			28: '2.8rem',
+			32: '3.2rem',
+			36: '3.6rem',
+			37: '3.7rem',
+			40: '4rem',
+			44: '4.4rem',
+			48: '4.8rem',
+			52: '5.2rem',
+			56: '5.6rem',
+			58: '5.8rem',
+			60: '6rem',
+			64: '6.4rem',
+			68: '6.8rem',
+			72: '7.2rem',
+			76: '7.6rem',
+			80: '8rem',
+			84: '8.4rem',
+			88: '8.8rem',
+			92: '9.2rem',
+			96: '9.6rem',
+			100: '10rem',
+			128: '12.8rem',
+			136: '13.6rem',
+			160: '16rem',
+			192: '19.2rem',
+			200: '20rem',
+			208: '20.8rem',
+			216: '21.6rem',
+			224: '22.4rem',
+			256: '25.6rem',
+			288: '28.8rem',
+			320: '32rem',
+			360: '36rem',
+			384: '38.4rem',
+			400: '40rem',
+			512: '51.2rem',
+			640: '64rem',
 		},
-		backgroundColor: theme => theme('colors'),
+		backgroundColor: (theme) => theme('colors'),
 		backgroundPosition: {
 			bottom: 'bottom',
 			center: 'center',
@@ -438,16 +439,16 @@ module.exports = {
 			right: 'right',
 			'right-bottom': 'right bottom',
 			'right-top': 'right top',
-			top: 'top'
+			top: 'top',
 		},
 		backgroundSize: {
 			auto: 'auto',
 			cover: 'cover',
-			contain: 'contain'
+			contain: 'contain',
 		},
-		borderColor: theme => ({
+		borderColor: (theme) => ({
 			...theme('colors'),
-			default: theme('colors.gray.300', 'currentColor')
+			default: theme('colors.gray.300', 'currentColor'),
 		}),
 		borderRadius: {
 			none: '0',
@@ -456,77 +457,66 @@ module.exports = {
 			md: '.6rem',
 			lg: '.8rem',
 			full: '9999px',
-			'2': '.2rem',
-			'4': '.4rem',
-			'6': '.6rem',
-			'8': '.8rem',
-			'12': '1.2rem',
-			'16': '1.6rem',
-			'20': '2rem',
-			'24': '2.4rem',
-			'28': '2.8rem',
-			'32': '3.2rem'
+			2: '.2rem',
+			4: '.4rem',
+			6: '.6rem',
+			8: '.8rem',
+			12: '1.2rem',
+			16: '1.6rem',
+			20: '2rem',
+			24: '2.4rem',
+			28: '2.8rem',
+			32: '3.2rem',
 		},
 		borderWidth: {
 			default: '1px',
-			'0': '0',
-			'1': '1px',
-			'2': '2px',
-			'3': '3px',
-			'4': '4px',
-			'8': '8px'
+			0: '0',
+			1: '1px',
+			2: '2px',
+			3: '3px',
+			4: '4px',
+			8: '8px',
 		},
 		boxShadow: {
 			xs: '0 0 0 1px rgba(0, 0, 0, 0.05)',
 			sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-			default: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-			md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-			lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-			xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+			default:
+				'0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+			md:
+				'0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+			lg:
+				'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+			xl:
+				'0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
 			'2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
 			inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
 			outline: '0 0 0 3px rgba(66, 153, 225, 0.5)',
 			none: 'none',
-			'0': 'none',
-			'1': '0px 1px 3px 0px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 2px 1px -1px rgba(0,0,0,0.12)',
-			'2': '0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)',
-			'3': '0px 1px 8px 0px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 3px 3px -2px rgba(0,0,0,0.12)',
-			'4': '0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)',
-			'5': '0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)',
-			'6': '0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)',
-			'7': '0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)',
-			'8': '0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)',
-			'9': '0px 5px 6px -3px rgba(0,0,0,0.2),0px 9px 12px 1px rgba(0,0,0,0.14),0px 3px 16px 2px rgba(0,0,0,0.12)',
-			'10':
-				'0px 6px 6px -3px rgba(0,0,0,0.2),0px 10px 14px 1px rgba(0,0,0,0.14),0px 4px 18px 3px rgba(0,0,0,0.12)',
-			'11':
-				'0px 6px 7px -4px rgba(0,0,0,0.2),0px 11px 15px 1px rgba(0,0,0,0.14),0px 4px 20px 3px rgba(0,0,0,0.12)',
-			'12':
-				'0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12)',
-			'13':
-				'0px 7px 8px -4px rgba(0,0,0,0.2),0px 13px 19px 2px rgba(0,0,0,0.14),0px 5px 24px 4px rgba(0,0,0,0.12)',
-			'14':
-				'0px 7px 9px -4px rgba(0,0,0,0.2),0px 14px 21px 2px rgba(0,0,0,0.14),0px 5px 26px 4px rgba(0,0,0,0.12)',
-			'15':
-				'0px 8px 9px -5px rgba(0,0,0,0.2),0px 15px 22px 2px rgba(0,0,0,0.14),0px 6px 28px 5px rgba(0,0,0,0.12)',
-			'16':
-				'0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)',
-			'17':
-				'0px 8px 11px -5px rgba(0,0,0,0.2),0px 17px 26px 2px rgba(0,0,0,0.14),0px 6px 32px 5px rgba(0,0,0,0.12)',
-			'18':
-				'0px 9px 11px -5px rgba(0,0,0,0.2),0px 18px 28px 2px rgba(0,0,0,0.14),0px 7px 34px 6px rgba(0,0,0,0.12)',
-			'19':
-				'0px 9px 12px -6px rgba(0,0,0,0.2),0px 19px 29px 2px rgba(0,0,0,0.14),0px 7px 36px 6px rgba(0,0,0,0.12)',
-			'20':
-				'0px 10px 13px -6px rgba(0,0,0,0.2),0px 20px 31px 3px rgba(0,0,0,0.14),0px 8px 38px 7px rgba(0,0,0,0.12)',
-			'21':
-				'0px 10px 13px -6px rgba(0,0,0,0.2),0px 21px 33px 3px rgba(0,0,0,0.14),0px 8px 40px 7px rgba(0,0,0,0.12)',
-			'22':
-				'0px 10px 14px -6px rgba(0,0,0,0.2),0px 22px 35px 3px rgba(0,0,0,0.14),0px 8px 42px 7px rgba(0,0,0,0.12)',
-			'23':
-				'0px 11px 14px -7px rgba(0,0,0,0.2),0px 23px 36px 3px rgba(0,0,0,0.14),0px 9px 44px 8px rgba(0,0,0,0.12)',
-			'24':
-				'0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)'
+			0: 'none',
+			1: '0px 1px 3px 0px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 2px 1px -1px rgba(0,0,0,0.12)',
+			2: '0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)',
+			3: '0px 1px 8px 0px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 3px 3px -2px rgba(0,0,0,0.12)',
+			4: '0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)',
+			5: '0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)',
+			6: '0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)',
+			7: '0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)',
+			8: '0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)',
+			9: '0px 5px 6px -3px rgba(0,0,0,0.2),0px 9px 12px 1px rgba(0,0,0,0.14),0px 3px 16px 2px rgba(0,0,0,0.12)',
+			10: '0px 6px 6px -3px rgba(0,0,0,0.2),0px 10px 14px 1px rgba(0,0,0,0.14),0px 4px 18px 3px rgba(0,0,0,0.12)',
+			11: '0px 6px 7px -4px rgba(0,0,0,0.2),0px 11px 15px 1px rgba(0,0,0,0.14),0px 4px 20px 3px rgba(0,0,0,0.12)',
+			12: '0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12)',
+			13: '0px 7px 8px -4px rgba(0,0,0,0.2),0px 13px 19px 2px rgba(0,0,0,0.14),0px 5px 24px 4px rgba(0,0,0,0.12)',
+			14: '0px 7px 9px -4px rgba(0,0,0,0.2),0px 14px 21px 2px rgba(0,0,0,0.14),0px 5px 26px 4px rgba(0,0,0,0.12)',
+			15: '0px 8px 9px -5px rgba(0,0,0,0.2),0px 15px 22px 2px rgba(0,0,0,0.14),0px 6px 28px 5px rgba(0,0,0,0.12)',
+			16: '0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)',
+			17: '0px 8px 11px -5px rgba(0,0,0,0.2),0px 17px 26px 2px rgba(0,0,0,0.14),0px 6px 32px 5px rgba(0,0,0,0.12)',
+			18: '0px 9px 11px -5px rgba(0,0,0,0.2),0px 18px 28px 2px rgba(0,0,0,0.14),0px 7px 34px 6px rgba(0,0,0,0.12)',
+			19: '0px 9px 12px -6px rgba(0,0,0,0.2),0px 19px 29px 2px rgba(0,0,0,0.14),0px 7px 36px 6px rgba(0,0,0,0.12)',
+			20: '0px 10px 13px -6px rgba(0,0,0,0.2),0px 20px 31px 3px rgba(0,0,0,0.14),0px 8px 38px 7px rgba(0,0,0,0.12)',
+			21: '0px 10px 13px -6px rgba(0,0,0,0.2),0px 21px 33px 3px rgba(0,0,0,0.14),0px 8px 40px 7px rgba(0,0,0,0.12)',
+			22: '0px 10px 14px -6px rgba(0,0,0,0.2),0px 22px 35px 3px rgba(0,0,0,0.14),0px 8px 42px 7px rgba(0,0,0,0.12)',
+			23: '0px 11px 14px -7px rgba(0,0,0,0.2),0px 23px 36px 3px rgba(0,0,0,0.14),0px 9px 44px 8px rgba(0,0,0,0.12)',
+			24: '0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)',
 		},
 		container: {},
 		cursor: {
@@ -537,24 +527,24 @@ module.exports = {
 			text: 'text',
 			move: 'move',
 			grab: 'grab',
-			'not-allowed': 'not-allowed'
+			'not-allowed': 'not-allowed',
 		},
 		fill: {
-			current: 'currentColor'
+			current: 'currentColor',
 		},
 		flex: {
-			'1': '1 1 0%',
+			1: '1 1 0%',
 			auto: '1 1 auto',
 			initial: '0 1 auto',
-			none: 'none'
+			none: 'none',
 		},
 		flexGrow: {
-			'0': '0',
-			default: '1'
+			0: '0',
+			default: '1',
 		},
 		flexShrink: {
-			'0': '0',
-			default: '1'
+			0: '0',
+			default: '1',
 		},
 		fontFamily: {
 			sans: [
@@ -571,10 +561,17 @@ module.exports = {
 				'"Apple Color Emoji"',
 				'"Segoe UI Emoji"',
 				'"Segoe UI Symbol"',
-				'"Noto Color Emoji"'
+				'"Noto Color Emoji"',
 			],
 			serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
-			mono: ['Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace']
+			mono: [
+				'Menlo',
+				'Monaco',
+				'Consolas',
+				'"Liberation Mono"',
+				'"Courier New"',
+				'monospace',
+			],
 		},
 		fontSize: {
 			xs: '1.1rem', // 12px
@@ -586,32 +583,32 @@ module.exports = {
 			'3xl': '3rem', // 30px
 			'4xl': '3.6rem', // 36px
 			'5xl': '4.8rem', // 48px,
-			'10': '1rem',
-			'11': '1.1rem',
-			'12': '1.2rem',
-			'13': '1.3rem',
-			'14': '1.4rem',
-			'15': '1.5rem',
-			'16': '1.6rem',
-			'17': '1.7rem',
-			'18': '1.8rem',
-			'19': '1.9rem',
-			'20': '2rem',
-			'24': '2.4rem',
-			'28': '2.8rem',
-			'32': '3.2rem',
-			'36': '3.6rem',
-			'40': '4rem',
-			'44': '4.4rem',
-			'48': '4.8rem',
-			'52': '5.2rem',
-			'56': '5.6rem',
-			'60': '6rem',
-			'64': '6.4rem',
-			'68': '6.8rem',
-			'72': '7.2rem',
-			'96': '9.6rem',
-			'128': '12.8rem'
+			10: '1rem',
+			11: '1.1rem',
+			12: '1.2rem',
+			13: '1.3rem',
+			14: '1.4rem',
+			15: '1.5rem',
+			16: '1.6rem',
+			17: '1.7rem',
+			18: '1.8rem',
+			19: '1.9rem',
+			20: '2rem',
+			24: '2.4rem',
+			28: '2.8rem',
+			32: '3.2rem',
+			36: '3.6rem',
+			40: '4rem',
+			44: '4.4rem',
+			48: '4.8rem',
+			52: '5.2rem',
+			56: '5.6rem',
+			60: '6rem',
+			64: '6.4rem',
+			68: '6.8rem',
+			72: '7.2rem',
+			96: '9.6rem',
+			128: '12.8rem',
 		},
 		fontWeight: {
 			hairline: '100',
@@ -623,25 +620,25 @@ module.exports = {
 			bold: '700',
 			extrabold: '800',
 			black: '900',
-			'100': '100',
-			'200': '200',
-			'300': '300',
-			'400': '400',
-			'500': '500',
-			'600': '600',
-			'700': '700',
-			'800': '800',
-			'900': '900'
+			100: '100',
+			200: '200',
+			300: '300',
+			400: '400',
+			500: '500',
+			600: '600',
+			700: '700',
+			800: '800',
+			900: '900',
 		},
-		height: theme => ({
+		height: (theme) => ({
 			auto: 'auto',
 			...theme('spacing'),
 			full: '100%',
-			screen: '100vh'
+			screen: '100vh',
 		}),
 		inset: {
-			'0': '0',
-			auto: 'auto'
+			0: '0',
+			auto: 'auto',
 		},
 		letterSpacing: {
 			tighter: '-0.05em',
@@ -649,7 +646,7 @@ module.exports = {
 			normal: '0',
 			wide: '0.025em',
 			wider: '0.05em',
-			widest: '0.1em'
+			widest: '0.1em',
 		},
 		lineHeight: {
 			none: '1',
@@ -657,39 +654,39 @@ module.exports = {
 			snug: '1.375',
 			normal: '1.5',
 			relaxed: '1.625',
-			loose: '2'
+			loose: '2',
 		},
 		listStyleType: {
 			none: 'none',
 			disc: 'disc',
-			decimal: 'decimal'
+			decimal: 'decimal',
 		},
 		margin: (theme, { negative }) => ({
 			auto: 'auto',
 			...theme('spacing'),
-			...negative(theme('spacing'))
+			...negative(theme('spacing')),
 		}),
-		maxHeight: theme => ({
+		maxHeight: (theme) => ({
 			auto: 'auto',
 			...theme('spacing'),
 			full: '100%',
-			screen: '100vh'
+			screen: '100vh',
 		}),
-		maxWidth: theme => ({
+		maxWidth: (theme) => ({
 			...theme('spacing'),
 			full: '100%',
-			screen: '100vw'
+			screen: '100vw',
 		}),
-		minHeight: theme => ({
+		minHeight: (theme) => ({
 			auto: 'auto',
 			...theme('spacing'),
 			full: '100%',
-			screen: '100vh'
+			screen: '100vh',
 		}),
-		minWidth: theme => ({
+		minWidth: (theme) => ({
 			...theme('spacing'),
 			full: '100%',
-			screen: '100vw'
+			screen: '100vw',
 		}),
 		objectPosition: {
 			bottom: 'bottom',
@@ -700,44 +697,44 @@ module.exports = {
 			right: 'right',
 			'right-bottom': 'right bottom',
 			'right-top': 'right top',
-			top: 'top'
+			top: 'top',
 		},
 		opacity: {
-			'0': '0',
-			'25': '0.25',
-			'50': '0.5',
-			'75': '0.75',
-			'100': '1'
+			0: '0',
+			25: '0.25',
+			50: '0.5',
+			75: '0.75',
+			100: '1',
 		},
 		order: {
 			first: '-9999',
 			last: '9999',
 			none: '0',
-			'1': '1',
-			'2': '2',
-			'3': '3',
-			'4': '4',
-			'5': '5',
-			'6': '6',
-			'7': '7',
-			'8': '8',
-			'9': '9',
-			'10': '10',
-			'11': '11',
-			'12': '12'
+			1: '1',
+			2: '2',
+			3: '3',
+			4: '4',
+			5: '5',
+			6: '6',
+			7: '7',
+			8: '8',
+			9: '9',
+			10: '10',
+			11: '11',
+			12: '12',
 		},
-		padding: theme => theme('spacing'),
-		placeholderColor: theme => theme('colors'),
+		padding: (theme) => theme('spacing'),
+		placeholderColor: (theme) => theme('colors'),
 		stroke: {
-			current: 'currentColor'
+			current: 'currentColor',
 		},
 		strokeWidth: {
-			'0': '0',
-			'1': '1',
-			'2': '2'
+			0: '0',
+			1: '1',
+			2: '2',
 		},
-		textColor: theme => theme('colors'),
-		width: theme => ({
+		textColor: (theme) => theme('colors'),
+		width: (theme) => ({
 			auto: 'auto',
 			...theme('spacing'),
 			'1/2': '50%',
@@ -767,35 +764,35 @@ module.exports = {
 			'10/12': '83.333333%',
 			'11/12': '91.666667%',
 			full: '100%',
-			screen: '100vw'
+			screen: '100vw',
 		}),
 		zIndex: {
 			auto: 'auto',
-			'0': '0',
-			'10': '10',
-			'20': '20',
-			'30': '30',
-			'40': '40',
-			'50': '50',
-			'99': '99',
-			'999': '999',
-			'9999': '9999'
+			0: '0',
+			10: '10',
+			20: '20',
+			30: '30',
+			40: '40',
+			50: '50',
+			99: '99',
+			999: '999',
+			9999: '9999',
 		},
-		gap: theme => theme('spacing'),
+		gap: (theme) => theme('spacing'),
 		gridTemplateColumns: {
 			none: 'none',
-			'1': 'repeat(1, minmax(0, 1fr))',
-			'2': 'repeat(2, minmax(0, 1fr))',
-			'3': 'repeat(3, minmax(0, 1fr))',
-			'4': 'repeat(4, minmax(0, 1fr))',
-			'5': 'repeat(5, minmax(0, 1fr))',
-			'6': 'repeat(6, minmax(0, 1fr))',
-			'7': 'repeat(7, minmax(0, 1fr))',
-			'8': 'repeat(8, minmax(0, 1fr))',
-			'9': 'repeat(9, minmax(0, 1fr))',
-			'10': 'repeat(10, minmax(0, 1fr))',
-			'11': 'repeat(11, minmax(0, 1fr))',
-			'12': 'repeat(12, minmax(0, 1fr))'
+			1: 'repeat(1, minmax(0, 1fr))',
+			2: 'repeat(2, minmax(0, 1fr))',
+			3: 'repeat(3, minmax(0, 1fr))',
+			4: 'repeat(4, minmax(0, 1fr))',
+			5: 'repeat(5, minmax(0, 1fr))',
+			6: 'repeat(6, minmax(0, 1fr))',
+			7: 'repeat(7, minmax(0, 1fr))',
+			8: 'repeat(8, minmax(0, 1fr))',
+			9: 'repeat(9, minmax(0, 1fr))',
+			10: 'repeat(10, minmax(0, 1fr))',
+			11: 'repeat(11, minmax(0, 1fr))',
+			12: 'repeat(12, minmax(0, 1fr))',
 		},
 		gridColumn: {
 			auto: 'auto',
@@ -810,48 +807,48 @@ module.exports = {
 			'span-9': 'span 9 / span 9',
 			'span-10': 'span 10 / span 10',
 			'span-11': 'span 11 / span 11',
-			'span-12': 'span 12 / span 12'
+			'span-12': 'span 12 / span 12',
 		},
 		gridColumnStart: {
 			auto: 'auto',
-			'1': '1',
-			'2': '2',
-			'3': '3',
-			'4': '4',
-			'5': '5',
-			'6': '6',
-			'7': '7',
-			'8': '8',
-			'9': '9',
-			'10': '10',
-			'11': '11',
-			'12': '12',
-			'13': '13'
+			1: '1',
+			2: '2',
+			3: '3',
+			4: '4',
+			5: '5',
+			6: '6',
+			7: '7',
+			8: '8',
+			9: '9',
+			10: '10',
+			11: '11',
+			12: '12',
+			13: '13',
 		},
 		gridColumnEnd: {
 			auto: 'auto',
-			'1': '1',
-			'2': '2',
-			'3': '3',
-			'4': '4',
-			'5': '5',
-			'6': '6',
-			'7': '7',
-			'8': '8',
-			'9': '9',
-			'10': '10',
-			'11': '11',
-			'12': '12',
-			'13': '13'
+			1: '1',
+			2: '2',
+			3: '3',
+			4: '4',
+			5: '5',
+			6: '6',
+			7: '7',
+			8: '8',
+			9: '9',
+			10: '10',
+			11: '11',
+			12: '12',
+			13: '13',
 		},
 		gridTemplateRows: {
 			none: 'none',
-			'1': 'repeat(1, minmax(0, 1fr))',
-			'2': 'repeat(2, minmax(0, 1fr))',
-			'3': 'repeat(3, minmax(0, 1fr))',
-			'4': 'repeat(4, minmax(0, 1fr))',
-			'5': 'repeat(5, minmax(0, 1fr))',
-			'6': 'repeat(6, minmax(0, 1fr))'
+			1: 'repeat(1, minmax(0, 1fr))',
+			2: 'repeat(2, minmax(0, 1fr))',
+			3: 'repeat(3, minmax(0, 1fr))',
+			4: 'repeat(4, minmax(0, 1fr))',
+			5: 'repeat(5, minmax(0, 1fr))',
+			6: 'repeat(6, minmax(0, 1fr))',
 		},
 		gridRow: {
 			auto: 'auto',
@@ -860,27 +857,27 @@ module.exports = {
 			'span-3': 'span 3 / span 3',
 			'span-4': 'span 4 / span 4',
 			'span-5': 'span 5 / span 5',
-			'span-6': 'span 6 / span 6'
+			'span-6': 'span 6 / span 6',
 		},
 		gridRowStart: {
 			auto: 'auto',
-			'1': '1',
-			'2': '2',
-			'3': '3',
-			'4': '4',
-			'5': '5',
-			'6': '6',
-			'7': '7'
+			1: '1',
+			2: '2',
+			3: '3',
+			4: '4',
+			5: '5',
+			6: '6',
+			7: '7',
 		},
 		gridRowEnd: {
 			auto: 'auto',
-			'1': '1',
-			'2': '2',
-			'3': '3',
-			'4': '4',
-			'5': '5',
-			'6': '6',
-			'7': '7'
+			1: '1',
+			2: '2',
+			3: '3',
+			4: '4',
+			5: '5',
+			6: '6',
+			7: '7',
 		},
 		transformOrigin: {
 			center: 'center',
@@ -891,28 +888,28 @@ module.exports = {
 			bottom: 'bottom',
 			'bottom-left': 'bottom left',
 			left: 'left',
-			'top-left': 'top left'
+			'top-left': 'top left',
 		},
 		scale: {
-			'0': '0',
-			'50': '.5',
-			'75': '.75',
-			'90': '.9',
-			'95': '.95',
-			'100': '1',
-			'105': '1.05',
-			'110': '1.1',
-			'125': '1.25',
-			'150': '1.5'
+			0: '0',
+			50: '.5',
+			75: '.75',
+			90: '.9',
+			95: '.95',
+			100: '1',
+			105: '1.05',
+			110: '1.1',
+			125: '1.25',
+			150: '1.5',
 		},
 		rotate: {
 			'-180': '-180deg',
 			'-90': '-90deg',
 			'-45': '-45deg',
-			'0': '0',
-			'45': '45deg',
-			'90': '90deg',
-			'180': '180deg'
+			0: '0',
+			45: '45deg',
+			90: '90deg',
+			180: '180deg',
 		},
 		translate: (theme, { negative }) => ({
 			...theme('spacing'),
@@ -920,42 +917,43 @@ module.exports = {
 			'-full': '-100%',
 			'-1/2': '-50%',
 			'1/2': '50%',
-			full: '100%'
+			full: '100%',
 		}),
 		skew: {
 			'-12': '-12deg',
 			'-6': '-6deg',
 			'-3': '-3deg',
-			'0': '0',
-			'3': '3deg',
-			'6': '6deg',
-			'12': '12deg'
+			0: '0',
+			3: '3deg',
+			6: '6deg',
+			12: '12deg',
 		},
 		transitionProperty: {
 			none: 'none',
 			all: 'all',
-			default: 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform',
+			default:
+				'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform',
 			colors: 'background-color, border-color, color, fill, stroke',
 			opacity: 'opacity',
 			shadow: 'box-shadow',
-			transform: 'transform'
+			transform: 'transform',
 		},
 		transitionTimingFunction: {
 			linear: 'linear',
 			in: 'cubic-bezier(0.4, 0, 1, 1)',
 			out: 'cubic-bezier(0, 0, 0.2, 1)',
-			'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)'
+			'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
 		},
 		transitionDuration: {
-			'75': '75ms',
-			'100': '100ms',
-			'150': '150ms',
-			'200': '200ms',
-			'300': '300ms',
-			'500': '500ms',
-			'700': '700ms',
-			'1000': '1000ms'
-		}
+			75: '75ms',
+			100: '100ms',
+			150: '150ms',
+			200: '200ms',
+			300: '300ms',
+			500: '500ms',
+			700: '700ms',
+			1000: '1000ms',
+		},
 	},
 	variants: {
 		accessibility: ['responsive', 'focus'],
@@ -1045,8 +1043,8 @@ module.exports = {
 		skew: ['responsive', 'hover', 'focus'],
 		transitionProperty: ['responsive'],
 		transitionTimingFunction: ['responsive'],
-		transitionDuration: ['responsive']
+		transitionDuration: ['responsive'],
 	},
 	corePlugins: {},
-	plugins: [require('tailwindcss-dir')()]
-};
+	plugins: [require('tailwindcss-dir')()],
+}

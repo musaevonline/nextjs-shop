@@ -9,6 +9,7 @@ from measurement.measures import Weight
 from prices import Money
 
 from . import ShippingMethodType
+from ..core.permissions import ShippingPermissions
 from ..core.weight import (
     WeightUnits,
     convert_weight,
@@ -147,6 +148,9 @@ class ShippingMethod(models.Model):
 
     class Meta:
         ordering = ("pk",)
+        permissions = (
+            (ShippingPermissions.MANAGE_SHIPPING.codename, "Manage shipping."),
+        )
 
     def __str__(self):
         return self.name
