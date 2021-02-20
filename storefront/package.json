@@ -55,6 +55,7 @@
     "react-sticky": "^6.0.3",
     "react-svg": "^11.1.1",
     "react-swipeable-views": "^0.13.9",
+    "react-viewer": "^3.2.2",
     "reset-css": "^5.0.1",
     "swiper": "^6.4.1",
     "tailwindcss": "^2.0.1",
