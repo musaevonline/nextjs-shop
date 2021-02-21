@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.db.models import Sum, F, Avg, Q
 from django.db.models.functions import Coalesce
+from django.utils import timezone
 from django.utils.encoding import smart_text
 from django_measurement.models import MeasurementField
 from django_prices.models import MoneyField
@@ -135,6 +136,7 @@ class Product(PublishableModel):
         amount_field="maximal_variant_price_amount", currency_field="currency"
     )
     updated_at = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now, null=True)
     unit = models.CharField(max_length=50, default='pcs', blank=True,
                             null=True)
     objects = ProductsQueryset.as_manager()
