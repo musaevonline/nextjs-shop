@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Loader from '@temp/components/Loader'
 import { MetaWrapper } from '@temp/components'
 import { useParams } from 'react-router'
@@ -13,13 +13,13 @@ import { Attributes, AttributesVariables } from '@sdk/queries/types/Attributes'
 import { Category, CategoryVariables } from '@sdk/queries/types/Category'
 import {
 	ProductsCardDetails,
-	ProductsCardDetailsVariables,
+	ProductsCardDetailsVariables
 } from '@sdk/queries/types/ProductsCardDetails'
 import {
 	DelimitedNumericArrayParam,
 	JsonParam,
 	StringParam,
-	useQueryParams,
+	useQueryParams
 } from 'use-query-params'
 import { OrderDirection, ProductOrderField } from '@temp/types/globalTypes'
 import { removeTags } from '@temp/misc'
@@ -48,7 +48,7 @@ const getSortBy = (
 		case PRODUCTS_SORT_BY_ENUM.ORDER_COUNT:
 			return {
 				field: ProductOrderField.ORDER_COUNT,
-				direction: OrderDirection.DESC,
+				direction: OrderDirection.DESC
 			}
 		default:
 			return { field: ProductOrderField.DATE, direction: OrderDirection.DESC }
@@ -62,13 +62,14 @@ const View: React.FC = () => {
 	const [query, setQuery] = useQueryParams({
 		sortBy: StringParam as PRODUCTS_SORT_BY_ENUM | any,
 		attributes: JsonParam,
-		priceRange: DelimitedNumericArrayParam,
+		priceRange: DelimitedNumericArrayParam
 	})
-	const { data: categoryResponse } = useQuery<Category, CategoryVariables>(
-		categoryQuery,
-		{ variables: { id } }
-	)
+	const { data: categoryResponse, loading: categoryLoading } = useQuery<
+		Category,
+		CategoryVariables
+	>(categoryQuery, { variables: { id } })
 	const [products, setProducts] = useState<ProductsCardDetails | null>(null)
+
 	const { data: productsResponse, fetchMore, loading } = useQuery<
 		ProductsCardDetails,
 		ProductsCardDetailsVariables
@@ -80,27 +81,33 @@ const View: React.FC = () => {
 				attributes: query.attributes,
 				price: {
 					lte: query.priceRange ? query.priceRange[0] : 0,
-					gte: query.priceRange ? query.priceRange[1] : 99999,
-				},
+					gte: query.priceRange ? query.priceRange[1] : 99999
+				}
 			},
 			sortBy: getSortBy(query.sortBy),
-			includeCategory: false,
+			includeCategory: false
 		},
 		onCompleted: setProducts,
 		fetchPolicy: 'cache-and-network',
 		nextFetchPolicy: 'cache-first',
 		notifyOnNetworkStatusChange: true,
+		skip:
+			!!categoryLoading || !!categoryResponse?.category?.children?.edges.length
 	})
 	const { data: categoryAttributesData } = useQuery<
 		Attributes,
 		AttributesVariables
 	>(attributesQuery, {
 		variables: {
-			first: 100,
-			filter: { inCategory: id },
+			first: 15,
+			filter: { inCategory: id }
 		},
+		skip:
+			!!categoryLoading || !!categoryResponse?.category?.children?.edges.length
 	})
-
+	useEffect(() => {
+		setProducts(productsResponse)
+	}, [pk])
 	const setFilters = (values: TUrlQuery): void => {
 		setQuery({ ...query, ...values })
 	}
@@ -109,24 +116,8 @@ const View: React.FC = () => {
 		await fetchMore({
 			variables: {
 				first: PAGINATE_BY,
-				after: productsResponse.products.pageInfo.endCursor,
-			},
-			// updateQuery: (
-			// 	previousResult: ProductsCardDetails,
-			// 	{ fetchMoreResult = {} }
-			// ) => {
-			// 	if (!previousResult) {
-			// 		return fetchMoreResult
-			// 	}
-			// 	const copy = _.cloneDeep(previousResult)
-			// 	return {
-			// 		products: {
-			// 			...copy.products,
-			// 			edges: [...copy.products.edges, ...fetchMoreResult.products.edges],
-			// 			pageInfo: fetchMoreResult.products.pageInfo,
-			// 		},
-			// 	}
-			// },
+				after: productsResponse.products.pageInfo.endCursor
+			}
 		})
 	}
 	return (
@@ -136,12 +127,12 @@ const View: React.FC = () => {
 				title: categoryResponse?.category?.name,
 				type: 'product.category',
 				custom: [
-					<link key='canonical' rel='canonical' href={window.location.href} />,
-				],
+					<link key='canonical' rel='canonical' href={window.location.href} />
+				]
 			}}
 		>
-			{(!products || !categoryResponse) && <Loader full={true} />}
-			{products && categoryResponse && (
+			{!categoryResponse && <Loader full={true} />}
+			{categoryResponse && (
 				<Page
 					products={products?.products}
 					category={categoryResponse.category}
@@ -149,7 +140,7 @@ const View: React.FC = () => {
 					loadMore={loadMore}
 					filters={query as TUrlQuery}
 					setFilters={setFilters}
-					loading={loading}
+					loading={loading || categoryLoading}
 				/>
 			)}
 		</MetaWrapper>

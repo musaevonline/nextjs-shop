@@ -206,6 +206,10 @@ export interface ProductsCardDetails_products_edges {
 export interface ProductsCardDetails_products {
   __typename: "ProductCountableConnection";
   /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
+  /**
    * Pagination data for this connection.
    */
   pageInfo: ProductsCardDetails_products_pageInfo;

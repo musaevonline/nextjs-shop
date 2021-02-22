@@ -7,6 +7,7 @@ import Viewer from 'react-viewer'
 import { ProductDetails_product_images } from '@sdk/queries/types/ProductDetails'
 import { ProductVariant_images } from '@sdk/fragments/types/ProductVariant'
 import { Hidden } from '@material-ui/core'
+import PlaceHolder from 'images/placeholder.svg'
 
 SwiperCore.use([Thumbs, Navigation, Lazy])
 
@@ -25,15 +26,28 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images }) => {
 		setCurrImg(index)
 		setIsOpenViewer(true)
 	}
-	const galleryImages = images.map((img) => ({
-		original: img.url,
-		thumbnail: img.url,
-		originalAlt: img.alt,
-		smallThumb: img.smallThumbnail,
-		largeThumb: img.largeThumbnail,
-		thumbnailClass: 'gallery-thumb',
-		originalClass: 'gallery-img'
-	}))
+	const isEmpty = !images.length
+	const galleryImages = !!images.length
+		? images.map((img) => ({
+				original: img.url,
+				thumbnail: img.url,
+				originalAlt: img.alt,
+				smallThumb: img.smallThumbnail,
+				largeThumb: img.largeThumbnail,
+				thumbnailClass: 'gallery-thumb',
+				originalClass: 'gallery-img'
+		  }))
+		: [
+				{
+					original: PlaceHolder,
+					thumbnail: PlaceHolder,
+					originalAlt: 'Продукт',
+					smallThumb: PlaceHolder,
+					largeThumb: PlaceHolder,
+					thumbnailClass: 'gallery-thumb',
+					originalClass: 'gallery-img'
+				}
+		  ]
 
 	return (
 		<div className='product-carousel'>
@@ -52,6 +66,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images }) => {
 							<img
 								src={img.largeThumb}
 								alt={img.originalAlt}
+								height={isEmpty ? 400 : 'auto'}
 								onClick={(e) => {
 									onOpenViewer(e, i)
 								}}
@@ -61,44 +76,46 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images }) => {
 					)
 				})}
 			</Swiper>
-			<Swiper
-				watchSlidesVisibility
-				watchSlidesProgress
-				onSwiper={setThumbsSwiper}
-				spaceBetween={10}
-				slidesPerView={10}
-				slidesPerGroup={5}
-				draggable={false}
-				touchRatio={0}
-				breakpoints={{
-					// when window width is >= 320px
-					0: {
-						slidesPerView: 5,
-						slidesPerGroup: 5
-					},
-					// when window width is >= 640px
-					640: {
-						slidesPerView: 10,
-						slidesPerGroup: 5
-					}
-				}}
-				freeMode
-				navigation
-			>
-				{galleryImages.map((img, i) => {
-					return (
-						<SwiperSlide key={i}>
-							<img
-								className='h-50'
-								src={img.smallThumb}
-								alt={img.originalAlt}
-							/>
-						</SwiperSlide>
-					)
-				})}
-			</Swiper>
+			{!isEmpty && (
+				<Swiper
+					watchSlidesVisibility
+					watchSlidesProgress
+					onSwiper={setThumbsSwiper}
+					spaceBetween={10}
+					slidesPerView={10}
+					slidesPerGroup={5}
+					draggable={false}
+					touchRatio={0}
+					breakpoints={{
+						// when window width is >= 320px
+						0: {
+							slidesPerView: 5,
+							slidesPerGroup: 5
+						},
+						// when window width is >= 640px
+						640: {
+							slidesPerView: 10,
+							slidesPerGroup: 5
+						}
+					}}
+					freeMode
+					navigation
+				>
+					{galleryImages.map((img, i) => {
+						return (
+							<SwiperSlide key={i}>
+								<img
+									className='h-50'
+									src={img.smallThumb}
+									alt={img.originalAlt}
+								/>
+							</SwiperSlide>
+						)
+					})}
+				</Swiper>
+			)}
 			<Hidden xsDown>
-				{galleryImages.length > 0 && (
+				{galleryImages.length > 0 && !isEmpty && (
 					<Viewer
 						visible={isOpenViewer}
 						onClose={() => {

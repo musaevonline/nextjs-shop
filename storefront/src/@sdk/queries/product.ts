@@ -55,6 +55,7 @@ export const productsCardQuery = gql`
 			filter: $filter
 			ids: $ids
 		) {
+			totalCount
 			pageInfo {
 				endCursor
 				hasNextPage

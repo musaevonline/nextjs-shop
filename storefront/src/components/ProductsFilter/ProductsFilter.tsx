@@ -15,15 +15,15 @@ import { Scrollbars } from 'react-custom-scrollbars'
 
 const useStyles = makeStyles({
 	divider: {
-		margin: '1rem 0',
-	},
+		margin: '1rem 0'
+	}
 })
 const FILTER_HEIGHT = 300
 
 function valuetext(value: number) {
 	return `${value}`
 }
-const MAX_PRICE = 10000
+const MAX_PRICE = 100000
 const INITIAL_COLLAPSED_NUM = 3
 
 const ProductsFilter: React.FC<{
@@ -66,7 +66,7 @@ const ProductsFilter: React.FC<{
 			} else {
 				newAttributes.push({
 					slug: attributeSlug,
-					values: [value],
+					values: [value]
 				})
 			}
 			setFilters({ attributes: newAttributes })
@@ -75,9 +75,9 @@ const ProductsFilter: React.FC<{
 				attributes: [
 					{
 						slug: attributeSlug,
-						values: [value],
-					},
-				],
+						values: [value]
+					}
+				]
 			})
 		}
 	}
@@ -104,7 +104,7 @@ const ProductsFilter: React.FC<{
 						style={{
 							transform: !collapse.includes('priceId')
 								? 'scaleY(-1)'
-								: 'scaleY(1)',
+								: 'scaleY(1)'
 						}}
 					>
 						<IconButton size='small' onClick={toggleCollapse('priceId')}>
@@ -153,7 +153,7 @@ const ProductsFilter: React.FC<{
 									<div
 										className='transition ease-in-out duration-300'
 										style={{
-											transform: collapsed ? 'scaleY(-1)' : 'scaleY(1)',
+											transform: collapsed ? 'scaleY(-1)' : 'scaleY(1)'
 										}}
 									>
 										<IconButton size='small'>
