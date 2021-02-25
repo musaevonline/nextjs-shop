@@ -1,9 +1,11 @@
 import React from 'react'
 import { Category_category_children_edges_node } from '@sdk/queries/types/Category'
 import PlaceHolder from 'images/placeholder.svg'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, Theme, withStyles } from '@material-ui/core'
 import { getCategoryUrl } from '@temp/app/routes'
 import { Link } from 'react-router-dom'
+import DOMPurify from 'dompurify'
+import Tooltip from '@material-ui/core/Tooltip'
 // import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
@@ -23,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
 				display: 'block',
 				position: 'absolute',
 				top: '-8px',
-				left: '-16px',
-				right: '-16px',
+				left: '-5px',
+				right: '-5px',
 				bottom: 0,
 				background: '#fff',
 				borderRadius: '3px 3px 0 0',
@@ -54,8 +56,32 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover': {
 			color: '#5285cc'
 		}
+	},
+	categoryDescription: {
+		color: '#595959',
+		fontSize: '14px',
+		lineHeight: '14px',
+		textAlign: 'center'
+	},
+	imgWrapper: {
+		'& img': {
+			width: '100%',
+			objectFit: 'contain',
+			objectPosition: 'center',
+			height: '200px'
+		}
 	}
 }))
+
+const HtmlTooltip = withStyles((theme: Theme) => ({
+	tooltip: {
+		backgroundColor: '#f5f5f9',
+		color: 'rgba(0, 0, 0, 0.87)',
+		maxWidth: theme.breakpoints.width('lg'),
+		fontSize: theme.typography.pxToRem(12),
+		border: '1px solid #dadde9'
+	}
+}))(Tooltip)
 
 interface CategoryCardProps {
 	category: Category_category_children_edges_node
@@ -65,38 +91,44 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
 	const classes = useStyles()
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.card}>
-				<div>
-					<Link to={getCategoryUrl(category.slug, category.id)}>
-						<img
-							className='max-w-full'
-							src={category.backgroundImage?.url || PlaceHolder}
-							alt={category.name}
+			<HtmlTooltip
+				title={
+					<React.Fragment>
+						<div
+							className={classes.categoryDescription}
+							dangerouslySetInnerHTML={{
+								__html: DOMPurify.sanitize(category.description)
+							}}
 						/>
-					</Link>
+					</React.Fragment>
+				}
+				placement='bottom'
+				arrow
+				enterDelay={1000}
+				enterNextDelay={500}
+				disableHoverListener={!category.description}
+			>
+				<div className={classes.card}>
+					<div className={classes.imgWrapper}>
+						<Link to={getCategoryUrl(category.slug, category.id)}>
+							<img
+								className='max-w-full'
+								src={category.thumbnailSm?.url || PlaceHolder}
+								alt={category.name}
+							/>
+						</Link>
+					</div>
+
+					<div className='text-center'>
+						<Link
+							to={getCategoryUrl(category.slug, category.id)}
+							className={classes.title}
+						>
+							{category.name}
+						</Link>
+					</div>
 				</div>
-				<div className='text-center'>
-					<Link
-						to={getCategoryUrl(category.slug, category.id)}
-						className={classes.title}
-					>
-						{category.name}
-					</Link>
-				</div>
-				{/*<div className='mt-10'>*/}
-				{/*	<Button*/}
-				{/*		type='button'*/}
-				{/*		color='secondary'*/}
-				{/*		variant='contained'*/}
-				{/*		aria-label={'Посмотреть'}*/}
-				{/*		component={Link}*/}
-				{/*		to={getCategoryUrl(category.slug, category.id)}*/}
-				{/*		fullWidth*/}
-				{/*	>*/}
-				{/*		<span className='normal-case'>Посмотреть товары</span>*/}
-				{/*	</Button>*/}
-				{/*</div>*/}
-			</div>
+			</HtmlTooltip>
 		</div>
 	)
 }

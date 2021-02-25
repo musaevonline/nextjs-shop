@@ -25,6 +25,7 @@ import {
 	CategoryProducts,
 	CategoryProductsVariables
 } from '@sdk/queries/types/CategoryProducts'
+import { cleanTextForMeta } from '@temp/misc'
 
 const PAGINATE_BY_REVIEWS = 5
 
@@ -107,13 +108,11 @@ const View: React.FC = () => {
 		)
 		return variantInCart ? variantInCart.quantity : 0
 	}
-	const cleanTextFromDescription =
-		(data?.product.description || '')
-			.replace(/<\/?[^>]+(>|$)/g, '')
-			.replace(/\r?\n|\r/g, '')
-			.replace(/ +(?= )/g, '')
-			.slice(0, 150)
-			.trim() + '...'
+	const cleanTextFromDescription = cleanTextForMeta(
+		data?.product.description,
+		150,
+		true
+	)
 	return (
 		<MetaWrapper
 			meta={{

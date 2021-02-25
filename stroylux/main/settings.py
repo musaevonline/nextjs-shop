@@ -263,7 +263,13 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     ],
     "background_images": [
         ("header_image", "thumbnail__1080x440"),
-        ("header_image_webp", "thumbnail_webp__1080x440")
+        ("header_image_webp", "thumbnail_webp__1080x440"),
+        ("category_image_xs", "thumbnail__60x60"),
+        ("category_image_xs_webp", "thumbnail_webp__60x60"),
+        ("category_image_sm", "thumbnail__255x255"),
+        ("category_image_sm_webp", "thumbnail_webp__255x255"),
+        ("category_image_md", "thumbnail__540x540"),
+        ("category_image_md_webp", "thumbnail_webp__540x540")
     ],
     "user_avatars": [
         ("default", "thumbnail__445x445"),

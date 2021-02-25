@@ -1,20 +1,11 @@
 from collections import defaultdict
 
+from ...core.dataloaders import DataLoader
 from ....product.models import (
-    Category,
     Product,
     ProductImage,
     ProductVariant, VariantImage,
 )
-from ...core.dataloaders import DataLoader
-
-
-class CategoryByIdLoader(DataLoader):
-    context_key = "category_by_id"
-
-    def batch_load(self, keys):
-        categories = Category.objects.in_bulk(keys)
-        return [categories.get(category_id) for category_id in keys]
 
 
 class ProductByIdLoader(DataLoader):
@@ -23,6 +14,18 @@ class ProductByIdLoader(DataLoader):
     def batch_load(self, keys):
         products = Product.objects.visible_to_user(self.user).in_bulk(keys)
         return [products.get(product_id) for product_id in keys]
+
+
+class ProductsByCategoryIdLoader(DataLoader):
+    context_key = "products_by_category_id"
+
+    def batch_load(self, keys):
+        products = Product.objects.visible_to_user(self.user).filter(
+            category_id__in=keys)
+        product_map = defaultdict(list)
+        for p in products:
+            product_map[p.category_id].append(p)
+        return [product_map[key] for key in keys]
 
 
 class ImagesByProductIdLoader(DataLoader):
@@ -40,7 +43,8 @@ class ImagesByProductVariantIdLoader(DataLoader):
     context_key = "images_by_variant"
 
     def batch_load(self, keys):
-        images = VariantImage.objects.filter(variant_id__in=keys).select_related('image').distinct()
+        images = VariantImage.objects.filter(
+            variant_id__in=keys).select_related('image').distinct()
         image_map = defaultdict(list)
         for image in images:
             image_map[image.variant_id].append(image.image)

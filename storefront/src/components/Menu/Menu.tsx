@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 		paddingLeft: 15,
 		paddingRight: 0,
 		fontSize: 14,
-		lineHeight: '28px',
+		lineHeight: '32px',
 		transition: 'all .3s ease',
 		'&.active': {
 			boxShadow: '4px 1px 7px -2px #c5c5c5, 0 2px 7px -2px #c5c5c5'
@@ -224,7 +224,7 @@ const Menu: React.FC<MenuProps> = ({ categories }) => {
 										>
 											<span className={classes.menuCategoriesIcon}>
 												<img
-													src={node.backgroundImage?.url || CategoryPlaceHolder}
+													src={node.thumbnailXs?.url || CategoryPlaceHolder}
 													alt={node.name}
 													className='flex items-center w-20 h-20'
 												/>
@@ -291,6 +291,7 @@ const Menu: React.FC<MenuProps> = ({ categories }) => {
 													</div>
 													<div className='h-40 flex items-center'>
 														<Link
+															onClick={handleClickLink}
 															to={getCategoryUrl(node.slug, node.id)}
 															className={classes.subCategoriesTitle}
 														>

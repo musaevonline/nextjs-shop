@@ -7,6 +7,12 @@ export const categoryQuery = gql`
 	query Category($id: ID!) {
 		category(id: $id) {
 			...CategoryBase
+			parent {
+				...CategoryBase
+				parent {
+					...CategoryBase
+				}
+			}
 			children(first: 30) {
 				edges {
 					node {

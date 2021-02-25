@@ -7,7 +7,6 @@ import { useQuery } from '@apollo/client'
 import { productsCardQuery } from '@sdk/queries/product'
 import Page, { PRODUCTS_SORT_BY_ENUM } from '@temp/views/Category/Page'
 import { categoryQuery } from '@sdk/queries/category'
-import _ from 'lodash'
 import { attributesQuery } from '@sdk/queries/attribute'
 import { Attributes, AttributesVariables } from '@sdk/queries/types/Attributes'
 import { Category, CategoryVariables } from '@sdk/queries/types/Category'
@@ -22,7 +21,7 @@ import {
 	useQueryParams
 } from 'use-query-params'
 import { OrderDirection, ProductOrderField } from '@temp/types/globalTypes'
-import { removeTags } from '@temp/misc'
+import { cleanTextForMeta } from '@temp/misc'
 
 const PAGINATE_BY = 20
 
@@ -90,9 +89,9 @@ const View: React.FC = () => {
 		onCompleted: setProducts,
 		fetchPolicy: 'cache-and-network',
 		nextFetchPolicy: 'cache-first',
-		notifyOnNetworkStatusChange: true,
-		skip:
-			!!categoryLoading || !!categoryResponse?.category?.children?.edges.length
+		notifyOnNetworkStatusChange: true
+		// skip:
+		// 	!!categoryLoading || !!categoryResponse?.category?.children?.edges.length
 	})
 	const { data: categoryAttributesData } = useQuery<
 		Attributes,
@@ -101,9 +100,9 @@ const View: React.FC = () => {
 		variables: {
 			first: 15,
 			filter: { inCategory: id }
-		},
-		skip:
-			!!categoryLoading || !!categoryResponse?.category?.children?.edges.length
+		}
+		// skip:
+		// 	!!categoryLoading || !!categoryResponse?.category?.children?.edges.length
 	})
 	useEffect(() => {
 		setProducts(productsResponse)
@@ -123,7 +122,11 @@ const View: React.FC = () => {
 	return (
 		<MetaWrapper
 			meta={{
-				description: removeTags(categoryResponse?.category?.description),
+				description: cleanTextForMeta(
+					categoryResponse?.category?.description,
+					null,
+					true
+				),
 				title: categoryResponse?.category?.name,
 				type: 'product.category',
 				custom: [

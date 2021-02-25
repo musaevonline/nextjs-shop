@@ -4,16 +4,15 @@ from .attributes import (
     SelectedAttributesByProductVariantIdLoader,
 )
 from .products import (
-    CategoryByIdLoader,
     ImagesByProductIdLoader,
     ProductByIdLoader,
     ProductVariantByIdLoader,
     ProductVariantsByProductIdLoader,
 )
+from .categories import CategoryByIdLoader
 
 __all__ = [
     "AttributeValuesByAttributeIdLoader",
-    "CategoryByIdLoader",
     "ImagesByProductIdLoader",
     "ProductByIdLoader",
     "ProductVariantByIdLoader",

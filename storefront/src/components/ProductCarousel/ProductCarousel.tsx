@@ -130,12 +130,15 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images }) => {
 						noImgDetails={true}
 						images={galleryImages.map((img) => ({
 							src: img.original,
-							alt: img.originalAlt
+							alt: '',
+							downloadUrl: img.original
 						}))}
 						zoomSpeed={0.1}
 						minScale={1}
 						maxScale={2}
 						zIndex={1001}
+						downloadInNewWindow
+						downloadable
 					/>
 				)}
 			</Hidden>

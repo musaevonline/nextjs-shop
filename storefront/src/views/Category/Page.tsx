@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Container, useTheme } from '@material-ui/core'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { Link } from 'react-router-dom'
-import { baseUrl } from '@temp/app/routes'
+import { baseUrl, getCategoryUrl } from '@temp/app/routes'
 // import {ProductList} from "@temp/components/ProductList";
 import Hidden from '@material-ui/core/Hidden'
 import { TUrlQuery } from '@temp/views/Category/View'
@@ -111,148 +111,168 @@ const Page: React.FC<{
 						<Link className='flex items-center' color='inherit' to={baseUrl}>
 							<HomeIcon fontSize='small' />
 						</Link>
+						{category.parent?.parent && (
+							<Link
+								className='flex items-center'
+								color='inherit'
+								to={getCategoryUrl(
+									category.parent.parent.slug,
+									category.parent.parent.id
+								)}
+							>
+								{category.parent.parent.name}
+							</Link>
+						)}
+						{category.parent && (
+							<Link
+								className='flex items-center'
+								color='inherit'
+								to={getCategoryUrl(category.parent.slug, category.parent.id)}
+							>
+								{category.parent.name}
+							</Link>
+						)}
+
 						<span>{category.name}</span>
 					</Breadcrumbs>
 				</div>
 				<div className='mb-10 px-10 md:px-0'>
 					<Typography variant='h2'>{category.name}</Typography>
 				</div>
+				{showCategories && (
+					<div className='py-20 mb-20'>
+						<div>
+							<Typography variant='h3' paragraph>
+								Подкатегории
+							</Typography>
+							{category.children.edges.map(({ node }, idx) => {
+								return (
+									<div
+										key={idx}
+										className='float-none inline-block xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5'
+									>
+										<CategoryCard category={node} />
+									</div>
+								)
+							})}
+						</div>
+					</div>
+				)}
 				<div className='inline-block w-full'>
-					{!showCategories && (
-						<Hidden smDown>
-							<div className='xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5 pr-20 float-left clear-both'>
-								<ProductsFilter
-									initialCollapsed={true}
-									attributes={attributes}
-									filters={filters}
-									setFilters={setFilters}
-								/>
-							</div>
-						</Hidden>
-					)}
-					{!showCategories && (
-						<div className='float-none inline-block xs:w-full sm:w-full md:w-3/4 lg:w-4/5'>
-							<Card>
-								<div className='p-20 flex justify-end items-center'>
-									<div className='flex w-full xs:justify-between md:justify-end items-center'>
-										<Button
-											variant='outlined'
-											className={classes.filterBtn}
-											onClick={(e) => setOpenFilterDrawer(true)}
-											size='medium'
-										>
-											<BsFilter className='text-2xl' />
-										</Button>
-										<div className='flex justify-end items-center'>
-											{products && (
-												<Hidden xsDown>
-													<span className='mr-10 font-semibold'>
-														Найдено: {products.totalCount}
-													</span>
-												</Hidden>
-											)}
-											<div className='relative mr-20'>
-												<Button
-													variant='outlined'
-													className={classes.sortByBtn}
-													startIcon={<SwapVertIcon />}
-													endIcon={<ArrowDropDownIcon />}
-													size='medium'
-													onClick={(e) => setAnchorElSort(e.currentTarget)}
-												>
-													<span className='normal-case sm:block xs:hidden leading-5'>
-														<span>{getSortByLabel(filters.sortBy)} </span>
-													</span>
-												</Button>
-												<Popper
-													open={Boolean(anchorElSort)}
-													anchorEl={anchorElSort}
-													className='w-full z-10 min-w-224'
-													style={{ width: 174 }}
-													role={undefined}
-													transition
-												>
-													<ClickAwayListener
-														onClickAway={(e) => setAnchorElSort(null)}
-													>
-														<Paper>
-															<MenuList autoFocusItem={Boolean(anchorElSort)}>
-																{Object.values(PRODUCTS_SORT_BY_ENUM).map(
-																	(el, i) => {
-																		return (
-																			<MenuItem
-																				key={i}
-																				onClick={handleChangeSortBy(el)}
-																			>
-																				<span className='flex-1'>
-																					{getSortByLabel(el)}
-																				</span>
-																				{(filters.sortBy ||
-																					PRODUCTS_SORT_BY_ENUM.DATE) ===
-																					el && <CheckIcon fontSize='small' />}
-																			</MenuItem>
-																		)
-																	}
-																)}
-															</MenuList>
-														</Paper>
-													</ClickAwayListener>
-												</Popper>
-											</div>
-
-											<ButtonGroup variant='outlined' size='medium'>
-												<Button
-													variant='contained'
-													title='Плитка'
-													color='secondary'
-												>
-													<BsGrid3X3Gap className='text-2xl' />
-												</Button>
-												<Button title='Список'>
-													<BsListUl className='text-2xl' />
-												</Button>
-											</ButtonGroup>
-										</div>
-									</div>
-								</div>
-								{products && (
-									<div className='text-center'>
-										<Divider />
-										<Hidden smUp>
-											<div className='py-10 font-semibold'>
-												Найдено: {products.totalCount}
-											</div>
-										</Hidden>
-									</div>
-								)}
-							</Card>
-							<LinearProgress
-								color='secondary'
-								className={!loading ? 'opacity-0' : ''}
-								variant='indeterminate'
+					<Hidden smDown>
+						<div className='xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5 pr-20 float-left clear-both'>
+							<ProductsFilter
+								initialCollapsed={true}
+								attributes={attributes}
+								filters={filters}
+								setFilters={setFilters}
 							/>
 						</div>
-					)}
-					{showCategories && (
-						<Card className='p-20'>
-							<div>
-								<Typography variant='h3' paragraph>
-									Выберите категорию
-								</Typography>
-								{category.children.edges.map(({ node }, idx) => {
-									return (
-										<div
-											key={idx}
-											className='float-none inline-block xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5'
-										>
-											<CategoryCard category={node} />
+					</Hidden>
+					<div className='float-none inline-block xs:w-full sm:w-full md:w-3/4 lg:w-4/5'>
+						<LinearProgress
+							color='secondary'
+							className={!loading ? 'opacity-0' : ''}
+							variant='indeterminate'
+						/>
+						<Card>
+							<div className='p-20 flex justify-end items-center'>
+								<div className='flex w-full xs:justify-between md:justify-end items-center'>
+									<Button
+										variant='outlined'
+										className={classes.filterBtn}
+										onClick={(e) => setOpenFilterDrawer(true)}
+										size='medium'
+									>
+										<BsFilter className='text-2xl' />
+									</Button>
+									<div className='flex justify-end items-center'>
+										{products && (
+											<Hidden xsDown>
+												<span className='mr-10 font-semibold'>
+													Найдено: {products.totalCount}
+												</span>
+											</Hidden>
+										)}
+										<div className='relative mr-20'>
+											<Button
+												variant='outlined'
+												className={classes.sortByBtn}
+												startIcon={<SwapVertIcon />}
+												endIcon={<ArrowDropDownIcon />}
+												size='medium'
+												onClick={(e) => setAnchorElSort(e.currentTarget)}
+											>
+												<span className='normal-case sm:block xs:hidden leading-5'>
+													<span>{getSortByLabel(filters.sortBy)} </span>
+												</span>
+											</Button>
+											<Popper
+												open={Boolean(anchorElSort)}
+												anchorEl={anchorElSort}
+												className='w-full z-10 min-w-224'
+												style={{ width: 174 }}
+												role={undefined}
+												transition
+											>
+												<ClickAwayListener
+													onClickAway={(e) => setAnchorElSort(null)}
+												>
+													<Paper>
+														<MenuList autoFocusItem={Boolean(anchorElSort)}>
+															{Object.values(PRODUCTS_SORT_BY_ENUM).map(
+																(el, i) => {
+																	return (
+																		<MenuItem
+																			key={i}
+																			onClick={handleChangeSortBy(el)}
+																		>
+																			<span className='flex-1'>
+																				{getSortByLabel(el)}
+																			</span>
+																			{(filters.sortBy ||
+																				PRODUCTS_SORT_BY_ENUM.DATE) === el && (
+																				<CheckIcon fontSize='small' />
+																			)}
+																		</MenuItem>
+																	)
+																}
+															)}
+														</MenuList>
+													</Paper>
+												</ClickAwayListener>
+											</Popper>
 										</div>
-									)
-								})}
+
+										<ButtonGroup variant='outlined' size='medium'>
+											<Button
+												variant='contained'
+												title='Плитка'
+												color='secondary'
+											>
+												<BsGrid3X3Gap className='text-2xl' />
+											</Button>
+											<Button title='Список'>
+												<BsListUl className='text-2xl' />
+											</Button>
+										</ButtonGroup>
+									</div>
+								</div>
 							</div>
+							{products && (
+								<div className='text-center'>
+									<Divider />
+									<Hidden smUp>
+										<div className='py-10 font-semibold'>
+											Найдено: {products.totalCount}
+										</div>
+									</Hidden>
+								</div>
+							)}
 						</Card>
-					)}
-					{!showCategories && !loading && !products?.edges.length && (
+					</div>
+
+					{!loading && !products?.edges.length && (
 						<Card>
 							<div className='p-20'>
 								<Typography variant='h3' className='text-center'>
