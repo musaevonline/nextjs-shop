@@ -22,7 +22,7 @@ $ cd shop
 
 4. Build the application:
 ```
-$ docker-compose build
+$ docker-compose -f dev.yml build
 ```
 
 5. Apply Django migrations:
@@ -35,18 +35,16 @@ $ docker-compose run --rm api python3 manage.py migrate
 $ docker-compose run --rm api python3 manage.py collectstatic --noinput
 ```
 
-7. Populate the database with example data and create the admin user:
+7. Create the admin user:
 ```
-$ docker-compose run --rm api python3 manage.py populatedb --createsuperuser
-```
-*Note that `--createsuperuser` argument creates an admin account for `admin@example.com` with the password set to `admin`.*
-```
-8. Create extension:
-  CREATE EXTENSION pg_trgm; 
-```
-9. Run the application:
-```
-$ docker-compose up
+$ docker-compose run --rm api python3 manage.py createsuperuser
 ```
 
-Dump DB: docker-compose run --rm api python manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 4 > db.json
+8. Run the application:
+```
+$ docker-compose -f dev.yml up
+```
+
+Create db backup: docker exec ${container} pg_dump -U ${username} -d ${dbname} > ${backup_file}
+
+Restore db: docker exec -i ${container} psql -U ${username} -d ${dbname} < ${backup_file}

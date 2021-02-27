@@ -540,7 +540,7 @@
     "string": "Повторяющиеся значения атрибутов для варианта продукта"
   },
   "selling_price": {
-    "string": "Цена отмены продаж"
+    "string": "Цена продажи"
   },
   "productVariantPriceOptionalPriceOverrideField": {
     "string": "Необязательный"
@@ -1657,5 +1657,26 @@
   },
   "unit": {
     "string": "Ед.изм."
+  },
+  "group_is_last_source_of_that_permission": {
+    "string": "Эта группа является последним источником этого разрешения"
+  },
+  "homeNotificationsNoPayments": {
+    "string": "Нет платежей в ожидании"
+  },
+  "homeNotificationsTableNoProducts": {
+    "string": "Все продукты в наличии"
+  },
+  "edit_value": {
+    "string": "Изменить значение"
+  },
+  "digital": {
+    "string": "Цифровой"
+  },
+  "value_deleted": {
+    "string": "Значение удалено"
+  },
+  "blogArticleStatus": {
+    "string": "Статус"
   }
 }

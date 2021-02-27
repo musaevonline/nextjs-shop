@@ -710,6 +710,7 @@ export interface AttributeFilterInput {
   search?: string | null;
   ids?: (string | null)[] | null;
   inCategory?: string | null;
+  inCategories?: (string | null)[] | null;
 }
 
 export interface AttributeInput {

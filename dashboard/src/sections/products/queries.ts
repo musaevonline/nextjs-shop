@@ -195,8 +195,7 @@ export const fragmentVariant = gql`
             ...Money
         }
         images {
-            id
-            url
+            ...ProductImageFragment
         }
         name
         priceOverride {
@@ -216,8 +215,7 @@ export const fragmentVariant = gql`
                 name
                 sku
                 images {
-                    id
-                    url
+                    ...ProductImageFragment
                 }
             }
         }

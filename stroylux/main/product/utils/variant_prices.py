@@ -22,7 +22,7 @@ def collect_categories_tree_products(category: "Category") -> "QuerySet[Product]
 
 def _get_product_minimal_variant_price(product, discounts) -> Money:
     # Start with the product's price as the minimal one
-    minimal_variant_price = Money(amount=99999, currency=product.currency)
+    minimal_variant_price = Money(amount=100000, currency=product.currency)
     variants = product.variants.all()
     for variant in variants:
         variant_price = variant.base_price

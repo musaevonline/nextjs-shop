@@ -213,7 +213,7 @@ const Header: React.FC = () =>{
                                 </Link>
                                 <Badge badgeContent={checkoutQuantity} color="primary" showZero max={100000}>
                                     <IconButton onClick={toggleCartDrawer(true)} className={classes.utilityIcon}>
-                                        <BsBag/>
+                                            <BsBag/>
                                     </IconButton>
                                 </Badge>
                             </div>

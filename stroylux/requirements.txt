@@ -63,7 +63,7 @@ Pillow==7.1.1
 prices==1.0.0
 promise==2.3
 prompt-toolkit==3.0.5
-psycopg2==2.8.5
+# psycopg2==2.8.5
 psycopg2-binary==2.8.5
 ptyprocess==0.6.0
 Pygments==2.6.1
@@ -74,6 +74,7 @@ python-magic-bin;sys_platform == 'win32'
 pytz==2019.3
 redis==3.4.1
 requests==2.23.0
+sentry-sdk==0.19.5
 Rx==1.6.1
 social-auth-app-django==4.0.0
 social-auth-core==3.3.3

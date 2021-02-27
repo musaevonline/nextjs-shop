@@ -10,6 +10,7 @@
   img{
     object-fit: contain;
     max-height: 400px;
+    max-width: 100%;
   }
   .lazy-load-image-background{
     display: flex !important;

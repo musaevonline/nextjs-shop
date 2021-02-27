@@ -17,6 +17,30 @@ export interface Categories_categories_edges_node_backgroundImage {
   url: string;
 }
 
+export interface Categories_categories_edges_node_thumbnailSm {
+  __typename: "Image";
+  /**
+   * The URL of the image.
+   */
+  url: string;
+  /**
+   * Alt text for an image.
+   */
+  alt: string | null;
+}
+
+export interface Categories_categories_edges_node_thumbnailXs {
+  __typename: "Image";
+  /**
+   * The URL of the image.
+   */
+  url: string;
+  /**
+   * Alt text for an image.
+   */
+  alt: string | null;
+}
+
 export interface Categories_categories_edges_node_children_edges_node_backgroundImage {
   __typename: "Image";
   /**
@@ -25,12 +49,60 @@ export interface Categories_categories_edges_node_children_edges_node_background
   url: string;
 }
 
+export interface Categories_categories_edges_node_children_edges_node_thumbnailSm {
+  __typename: "Image";
+  /**
+   * The URL of the image.
+   */
+  url: string;
+  /**
+   * Alt text for an image.
+   */
+  alt: string | null;
+}
+
+export interface Categories_categories_edges_node_children_edges_node_thumbnailXs {
+  __typename: "Image";
+  /**
+   * The URL of the image.
+   */
+  url: string;
+  /**
+   * Alt text for an image.
+   */
+  alt: string | null;
+}
+
 export interface Categories_categories_edges_node_children_edges_node_children_edges_node_backgroundImage {
   __typename: "Image";
   /**
    * The URL of the image.
    */
   url: string;
+}
+
+export interface Categories_categories_edges_node_children_edges_node_children_edges_node_thumbnailSm {
+  __typename: "Image";
+  /**
+   * The URL of the image.
+   */
+  url: string;
+  /**
+   * Alt text for an image.
+   */
+  alt: string | null;
+}
+
+export interface Categories_categories_edges_node_children_edges_node_children_edges_node_thumbnailXs {
+  __typename: "Image";
+  /**
+   * The URL of the image.
+   */
+  url: string;
+  /**
+   * Alt text for an image.
+   */
+  alt: string | null;
 }
 
 export interface Categories_categories_edges_node_children_edges_node_children_edges_node {
@@ -43,6 +115,14 @@ export interface Categories_categories_edges_node_children_edges_node_children_e
   slug: string;
   description: string;
   backgroundImage: Categories_categories_edges_node_children_edges_node_children_edges_node_backgroundImage | null;
+  /**
+   * The main thumbnail for a product.
+   */
+  thumbnailSm: Categories_categories_edges_node_children_edges_node_children_edges_node_thumbnailSm | null;
+  /**
+   * The main thumbnail for a product.
+   */
+  thumbnailXs: Categories_categories_edges_node_children_edges_node_children_edges_node_thumbnailXs | null;
 }
 
 export interface Categories_categories_edges_node_children_edges_node_children_edges {
@@ -68,6 +148,14 @@ export interface Categories_categories_edges_node_children_edges_node {
   slug: string;
   description: string;
   backgroundImage: Categories_categories_edges_node_children_edges_node_backgroundImage | null;
+  /**
+   * The main thumbnail for a product.
+   */
+  thumbnailSm: Categories_categories_edges_node_children_edges_node_thumbnailSm | null;
+  /**
+   * The main thumbnail for a product.
+   */
+  thumbnailXs: Categories_categories_edges_node_children_edges_node_thumbnailXs | null;
   /**
    * List of children of the category.
    */
@@ -97,6 +185,14 @@ export interface Categories_categories_edges_node {
   slug: string;
   description: string;
   backgroundImage: Categories_categories_edges_node_backgroundImage | null;
+  /**
+   * The main thumbnail for a product.
+   */
+  thumbnailSm: Categories_categories_edges_node_thumbnailSm | null;
+  /**
+   * The main thumbnail for a product.
+   */
+  thumbnailXs: Categories_categories_edges_node_thumbnailXs | null;
   /**
    * List of children of the category.
    */

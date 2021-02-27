@@ -5,9 +5,12 @@ from datetime import timedelta
 
 import dj_database_url
 import dj_email_url
+import sentry_sdk
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management.utils import get_random_secret_key
 from django_prices.utils.formatting import get_currency_fraction
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
 
 SITE_ID = 1
 REAL_IP_ENVIRON = os.environ.get("REAL_IP_ENVIRON", "REMOTE_ADDR")
@@ -24,7 +27,8 @@ def get_bool_from_env(name, default_value):
         try:
             return ast.literal_eval(value)
         except ValueError as e:
-            raise ValueError("{} is an invalid value for {}".format(value, name)) from e
+            raise ValueError(
+                "{} is an invalid value for {}".format(value, name)) from e
     return default_value
 
 
@@ -54,7 +58,8 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgres://stroylux:stroylux@localhost:5432/stroylux", conn_max_age=600
+        default="postgres://stroylux:stroylux@localhost:5432/stroylux",
+        conn_max_age=600
     )
 }
 
@@ -85,7 +90,8 @@ EMAIL_HOST_USER = email_config["EMAIL_HOST_USER"]
 EMAIL_HOST_PASSWORD = email_config["EMAIL_HOST_PASSWORD"]
 EMAIL_HOST = os.environ.get('EMAIL_HOST') or email_config["EMAIL_HOST"]
 EMAIL_PORT = os.environ.get('EMAIL_PORT') or email_config["EMAIL_PORT"]
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND') or email_config["EMAIL_BACKEND"]
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND') or email_config[
+    "EMAIL_BACKEND"]
 EMAIL_USE_TLS = email_config["EMAIL_USE_TLS"]
 EMAIL_USE_SSL = email_config["EMAIL_USE_SSL"]
 
@@ -97,7 +103,6 @@ ENABLE_ACCOUNT_CONFIRMATION_BY_EMAIL = get_bool_from_env(
 ENABLE_SSL = get_bool_from_env("ENABLE_SSL", False)
 if ENABLE_SSL:
     SECURE_SSL_REDIRECT = not DEBUG
-
 
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
 # Static files (CSS, JavaScript, Images)
@@ -143,7 +148,8 @@ TEMPLATES = [
     }
 ]
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "q@akg7^)mb)kq0el=0f0bhetgy+9=@a@bkx14m98&fgqu^clex")
+SECRET_KEY = os.environ.get("SECRET_KEY",
+                            "q@akg7^)mb)kq0el=0f0bhetgy+9=@a@bkx14m98&fgqu^clex")
 
 if not SECRET_KEY and DEBUG:
     warnings.warn("SECRET_KEY not configured, using a random temporary key.")
@@ -230,9 +236,11 @@ def get_host():
     return Site.objects.get_current().domain
 
 
-MAX_CHECKOUT_LINE_QUANTITY = int(os.environ.get("MAX_CHECKOUT_LINE_QUANTITY", 10000))
+MAX_CHECKOUT_LINE_QUANTITY = int(
+    os.environ.get("MAX_CHECKOUT_LINE_QUANTITY", 10000))
 
-ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
+ALLOWED_HOSTS = get_list(
+    os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
 ALLOWED_GRAPHQL_ORIGINS = os.environ.get("ALLOWED_GRAPHQL_ORIGINS", "*")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -255,7 +263,13 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     ],
     "background_images": [
         ("header_image", "thumbnail__1080x440"),
-        ("header_image_webp", "thumbnail_webp__1080x440")
+        ("header_image_webp", "thumbnail_webp__1080x440"),
+        ("category_image_xs", "thumbnail__60x60"),
+        ("category_image_xs_webp", "thumbnail_webp__60x60"),
+        ("category_image_sm", "thumbnail__255x255"),
+        ("category_image_sm_webp", "thumbnail_webp__255x255"),
+        ("category_image_md", "thumbnail__540x540"),
+        ("category_image_md_webp", "thumbnail_webp__540x540")
     ],
     "user_avatars": [
         ("default", "thumbnail__445x445"),
@@ -277,19 +291,17 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
     ],
     'shop_banner': [
-        ("default", "thumbnail__1080x600"),
-        ("lg", "thumbnail__1600x900"),
+        ("default", "thumbnail__1080x500"),
+        ("lg", "thumbnail__1280x500"),
         ("sm", "thumbnail__120x120"),
 
-        ("default_webp", "thumbnail_webp__1080x600"),
-        ("large_webp", "thumbnail_webp__1920x600"),
-        ("lg_webp", "thumbnail_webp__1600x900"),
+        ("default_webp", "thumbnail_webp__1080x500"),
+        ("lg_webp", "thumbnail_webp__1280x500"),
         ("md_webp", "thumbnail_webp__960x540"),
         ("sm_webp", "thumbnail_webp__120x120"),
 
-        ("default_crop_webp", "crop_webp__1080x600"),
-        ("large_crop_webp", "crop_webp__1920x600"),
-        ("lg_crop_webp", "crop_webp__1600x900"),
+        ("default_crop_webp", "crop_webp__1080x500"),
+        ("lg_crop_webp", "crop_webp__1280x500"),
         ("md_crop_webp", "crop_webp__960x540"),
         ("sm_crop_webp", "crop_webp__120x120"),
 
@@ -298,7 +310,8 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
 VERSATILEIMAGEFIELD_SETTINGS = {
     # Images should be pre-generated on Production environment
-    "create_images_on_demand": get_bool_from_env("CREATE_IMAGES_ON_DEMAND", False),
+    "create_images_on_demand": get_bool_from_env("CREATE_IMAGES_ON_DEMAND",
+                                                 False),
     'jpeg_resize_quality': 70
 }
 
@@ -330,7 +343,7 @@ if not DEBUG:
 
 # CELERY SETTINGS
 CELERY_BROKER_URL = (
-        os.environ.get("CELERY_BROKER_URL", os.environ.get("CLOUDAMQP_URL")) or ""
+    os.environ.get("CELERY_BROKER_URL", os.environ.get("CLOUDAMQP_URL")) or ""
 )
 CELERY_TASK_ALWAYS_EAGER = not CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ["json"]
@@ -351,7 +364,8 @@ if ENABLE_DEBUG_TOOLBAR:
         )
         warnings.warn(msg)
     else:
-        INSTALLED_APPS += ["django.forms", "debug_toolbar", "graphiql_debug_toolbar"]
+        INSTALLED_APPS += ["django.forms", "debug_toolbar",
+                           "graphiql_debug_toolbar"]
         MIDDLEWARE.append("main.graphql.middleware.DebugToolbarMiddleware")
 
         DEBUG_TOOLBAR_PANELS = [
@@ -374,10 +388,13 @@ GRAPHENE = {
     ]
 }
 
-RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY", '') #'6LcGQ_gUAAAAAHF3GpHmEql5CfmNcUAYsHWHxh4p'
-RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY", '') # '6LcGQ_gUAAAAAE3pGZbL2YTnBSWFmjmgvjsFMa_y'
+RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY",
+                                      '')  # '6LcGQ_gUAAAAAHF3GpHmEql5CfmNcUAYsHWHxh4p'
+RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY",
+                                       '')  # '6LcGQ_gUAAAAAE3pGZbL2YTnBSWFmjmgvjsFMa_y'
 
-RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
+RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000',
+                   'https': 'https://127.0.0.1:8000'}
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 RECAPTCHA_REQUIRED_SCORE = 0.85
 
@@ -416,4 +433,15 @@ CKEDITOR_CONFIGS = {
 
 SITEMAP_MAPPING = 'main.core.sitemaps.sitemaps'
 SITEMAP_INDEX_URL = 'sitemap-index'
-CORS_ALLOWED_ORIGINS = get_list(os.environ.get("CORS_ALLOWED_ORIGINS") or "")
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = get_list(
+        os.environ.get("CORS_ALLOWED_ORIGINS") or "")
+    sentry_sdk.init(
+        dsn="https://af7e9749cf1148f69fafe283c6322fef@o447771.ingest.sentry.io/5604493",
+        integrations=[DjangoIntegration(), CeleryIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True
+    )

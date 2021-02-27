@@ -1,19 +1,23 @@
-from typing import TYPE_CHECKING, Union
 import os
+from typing import Union
+
 from django.conf import settings
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.db.models import Sum, F, Avg, Q
 from django.db.models.functions import Coalesce
+from django.utils import timezone
 from django.utils.encoding import smart_text
 from django_measurement.models import MeasurementField
 from django_prices.models import MoneyField
 from measurement.measures import Weight
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
+from prices import Money
 from versatileimagefield.fields import PPOIField, VersatileImageField
 
 from . import ReviewRating, ReviewStatus, AttributeInputType
+from ..account.models import User
 from ..core.models import (
     PublishableModel,
     PublishedQuerySet,
@@ -25,9 +29,6 @@ from ..core.weight import WeightUnits, zero_weight
 from ..graphql.core.types import MoneyRange
 from ..graphql.product import StockStatus
 from ..order.models import OrderLine
-from prices import Money
-
-from ..account.models import User
 
 
 class Category(MPTTModel):
@@ -36,7 +37,8 @@ class Category(MPTTModel):
     description = models.TextField(blank=True)
     description_json = JSONField(blank=True, default=dict)
     parent = models.ForeignKey(
-        "self", null=True, blank=True, related_name="children", on_delete=models.CASCADE
+        "self", null=True, blank=True, related_name="children",
+        on_delete=models.CASCADE
     )
     background_image = VersatileImageField(
         upload_to="category-backgrounds", blank=True, null=True
@@ -60,7 +62,8 @@ class ProductType(models.Model):
     is_shipping_required = models.BooleanField(default=True)
     is_digital = models.BooleanField(default=False)
     weight = MeasurementField(
-        measurement=Weight, unit_choices=WeightUnits.CHOICES, default=zero_weight
+        measurement=Weight, unit_choices=WeightUnits.CHOICES,
+        default=zero_weight
     )
 
     class Meta:
@@ -80,7 +83,8 @@ class ProductType(models.Model):
 
 
 class ProductsQueryset(PublishedQuerySet):
-    MINIMAL_PRICE_FIELDS = {"minimal_variant_price_amount", "minimal_variant_price"}
+    MINIMAL_PRICE_FIELDS = {"minimal_variant_price_amount",
+                            "minimal_variant_price"}
 
     def create(self, **kwargs):
         """Create a product.
@@ -132,7 +136,9 @@ class Product(PublishableModel):
         amount_field="maximal_variant_price_amount", currency_field="currency"
     )
     updated_at = models.DateTimeField(auto_now=True, null=True)
-    unit = models.CharField(max_length=50, default='pcs', blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now, null=True)
+    unit = models.CharField(max_length=50, default='pcs', blank=True,
+                            null=True)
     objects = ProductsQueryset.as_manager()
 
     class Meta:
@@ -160,7 +166,8 @@ class Product(PublishableModel):
         return self.name
 
     def save(
-            self, force_insert=False, force_update=False, using=None, update_fields=None
+        self, force_insert=False, force_update=False, using=None,
+        update_fields=None
     ):
         # Make sure the "variant_price_amount" is set
         if self.minimal_variant_price_amount is None:
@@ -175,17 +182,19 @@ class Product(PublishableModel):
         return images[0] if images else None
 
     def get_price_range(
-            self
+        self
     ) -> MoneyRange:
         prices = [variant.base_price for variant in self]
-        return MoneyRange(min(prices) or zero_money(), max(prices) or zero_money())
+        return MoneyRange(min(prices) or zero_money(),
+                          max(prices) or zero_money())
 
     def get_absolute_url(self) -> str:
         return f'/product/{self.slug}/{self.pk}/'
 
     @property
     def stock_status(self) -> str:
-        is_available = any([variant.is_available() for variant in self.variants.all()])
+        is_available = any(
+            [variant.is_available() for variant in self.variants.all()])
         if is_available:
             return StockStatus.IN_STOCK
         return StockStatus.BACKORDER
@@ -220,14 +229,16 @@ class ProductVariant(models.Model):
         blank=True,
         null=True,
     )
-    cost_price = MoneyField(amount_field="cost_price_amount", currency_field="currency")
+    cost_price = MoneyField(amount_field="cost_price_amount",
+                            currency_field="currency")
     product = models.ForeignKey(
         Product, related_name="variants", on_delete=models.CASCADE
     )
     images = models.ManyToManyField("ProductImage", through="VariantImage")
 
     weight = MeasurementField(
-        measurement=Weight, unit_choices=WeightUnits.CHOICES, default=zero_weight
+        measurement=Weight, unit_choices=WeightUnits.CHOICES,
+        default=zero_weight
     )
 
     class Meta:
@@ -263,12 +274,14 @@ class ProductVariant(models.Model):
         variant_display = str(self)
         product = self.product
         product_display = (
-            f"{product} ({variant_display})" if variant_display else str(product)
+            f"{product} ({variant_display})" if variant_display else str(
+                product)
         )
         return smart_text(product_display)
 
     def is_available(self):
-        return any([stock.available_quantity() > 0 for stock in self.stocks.all()])
+        return any(
+            [stock.available_quantity() > 0 for stock in self.stocks.all()])
 
     def update_product_price(self):
         product = self.product
@@ -288,7 +301,8 @@ class ProductImage(SortableModel):
     product = models.ForeignKey(
         Product, related_name="images", on_delete=models.CASCADE
     )
-    image = VersatileImageField(upload_to="products", ppoi_field="ppoi", blank=False)
+    image = VersatileImageField(upload_to="products", ppoi_field="ppoi",
+                                blank=False)
     ppoi = PPOIField()
     alt = models.CharField(max_length=128, blank=True)
 
@@ -305,7 +319,8 @@ class ProductImage(SortableModel):
 
 class VariantImage(models.Model):
     variant = models.ForeignKey(
-        "ProductVariant", related_name="variant_images", on_delete=models.CASCADE
+        "ProductVariant", related_name="variant_images",
+        on_delete=models.CASCADE
     )
     image = models.ForeignKey(
         ProductImage, related_name="variant_images", on_delete=models.CASCADE
@@ -315,13 +330,15 @@ class VariantImage(models.Model):
 class StockQuerySet(models.QuerySet):
     def annotate_available_quantity(self):
         return self.annotate(
-            available_quantity=F("quantity") - Coalesce(Sum("allocations__quantity_allocated"), 0)
+            available_quantity=F("quantity") - Coalesce(
+                Sum("allocations__quantity_allocated"), 0)
         )
 
 
 class Stock(models.Model):
     product_variant = models.ForeignKey(
-        ProductVariant, null=False, on_delete=models.CASCADE, related_name="stocks"
+        ProductVariant, null=False, on_delete=models.CASCADE,
+        related_name="stocks"
     )
     quantity = models.PositiveIntegerField(default=0)
 
@@ -382,12 +399,14 @@ class Allocation(models.Model):
 class ProductReviewQuerySet(models.QuerySet):
     def published(self, user):
         if user.is_authenticated:
-            return self.filter(Q(status=ReviewStatus.PUBLISHED) | Q(user=user), user__isnull=False)
+            return self.filter(Q(status=ReviewStatus.PUBLISHED) | Q(user=user),
+                               user__isnull=False)
         return self.filter(status=ReviewStatus.PUBLISHED, user__isnull=False)
 
     @staticmethod
     def user_has_access_to_all(user):
-        return user.is_active and user.has_perm(ProductPermissions.MANAGE_PRODUCTS)
+        return user.is_active and user.has_perm(
+            ProductPermissions.MANAGE_PRODUCTS)
 
     def visible_to_user(self, user):
         return self.all()
@@ -399,14 +418,18 @@ class ProductReviewQuerySet(models.QuerySet):
 class ProductReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    product = models.ForeignKey(Product, related_name="reviews", on_delete=models.CASCADE)
-    rating = models.IntegerField(choices=ReviewRating.CHOICES, default=ReviewRating.EXCELLENT)
+    product = models.ForeignKey(Product, related_name="reviews",
+                                on_delete=models.CASCADE)
+    rating = models.IntegerField(choices=ReviewRating.CHOICES,
+                                 default=ReviewRating.EXCELLENT)
     title = models.CharField(max_length=100)
     content = models.TextField(max_length=1000)
     advantages = JSONField(default=dict, max_length=200)
     flaws = JSONField(default=dict, max_length=200)
-    user = models.ForeignKey(User, related_name="reviews", on_delete=models.SET_NULL, null=True, blank=True)
-    status = models.CharField(choices=ReviewStatus.CHOICES, default=ReviewStatus.IN_PROGRESS, max_length=50)
+    user = models.ForeignKey(User, related_name="reviews",
+                             on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(choices=ReviewStatus.CHOICES,
+                              default=ReviewStatus.IN_PROGRESS, max_length=50)
     order_line = models.OneToOneField(
         "order.OrderLine",
         on_delete=models.SET_NULL,
@@ -429,7 +452,8 @@ class ProductReviewImage(SortableModel):
     review = models.ForeignKey(
         ProductReview, related_name="images", on_delete=models.CASCADE
     )
-    image = VersatileImageField(upload_to=get_review_upload_path, ppoi_field="ppoi", blank=False)
+    image = VersatileImageField(upload_to=get_review_upload_path,
+                                ppoi_field="ppoi", blank=False)
     ppoi = PPOIField()
     alt = models.CharField(max_length=128, blank=True)
 
@@ -448,7 +472,8 @@ class ProductReviewImage(SortableModel):
 class BaseAttributeQuerySet(models.QuerySet):
     @staticmethod
     def user_has_access_to_all(user: "User") -> bool:
-        return user.is_active and user.has_perm(ProductPermissions.MANAGE_PRODUCTS)
+        return user.is_active and user.has_perm(
+            ProductPermissions.MANAGE_PRODUCTS)
 
     def get_public_attributes(self):
         raise NotImplementedError
@@ -482,7 +507,8 @@ class AssignedProductAttribute(BaseAssignedAttribute):
         Product, related_name="attributes", on_delete=models.CASCADE
     )
     assignment = models.ForeignKey(
-        "AttributeProduct", on_delete=models.CASCADE, related_name="productassignments"
+        "AttributeProduct", on_delete=models.CASCADE,
+        related_name="productassignments"
     )
 
     class Meta:
@@ -496,7 +522,8 @@ class AssignedVariantAttribute(BaseAssignedAttribute):
         ProductVariant, related_name="attributes", on_delete=models.CASCADE
     )
     assignment = models.ForeignKey(
-        "AttributeVariant", on_delete=models.CASCADE, related_name="variantassignments"
+        "AttributeVariant", on_delete=models.CASCADE,
+        related_name="variantassignments"
     )
 
     class Meta:

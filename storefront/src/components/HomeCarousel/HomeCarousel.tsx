@@ -1,12 +1,15 @@
 import "./scss/index.scss";
 
 import React from "react";
-import Carousel from "react-multi-carousel";
 import {ShopInfo_shop_images} from "@sdk/queries/types/ShopInfo";
 import {Skeleton} from "@material-ui/lab";
 import {makeStyles} from "@material-ui/core/styles";
 import {useTheme} from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Thumbs, Navigation, Lazy, Pagination } from 'swiper';
+
+SwiperCore.use([Thumbs, Navigation, Lazy, Pagination]);
 
 const useStyles = makeStyles(theme => ({
   imgDescription: {
@@ -16,18 +19,6 @@ const useStyles = makeStyles(theme => ({
     color: "#fff"
   }
 }));
-const responsive = {
-  desktop: {
-    breakpoint: { max: 5000, min: 500 },
-    items: 1,
-    slidesToSlide: 1
-  },
-  mobile: {
-    breakpoint: { max: 500, min: 0 },
-    items: 1,
-    slidesToSlide: 1
-  }
-};
 
 const HomeCarousel:React.FC<{
   images: ShopInfo_shop_images[] | null
@@ -42,30 +33,30 @@ const HomeCarousel:React.FC<{
         <Skeleton variant="rect" height={sm ? 400 : 500}/>
         }
         {images &&
-        <Carousel swipeable
-                  draggable={false}
-                  responsive={responsive}
-                  keyBoardControl
-                  customTransition="transform 300ms ease-in-out"
-                  transitionDuration={500}
-                  containerClass="carousel-container"
-                  removeArrowOnDeviceType={["tablet", "mobile"]}>
-          {images.map((img, i) =>
-
-              <div key={i}
-                   className="flex justify-center"
-              >
-                <img key={i} src={sm ? img.mobileUrl : img.largeUrl} alt="homeimg" className="max-w-full max-h-500"/>
-                {img.description &&
-                <div className="flex flex-column items-center justify-center h-full absolute"
-                     style={{paddingTop: "10%"}}>
-                  <div dangerouslySetInnerHTML={{__html: img.description}}
-                       className={classes.imgDescription}/>
-                </div>
-                }
-              </div>
-          )}
-        </Carousel>
+        <Swiper spaceBetween={0}
+                slidesPerView={1}
+                navigation
+                pagination
+        >
+          {images.map((img, i) => {
+            return(
+                <SwiperSlide key={i}>
+                  <div key={i}
+                       className="flex justify-center w-full"
+                  >
+                    <img key={i} src={sm ? img.mobileUrl : img.largeUrl} alt={img.alt} className="max-w-full max-h-500 object-cover w-full"/>
+                    {img.description &&
+                    <div className="flex flex-column items-center justify-center h-full absolute"
+                         style={{paddingTop: "10%"}}>
+                      <div dangerouslySetInnerHTML={{__html: img.description}}
+                           className={classes.imgDescription}/>
+                    </div>
+                    }
+                  </div>
+                </SwiperSlide>
+            )
+          })}
+        </Swiper>
         }
       </div>
   );

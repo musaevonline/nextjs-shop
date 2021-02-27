@@ -93,6 +93,8 @@ export interface ProductVariantDetails_productVariant_images {
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */
@@ -139,6 +141,8 @@ export interface ProductVariantDetails_productVariant_product_variants_images {
    * The ID of the object.
    */
   id: string;
+  alt: string;
+  sortOrder: number | null;
   /**
    * The URL of the image.
    */

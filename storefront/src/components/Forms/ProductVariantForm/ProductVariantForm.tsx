@@ -30,7 +30,7 @@ export type TFormProductVariantData = {
 interface ProductVariantFormProps {
     product: ProductWithVariants,
     addVariantToCheckoutSubmit(values: TFormProductVariantData): void,
-    setSelectedVariant(variant: ProductVariant): void,
+    setSelectedVariant(variant: ProductVariant | null): void,
     setSelectedQuantity(quantity: number),
     selectedVariant: ProductVariant | null,
     checkoutVariantQuantity: (selectedVariantId:string) => number
@@ -203,7 +203,7 @@ const ProductVariantForm:React.FC<ProductVariantFormProps> = ({product, addVaria
                         <div className="pt-5 w-full">
                             <Button  type="submit"
                                      variant="contained"
-                                     color="primary"
+                                     color="secondary"
                                      size="large"
                                      fullWidth
                                      disabled={!form.isValid || !selectedVariantStockQuantity}>

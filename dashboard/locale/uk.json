@@ -3067,7 +3067,7 @@
   },
   "src_dot_permissionGroups_dot_components_dot_PermissionGroupCreatePage_dot_3920591233": {
     "context": "card description",
-    "string": "Expand or restrict group's permissions to access certain part of saleor system."
+    "string": "Expand or restrict group's permissions to access certain part of shop system."
   },
   "src_dot_permissionGroups_dot_components_dot_PermissionGroupDeleteDialog_dot_2297471173": {
     "context": "dialog content",
@@ -3087,7 +3087,7 @@
   },
   "src_dot_permissionGroups_dot_components_dot_PermissionGroupDetailsPage_dot_3920591233": {
     "context": "card description",
-    "string": "Expand or restrict group's permissions to access certain part of saleor system."
+    "string": "Expand or restrict group's permissions to access certain part of shop system."
   },
   "src_dot_permissionGroups_dot_components_dot_PermissionGroupInfo_dot_2081191949": {
     "context": "text field label",
@@ -4008,7 +4008,7 @@
   },
   "src_dot_services_dot_components_dot_ServiceCreatePage_dot_3639008725": {
     "context": "card description",
-    "string": "Expand or restrict user's permissions to access certain part of saleor system."
+    "string": "Expand or restrict user's permissions to access certain part of shop system."
   },
   "src_dot_services_dot_components_dot_ServiceDefaultToken_dot_1336855942": {
     "string": "Generated Token"
@@ -4045,7 +4045,7 @@
   },
   "src_dot_services_dot_components_dot_ServiceDetailsPage_dot_3639008725": {
     "context": "card description",
-    "string": "Expand or restrict user's permissions to access certain part of saleor system."
+    "string": "Expand or restrict user's permissions to access certain part of shop system."
   },
   "src_dot_services_dot_components_dot_ServiceInfo_dot_3789449123": {
     "context": "service account",

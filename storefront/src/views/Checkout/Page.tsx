@@ -101,7 +101,7 @@ const Page:React.FC = () =>{
             <Container maxWidth="lg">
                 {loading && <Loader full={true}/>}
                 <div className="mt-20 mb-10">
-                    <Breadcrumbs separator="›" aria-label="breadcrumb">
+                    <Breadcrumbs separator="/" aria-label="breadcrumb">
                         <Link color="inherit" to={baseUrl}>
                             Главная
                         </Link>

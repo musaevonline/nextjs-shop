@@ -17,7 +17,7 @@ const Page:React.FC<{
         <div>
             <Container maxWidth="lg">
                 <div className="mt-20 mb-10">
-                    <Breadcrumbs separator="›" aria-label="breadcrumb">
+                    <Breadcrumbs separator="/" aria-label="breadcrumb">
                         <Link color="inherit" to={baseUrl}>
                             Главная
                         </Link>

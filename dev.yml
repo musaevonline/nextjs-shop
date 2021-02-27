@@ -26,7 +26,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backendssl.entrypoints=websecure"
-      - "traefik.http.routers.backendssl.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((graphql)|(admin)|(ckeditor))+}/`)"
+      - "traefik.http.routers.backendssl.rule=Host(`YOUR_DOMAIN`)&&PathPrefix(`/{prefix:((graphql)|(admin)|(ckeditor))+}/`)"
       - "traefik.http.routers.backendssl.tls.certresolver=letsencrypt"
       - "traefik.http.middlewares.gzip-compress.compress=true"
       - "traefik.http.routers.backendssl.middlewares=gzip-compress"
@@ -38,15 +38,15 @@ services:
       context: ./storefront
       dockerfile: ./Dockerfile
       args:
-        API_URI: "https://stroyluxdrev.by/graphql/"
-        DASHBOARD_URL: "https://stroyluxdrev.by/dashboard/"
-        STOREFRONT_URL: "https://stroyluxdrev.by/"
-        GTM_ID: "GTM-W53SN2W"
+        API_URI: "https://YOUR_DOMAIN/graphql/"
+        DASHBOARD_URL: "https://YOUR_DOMAIN/dashboard/"
+        STOREFRONT_URL: "https://YOUR_DOMAIN/"
+        GTM_ID: "YOUR_GOOGLE_GTM"
     restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.rule=Host(`YOUR_DOMAIN`)&&PathPrefix(`/`)"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
 
   dashboard:
@@ -55,12 +55,12 @@ services:
       context: ./dashboard
       dockerfile: ./Dockerfile
       args:
-        API_URI: "https://stroyluxdrev.by/graphql/"
+        API_URI: "https://YOUR_DOMAIN/graphql/"
     restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/dashboard/`)"
+      - "traefik.http.routers.dashboard.rule=Host(`YOUR_DOMAIN`)&&PathPrefix(`/dashboard/`)"
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
 
   nginx:
@@ -75,7 +75,7 @@ services:
       #      - "traefik.docker.network=proxy"
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.entrypoints=websecure"
-      - "traefik.http.routers.nginx.rule=Host(`stroyluxdrev.by`)&&PathPrefix(`/{prefix:((sitemap[-a-z]*.xml)|(robots.txt)|(media\/)|(static\/))+}`)"
+      - "traefik.http.routers.nginx.rule=Host(`YOUR_DOMAIN`)&&PathPrefix(`/{prefix:((sitemap[-a-z]*.xml)|(robots.txt)|(media\/)|(static\/))+}`)"
       - "traefik.http.routers.nginx.tls.certresolver=letsencrypt"
 
   db:
@@ -115,19 +115,6 @@ services:
       - ./stroylux/templates/:/app/templates:Z
       - stroylux-media:/app/media
 
-  #  smtp:
-  #      image: mailhog/mailhog:v1.0.0
-  #      container_name: smtp
-  #      restart: unless-stopped
-  #      ports:
-  #        - 8025:8025
-  #        - 1025:1025
-  #      labels:
-  #        - "traefik.enable=true"
-  #        - "traefik.http.routers.smtp.entrypoints=websecure"
-  #        - "traefik.http.services.smtp.loadbalancer.server.port=8025"
-  #        - "traefik.http.routers.smtp.rule=Host(`mailhog.docker.localhost`)"
-  #        - "traefik.http.routers.smtp.tls.certresolver=letsencrypt"
   proxy:
     image: "traefik:v2.2"
     restart: always

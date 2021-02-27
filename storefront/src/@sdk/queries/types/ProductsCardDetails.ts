@@ -149,6 +149,15 @@ export interface ProductsCardDetails_products_edges_node_attributes {
   values: (ProductsCardDetails_products_edges_node_attributes_values | null)[];
 }
 
+export interface ProductsCardDetails_products_edges_node_category {
+  __typename: "Category";
+  /**
+   * The ID of the object.
+   */
+  id: string;
+  name: string;
+}
+
 export interface ProductsCardDetails_products_edges_node {
   __typename: "Product";
   /**
@@ -183,6 +192,7 @@ export interface ProductsCardDetails_products_edges_node {
    * List of attributes assigned to this product.
    */
   attributes: ProductsCardDetails_products_edges_node_attributes[];
+  category: ProductsCardDetails_products_edges_node_category | null;
 }
 
 export interface ProductsCardDetails_products_edges {
@@ -195,6 +205,10 @@ export interface ProductsCardDetails_products_edges {
 
 export interface ProductsCardDetails_products {
   __typename: "ProductCountableConnection";
+  /**
+   * A total count of items in the collection.
+   */
+  totalCount: number | null;
   /**
    * Pagination data for this connection.
    */
@@ -215,4 +229,5 @@ export interface ProductsCardDetailsVariables {
   sortBy?: ProductOrder | null;
   filter?: ProductFilterInput | null;
   ids?: (string | null)[] | null;
+  includeCategory: boolean;
 }

@@ -1,5 +1,3 @@
-from typing import Union, List
-
 import graphene
 import graphene_django_optimizer
 from django.db.models import Sum
@@ -11,20 +9,28 @@ from graphql import GraphQLError
 from main import settings
 from main.core.permissions import ProductPermissions
 from main.graphql.core.connection import DjangoPkInterface
-from main.graphql.core.fields import PrefetchingConnectionField, FilterInputConnectionField
+from main.graphql.core.fields import PrefetchingConnectionField, \
+    FilterInputConnectionField
 from main.graphql.core.types import Money, MoneyRange
 from main.graphql.core.types.common import Image
 from main.graphql.decorators import permission_required
 from main.product import models
 from main.product.availability import is_product_in_stock
-from main.product.templatetags.product_images import get_thumbnail, get_product_image_thumbnail
+from main.product.templatetags.product_images import get_thumbnail, \
+    get_product_image_thumbnail
 from main.product.utils import calculate_revenue_for_variant
 from .attributes import SelectedAttribute, Attribute
 from .. import StockStatus
-from ..dataloaders.products import ProductVariantsByProductIdLoader, ImagesByProductIdLoader, CategoryByIdLoader, \
-    ProductByIdLoader, ImagesByProductVariantIdLoader
+from ..dataloaders import CategoryByIdLoader
+from ..dataloaders.attributes import \
+    SelectedAttributesByProductVariantIdLoader, \
+    SelectedAttributesByProductIdLoader
+from ..dataloaders.categories import CategoryByParentIdLoader
+from ..dataloaders.products import ProductVariantsByProductIdLoader, \
+    ImagesByProductIdLoader, \
+    ProductByIdLoader, ImagesByProductVariantIdLoader, \
+    ProductsByCategoryIdLoader
 from ..dataloaders.stocks import StocksByVariantIdLoader
-from ..dataloaders.attributes import SelectedAttributesByProductVariantIdLoader, SelectedAttributesByProductIdLoader
 from ..filters import ProductReviewFilterInput, AttributeFilterInput
 from ..resolvers import resolve_attributes
 from ..sorters import ProductReviewOrderField
@@ -108,11 +114,14 @@ class ProductVariant(CountableDjangoObjectType):
         ),
     )
     images = graphene.List(
-        lambda: ProductImage, description="List of images for the product variant."
+        lambda: ProductImage,
+        description="List of images for the product variant."
     )
-    cost_price = graphene.Field(Money, description="Cost price of the variant.")
+    cost_price = graphene.Field(Money,
+                                description="Cost price of the variant.")
     stocks = graphene_django_optimizer.field(
-        graphene.List(lambda: Stock, description="Stocks for the product variant."),
+        graphene.List(lambda: Stock,
+                      description="Stocks for the product variant."),
         model_field="stocks"
     )
     attributes = graphene.List(
@@ -164,7 +173,8 @@ class ProductVariant(CountableDjangoObjectType):
     @classmethod
     def get_node(cls, info, id):
         user = info.context.user
-        visible_products = models.Product.objects.visible_to_user(user).values_list(
+        visible_products = models.Product.objects.visible_to_user(
+            user).values_list(
             "pk", flat=True
         )
         qs = cls._meta.model.objects.filter(product__id__in=visible_products)
@@ -172,7 +182,8 @@ class ProductVariant(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_attributes(root: models.ProductVariant, info):
-        return SelectedAttributesByProductVariantIdLoader(info.context).load(root.id)
+        return SelectedAttributesByProductVariantIdLoader(info.context).load(
+            root.id)
 
     @staticmethod
     @permission_required(ProductPermissions.MANAGE_PRODUCTS)
@@ -199,12 +210,14 @@ class Rating(graphene.ObjectType):
 
 @key(fields="id")
 class Product(CountableDjangoObjectType):
-    variants = graphene.List(ProductVariant, description="List of variants for the product.")
+    variants = graphene.List(ProductVariant,
+                             description="List of variants for the product.")
     thumbnail = graphene.Field(
         Image,
         description="The main thumbnail for a product.",
         size=graphene.String(description="Size of thumbnail. Default 800x450"),
-        method=graphene.Argument(VersatileImageMethod, description="VersatileImageMethod")
+        method=graphene.Argument(VersatileImageMethod,
+                                 description="VersatileImageMethod")
     )
     images = graphene.List(
         lambda: ProductImage, description="List of images for the product."
@@ -214,7 +227,8 @@ class Product(CountableDjangoObjectType):
     rating = graphene.Field(Rating, description="Product rating")
     reviews = FilterInputConnectionField(
         lambda: ProductReview,
-        filter=ProductReviewFilterInput(description="Filtering options for reviews."),
+        filter=ProductReviewFilterInput(
+            description="Filtering options for reviews."),
         sort_by=ProductReviewOrderField(description="Sort reviews."),
         description="List of the shop's product reviews.",
     )
@@ -225,7 +239,8 @@ class Product(CountableDjangoObjectType):
     )
     image_by_id = graphene.Field(
         lambda: ProductImage,
-        id=graphene.Argument(graphene.ID, description="ID of a product image."),
+        id=graphene.Argument(graphene.ID,
+                             description="ID of a product image."),
         description="Get a single product image by ID.",
     )
     is_available = graphene.Boolean(
@@ -255,7 +270,8 @@ class Product(CountableDjangoObjectType):
 
     @staticmethod
     @graphene_django_optimizer.resolver_hints(prefetch_related="images")
-    def resolve_thumbnail(root: models.Product, info, size='255x255', method='thumbnail_webp'):
+    def resolve_thumbnail(root: models.Product, info, size='255x255',
+                          method='thumbnail_webp'):
         def return_first_thumbnail(images):
             image = images[0] if images else None
             url = get_product_image_thumbnail(image, size, method=method)
@@ -274,28 +290,34 @@ class Product(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_price_range(root: models.Product, *_args, **_kwargs):
-        return MoneyRange(root.minimal_variant_price, root.maximal_variant_price)
+        return MoneyRange(root.minimal_variant_price,
+                          root.maximal_variant_price)
 
     @staticmethod
     def resolve_stock_status(root: models.Product, *_args, **_kwargs):
         ids = root.variants.all().values_list('id')
-        stocks = models.Stock.objects.filter(product_variant__pk__in=ids).annotate(
-            quantity_allocated=Coalesce(Sum("allocations__quantity_allocated"), 0)
+        stocks = models.Stock.objects.filter(
+            product_variant__pk__in=ids).annotate(
+            quantity_allocated=Coalesce(Sum("allocations__quantity_allocated"),
+                                        0)
         )
         for s in stocks:
             quantity_allocated = s.quantity_allocated
             available_quantity = max(s.quantity - quantity_allocated, 0)
-            is_available = min(available_quantity, settings.MAX_CHECKOUT_LINE_QUANTITY)
+            is_available = min(available_quantity,
+                               settings.MAX_CHECKOUT_LINE_QUANTITY)
             if is_available:
                 return StockStatus.IN_STOCK
         return StockStatus.OUT_STOCK
 
     @staticmethod
     def resolve_rating(root: models.Product, *_args, **_kwargs):
-        return Rating(rating_avg=root.rating_avg or 0, count=root.reviews.count())
+        return Rating(rating_avg=root.rating_avg or 0,
+                      count=root.reviews.count())
 
     def resolve_reviews(root: models.Product, info, *_args, **_kwargs):
-        return models.ProductReview.objects.visible_to_user(info.context.user).filter(product=root)
+        return models.ProductReview.objects.visible_to_user(
+            info.context.user).filter(product=root)
 
     @staticmethod
     def resolve_attributes(root: models.Product, info):
@@ -364,11 +386,13 @@ class ProductType(CountableDjangoObjectType):
         return graphene.Node.get_node_from_global_id(_info, root.id)
 
     @staticmethod
-    def resolve_product_attributes(root: models.ProductType, *_args, **_kwargs):
+    def resolve_product_attributes(root: models.ProductType, *_args,
+                                   **_kwargs):
         return root.product_attributes.product_attributes_sorted().all()
 
     @staticmethod
-    def resolve_variant_attributes(root: models.ProductType, *_args, **_kwargs):
+    def resolve_variant_attributes(root: models.ProductType, *_args,
+                                   **_kwargs):
         return root.variant_attributes.variant_attributes_sorted().all()
 
     @staticmethod
@@ -390,6 +414,16 @@ class Category(CountableDjangoObjectType):
     )
     background_image = graphene.Field(
         Image, size=graphene.Int(description="Size of the image.")
+    )
+    thumbnail = graphene.Field(
+        Image,
+        description="The main thumbnail for a product.",
+        size=graphene.String(description="Size of thumbnail. Default 800x450"),
+        method=graphene.Argument(VersatileImageMethod,
+                                 description="VersatileImageMethod")
+    )
+    parent = graphene.Field(
+        lambda: Category, description="Parent of the category."
     )
 
     class Meta:
@@ -416,7 +450,8 @@ class Category(CountableDjangoObjectType):
         return graphene_django_optimizer.query(qs, info)
 
     @staticmethod
-    def resolve_background_image(root: models.Category, info, size=None, **_kwargs):
+    def resolve_background_image(root: models.Category, info, size=None,
+                                 **_kwargs):
         if root.background_image:
             return Image.get_adjusted(
                 image=root.background_image,
@@ -428,20 +463,40 @@ class Category(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_children(root: models.Category, info, **_kwargs):
-        qs = root.children.all()
-        return graphene_django_optimizer.query(qs, info)
+        return CategoryByParentIdLoader(info.context).load(root.id)
 
     @staticmethod
     def resolve_products(root: models.Category, info, **_kwargs):
-        tree = root.get_descendants(include_self=True)
-        qs = models.Product.objects.published()
-        qs = qs.filter(category__in=tree)
-        qs = qs.distinct()
-        return graphene_django_optimizer.query(qs, info)
+        ids = list(root.get_descendants(include_self=True).values_list('id',
+                                                                       flat=True))
+
+        # qs = models.Product.objects.published()
+        # qs = qs.filter(category__in=tree)
+        # qs = qs.distinct()
+        # return graphene_django_optimizer.query(qs, info)
+        def map_ids_to_products(products):
+            return models.Product.objects.filter(
+                id__in=list({p.id for p_list in products for p in p_list}))
+
+        return ProductsByCategoryIdLoader(info.context).load_many(ids).then(
+            map_ids_to_products)
 
     @staticmethod
     def __resolve_reference(root, _info, **_kwargs):
         return graphene.Node.get_node_from_global_id(_info, root.id)
+
+    @staticmethod
+    def resolve_thumbnail(root: models.Category, info, size='255x255',
+                          method='thumbnail_webp'):
+        url = get_thumbnail(root.background_image, size, method)
+        return Image(alt=root.background_image_alt,
+                     url=info.context.build_absolute_uri(url))
+
+    @staticmethod
+    def resolve_parent(root: models.Category, info):
+        if root.parent_id:
+            return CategoryByIdLoader(info.context).load(root.parent_id)
+        return None
 
 
 @key(fields="id")
@@ -450,6 +505,13 @@ class ProductImage(CountableDjangoObjectType):
         required=True,
         description="The URL of the image.",
         size=graphene.Int(description="Size of the image."),
+    )
+    thumbnail = graphene.Field(
+        graphene.String,
+        description="The thumbnail image.",
+        size=graphene.String(description="Size of thumbnail. Default 540x450"),
+        method=graphene.Argument(VersatileImageMethod,
+                                 description="VersatileImageMethod")
     )
 
     class Meta:
@@ -469,6 +531,12 @@ class ProductImage(CountableDjangoObjectType):
     @staticmethod
     def __resolve_reference(root, _info, **_kwargs):
         return graphene.Node.get_node_from_global_id(_info, root.id)
+
+    @staticmethod
+    def resolve_thumbnail(root: models.ProductImage, info, size='540x540',
+                          method='thumbnail_webp'):
+        url = get_thumbnail(root.image, size, method=method)
+        return info.context.build_absolute_uri(url)
 
 
 class Stock(CountableDjangoObjectType):
@@ -493,7 +561,8 @@ class Stock(CountableDjangoObjectType):
 
     @staticmethod
     def resolve_stock_quantity(root: models.Stock, *_args):
-        return min(root.available_quantity, settings.MAX_CHECKOUT_LINE_QUANTITY)
+        return min(root.available_quantity,
+                   settings.MAX_CHECKOUT_LINE_QUANTITY)
 
     @staticmethod
     @permission_required(ProductPermissions.MANAGE_PRODUCTS)
@@ -511,7 +580,8 @@ class Stock(CountableDjangoObjectType):
 class ProductReview(CountableDjangoObjectType):
     user_name = graphene.String()
     user_avatar = graphene.String(description="The URL of the image.",
-                                  size=graphene.Int(description="Size of the image."), )
+                                  size=graphene.Int(
+                                      description="Size of the image."), )
 
     class Meta:
         description = "Represents product review."

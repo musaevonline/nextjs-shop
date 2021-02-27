@@ -153,7 +153,7 @@ const PermissionGroupDetailsPage: React.FC<PermissionGroupDetailsPageProps> = ({
                   })}
                   description={intl.formatMessage({id: "expand_or_restrict_group's_permissions_to_access",
                     defaultMessage:
-                        "Expand or restrict group's permissions to access certain part of saleor system.",
+                        "Expand or restrict group's permissions to access certain part of shop system.",
                     description: "card description"
                   })}
               />

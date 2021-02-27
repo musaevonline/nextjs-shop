@@ -112,6 +112,7 @@
     "@types/react-helmet": "^6.1.0",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
+    "@types/uniqid": "^5.2.0",
     "@types/url-join": "^4.0.0",
     "@types/webpack-env": "^1.15.2",
     "@types/yup": "^0.29.6",

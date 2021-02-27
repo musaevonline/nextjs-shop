@@ -1,22 +1,7 @@
 {
-  "name": "storefront",
-  "description": "A GraphQL-powered, PWA, single-page storefront application for Stroylux",
-  "repository": "https://github.com/vladkoblynsky/stroylux",
-  "website": "http://stroylux.by/",
-  "logo": "https://mirumee.com/img/opensource_saleor.jpg",
-  "keywords": ["stroylux", "e-commerce", "storefront"],
-  "env": {
-    "API_URI": {
-      "description": "URI of a running instance of Stroylux GraphQL API",
-      "value": "https://stroylux.by/graphql/"
-    }
-  },
-  "buildpacks": [
-    {
-      "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
-    },
-    {
-      "url": "https://github.com/heroku/heroku-buildpack-static.git"
-    }
-  ]
+  "expo": {
+    "name": "Stroylux app",
+    "slug": "stroylux-app",
+    "description": "A GraphQL-powered, single-page storefront application for Stroylux"
+  }
 }

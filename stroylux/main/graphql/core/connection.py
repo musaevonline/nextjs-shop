@@ -2,13 +2,13 @@ import json
 from typing import Any, Dict, Iterable, List, Tuple, Union
 
 import graphene
+import graphene_django_optimizer
+import opentracing as ot
 from django.db.models import Model as DjangoModel, Q, QuerySet, Manager
 from graphene.relay.connection import Connection
-import opentracing as ot
 from graphql.error import GraphQLError
 from graphql_relay.connection.connectiontypes import Edge, PageInfo
 from graphql_relay.utils import base64, unbase64
-import graphene_django_optimizer
 
 from ..core.enums import OrderDirection
 
@@ -50,11 +50,11 @@ def get_field_value(instance: DjangoModel, field_name: str):
 
 
 def _prepare_filter_expression(
-        field_name: str,
-        index: int,
-        cursor: List[str],
-        sorting_fields: List[str],
-        sorting_direction: str,
+    field_name: str,
+    index: int,
+    cursor: List[str],
+    sorting_fields: List[str],
+    sorting_direction: str,
 ) -> Tuple[Q, Dict[str, Union[str, bool]]]:
     field_expression: Dict[str, Union[str, bool]] = {}
     extra_expression = Q()
@@ -62,7 +62,8 @@ def _prepare_filter_expression(
         field_expression[sorting_fields[cursor_id]] = cursor_value
 
     if sorting_direction == "gt":
-        extra_expression |= Q(**{f"{field_name}__{sorting_direction}": cursor[index]})
+        extra_expression |= Q(
+            **{f"{field_name}__{sorting_direction}": cursor[index]})
         extra_expression |= Q(**{f"{field_name}__isnull": True})
     elif cursor[index] is not None:
         field_expression[f"{field_name}__{sorting_direction}"] = cursor[index]
@@ -73,7 +74,7 @@ def _prepare_filter_expression(
 
 
 def _prepare_filter(
-        cursor: List[str], sorting_fields: List[str], sorting_direction: str
+    cursor: List[str], sorting_fields: List[str], sorting_direction: str
 ) -> Q:
     """Create filter arguments based on sorting fields.
     :param cursor: list of values that are passed from page_info, used for filtering.
@@ -112,7 +113,8 @@ def _validate_connection_args(args):
     if first and last:
         raise GraphQLError("Argument `last` cannot be combined with `first`.")
     if first and args.get("before"):
-        raise GraphQLError("Argument `first` cannot be combined with `before`.")
+        raise GraphQLError(
+            "Argument `first` cannot be combined with `before`.")
     if last and args.get("after"):
         raise GraphQLError("Argument `last` cannot be combined with `after`.")
 
@@ -196,11 +198,11 @@ def _get_edges_for_connection(edge_type, qs, args, sorting_fields):
 
 
 def connection_from_queryset_slice(
-        qs: QuerySet,
-        args: ConnectionArguments = None,
-        connection_type: Any = Connection,
-        edge_type: Any = Edge,
-        pageinfo_type: Any = PageInfo,
+    qs: QuerySet,
+    args: ConnectionArguments = None,
+    connection_type: Any = Connection,
+    edge_type: Any = Edge,
+    pageinfo_type: Any = PageInfo,
 ) -> Connection:
     """Create a connection object from a QuerySet."""
     args = args or {}
@@ -221,11 +223,13 @@ def connection_from_queryset_slice(
     if cursor and len(cursor) != len(sorting_fields):
         raise GraphQLError("Received cursor is invalid.")
     filter_kwargs = (
-        _prepare_filter(cursor, sorting_fields, sorting_direction) if cursor else Q()
+        _prepare_filter(cursor, sorting_fields,
+                        sorting_direction) if cursor else Q()
     )
     qs = qs.filter(filter_kwargs)
     qs = qs[:end_margin]
-    edges, page_info = _get_edges_for_connection(edge_type, qs, args, sorting_fields)
+    edges, page_info = _get_edges_for_connection(edge_type, qs, args,
+                                                 sorting_fields)
 
     return connection_type(edges=edges, page_info=pageinfo_type(**page_info), )
 
@@ -266,7 +270,8 @@ class CountableConnection(NonNullConnection):
     class Meta:
         abstract = True
 
-    total_count = graphene.Int(description="A total count of items in the collection.")
+    total_count = graphene.Int(
+        description="A total count of items in the collection.")
 
     @staticmethod
     def resolve_total_count(root, *_args, **_kwargs):
@@ -275,7 +280,8 @@ class CountableConnection(NonNullConnection):
         return root.iterable.count()
 
 
-class CountableDjangoObjectType(graphene_django_optimizer.OptimizedDjangoObjectType):
+class CountableDjangoObjectType(
+    graphene_django_optimizer.OptimizedDjangoObjectType):
     class Meta:
         abstract = True
 
@@ -285,7 +291,8 @@ class CountableDjangoObjectType(graphene_django_optimizer.OptimizedDjangoObjectT
         countable_conn = CountableConnection.create_type(
             "{}CountableConnection".format(cls.__name__), node=cls
         )
-        super().__init_subclass_with_meta__(*args, connection=countable_conn, **kwargs)
+        super().__init_subclass_with_meta__(*args, connection=countable_conn,
+                                            **kwargs)
 
     @classmethod
     def maybe_optimize(cls, info, qs: Union[QuerySet, Manager], pk):

@@ -1,10 +1,10 @@
 import graphene_django_optimizer as gql_optimizer
-from django.db.models import Sum
+from django.db.models import Sum, Min, Max, Count
 
+from .filters import filter_attributes_by_product_types
 from ..utils import get_database_id, filter_by_period
 from ...order import OrderStatus
 from ...product import models
-from .filters import filter_attributes_by_product_types
 
 
 def resolve_products(info, ids, **_kwargs):
@@ -35,12 +35,14 @@ def resolve_categories(info, level=None, **_kwargs):
 
 def resolve_product_variants(info, ids=None):
     user = info.context.user
-    visible_products = models.Product.objects.visible_to_user(user).values_list(
+    visible_products = models.Product.objects.visible_to_user(
+        user).values_list(
         "pk", flat=True
     )
     qs = models.ProductVariant.objects.filter(product__id__in=visible_products)
     if ids:
-        db_ids = [get_database_id(info, node_id, "ProductVariant") for node_id in ids]
+        db_ids = [get_database_id(info, node_id, "ProductVariant") for node_id
+                  in ids]
         qs = qs.filter(pk__in=db_ids)
     return gql_optimizer.query(qs, info)
 
@@ -50,7 +52,6 @@ def resolve_attributes(info, qs=None, in_category=None, **_kwargs):
 
     if in_category:
         qs = filter_attributes_by_product_types(qs, "in_category", in_category)
-
     return qs.distinct()
 
 

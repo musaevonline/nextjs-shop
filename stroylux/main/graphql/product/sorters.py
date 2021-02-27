@@ -8,7 +8,7 @@ from ...product.models import Category, Product
 
 class ProductOrderField(graphene.Enum):
     NAME = ["name", "slug"]
-    DATE = ["updated_at", "name", "slug"]
+    DATE = ["created_at", "updated_at", "name", "slug"]
     TYPE = ["product_type__name", "name", "slug"]
     PUBLISHED = ["is_published", "name", "slug"]
     ORDER_COUNT = ["order_count", "name", "slug"]
@@ -19,7 +19,7 @@ class ProductOrderField(graphene.Enum):
         descriptions = {
             ProductOrderField.NAME.name: "name",
             ProductOrderField.TYPE.name: "type",
-            ProductOrderField.DATE.name: "update date",
+            ProductOrderField.DATE.name: "create date",
             ProductOrderField.PUBLISHED.name: "publication status",
             ProductOrderField.ORDER_COUNT.name: "popular",
         }
