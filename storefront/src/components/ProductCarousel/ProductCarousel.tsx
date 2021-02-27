@@ -3,11 +3,11 @@ import './scss/index.scss'
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Thumbs, Navigation, Lazy } from 'swiper'
-import Viewer from 'react-viewer'
 import { ProductDetails_product_images } from '@sdk/queries/types/ProductDetails'
 import { ProductVariant_images } from '@sdk/fragments/types/ProductVariant'
-import { Hidden } from '@material-ui/core'
 import PlaceHolder from 'images/placeholder.svg'
+import { Hidden } from '@material-ui/core'
+import Viewer from '@temp/components/ProductCarousel/Viewer'
 
 SwiperCore.use([Thumbs, Navigation, Lazy])
 
@@ -20,7 +20,6 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images }) => {
 	const [currImg, setCurrImg] = useState(0)
 	const [isOpenViewer, setIsOpenViewer] = useState(false)
 	if (!images) return null
-
 	const onOpenViewer = (e, index) => {
 		e.preventDefault()
 		setCurrImg(index)
@@ -87,12 +86,10 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images }) => {
 					draggable={false}
 					touchRatio={0}
 					breakpoints={{
-						// when window width is >= 320px
 						0: {
 							slidesPerView: 5,
 							slidesPerGroup: 5
 						},
-						// when window width is >= 640px
 						640: {
 							slidesPerView: 10,
 							slidesPerGroup: 5
@@ -117,28 +114,10 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ images }) => {
 			<Hidden xsDown>
 				{galleryImages.length > 0 && !isEmpty && (
 					<Viewer
-						visible={isOpenViewer}
-						onClose={() => {
-							setIsOpenViewer(false)
-						}}
-						onMaskClick={() => {
-							setIsOpenViewer(false)
-						}}
-						activeIndex={currImg}
-						rotatable={false}
-						scalable={false}
-						noImgDetails={true}
-						images={galleryImages.map((img) => ({
-							src: img.original,
-							alt: '',
-							downloadUrl: img.original
-						}))}
-						zoomSpeed={0.1}
-						minScale={1}
-						maxScale={2}
-						zIndex={1001}
-						downloadInNewWindow
-						downloadable
+						isOpenViewer={isOpenViewer}
+						setIsOpenViewer={setIsOpenViewer}
+						galleryImages={galleryImages}
+						currImg={currImg}
 					/>
 				)}
 			</Hidden>

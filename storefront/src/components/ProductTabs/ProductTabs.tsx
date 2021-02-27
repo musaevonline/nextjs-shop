@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import DOMPurify from 'dompurify'
 import { useQueryParams, NumberParam } from 'use-query-params'
+import { ssrMode } from '@temp/constants'
 // import {getProductVariantsAttributes} from "@temp/views/ProductDetails/utils";
 // import Typography from "@material-ui/core/Typography";
 
@@ -63,7 +64,9 @@ const ProductTabs: React.FC<{
 								<div
 									className='product-tabs__description text-small'
 									dangerouslySetInnerHTML={{
-										__html: DOMPurify.sanitize(product.description)
+										__html: ssrMode
+											? product.description
+											: DOMPurify.sanitize(product.description)
 									}}
 								/>
 							</CardContent>

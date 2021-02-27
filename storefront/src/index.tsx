@@ -154,7 +154,6 @@ const startApp = async () => {
 								{({ checkoutContext }) => (
 									<UserProvider
 										refreshUser={true}
-										apolloClient={apolloClient}
 										onUserLogin={() => {
 											checkoutContext.findUserCheckout()
 										}}

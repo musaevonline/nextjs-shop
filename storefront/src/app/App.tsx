@@ -1,32 +1,32 @@
-import "../globalStyles/scss/index.scss";
-
-import React from "react";
+import React from 'react'
 
 // import { Routes } from "./routes";
-import {Header} from "@temp/components/Header";
-import {Footer} from "@temp/components/Footer";
-import {ScrollTopButton} from "@temp/components/ScrollTopButton";
-import ScrollToTop from "@temp/components/ScrollToTop/ScrollToTop";
-import { StickyContainer } from 'react-sticky';
-import {Overlay, OverlayContext} from "@temp/components";
+import { Header } from '@temp/components/Header'
+import { Footer } from '@temp/components/Footer'
+import { ScrollTopButton } from '@temp/components/ScrollTopButton'
+import ScrollToTop from '@temp/components/ScrollToTop/ScrollToTop'
+import { StickyContainer } from 'react-sticky'
+import { Overlay, OverlayContext } from '@temp/components'
 
-const App = ({children}) => {
-  const overlay = React.useContext(OverlayContext);
-  return (
-      <>
-        <ScrollToTop/>
-        <StickyContainer>
-          <header className="header"><Header /></header>
-          <main className="main">
-            {children}
-            {/*<Routes />*/}
-          </main>
-          <ScrollTopButton/>
-          <Footer/>
-          <Overlay context={overlay}/>
-        </StickyContainer>
-      </>
-  );
-};
+const App = ({ children }) => {
+	const overlay = React.useContext(OverlayContext)
+	return (
+		<>
+			<ScrollToTop />
+			<StickyContainer>
+				<header className='header'>
+					<Header />
+				</header>
+				<main className='main'>
+					{children}
+					{/*<Routes />*/}
+				</main>
+				<ScrollTopButton />
+				<Footer />
+				<Overlay context={overlay} />
+			</StickyContainer>
+		</>
+	)
+}
 
-export default App;
+export default App

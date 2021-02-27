@@ -1,5 +1,3 @@
-import './scss/index.scss'
-
 import React from 'react'
 import _ from 'lodash'
 

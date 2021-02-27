@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/index.module.scss'
 
 import * as React from 'react'
 
@@ -33,6 +33,7 @@ const View: React.FC = () => {
 		},
 		fetchPolicy: 'cache-and-network',
 		nextFetchPolicy: 'cache-first'
+		// ssr: false
 	})
 	const { data: popularProductsData } = useQuery<
 		ProductsCardDetails,
@@ -48,6 +49,7 @@ const View: React.FC = () => {
 		},
 		fetchPolicy: 'cache-and-network',
 		nextFetchPolicy: 'cache-first'
+		// ssr: false
 	})
 	const {
 		data: articlesData,
