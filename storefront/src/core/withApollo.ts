@@ -13,6 +13,7 @@ import { authLink, removeAuthToken } from '@temp/core/auth'
 import { BatchHttpLink } from '@apollo/client/link/batch-http'
 import { apiUrl } from '@temp/constants'
 import { RetryLink } from '@apollo/client/link/retry'
+import { relayStylePagination } from '@apollo/client/utilities'
 
 interface ResponseError extends ErrorResponse {
 	networkError?: Error & {
@@ -43,6 +44,19 @@ const link = ApolloLink.from([
 	batchLink
 ])
 const cache = new InMemoryCache({
+	typePolicies: {
+		Query: {
+			fields: {
+				products: relayStylePagination([
+					'categories',
+					'attributes',
+					'price',
+					'sortBy',
+					'filter'
+				])
+			}
+		}
+	},
 	dataIdFromObject: (obj) => {
 		if (obj.__typename === 'Shop') {
 			return 'shop'
@@ -60,7 +74,7 @@ const createClient = (ctx: NextPageContext | undefined) => {
 			cookie: ctx?.req?.headers.cookie || ''
 		},
 		cache: cache,
-		ssrMode: true,
+		// ssrMode: true,
 		ssrForceFetchDelay: 100
 	})
 }

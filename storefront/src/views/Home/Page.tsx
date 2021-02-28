@@ -102,12 +102,20 @@ const Page: React.FC<{
 
 	return (
 		<div className='home-page'>
-			<script className='structured-data-list' type='application/ld+json'>
-				{shop ? homeStructuredData(shop) : ''}
-			</script>
-			<script className='structured-data-list' type='application/ld+json'>
-				{logoStructuredData()}
-			</script>
+			<script
+				className='structured-data-list'
+				type='application/ld+json'
+				dangerouslySetInnerHTML={{
+					__html: shop ? homeStructuredData(shop) : ''
+				}}
+			/>
+			<script
+				className='structured-data-list'
+				type='application/ld+json'
+				dangerouslySetInnerHTML={{
+					__html: logoStructuredData()
+				}}
+			/>
 			<div className='bg-white mt-20'>
 				<Container maxWidth='lg' disableGutters>
 					<HomeCarousel images={shop?.images} />

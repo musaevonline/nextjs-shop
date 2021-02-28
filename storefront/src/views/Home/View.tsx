@@ -1,4 +1,4 @@
-import './scss/index.module.scss'
+import './scss/Home.scss'
 
 import * as React from 'react'
 

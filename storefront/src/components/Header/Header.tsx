@@ -1,9 +1,8 @@
-import './scss/index.scss'
+import './scss/Header.scss'
 
 import React, { useContext, useState } from 'react'
 import { ReactSVG } from 'react-svg'
 import { Container } from '@material-ui/core'
-import Hidden from '@material-ui/core/Hidden'
 import { Link } from 'react-router-dom'
 import CloseIcon from '@material-ui/icons/Close'
 import SwipeableViews from 'react-swipeable-views'
@@ -83,6 +82,7 @@ const Header: React.FC = () => {
 	const theme = useTheme()
 	const shop = useShop()
 	const xs = useMediaQuery(theme.breakpoints.down('xs'))
+	const mdUp = useMediaQuery(theme.breakpoints.up('md'))
 	const [isActiveSearch, setIsActiveSearch] = useState(false)
 	const [isOpenCartPanel, setOpenCartPanel] = useState(false)
 	const [accountDrawerState, setAccountDrawerState] = useState(false)
@@ -129,7 +129,7 @@ const Header: React.FC = () => {
 	return (
 		<>
 			{/*Pages Block*/}
-			<Hidden xsDown>
+			{!xs && (
 				<div className='header__top'>
 					<Container maxWidth='lg'>
 						<div className='header__top_left flex items-center truncate flex-1 justify-between'>
@@ -160,105 +160,115 @@ const Header: React.FC = () => {
 						</div>
 					</Container>
 				</div>
-			</Hidden>
+			)}
 
-			<Hidden smDown>
-				<Container maxWidth='lg'>
-					<div className='flex justify-between items-center'>
-						<div className='logo'>
-							<NextLink href={baseUrl}>
-								<Link to={baseUrl}>
-									<ReactSVG
-										className={classes.logo}
-										src={Logo}
-										alt='СтройЛюкс'
-										title='СтройЛюкс'
-									/>
-								</Link>
-							</NextLink>
-						</div>
-						<div className='flex items-center'>
-							<div className='text-6xl'>
-								<SvgIcon color='secondary' component='span' fontSize='inherit'>
-									<BsPhone />
-								</SvgIcon>
-							</div>
-							<div className='mobile__body pl-10'>
-								<Typography variant='h6'>
-									<span className='text-base font-semibold'>
-										{shop?.companyAddress.phone}
-									</span>
-								</Typography>
-								<div className='mobile__call'>
-									<Button size='small' color='primary' variant='text'>
-										<span className='normal-case'>Заказать</span>
-									</Button>
-								</div>
-							</div>
-						</div>
-						<div className='flex items-center'>
-							<div className='text-6xl'>
-								<SvgIcon color='secondary' component='span' fontSize='inherit'>
-									<BsAlarm />
-								</SvgIcon>
-							</div>
-							<div className='work_time__body pl-10'>
-								<Typography variant='h6'>
-									<span className='font-semibold'>Режим работы</span>
-								</Typography>
-								<div className='text-sm'>
-									<div>ПН - ПТ: с 9:00 до 18:00</div>
-									<div>СБ: с 9:00 до 15:00</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</Container>
-
-				<div className='bg-white'>
+			{mdUp && (
+				<>
 					<Container maxWidth='lg'>
-						<div className='relative flex items-center header__line'>
-							<div className='header__categories'>
-								<Menu categories={dataCategories?.categories} />
+						<div className='flex justify-between items-center'>
+							<div className='logo'>
+								<NextLink href={baseUrl}>
+									<Link to={baseUrl}>
+										<ReactSVG
+											className={classes.logo}
+											src={Logo}
+											alt='СтройЛюкс'
+											title='СтройЛюкс'
+										/>
+									</Link>
+								</NextLink>
 							</div>
-							<div className='flex-1'>
-								<div className='header__search'>
-									<Search />
+							<div className='flex items-center'>
+								<div className='text-6xl'>
+									<SvgIcon
+										color='secondary'
+										component='span'
+										fontSize='inherit'
+									>
+										<BsPhone />
+									</SvgIcon>
+								</div>
+								<div className='mobile__body pl-10'>
+									<Typography variant='h6'>
+										<span className='text-base font-semibold'>
+											{shop?.companyAddress.phone}
+										</span>
+									</Typography>
+									<div className='mobile__call'>
+										<Button size='small' color='primary' variant='text'>
+											<span className='normal-case'>Заказать</span>
+										</Button>
+									</div>
 								</div>
 							</div>
-							<div className='w-200 flex justify-between'>
-								<IconButton
-									onClick={(e) => {
-										setAccountDrawerState(true)
-									}}
-									className={classes.utilityIcon}
-								>
-									<AccountIcon fillRule='evenodd' />
-								</IconButton>
-								<Link to={userProfileFavoritesUrl}>
-									<IconButton className={classes.utilityIcon}>
-										<BsHeart />
-									</IconButton>
-								</Link>
-								<Badge
-									badgeContent={checkoutQuantity}
-									color='primary'
-									showZero
-									max={100000}
-								>
-									<IconButton
-										onClick={toggleCartDrawer(true)}
-										className={classes.utilityIcon}
+							<div className='flex items-center'>
+								<div className='text-6xl'>
+									<SvgIcon
+										color='secondary'
+										component='span'
+										fontSize='inherit'
 									>
-										<BsBag />
-									</IconButton>
-								</Badge>
+										<BsAlarm />
+									</SvgIcon>
+								</div>
+								<div className='work_time__body pl-10'>
+									<Typography variant='h6'>
+										<span className='font-semibold'>Режим работы</span>
+									</Typography>
+									<div className='text-sm'>
+										<div>ПН - ПТ: с 9:00 до 18:00</div>
+										<div>СБ: с 9:00 до 15:00</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</Container>
-				</div>
-			</Hidden>
-			<Hidden mdUp>
+
+					<div className='bg-white'>
+						<Container maxWidth='lg'>
+							<div className='relative flex items-center header__line'>
+								<div className='header__categories'>
+									<Menu categories={dataCategories?.categories} />
+								</div>
+								<div className='flex-1'>
+									<div className='header__search'>
+										<Search />
+									</div>
+								</div>
+								<div className='w-200 flex justify-between'>
+									<IconButton
+										onClick={(e) => {
+											setAccountDrawerState(true)
+										}}
+										className={classes.utilityIcon}
+									>
+										<AccountIcon fillRule='evenodd' />
+									</IconButton>
+									<Link to={userProfileFavoritesUrl}>
+										<IconButton className={classes.utilityIcon}>
+											<BsHeart />
+										</IconButton>
+									</Link>
+									<Badge
+										badgeContent={checkoutQuantity}
+										color='primary'
+										showZero
+										max={100000}
+									>
+										<IconButton
+											onClick={toggleCartDrawer(true)}
+											className={classes.utilityIcon}
+										>
+											<BsBag />
+										</IconButton>
+									</Badge>
+								</div>
+							</div>
+						</Container>
+					</div>
+				</>
+			)}
+			{!mdUp && (
 				<Sticky topOffset={xs ? 0 : 50}>
 					{({ style, isSticky }) => (
 						<Container
@@ -315,7 +325,7 @@ const Header: React.FC = () => {
 						</Container>
 					)}
 				</Sticky>
-			</Hidden>
+			)}
 
 			<CartRightPanel
 				isOpen={isOpenCartPanel}

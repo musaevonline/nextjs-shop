@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/ProductVariantForm.scss'
 
 import React, { useEffect } from 'react'
 import * as Yup from 'yup'

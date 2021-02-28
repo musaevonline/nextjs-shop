@@ -37,9 +37,14 @@ const plugins = (isServer) => {
 			}),
 		new FaviconsWebpackPlugin({
 			logo: `${sourceDir}/images/favicon.svg`,
-			prefix: 'images/favicons/',
+			prefix: '_next/static/images/favicons/',
+			outputPath: 'static/images/favicons/',
 			mode: 'webapp',
-			devMode: 'webapp'
+			devMode: 'webapp',
+			inject: true,
+			favicons: {
+				appDescription: 'Stroyluxdrev'
+			}
 		}),
 		new webpack.EnvironmentPlugin({
 			API_URI: 'http://localhost:8000/graphql/',

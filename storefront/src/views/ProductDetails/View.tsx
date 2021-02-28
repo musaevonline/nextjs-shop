@@ -124,9 +124,17 @@ const View: React.FC = () => {
 			{(!data || loading) && <Loader full={!data} absolute={!!data} />}
 			{data?.product && (
 				<>
-					<script className='structured-data-list' type='application/ld+json'>
-						{productStructuredData(data?.product, reviews?.productReviews)}
-					</script>
+					<script
+						className='structured-data-list'
+						dangerouslySetInnerHTML={{
+							__html: productStructuredData(
+								data?.product,
+								reviews?.productReviews
+							)
+						}}
+						type='application/ld+json'
+					/>
+
 					<Page
 						product={data.product}
 						addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}

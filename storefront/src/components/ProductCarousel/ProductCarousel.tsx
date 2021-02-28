@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/ProductCarousel.scss'
 
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'

@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/CartItems.scss'
 
 import React, { useContext } from 'react'
 import Loader from '@temp/components/Loader'

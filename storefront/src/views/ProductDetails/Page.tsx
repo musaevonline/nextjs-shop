@@ -1,7 +1,6 @@
-import './scss/index.scss'
+import './scss/ProductDetails.scss'
 
 import React, { useState } from 'react'
-import _ from 'lodash'
 import { Container } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { Element } from 'react-scroll'

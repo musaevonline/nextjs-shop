@@ -1,19 +1,35 @@
 // import * as C from "./constants";
-import { createMuiTheme } from "@material-ui/core";
-import {red} from "@material-ui/core/colors";
+import { createMuiTheme } from '@material-ui/core'
+import { red } from '@material-ui/core/colors'
+import mediaQuery from 'css-mediaquery'
+
+export const mobileSsrMatchMedia = (query) => ({
+	matches: mediaQuery.match(query, {
+		// The estimated CSS width of the browser.
+		width: '0px'
+	})
+})
+export const desktopSsrMatchMedia = (query) => {
+	return {
+		matches: mediaQuery.match(query, {
+			// The estimated CSS width of the browser.
+			width: '1024px'
+		})
+	}
+}
 
 export const defaultTheme = createMuiTheme({
 	palette: {
 		type: 'light',
 		primary: {
-			light: "#444",
-			main: "#222",
-			dark: "#000"
+			light: '#444',
+			main: '#222',
+			dark: '#000'
 		},
 		secondary: {
-			light: red["500"],
-			main: "#e31837",
-			dark: red["900"]
+			light: red['500'],
+			main: '#e31837',
+			dark: red['900']
 		},
 		background: {
 			paper: '#FFFFFF',
@@ -21,31 +37,31 @@ export const defaultTheme = createMuiTheme({
 		},
 		error: red
 	},
-	typography:{
+	typography: {
 		htmlFontSize: 10,
-		h1:{
-			fontSize: "3.6rem",
-			fontWeight: "inherit"
+		h1: {
+			fontSize: '3.6rem',
+			fontWeight: 'inherit'
 		},
-		h2:{
-			fontSize: "2.8rem",
-			fontWeight: "inherit"
+		h2: {
+			fontSize: '2.8rem',
+			fontWeight: 'inherit'
 		},
-		h3:{
-			fontSize: "2.2rem",
-			fontWeight: "inherit"
+		h3: {
+			fontSize: '2.2rem',
+			fontWeight: 'inherit'
 		},
-		h4:{
-			fontSize: "2rem",
-			fontWeight: "inherit"
+		h4: {
+			fontSize: '2rem',
+			fontWeight: 'inherit'
 		},
-		h5:{
-			fontSize: "1.8rem",
-			fontWeight: "inherit"
+		h5: {
+			fontSize: '1.8rem',
+			fontWeight: 'inherit'
 		},
-		h6:{
-			fontSize: "1.6rem",
-			fontWeight: "inherit"
+		h6: {
+			fontSize: '1.6rem',
+			fontWeight: 'inherit'
 		},
 		body1: {
 			fontSize: '1.4rem'
@@ -67,7 +83,7 @@ export const defaultTheme = createMuiTheme({
 			'"Apple Color Emoji"',
 			'"Segoe UI Emoji"',
 			'"Segoe UI Symbol"',
-			'"Noto Color Emoji"',
+			'"Noto Color Emoji"'
 		].join(', ')
 	},
 	// shape:{
@@ -84,15 +100,15 @@ export const defaultTheme = createMuiTheme({
 
 	/* Buttons */
 	overrides: {
-		MuiIconButton:{
-			sizeSmall:{
+		MuiIconButton: {
+			sizeSmall: {
 				padding: 0,
 				fontSize: 18,
-				"& svg":{
+				'& svg': {
 					fontSize: '2rem'
 				}
 			},
-			root:{
+			root: {
 				padding: 8,
 				// '&:hover svg':{
 				// 	fill: orange[800]
@@ -121,44 +137,44 @@ export const defaultTheme = createMuiTheme({
 		// },
 
 		/* Form Components */
-		MuiOutlinedInput:{
-			root:{
+		MuiOutlinedInput: {
+			root: {
 				borderRadius: 2
 			},
-			inputMarginDense:{
+			inputMarginDense: {
 				paddingTop: '1.4rem',
 				paddingBottom: '1.4rem'
 			}
 		},
-		MuiInputBase:{
-			root:{
+		MuiInputBase: {
+			root: {
 				fontSize: '1.4rem',
 				fontWeight: 500
 			}
 		},
-		MuiInputLabel:{
-			outlined:{
-				'&$marginDense':{
-					transform: "translate(14px, 16px) scale(1)"
+		MuiInputLabel: {
+			outlined: {
+				'&$marginDense': {
+					transform: 'translate(14px, 16px) scale(1)'
 				}
 			},
 			shrink: {
-				transform: "translate(14px, -6px) scale(0.75)"
+				transform: 'translate(14px, -6px) scale(0.75)'
 			}
 		},
-		MuiFormLabel:{
-			root:{
+		MuiFormLabel: {
+			root: {
 				fontSize: '1.4rem'
 			}
 		},
-		MuiTableCell:{
+		MuiTableCell: {
 			root: {
-				fontSize: "1.4rem"
+				fontSize: '1.4rem'
 			}
 		},
 		MuiDrawer: {
 			root: {
-				maxWidth: "calc(100% - 20px)"
+				maxWidth: 'calc(100% - 20px)'
 			}
 		},
 		MuiTreeItem: {
@@ -174,19 +190,19 @@ export const defaultTheme = createMuiTheme({
 		},
 		MuiPaper: {
 			elevation1: {
-				boxShadow: "0 2px 10px rgba(48,48,48,.05)"
+				boxShadow: '0 2px 10px rgba(48,48,48,.05)'
 			}
 		},
 		MuiRating: {
 			root: {
-				color: "#e31837",
+				color: '#e31837'
 			},
 			sizeSmall: {
 				fontSize: '1.4rem'
 			}
 		}
 	}
-} as any);
+} as any)
 
 // export type DefaultTheme = typeof defaultTheme;
 // export const styled = baseStyled as ThemedStyledInterface<DefaultTheme>;

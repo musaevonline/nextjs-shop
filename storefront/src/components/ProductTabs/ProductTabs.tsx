@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/ProductTabs.scss'
 
 import React from 'react'
 import { useTheme } from '@material-ui/core/styles'

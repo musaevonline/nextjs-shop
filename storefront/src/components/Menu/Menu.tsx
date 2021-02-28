@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/Menu.scss'
 
 import React from 'react'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'

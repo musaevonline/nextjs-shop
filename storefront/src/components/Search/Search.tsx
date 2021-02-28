@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/Search.scss'
 
 import React, { useContext, useEffect, useState } from 'react'
 import _ from 'lodash'
@@ -11,7 +11,7 @@ import { useLazyQuery } from '@apollo/client'
 import { productsCardQuery } from '@sdk/queries/product'
 import {
 	ProductsCardDetails,
-	ProductsCardDetailsVariables,
+	ProductsCardDetailsVariables
 } from '@sdk/queries/types/ProductsCardDetails'
 import { getProductUrl, searchUrl } from '@temp/app/routes'
 import { showPriceRange } from '@temp/core/utils'
@@ -68,7 +68,7 @@ const renderInputComponent = ({ loading, ...inputProps }) => (
 		{...inputProps}
 		className='search__field'
 		InputLabelProps={{
-			shrink: true,
+			shrink: true
 		}}
 		InputProps={{
 			...inputProps,
@@ -78,7 +78,7 @@ const renderInputComponent = ({ loading, ...inputProps }) => (
 						{loading ? <CircularProgress size={20} /> : <SearchIcon />}
 					</IconButton>
 				</InputAdornment>
-			),
+			)
 		}}
 		fullWidth
 		placeholder='Я ищу...'
@@ -105,10 +105,10 @@ const Search: React.FC = () => {
 		variables: {
 			first: PAGINATE_BY,
 			filter: {
-				search: search,
+				search: search
 			},
-			includeCategory: false,
-		},
+			includeCategory: false
+		}
 	})
 
 	useEffect(() => {
@@ -154,7 +154,7 @@ const Search: React.FC = () => {
 		onChange,
 		loading,
 		onFocus,
-		onBlur,
+		onBlur
 	}
 
 	return (
