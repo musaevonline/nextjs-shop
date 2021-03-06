@@ -1,5 +1,3 @@
-import './scss/Footer.scss'
-
 import React, { useState } from 'react'
 import { Container, makeStyles } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
@@ -9,7 +7,6 @@ import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined'
 import QueryBuilderOutlinedIcon from '@material-ui/icons/QueryBuilderOutlined'
 import { baseUrl, getCategoryUrl, getPageUrl } from '@temp/app/routes'
 import Logo from 'images/logo.svg'
-import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { categoriesQuery } from '@sdk/queries/category'
 import { Categories, CategoriesVariables } from '@sdk/queries/types/Categories'
@@ -22,6 +19,7 @@ import Typography from '@material-ui/core/Typography'
 import useShop from '@temp/hooks/useShop'
 import { FaFacebookF, FaInstagram, FaVk } from 'react-icons/fa'
 import { ReactSVG } from 'react-svg'
+import Link from 'next/link'
 
 const useStyles = makeStyles((theme) => ({
 	logo: {
@@ -29,6 +27,84 @@ const useStyles = makeStyles((theme) => ({
 			height: 70,
 			fill: theme.palette.secondary.main
 		}
+	},
+	footer: {
+		marginTop: '100px',
+		padding: '70px 20px 20px 20px',
+		color: '#fff',
+		backgroundColor: '#21202e',
+		'& a': {
+			fontSize: '1.4rem',
+			color: '#9595a0'
+		},
+		'& a:hover': {
+			color: '#bbbbc6'
+		}
+	},
+	chevronBefore: {
+		position: 'relative',
+		'&:before': {
+			content: '"\\27a3"',
+			color: '#A60B01',
+			display: 'inline-block',
+			textRendering: 'auto',
+			'-webkit-font-smoothing': 'antialiased',
+			'-moz-osx-font-smoothing': 'grayscale',
+			position: 'relative',
+			top: '-1px',
+			marginRight: '10px',
+			left: 0,
+			fontSize: '14px'
+		}
+	},
+	contacts: {
+		display: 'flex',
+		flexDirection: 'column'
+	},
+	social: {
+		'& a': {
+			fontSize: '2rem'
+		},
+		'& a:not(.logo) svg': {
+			margin: '0 5px',
+			fill: '#fff',
+			transition: 'all .3s',
+			'&:hover': {
+				transform: 'scale(1.2)'
+			}
+		}
+	},
+	footerLinks: {
+		'& a': {
+			lineHeight: '3.2rem'
+		}
+	},
+	categoriesGroupTitle: {
+		marginBottom: '10px'
+	},
+	categoriesGroup: {
+		'& ul': {
+			paddingLeft: 0
+		}
+	},
+	categoriesGroupList: {
+		'& li': {
+			marginBottom: '10px',
+			listStyle: 'none',
+			lineHeight: '1.8rem',
+			'& a': {
+				color: '#9595a0',
+				fontSize: '1.4rem',
+				'&:hover': {
+					color: '#bbbbc6'
+				}
+			}
+		}
+	},
+	copyrightText: {
+		marginTop: '50px',
+		fontSize: '1.4rem',
+		textAlign: 'center'
 	}
 }))
 
@@ -48,11 +124,11 @@ const Footer: React.FC = () => {
 		}
 	})
 	return (
-		<footer className='footer'>
+		<footer className={classes.footer}>
 			<Container maxWidth='lg'>
 				<Grid container spacing={1}>
 					<Grid item xs={12} sm={6} md={3}>
-						<div className='footer__contacts flex flex-col'>
+						<div className={classes.contacts}>
 							<Typography variant='h5' gutterBottom>
 								Контакты:
 							</Typography>
@@ -83,30 +159,29 @@ const Footer: React.FC = () => {
 							</div>
 						</div>
 					</Grid>
-					<Grid item xs={12} sm={6} md={3} className='footer__links'>
+					<Grid item xs={12} sm={6} md={3} className={classes.footerLinks}>
 						<Typography variant='h5' gutterBottom>
 							О магазине:
 						</Typography>
 						{pagesData?.pages?.edges.map((edge, i) => (
 							<div key={i}>
-								<Link to={getPageUrl(edge.node.slug)}>{edge.node.title}</Link>
+								<Link href={getPageUrl(edge.node.slug)}>{edge.node.title}</Link>
 							</div>
 						))}
 					</Grid>
-					<Grid item xs={12} sm={6} md={3} className='footer__categories'>
-						<div className='categories-group'>
+					<Grid item xs={12} sm={6} md={3}>
+						<div className={classes.categoriesGroup}>
 							<Typography variant='h5' gutterBottom>
 								Каталог товаров:
 							</Typography>
 							<Collapse in={isOpenAllCategories} collapsedHeight={200}>
-								<ul className='categories-group__list'>
+								<ul className={classes.categoriesGroupList}>
 									{dataCategories?.categories.edges.map((edge, i) => (
 										<li key={i}>
-											<Link
-												to={getCategoryUrl(edge.node.slug, edge.node.id)}
-												className='chevron-before relative'
-											>
-												{edge.node.name}
+											<Link href={getCategoryUrl(edge.node.slug, edge.node.id)}>
+												<a className={classes.chevronBefore}>
+													{edge.node.name}
+												</a>
 											</Link>
 										</li>
 									))}
@@ -131,8 +206,8 @@ const Footer: React.FC = () => {
 							)}
 						</div>
 					</Grid>
-					<Grid item xs={12} sm={6} md={3} className='footer__links'>
-						<div className='social'>
+					<Grid item xs={12} sm={6} md={3} className={classes.footerLinks}>
+						<div className={classes.social}>
 							<Typography variant='h5' gutterBottom>
 								Мы в соцсетях:
 							</Typography>
@@ -157,13 +232,19 @@ const Footer: React.FC = () => {
 							</div>
 						</div>
 						<div>
-							<Link to={baseUrl} className={classes.logo}>
-								<ReactSVG src={Logo} title='СтройЛюкс' className='max-w-250' />
+							<Link href={baseUrl}>
+								<a className={classes.logo}>
+									<ReactSVG
+										src={Logo}
+										title='СтройЛюкс'
+										className='max-w-250'
+									/>
+								</a>
 							</Link>
 						</div>
 					</Grid>
 				</Grid>
-				<div className='text-center copyright-text'>
+				<div className={classes.copyrightText}>
 					<span>
 						©{new Date().getFullYear()} {shop?.name}. Все права защищены
 					</span>

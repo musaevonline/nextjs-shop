@@ -1,6 +1,4 @@
 import React from 'react'
-
-// import { Routes } from "./routes";
 import { Header } from '@temp/components/Header'
 import { Footer } from '@temp/components/Footer'
 import { ScrollTopButton } from '@temp/components/ScrollTopButton'
@@ -17,10 +15,7 @@ const App = ({ children }) => {
 				<header className='header'>
 					<Header />
 				</header>
-				<main className='main'>
-					{children}
-					{/*<Routes />*/}
-				</main>
+				<main className='main'>{children}</main>
 				<ScrollTopButton />
 				<Footer />
 				<Overlay context={overlay} />

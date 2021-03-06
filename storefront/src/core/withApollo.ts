@@ -52,7 +52,8 @@ const cache = new InMemoryCache({
 					'attributes',
 					'price',
 					'sortBy',
-					'filter'
+					'filter',
+					'ids'
 				])
 			}
 		}

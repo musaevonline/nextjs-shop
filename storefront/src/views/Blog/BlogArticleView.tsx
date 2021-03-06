@@ -1,37 +1,41 @@
-import React from "react";
-import useShop from "@temp/hooks/useShop";
-import {MetaWrapper} from "@temp/components";
-import {useParams} from "react-router";
-import {useBlogArticleQuery} from "@sdk/queries/blog";
-import BlogArticlePage from "@temp/views/Blog/BlogArticlePage";
-import NotFound from "@temp/components/NotFound";
-import {articleStructuredData} from "@temp/core/SEO/articleStructuredData";
+import React from 'react'
+import useShop from '@temp/hooks/useShop'
+import { MetaWrapper } from '@temp/components'
+import { useBlogArticleQuery } from '@sdk/queries/blog'
+import BlogArticlePage from '@temp/views/Blog/BlogArticlePage'
+import NotFound from '@temp/components/NotFound'
+import { articleStructuredData } from '@temp/core/SEO/articleStructuredData'
+import { useRouter } from 'next/router'
+import { cleanTextForMeta } from '@temp/misc'
 
+const BlogCategoryView: React.FC = () => {
+	const shop = useShop()
+	const router = useRouter()
+	const { data, loading } = useBlogArticleQuery({
+		variables: {
+			slug: router.query?.slug as string
+		}
+	})
 
-const BlogCategoryView:React.FC = () => {
-    const shop = useShop();
-    const {articleSlug} = useParams<{articleSlug: string}>()
-    const {data, loading} = useBlogArticleQuery({
-        variables: {
-            slug: articleSlug
-        }
-    });
+	if (!data?.blogArticle && !loading) return <NotFound />
 
-    if (!data?.blogArticle && !loading) return <NotFound/>
+	return (
+		<MetaWrapper
+			meta={{
+				description: cleanTextForMeta(data?.blogArticle?.body || '', 150, true),
+				title: data?.blogArticle?.title || ''
+			}}
+		>
+			<script
+				className='structured-data-list'
+				dangerouslySetInnerHTML={{
+					__html: articleStructuredData(data?.blogArticle, shop)
+				}}
+				type='application/ld+json'
+			/>
+			<BlogArticlePage article={data?.blogArticle} loading={loading} />
+		</MetaWrapper>
+	)
+}
 
-    return(
-        <MetaWrapper
-            meta={{
-                description: shop ? shop.description : "",
-                title: shop ? `${data?.blogArticle?.title} - ${shop.name}` : "",
-            }}
-        >
-            <script className="structured-data-list" type="application/ld+json">
-                {articleStructuredData(data?.blogArticle, shop)}
-            </script>
-            <BlogArticlePage article={data?.blogArticle} loading={loading}/>
-        </MetaWrapper>
-    )
-};
-
-export default BlogCategoryView;
+export default BlogCategoryView

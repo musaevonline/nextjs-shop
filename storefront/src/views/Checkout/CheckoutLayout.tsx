@@ -2,15 +2,7 @@ import './scss/Checkout.scss'
 
 import React, { useContext, useEffect, useState } from 'react'
 import Loader from '@temp/components/Loader'
-import CheckoutRouter from './Router'
-import {
-	CheckoutAddress,
-	CheckoutPayment,
-	CheckoutReview,
-	CheckoutShipping
-} from '@temp/components/Checkout'
 import { Container } from '@material-ui/core'
-import { Link, Redirect, useLocation } from 'react-router-dom'
 import { CHECKOUT_STEPS, CheckoutStep } from '@temp/core/config'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
@@ -32,6 +24,9 @@ import {
 	ProductVariantsVariables
 } from '@sdk/queries/types/ProductVariants'
 import { CheckoutContext } from '@temp/components/CheckoutProvider/context'
+import { useRouter } from 'next/router'
+import { ssrMode } from '@temp/constants'
+import NextLink from 'next/link'
 
 export type TCheckoutStep = {
 	index: number
@@ -48,23 +43,17 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
-const Page: React.FC = () => {
+const CheckoutLayout: React.FC = ({ children }) => {
 	const classes = useStyles()
 	const [loading] = useState(false)
-	const location = useLocation()
+	const router = useRouter()
 	const {
 		checkout,
 		calculateCheckoutTotal,
 		quantity,
 		getLastCompletedStep
 	} = useContext(CheckoutContext)
-	const matchingStepIndex = CHECKOUT_STEPS.findIndex(
-		({ link }) => link === location.pathname
-	)
-	const activeStepIndex = matchingStepIndex !== -1 ? matchingStepIndex : 3
-	const [activeStep, setActiveStep] = useState<TCheckoutStep>(
-		CHECKOUT_STEPS[activeStepIndex]
-	)
+
 	const [sumPrice, setSumPrice] = useState({ amount: 0, currency: 'BYN' })
 
 	const { data: productVariantsData } = useQuery<
@@ -80,10 +69,6 @@ const Page: React.FC = () => {
 			amount: calculateCheckoutTotal(productVariantsData?.productVariants)
 		}))
 	}, [productVariantsData, checkout])
-
-	useEffect(() => {
-		setActiveStep(CHECKOUT_STEPS[activeStepIndex])
-	}, [location.pathname])
 
 	const isStepComplete = (step: TCheckoutStep) => {
 		switch (step.step) {
@@ -101,20 +86,12 @@ const Page: React.FC = () => {
 	}
 
 	if (!quantity) {
-		return <Redirect to={baseUrl} />
+		if (!ssrMode) {
+			router.push(baseUrl)
+		}
+		return null
 	}
 	const lastStepCompleted = getLastCompletedStep()
-	if (activeStep.step > 1) {
-		let lastStepLink = null
-		if (activeStep.step === 2 && !checkout.address) {
-			lastStepLink = CHECKOUT_STEPS[0].link
-		} else if (activeStep.step === 3 && !checkout.shippingMethod) {
-			lastStepLink = CHECKOUT_STEPS[1].link
-		} else if (activeStep.step === 4 && !checkout.paymentMethod) {
-			lastStepLink = CHECKOUT_STEPS[2].link
-		}
-		if (lastStepLink) return <Redirect to={lastStepLink} />
-	}
 
 	return (
 		<div className='checkout-page'>
@@ -122,9 +99,9 @@ const Page: React.FC = () => {
 				{loading && <Loader full={true} />}
 				<div className='mt-20 mb-10'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
-						<Link color='inherit' to={baseUrl}>
-							Главная
-						</Link>
+						<NextLink href={baseUrl} passHref>
+							<a color='inherit'>Главная</a>
+						</NextLink>
 						<span>Оформление заказа</span>
 					</Breadcrumbs>
 				</div>
@@ -146,9 +123,10 @@ const Page: React.FC = () => {
 												return (
 													<Step key={step.step} {...stepProps}>
 														<StepButton
-															component={Link}
-															to={step.link}
 															completed={isStepComplete(step)}
+															onClick={async () => {
+																await router.push(step.link)
+															}}
 															{...buttonProps}
 														>
 															{step.name}
@@ -162,22 +140,7 @@ const Page: React.FC = () => {
 							</div>
 							<div className='mt-10'>
 								<Card>
-									<CardContent>
-										<CheckoutRouter
-											renderAddress={(props) => (
-												<CheckoutAddress activeStep={activeStep} />
-											)}
-											renderShipping={(props) => (
-												<CheckoutShipping activeStep={activeStep} />
-											)}
-											renderPayment={(props) => (
-												<CheckoutPayment activeStep={activeStep} />
-											)}
-											renderReview={(props) => (
-												<CheckoutReview activeStep={activeStep} />
-											)}
-										/>
-									</CardContent>
+									<CardContent>{children}</CardContent>
 								</Card>
 							</div>
 						</div>
@@ -236,4 +199,4 @@ const Page: React.FC = () => {
 	)
 }
 
-export default Page
+export default CheckoutLayout

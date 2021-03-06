@@ -24,6 +24,8 @@ import {
 } from '@sdk/mutations/types/AccountEmailChange'
 import { AccountEmailFormData } from '@temp/components/Forms/AccountEmailForm/AccountEmailForm'
 import { CONFIRM_EMAIL_CHANGE_REDIRECT_URL } from '@temp/constants'
+import { MetaWrapper } from '@temp/components'
+import UserLayout from '@temp/views/UserProfile/UserLayout'
 
 const View: React.FC = () => {
 	const user = useContext(UserContext)
@@ -99,28 +101,30 @@ const View: React.FC = () => {
 	}
 
 	return (
-		<>
-			{!user.loading && (
-				<Page
-					onSubmitAccount={onSubmitAccount}
-					accountUpdateLoading={responseAccountUpdate.loading}
-					accountUpdateErrors={
-						responseAccountUpdate.data?.accountUpdate.accountErrors
-					}
-					accountUpdateInitialData={accountUpdateInitialData}
-					onSubmitPasswordChange={onSubmitPasswordChange}
-					passwordChangeLoading={responsePasswordChange.loading}
-					passwordChangeErrors={
-						responsePasswordChange.data?.passwordChange.accountErrors
-					}
-					onSubmitEmailChange={onSubmitEmailChange}
-					emailChangeLoading={responseEmailChange.loading}
-					emailChangeErrors={
-						responseEmailChange.data?.requestEmailChange.accountErrors
-					}
-				/>
-			)}
-		</>
+		<UserLayout>
+			<MetaWrapper meta={{ title: 'Личные данные' }}>
+				{!user.loading && (
+					<Page
+						onSubmitAccount={onSubmitAccount}
+						accountUpdateLoading={responseAccountUpdate.loading}
+						accountUpdateErrors={
+							responseAccountUpdate.data?.accountUpdate.accountErrors
+						}
+						accountUpdateInitialData={accountUpdateInitialData}
+						onSubmitPasswordChange={onSubmitPasswordChange}
+						passwordChangeLoading={responsePasswordChange.loading}
+						passwordChangeErrors={
+							responsePasswordChange.data?.passwordChange.accountErrors
+						}
+						onSubmitEmailChange={onSubmitEmailChange}
+						emailChangeLoading={responseEmailChange.loading}
+						emailChangeErrors={
+							responseEmailChange.data?.requestEmailChange.accountErrors
+						}
+					/>
+				)}
+			</MetaWrapper>
+		</UserLayout>
 	)
 }
 

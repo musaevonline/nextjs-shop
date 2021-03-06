@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-	FavoritesContextInterface,
-	FavoritesContext
-} from '@temp/components/FavoritesProvider/context'
+import { FavoritesContext } from '@temp/components/FavoritesProvider/context'
 import useLocalStorage from '@temp/hooks/useLocalStorage'
 import { FAVORITES_STORAGE_KEY } from '@temp/constants'
 
@@ -12,13 +9,13 @@ const FavoritesProvider: React.FC = ({ children }) => {
 		[]
 	)
 
-	const context: FavoritesContextInterface = {
-		favorites,
-		setFavorites
-	}
-
 	return (
-		<FavoritesContext.Provider value={context}>
+		<FavoritesContext.Provider
+			value={{
+				favorites,
+				setFavorites
+			}}
+		>
 			{children}
 		</FavoritesContext.Provider>
 	)

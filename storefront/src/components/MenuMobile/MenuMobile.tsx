@@ -13,7 +13,7 @@ import {
 	Categories_categories,
 	Categories_categories_edges
 } from '@sdk/queries/types/Categories'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { baseUrl, getCategoryUrl } from '@temp/app/routes'
 import Logo from 'images/logo.svg'
 import { ReactSVG } from 'react-svg'
@@ -66,11 +66,8 @@ const MenuMobile: React.FC<MenuProps> = ({ categories }) => {
 				key={edge.node.id}
 				nodeId={edge.node.id}
 				label={
-					<Link
-						to={getCategoryUrl(edge.node.slug, edge.node.id)}
-						onClick={toggleDrawer(false)}
-					>
-						{edge.node.name}
+					<Link href={getCategoryUrl(edge.node.slug, edge.node.id)}>
+						<a onClick={toggleDrawer(false)}>{edge.node.name}</a>
 					</Link>
 				}
 				className={classes.item}
@@ -99,12 +96,14 @@ const MenuMobile: React.FC<MenuProps> = ({ categories }) => {
 			>
 				<div className='menu-mobile__body'>
 					<div className='z-10 sticky top-0 bg-white text-center'>
-						<Link to={baseUrl} className={classes.logo}>
-							<ReactSVG
-								src={Logo}
-								title='СтройЛюкс'
-								className='max-w-150 m-auto'
-							/>
+						<Link href={baseUrl}>
+							<a className={classes.logo}>
+								<ReactSVG
+									src={Logo}
+									title='СтройЛюкс'
+									className='max-w-150 m-auto'
+								/>
+							</a>
 						</Link>
 					</div>
 					{categories && (

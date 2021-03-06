@@ -2,7 +2,7 @@ import './scss/ProductDetails.scss'
 
 import React, { useState } from 'react'
 import { Container } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Element } from 'react-scroll'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { baseUrl, getCategoryUrl } from '@temp/app/routes'
@@ -75,14 +75,16 @@ const Page: React.FC<{
 			<Container maxWidth='lg'>
 				<div className='mt-20 mb-10'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
-						<Link className='flex items-center' color='inherit' to={baseUrl}>
-							<HomeIcon fontSize='small' />
+						<Link href={baseUrl} passHref>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
 						</Link>
 						<Link
-							color='inherit'
-							to={getCategoryUrl(product.category.slug, product.category.id)}
+							href={getCategoryUrl(product.category.slug, product.category.id)}
+							passHref
 						>
-							{product.category.name}
+							<a color='inherit'>{product.category.name}</a>
 						</Link>
 						<span>{product.name}</span>
 					</Breadcrumbs>

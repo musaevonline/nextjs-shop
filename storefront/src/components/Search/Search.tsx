@@ -18,8 +18,8 @@ import { showPriceRange } from '@temp/core/utils'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
-import { Link } from 'react-router-dom'
 import { OverlayContext, OverlayType } from '@temp/components'
+import NextLink from 'next/link'
 
 const getSuggestionValue = (edge) => edge.node?.name || edge.name || ''
 
@@ -34,31 +34,31 @@ const renderSuggestion = (edge: any) => {
 	if (edge.id === 'showAll') {
 		return (
 			<div className='flex items-center justify-center w-full'>
-				<Button
-					component={Link}
-					to={`${searchUrl}?q=${edge.q}`}
-					color='primary'
-					size='small'
-				>
-					Показать все результаты
-				</Button>
+				<NextLink href={`${searchUrl}?q=${edge.q}`} passHref>
+					<Button component='a' color='primary' size='small'>
+						Показать все результаты
+					</Button>
+				</NextLink>
 			</div>
 		)
 	}
 	return (
-		<Link to={getProductUrl(edge.node.slug, edge.node.id)}>
-			<div className='react-autosuggest__img'>
-				{edge.node.thumbnail && (
-					<img src={edge.node.thumbnail.url} alt={edge.node.thumbnail.alt} />
-				)}
-			</div>
-			<div className='react-autosuggest__name'>{edge.node.name}</div>
-			<div className='react-autosuggest__price'>
-				<Typography variant='body1' className='leading-tight'>
-					{showPriceRange(edge.node.priceRange)}
-				</Typography>
-			</div>
-		</Link>
+		<NextLink href={getProductUrl(edge.node.slug, edge.node.id)} passHref>
+			<a>
+				<div className='react-autosuggest__img'>
+					{edge.node.thumbnail && (
+						<img src={edge.node.thumbnail.url} alt={edge.node.thumbnail.alt} />
+					)}
+				</div>
+
+				<div className='react-autosuggest__name'>{edge.node.name}</div>
+				<div className='react-autosuggest__price'>
+					<Typography variant='body1' className='leading-tight'>
+						{showPriceRange(edge.node.priceRange)}
+					</Typography>
+				</div>
+			</a>
+		</NextLink>
 	)
 }
 

@@ -6,7 +6,7 @@ import _ from 'lodash'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
-import { Link } from 'react-router-dom'
+import NextLink from 'next/link'
 import { getProductUrl } from '@temp/app/routes'
 import { priceToString } from '@temp/core/utils'
 import RemoveIcon from '@material-ui/icons/Remove'
@@ -101,8 +101,9 @@ const CartItems: React.FC<CartItemsProps> = ({ items, toggleCartDrawer }) => {
 			{!items && quantity > 0 && <Loader absolute />}
 			{quantity > 0 &&
 				items?.edges.map((edge, i) => {
-					const localLine =
-						checkout.cart[_.findIndex(checkout.cart, ['variant', edge.node.id])]
+					const localLine = checkout.cart?.find(
+						(line) => line?.variant === edge.node.id
+					)
 					if (!localLine) return null
 					const node = edge.node
 					const amount = node.price.amount * localLine.quantity
@@ -128,14 +129,18 @@ const CartItems: React.FC<CartItemsProps> = ({ items, toggleCartDrawer }) => {
 								</div>
 								<div className='flex-1'>
 									<div className='cart__item-name'>
-										<Typography
-											variant='button'
-											component={Link}
-											to={getProductUrl(node.product.slug, node.product.id)}
-											onClick={closeDialog}
+										<NextLink
+											href={getProductUrl(node.product.slug, node.product.id)}
+											passHref
 										>
-											{node.product.name}
-										</Typography>
+											<Typography
+												variant='button'
+												component={'a'}
+												onClick={closeDialog}
+											>
+												{node.product.name}
+											</Typography>
+										</NextLink>
 									</div>
 									<div className='cart__item-variant-name'>
 										<Typography variant='subtitle2' color='textSecondary'>

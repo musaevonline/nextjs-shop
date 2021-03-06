@@ -5,7 +5,6 @@ import React, { useMemo } from 'react'
 import { NextQueryParamProvider } from '@temp/components/NextQueryParamProvider'
 import { App as StorefrontApp } from '@temp/app'
 import { SnackbarProvider } from 'notistack'
-import { Router, StaticRouter } from 'react-router-dom'
 import { ShopProvider } from '@temp/components/Shop'
 import CheckoutProvider from '@temp/components/CheckoutProvider'
 import UserProvider from '@temp/components/User'
@@ -18,7 +17,6 @@ import {
 	mobileSsrMatchMedia
 } from '@temp/themes'
 import { ssrMode } from '@temp/constants'
-import { history } from '@temp/history'
 import { AppProps } from 'next/app'
 import { withApollo } from '@temp/core/withApollo'
 import { gtmId, isDev } from '@temp/core/config'
@@ -105,6 +103,7 @@ const AppWithApollo = ({ Component, pageProps }: AppProps) => {
 			}
 		}
 	}, [pageProps.deviceType, defaultTheme])
+	// useRouteHistory()
 	return (
 		<ThemeProvider theme={theme}>
 			<SnackbarProvider
@@ -116,15 +115,16 @@ const AppWithApollo = ({ Component, pageProps }: AppProps) => {
 				}}
 				// domRoot={document.getElementById("react-notification")}
 			>
-				{ssrMode ? (
-					<StaticRouter>
-						<Root {...pageProps} />
-					</StaticRouter>
-				) : (
-					<Router history={history}>
-						<Root {...pageProps} />
-					</Router>
-				)}
+				{/*{ssrMode ? (*/}
+				{/*	<StaticRouter>*/}
+				{/*		<Root {...pageProps} />*/}
+				{/*	</StaticRouter>*/}
+				{/*) : (*/}
+				{/*	<Router history={history}>*/}
+				{/*		<Root {...pageProps} />*/}
+				{/*	</Router>*/}
+				{/*)}*/}
+				<Root {...pageProps} />
 			</SnackbarProvider>
 		</ThemeProvider>
 	)

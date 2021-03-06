@@ -26,6 +26,8 @@ import {
 } from '@sdk/queries/types/CategoryProducts'
 import { cleanTextForMeta } from '@temp/misc'
 import { useRouter } from 'next/router'
+import { STOREFRONT_URL } from '@temp/constants'
+import { getProductUrl } from '@temp/app/routes'
 
 const PAGINATE_BY_REVIEWS = 5
 
@@ -118,7 +120,17 @@ const View: React.FC = () => {
 		<MetaWrapper
 			meta={{
 				description: cleanTextFromDescription,
-				title: data?.product.name || ''
+				title: data?.product.name || '',
+				custom: [
+					<link
+						key='canonical'
+						rel='canonical'
+						href={
+							STOREFRONT_URL +
+							getProductUrl(router.query?.slug as string, id).slice(1)
+						}
+					/>
+				]
 			}}
 		>
 			{(!data || loading) && <Loader full={!data} absolute={!!data} />}

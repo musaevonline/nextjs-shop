@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
 import Rating from '@material-ui/lab/Rating'
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined'
 import { Product } from '@sdk/fragments/types/Product'
@@ -15,6 +14,7 @@ import { BsHeart, BsHeartFill } from 'react-icons/bs'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 import { SvgIcon } from '@material-ui/core'
 import NextLink from 'next/link'
+// import Image from 'next/image'
 
 const useStyles = makeStyles((theme) => ({
 	favoritesIcon: {
@@ -182,8 +182,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
 					<span className='product-sku__value'>{pk}</span>
 				</div>
 
-				<NextLink href={'/product/[slug]/[id]'} as={getProductUrl(slug, id)}>
-					<Link to={getProductUrl(slug, id)}>
+				<NextLink
+					href={'/product/[slug]/[id]'}
+					as={getProductUrl(slug, id)}
+					passHref
+				>
+					<a>
 						<div className={classes.pictures}>
 							{isNew && !isDiscount && (
 								<div className={classes.labelNew}>Новинка</div>
@@ -191,15 +195,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
 							{isDiscount && (
 								<div className={classes.labelDiscount}>Скидка 15%</div>
 							)}
+							{/*<Image src={thumbnail.url} alt={thumbnail.alt} layout='fill' />*/}
 							<img src={thumbnail.url} alt={thumbnail.alt} />
 						</div>
-					</Link>
+					</a>
 				</NextLink>
 
 				<div>
-					<Link className={classes.title} to={getProductUrl(slug, id)}>
-						{name}
-					</Link>
+					<NextLink
+						href={'/product/[slug]/[id]'}
+						as={getProductUrl(slug, id)}
+						passHref
+					>
+						<a className={classes.title}>{name}</a>
+					</NextLink>
 					<div className={classes.price}>{showPriceRange(priceRange)}</div>
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center'>
@@ -231,18 +240,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
 					</div>
 
 					<div className='mt-10'>
-						<Button
-							type='button'
-							color='secondary'
-							variant='contained'
-							aria-label={'Купить'}
-							component={Link}
-							to={getProductUrl(slug, id)}
-							startIcon={<ShoppingCartOutlinedIcon />}
-							fullWidth
+						<NextLink
+							href={'/product/[slug]/[id]'}
+							as={getProductUrl(slug, id)}
+							passHref
 						>
-							<span className='normal-case'>Купить</span>
-						</Button>
+							<Button
+								type='button'
+								color='secondary'
+								variant='contained'
+								aria-label={'Купить'}
+								component={'a'}
+								startIcon={<ShoppingCartOutlinedIcon />}
+								fullWidth
+							>
+								<span className='normal-case'>Купить</span>
+							</Button>
+						</NextLink>
 					</div>
 				</div>
 			</div>

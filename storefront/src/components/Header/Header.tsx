@@ -3,7 +3,6 @@ import './scss/Header.scss'
 import React, { useContext, useState } from 'react'
 import { ReactSVG } from 'react-svg'
 import { Container } from '@material-ui/core'
-import { Link } from 'react-router-dom'
 import CloseIcon from '@material-ui/icons/Close'
 import SwipeableViews from 'react-swipeable-views'
 import {
@@ -147,13 +146,13 @@ const Header: React.FC = () => {
 							</div>
 							<ul className='header-links'>
 								<li>
-									<Link to={blogPath}>Блог</Link>
+									<NextLink href={blogPath}>Блог</NextLink>
 								</li>
 								{pagesData?.pages?.edges.map((edge) => (
 									<li key={edge.node.id}>
-										<Link to={getPageUrl(edge.node.slug)}>
+										<NextLink href={getPageUrl(edge.node.slug)}>
 											{edge.node.title}
-										</Link>
+										</NextLink>
 									</li>
 								))}
 							</ul>
@@ -167,15 +166,15 @@ const Header: React.FC = () => {
 					<Container maxWidth='lg'>
 						<div className='flex justify-between items-center'>
 							<div className='logo'>
-								<NextLink href={baseUrl}>
-									<Link to={baseUrl}>
+								<NextLink href={baseUrl} passHref>
+									<a>
 										<ReactSVG
 											className={classes.logo}
 											src={Logo}
 											alt='СтройЛюкс'
 											title='СтройЛюкс'
 										/>
-									</Link>
+									</a>
 								</NextLink>
 							</div>
 							<div className='flex items-center'>
@@ -244,11 +243,11 @@ const Header: React.FC = () => {
 									>
 										<AccountIcon fillRule='evenodd' />
 									</IconButton>
-									<Link to={userProfileFavoritesUrl}>
-										<IconButton className={classes.utilityIcon}>
+									<NextLink href={userProfileFavoritesUrl} passHref>
+										<IconButton className={classes.utilityIcon} component='a'>
 											<BsHeart />
 										</IconButton>
-									</Link>
+									</NextLink>
 									<Badge
 										badgeContent={checkoutQuantity}
 										color='primary'
@@ -281,14 +280,16 @@ const Header: React.FC = () => {
 									<MenuMobile categories={dataCategories?.categories} />
 								</div>
 								<div className='mobile-header__logo flex-1'>
-									<Link to={baseUrl}>
-										<ReactSVG
-											className={classes.logoMobile}
-											src={Logo}
-											alt='СтройЛюкс'
-											title='СтройЛюкс'
-										/>
-									</Link>
+									<NextLink href={baseUrl} passHref>
+										<a>
+											<ReactSVG
+												className={classes.logoMobile}
+												src={Logo}
+												alt='СтройЛюкс'
+												title='СтройЛюкс'
+											/>
+										</a>
+									</NextLink>
 								</div>
 								<div className='mobile-header__utilities'>
 									<div className='mobile-header__search-icon'>

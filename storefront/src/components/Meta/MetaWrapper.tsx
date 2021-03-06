@@ -30,8 +30,8 @@ const MetaWrapper: React.FC<MetaWrapperProps> = ({ children, meta }) => {
 				...removeEmpty(meta),
 				...{
 					title: meta.title
-						? `${meta.title} | ${shop?.headerText}`
-						: shop?.headerText,
+						? `${meta.title} | ${shop?.headerText || ''}`
+						: shop?.headerText || '',
 					description: meta.description
 						? `${meta.description}`
 						: shop?.description

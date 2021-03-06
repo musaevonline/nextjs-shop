@@ -4,15 +4,16 @@ import { useQuery } from '@apollo/client'
 import { productsCardQuery } from '@sdk/queries/product'
 import {
 	ProductsCardDetails,
-	ProductsCardDetailsVariables,
+	ProductsCardDetailsVariables
 } from '@sdk/queries/types/ProductsCardDetails'
 import { FavoritesContext } from '@temp/components/FavoritesProvider/context'
+import Loader from '@temp/components/Loader'
+import { MetaWrapper } from '@temp/components'
 import _ from 'lodash'
 
 const PAGINATE_BY = 10
 const View: React.FC = () => {
 	const { favorites } = useContext(FavoritesContext)
-
 	const { data: products, loading, fetchMore } = useQuery<
 		ProductsCardDetails,
 		ProductsCardDetailsVariables
@@ -20,9 +21,12 @@ const View: React.FC = () => {
 		variables: {
 			first: PAGINATE_BY,
 			ids: favorites.slice(0, PAGINATE_BY),
-			includeCategory: false,
+			includeCategory: false
 		},
-		skip: !favorites.length,
+		fetchPolicy: 'cache-and-network',
+		nextFetchPolicy: 'cache-first',
+		notifyOnNetworkStatusChange: true,
+		skip: !favorites.length
 	})
 
 	const loadMore = async () => {
@@ -32,7 +36,7 @@ const View: React.FC = () => {
 				ids: favorites.slice(
 					products.products.edges.length,
 					products.products.edges.length + PAGINATE_BY
-				),
+				)
 			},
 			updateQuery: (previousResult, { fetchMoreResult = {} }) => {
 				if (!previousResult) {
@@ -43,22 +47,25 @@ const View: React.FC = () => {
 					products: {
 						...copy.products,
 						edges: [...copy.products.edges, ...fetchMoreResult.products.edges],
-						pageInfo: fetchMoreResult.products.pageInfo,
-					},
+						pageInfo: fetchMoreResult.products.pageInfo
+					}
 				}
-			},
+			}
 		})
 	}
 
 	return (
-		<>
+		<MetaWrapper meta={{ title: 'Избранное' }}>
+			{(!products || loading) && (
+				<Loader full={!products} absolute={!!products} />
+			)}
 			<Page
 				products={products?.products}
 				loading={loading}
 				loadMore={loadMore}
 				hasMore={favorites.length > products?.products.edges.length}
 			/>
-		</>
+		</MetaWrapper>
 	)
 }
 

@@ -7,7 +7,6 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from '@material-ui/core/IconButton'
 import { checkoutUrl } from '@temp/app/routes'
-import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 import { useQuery } from '@apollo/client'
 import { productVariantsQuery } from '@sdk/queries/product-variant'
@@ -22,6 +21,7 @@ import {
 } from '@sdk/queries/types/ProductVariants'
 import { CheckoutContext } from '@temp/components/CheckoutProvider/context'
 import { makeStyles } from '@material-ui/core/styles'
+import Link from 'next/link'
 
 const PAGINATE_BY = 100
 
@@ -134,28 +134,26 @@ const CartRightPanel: React.FC<{
 										<span>{priceToString(sumPrice)}</span>
 									</Typography>
 								)}
-								<Button
-									type='button'
-									component={Link}
-									className='cart-panel__footer-btn mb-5'
-									to={checkoutUrl}
-									onClick={toggleCartDrawer(false)}
-									color='primary'
-									variant='contained'
-									fullWidth
-								>
-									Оформить заказ
-								</Button>
+								<Link href={checkoutUrl}>
+									<Button
+										type='button'
+										className='cart-panel__footer-btn mb-5'
+										onClick={toggleCartDrawer(false)}
+										color='secondary'
+										variant='contained'
+										fullWidth
+									>
+										Оформить заказ
+									</Button>
+								</Link>
 							</>
 						) : (
 							<Button
 								type='button'
-								component={Link}
 								className='cart-panel__footer-btn mb-5'
-								to='#'
 								onClick={toggleCartDrawer(false)}
-								color='primary'
-								variant='contained'
+								color='secondary'
+								variant='outlined'
 								fullWidth
 							>
 								Продолжить покупки

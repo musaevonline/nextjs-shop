@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import Page from './Page'
 import {
 	ProductsCardDetails,
-	ProductsCardDetailsVariables,
+	ProductsCardDetailsVariables
 } from '@sdk/queries/types/ProductsCardDetails'
 import { productsCardQuery } from '@sdk/queries/product'
 import { useQuery } from '@apollo/client'
@@ -11,13 +11,14 @@ import {
 	useQueryParams,
 	StringParam,
 	JsonParam,
-	DelimitedNumericArrayParam,
+	DelimitedNumericArrayParam
 } from 'use-query-params'
 import { PRODUCTS_SORT_BY_ENUM } from '@temp/views/Category/Page'
 import { OrderDirection, ProductOrderField } from '@temp/types/globalTypes'
 import { TUrlQuery } from '@temp/views/Category/View'
 import { Attributes, AttributesVariables } from '@sdk/queries/types/Attributes'
 import { attributesQuery } from '@sdk/queries/attribute'
+import { MetaWrapper } from '@temp/components'
 
 const PAGINATE_BY = 20
 
@@ -32,7 +33,7 @@ const getSortBy = (
 		case PRODUCTS_SORT_BY_ENUM.ORDER_COUNT:
 			return {
 				field: ProductOrderField.ORDER_COUNT,
-				direction: OrderDirection.DESC,
+				direction: OrderDirection.DESC
 			}
 		default:
 			return { field: ProductOrderField.DATE, direction: OrderDirection.DESC }
@@ -44,9 +45,8 @@ const View: React.FC = () => {
 		q: StringParam,
 		sortBy: StringParam as PRODUCTS_SORT_BY_ENUM | any,
 		attributes: JsonParam,
-		priceRange: DelimitedNumericArrayParam,
+		priceRange: DelimitedNumericArrayParam
 	})
-	const [products, setProducts] = useState<ProductsCardDetails | null>(null)
 
 	const { data, fetchMore, loading } = useQuery<
 		ProductsCardDetails,
@@ -59,27 +59,26 @@ const View: React.FC = () => {
 				attributes: query.attributes,
 				price: {
 					lte: query.priceRange ? query.priceRange[0] : 0,
-					gte: query.priceRange ? query.priceRange[1] : 99999,
-				},
+					gte: query.priceRange ? query.priceRange[1] : 99999
+				}
 			},
 			sortBy: getSortBy(query.sortBy),
-			includeCategory: true,
+			includeCategory: true
 		},
-		skip: !query.q || query.q.length < 2,
-		onCompleted: setProducts,
+		skip: !query.q || query.q.length < 2
 	})
 	const { data: categoryAttributesData } = useQuery<
 		Attributes,
 		AttributesVariables
 	>(attributesQuery, {
 		variables: {
-			first: 100,
+			first: 10,
 			filter: {
 				inCategories:
-					_.uniq(data?.products?.edges.map((p) => p.node.category?.id)) || null,
-			},
+					_.uniq(data?.products?.edges.map((p) => p.node.category?.id)) || null
+			}
 		},
-		skip: !data,
+		skip: !data
 	})
 	const setFilters = (values: TUrlQuery): void => {
 		setQuery({ ...query, ...values })
@@ -88,35 +87,22 @@ const View: React.FC = () => {
 		await fetchMore({
 			variables: {
 				first: PAGINATE_BY,
-				after: data.products.pageInfo.endCursor,
-			},
-			// updateQuery: (previousResult:ProductsCardDetails, { fetchMoreResult = {} }) => {
-			//     if (!previousResult){
-			//         return fetchMoreResult
-			//     }
-			//     const copy = _.cloneDeep(previousResult);
-			//     return {
-			//         products: {
-			//             ...copy.products,
-			//             edges: [...copy.products.edges, ...fetchMoreResult.products.edges],
-			//             pageInfo: fetchMoreResult.products.pageInfo,
-			//         },
-			//     };
-			// }
+				after: data.products.pageInfo.endCursor
+			}
 		})
 	}
 
 	return (
-		<>
+		<MetaWrapper meta={{ title: `Поиск - ${query.q || ''}` }}>
 			<Page
-				products={products?.products}
+				products={data?.products}
 				loading={loading}
 				loadMore={loadMore}
 				filters={query as TUrlQuery}
 				setFilters={setFilters}
 				attributes={categoryAttributesData?.attributes}
 			/>
-		</>
+		</MetaWrapper>
 	)
 }
 

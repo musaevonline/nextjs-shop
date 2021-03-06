@@ -1,7 +1,7 @@
 import './scss/NotFound.scss'
 
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { BASE_URL } from '../../core/config'
 import { Container } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
@@ -23,15 +23,11 @@ const NotFound: React.FC<NotFoundProps> = () => (
 				</p>
 			</div>
 			<div className='not-found-page__button'>
-				<Button
-					component={Link}
-					to={BASE_URL}
-					fullWidth
-					color='primary'
-					variant='contained'
-				>
-					Главная страница
-				</Button>
+				<Link href={BASE_URL}>
+					<Button fullWidth color='primary' variant='contained'>
+						Главная страница
+					</Button>
+				</Link>
 			</div>
 		</Container>
 	</div>
