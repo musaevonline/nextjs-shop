@@ -1038,7 +1038,7 @@
     "string": "Админ"
   },
   "default_store_view": {
-    "string": "Вид магазина по умолчанию"
+    "string": "Название для покупателей"
   },
   "properties": {
     "string": "Свойства"
@@ -1678,5 +1678,8 @@
   },
   "blogArticleStatus": {
     "string": "Статус"
+  },
+  "delete_products": {
+    "string": "Вы уверенны, что хотите удалить товары?"
   }
 }
