@@ -29,6 +29,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Divider from '@material-ui/core/Divider'
+import HomeIcon from '@material-ui/icons/Home'
 
 const useStyles = makeStyles((theme) => ({
 	filterBtn: {
@@ -91,7 +92,9 @@ const Page: React.FC<{
 				<div className='my-20'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
 						<NextLink href={baseUrl}>
-							<a color='inherit'>Главная</a>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
 						</NextLink>
 						<span>Поиск</span>
 					</Breadcrumbs>

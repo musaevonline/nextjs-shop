@@ -11,6 +11,7 @@ import { ProductsCardDetails_products } from '@sdk/queries/types/ProductsCardDet
 // import Loader from '@temp/components/Loader'
 import { ProductCard } from '@temp/components/ProductCard'
 import Button from '@material-ui/core/Button'
+import HomeIcon from '@material-ui/icons/Home'
 
 const Page: React.FC<{
 	products: ProductsCardDetails_products | null
@@ -24,7 +25,9 @@ const Page: React.FC<{
 				<div className='my-20'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
 						<NextLink href={baseUrl}>
-							<a color='inherit'>Главная</a>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
 						</NextLink>
 						<span>Избранное</span>
 					</Breadcrumbs>

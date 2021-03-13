@@ -90,7 +90,7 @@ const ProductVariantForm: React.FC<ProductVariantFormProps> = ({
 			.positive('Минимальное количество заказа 1')
 			.max(availableQuantity, `Доступно ${availableQuantity}`)
 	})
-	const attributes = [] || getProductVariantsAttributes(product)
+	const attributes = getProductVariantsAttributes(product)
 	const form = useFormik({
 		enableReinitialize: true,
 		initialValues: {

@@ -116,6 +116,7 @@ const View: React.FC = () => {
 		150,
 		true
 	)
+	if (!data && loading) return null
 	return (
 		<MetaWrapper
 			meta={{
@@ -146,7 +147,6 @@ const View: React.FC = () => {
 						}}
 						type='application/ld+json'
 					/>
-
 					<Page
 						product={data.product}
 						addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}

@@ -17,6 +17,7 @@ import MainArticleCard from '@temp/views/Blog/components/MainArticle'
 import { BlogCategoryListWithArticles_blogCategoryList } from '@sdk/queries/types/BlogCategoryListWithArticles'
 import Divider from '@material-ui/core/Divider'
 import ArticleCarousel from '@temp/views/Blog/components/ArticleCarousel'
+import HomeIcon from '@material-ui/icons/Home'
 
 const useStyles = makeStyles((theme) => ({
 	mainArticle: {
@@ -64,7 +65,9 @@ const Page: React.FC<IProps> = ({
 			<div className='my-20'>
 				<Breadcrumbs separator='/' aria-label='breadcrumb'>
 					<NextLink href={baseUrl} passHref>
-						<a color='inherit'>Главная</a>
+						<a className='flex items-center' color='inherit'>
+							<HomeIcon fontSize='small' />
+						</a>
 					</NextLink>
 					<span>Блог</span>
 				</Breadcrumbs>

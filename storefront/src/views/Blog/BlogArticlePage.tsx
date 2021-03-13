@@ -18,6 +18,7 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import DOMPurify from 'dompurify'
 import { ssrMode } from '@temp/constants'
+import HomeIcon from '@material-ui/icons/Home'
 
 const useStyles = makeStyles((theme) => ({
 	header: {
@@ -150,7 +151,9 @@ const BlogArticlePage: React.FC<IProps> = ({ article, loading }) => {
 				<div className='my-20'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
 						<NextLink href={baseUrl}>
-							<a color='inherit'>Главная</a>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
 						</NextLink>
 						<NextLink href={blogPath}>
 							<a color='inherit' href=''>

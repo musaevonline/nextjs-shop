@@ -3,9 +3,9 @@ import {
 	ProductDetails_product_variants
 } from '@sdk/queries/types/ProductDetails'
 import { getProductUrl } from '@temp/app/routes'
-import _ from 'lodash'
 import { ProductReviews_productReviews } from '@sdk/queries/types/ProductReviews'
-import { ssrMode, STOREFRONT_URL } from '@temp/constants'
+import { STOREFRONT_URL } from '@temp/constants'
+import { cleanTextForMeta } from '@temp/misc'
 
 type TSchemaAvailability =
 	| 'https://schema.org/Discontinued'
@@ -115,12 +115,12 @@ const getReviewList = (
 		}
 	})
 }
+
 const getOffers = (
 	product: ProductDetails_product,
 	variants: ProductDetails_product_variants[]
 ): ISchemaAggregateOffer => {
 	if (!variants) return null
-
 	return {
 		'@type': 'AggregateOffer',
 		highPrice: product.priceRange.stop.amount,
@@ -135,13 +135,9 @@ const getOffers = (
 			itemCondition: 'https://schema.org/NewCondition',
 			price: variant.price.amount,
 			priceCurrency: variant.price.currency,
-			priceValidUntil: new Date(
-				new Date().setFullYear(new Date().getFullYear() + 1)
-			).toISOString(),
+			priceValidUntil: '2029-12-31',
 			sku: variant.sku,
-			url:
-				(ssrMode ? STOREFRONT_URL : location.origin) +
-				getProductUrl(product.slug, product.id)
+			url: STOREFRONT_URL + getProductUrl(product.slug, product.id).slice(1)
 		}))
 	}
 }
@@ -156,10 +152,8 @@ export const productStructuredData = (
 		'@type': 'Product',
 		name: product.name,
 		image: product.images.map((img) => img.url),
-		description: product.description.replace(/<[^>]+>/g, ''),
-		url:
-			(ssrMode ? STOREFRONT_URL : location.origin) +
-			getProductUrl(product.slug, product.id),
+		description: cleanTextForMeta(product.description, null, true),
+		url: STOREFRONT_URL + getProductUrl(product.slug, product.id).slice(1),
 		sku: product.pk,
 		brand: {
 			'@type': 'Brand',

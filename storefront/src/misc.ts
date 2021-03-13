@@ -28,7 +28,7 @@ export function cleanTextForMeta(
 	let resStr = (text || '').replace(/<\/?[^>]+(>|$)/g, '')
 
 	if (removeSpaces) {
-		resStr = resStr.replace(/ +(?= )/g, '').replace(/\r?\n|\r/g, '')
+		resStr = resStr.replace(/ +(?= )/g, '').replace(/\r?\n|\r|\t/g, '')
 	}
 	if (maxLength) {
 		resStr = resStr.slice(0, maxLength).trim() + '...'

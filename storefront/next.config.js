@@ -58,8 +58,8 @@ const plugins = (isServer) => {
 	if (isDev) {
 		base.push(
 			new MiniCssExtractPlugin({
-				filename: '[name].css',
-				chunkFilename: '[id].css'
+				filename: 'static/css/[name].css',
+				chunkFilename: 'static/css/[id].css'
 			})
 		)
 		// base.push(new HotModulePlugin())
@@ -67,8 +67,8 @@ const plugins = (isServer) => {
 	if (isProd) {
 		base.push(
 			new MiniCssExtractPlugin({
-				filename: '[name].[hash].css',
-				chunkFilename: '[id].[hash].css'
+				filename: 'static/css/bundle-[contenthash].css',
+				chunkFilename: 'static/css/bundle-[contenthash].css'
 			})
 		)
 		base.push(new OptimizeCssAssetsPlugin())
@@ -148,48 +148,10 @@ module.exports = withPlugins(
 								}
 							]
 						},
-						// {
-						// 	test: /\.svg$/,
-						// 	use: ['@svgr/webpack']
-						// },
-						// {
-						// 	test: /\.(gif|jpg|png|svg)$/,
-						// 	use: [
-						// 		{
-						// 			loader: 'file-loader',
-						// 			options: {
-						// 				name: '[name].[ext]',
-						// 				publicPath: '/_next/static/images/',
-						// 				outputPath: '/images/'
-						// 			}
-						// 		}
-						// 	]
-						// },
-						// {
-						// 	test: /\.(gif|jpg|png|svg)$/,
-						// 	use: [
-						// 		{
-						// 			loader: 'file-loader',
-						// 			options: {
-						// 				name: '[name].[ext]',
-						// 				publicPath: '/_next/static/images/',
-						// 				outputPath: '/images/'
-						// 			}
-						// 		}
-						// {
-						// 	loader: 'url-loader',
-						// 	options: {
-						// 		limit: 100000,
-						// 		publicPath: '/_next/static/images/',
-						// 		outputPath: '/images/'
-						// 	}
-						// }
-						// 	]
-						// },
 						isDev && {
 							test: /\.(scss|css)$/,
 							use: [
-								isServer ? MiniCssExtractPlugin.loader : 'style-loader',
+								MiniCssExtractPlugin.loader,
 								{
 									loader: 'css-loader',
 									options: { sourceMap: true }
@@ -209,7 +171,7 @@ module.exports = withPlugins(
 						isProd && {
 							test: /\.(scss|css)$/,
 							use: [
-								isServer ? MiniCssExtractPlugin.loader : 'style-loader',
+								MiniCssExtractPlugin.loader,
 								{
 									loader: 'css-loader',
 									options: { sourceMap: true }
@@ -226,30 +188,6 @@ module.exports = withPlugins(
 								{ loader: 'sass-loader' }
 							]
 						}
-						// {
-						//   test: /\.(scss|css)$/,
-						//   use: [
-						//     {
-						//       loader: isServer ? MiniCssExtractPlugin.loader : "style-loader",
-						//     },
-						//     {
-						//       loader: 'css-loader',
-						//       options: {sourceMap: true}
-						//     },
-						//
-						//     {
-						//       loader: 'postcss-loader',
-						//       options: {
-						//         sourceMap: true,
-						//         postcssOptions: {
-						//           plugins: ['tailwindcss', 'autoprefixer']
-						//         }
-						//       }
-						//     },
-						//     'sass-loader'
-						//
-						//   ],
-						// }
 					].filter(Boolean)
 				},
 				plugins: [...config.plugins, ...plugins(isServer)].filter(Boolean)

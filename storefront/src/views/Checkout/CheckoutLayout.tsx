@@ -27,6 +27,7 @@ import { CheckoutContext } from '@temp/components/CheckoutProvider/context'
 import { useRouter } from 'next/router'
 import { ssrMode } from '@temp/constants'
 import NextLink from 'next/link'
+import HomeIcon from '@material-ui/icons/Home'
 
 export type TCheckoutStep = {
 	index: number
@@ -100,100 +101,104 @@ const CheckoutLayout: React.FC = ({ children }) => {
 				<div className='mt-20 mb-10'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
 						<NextLink href={baseUrl} passHref>
-							<a color='inherit'>Главная</a>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
 						</NextLink>
 						<span>Оформление заказа</span>
 					</Breadcrumbs>
 				</div>
-				<Grid container spacing={2}>
-					<Grid item xs={12} sm={12} md={7}>
-						<div className='sticky top-0'>
-							<div className='mb-10'>
+				<div style={{ padding: 8 }}>
+					<Grid container spacing={2}>
+						<Grid item xs={12} sm={12} md={7}>
+							<div className='sticky top-0'>
+								<div className='mb-10'>
+									<Card>
+										<CardContent>
+											<Stepper
+												alternativeLabel
+												nonLinear
+												classes={{ root: classes.stepperRoot }}
+												activeStep={lastStepCompleted}
+											>
+												{CHECKOUT_STEPS.map((step, index) => {
+													const stepProps: { completed?: boolean } = {}
+													const buttonProps: { optional?: React.ReactNode } = {}
+													return (
+														<Step key={step.step} {...stepProps}>
+															<StepButton
+																completed={isStepComplete(step)}
+																onClick={async () => {
+																	await router.push(step.link)
+																}}
+																{...buttonProps}
+															>
+																{step.name}
+															</StepButton>
+														</Step>
+													)
+												})}
+											</Stepper>
+										</CardContent>
+									</Card>
+								</div>
+								<div className='mt-10'>
+									<Card>
+										<CardContent>{children}</CardContent>
+									</Card>
+								</div>
+							</div>
+						</Grid>
+						<Grid item xs={12} sm={12} md={5}>
+							<div className='sticky top-0'>
 								<Card>
 									<CardContent>
-										<Stepper
-											alternativeLabel
-											nonLinear
-											classes={{ root: classes.stepperRoot }}
-											activeStep={lastStepCompleted}
-										>
-											{CHECKOUT_STEPS.map((step, index) => {
-												const stepProps: { completed?: boolean } = {}
-												const buttonProps: { optional?: React.ReactNode } = {}
-												return (
-													<Step key={step.step} {...stepProps}>
-														<StepButton
-															completed={isStepComplete(step)}
-															onClick={async () => {
-																await router.push(step.link)
-															}}
-															{...buttonProps}
-														>
-															{step.name}
-														</StepButton>
-													</Step>
-												)
-											})}
-										</Stepper>
+										<Typography variant='h5'>Ваши товары:</Typography>
+										<CartItems items={productVariantsData?.productVariants} />
+										{checkout.shippingMethod && (
+											<>
+												<Typography
+													variant='subtitle1'
+													className='flex justify-between'
+												>
+													<span>Сумма заказа::</span>
+													<span>{priceToString(sumPrice)}</span>
+												</Typography>
+												<Typography
+													variant='subtitle1'
+													className='flex justify-between pb-5'
+												>
+													<span>Доставка:</span>
+													<span>
+														{priceToString(checkout.shippingMethod.price)}
+													</span>
+												</Typography>
+												<Divider />
+											</>
+										)}
+										{sumPrice.amount > 0 && (
+											<Typography
+												variant='h6'
+												color='primary'
+												className='cart-panel__footer-total mt-5 pb-10 font-medium'
+											>
+												<span>ИТОГО:</span>
+												<span>
+													{priceToString({
+														...sumPrice,
+														amount:
+															sumPrice.amount +
+															(checkout.shippingMethod?.price.amount || 0)
+													})}
+												</span>
+											</Typography>
+										)}
 									</CardContent>
 								</Card>
 							</div>
-							<div className='mt-10'>
-								<Card>
-									<CardContent>{children}</CardContent>
-								</Card>
-							</div>
-						</div>
+						</Grid>
 					</Grid>
-					<Grid item xs={12} sm={12} md={5}>
-						<div className='sticky top-0'>
-							<Card>
-								<CardContent>
-									<Typography variant='h5'>Ваши товары:</Typography>
-									<CartItems items={productVariantsData?.productVariants} />
-									{checkout.shippingMethod && (
-										<>
-											<Typography
-												variant='subtitle1'
-												className='flex justify-between'
-											>
-												<span>Сумма заказа::</span>
-												<span>{priceToString(sumPrice)}</span>
-											</Typography>
-											<Typography
-												variant='subtitle1'
-												className='flex justify-between pb-5'
-											>
-												<span>Доставка:</span>
-												<span>
-													{priceToString(checkout.shippingMethod.price)}
-												</span>
-											</Typography>
-											<Divider />
-										</>
-									)}
-									{sumPrice.amount > 0 && (
-										<Typography
-											variant='h6'
-											color='primary'
-											className='cart-panel__footer-total mt-5 pb-10 font-medium'
-										>
-											<span>ИТОГО:</span>
-											<span>
-												{priceToString({
-													...sumPrice,
-													amount:
-														sumPrice.amount +
-														(checkout.shippingMethod?.price.amount || 0)
-												})}
-											</span>
-										</Typography>
-									)}
-								</CardContent>
-							</Card>
-						</div>
-					</Grid>
-				</Grid>
+				</div>
 			</Container>
 		</div>
 	)

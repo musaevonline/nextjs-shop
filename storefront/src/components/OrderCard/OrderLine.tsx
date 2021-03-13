@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.down('xs')]: {
 			width: '100%',
 			height: 'auto'
+		},
+		'& img': {
+			objectFit: 'contain'
 		}
 	}
 }))
@@ -74,11 +77,11 @@ const OrderLine: React.FC<{
 				<div className='text-base text-gray-500'>
 					{line.variant?.attributes && (
 						<div>
-							{line.variant.attributes.map((attr) => (
-								<span>
+							{line.variant.attributes.map((attr, idx) => (
+								<span key={idx}>
 									{attr.attribute.name}:{' '}
 									{attr.values.map((val) => (
-										<span>{val.name}</span>
+										<span key={val.id}>{val.name}</span>
 									))}
 									;{' '}
 								</span>

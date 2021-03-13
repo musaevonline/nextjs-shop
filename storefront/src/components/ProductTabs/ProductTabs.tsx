@@ -9,15 +9,10 @@ import { CardContent } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import TabPanel from '../TabPanel'
 import { ProductDetails_product } from '@sdk/queries/types/ProductDetails'
-// import Grid from "@material-ui/core/Grid";
 import { ProductReviews_productReviews } from '@sdk/queries/types/ProductReviews'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
-import DOMPurify from 'dompurify'
 import { useQueryParams, NumberParam } from 'use-query-params'
-import { ssrMode } from '@temp/constants'
-// import {getProductVariantsAttributes} from "@temp/views/ProductDetails/utils";
-// import Typography from "@material-ui/core/Typography";
 
 function a11yProps(index: any) {
 	return {
@@ -64,59 +59,11 @@ const ProductTabs: React.FC<{
 								<div
 									className='product-tabs__description text-small'
 									dangerouslySetInnerHTML={{
-										__html: ssrMode
-											? product.description
-											: DOMPurify.sanitize(product.description)
+										__html: product.description
 									}}
 								/>
 							</CardContent>
 						</TabPanel>
-						{/*<TabPanel value={tab} index={1} dir={theme.direction}>*/}
-						{/*    <CardContent>*/}
-						{/*        <Grid container spacing={3}>*/}
-						{/*            {product.attributes.map(attr => {*/}
-						{/*                return(*/}
-						{/*                    <Grid key={attr.attribute.id} item xs={12} sm={6}>*/}
-						{/*                        <div className="flex justify-between">*/}
-						{/*                            <Typography variant="h6"><strong>{attr.attribute.name}:</strong></Typography>*/}
-						{/*                            <ul className="text-right m-0">*/}
-						{/*                                {attr.values.map(val =>*/}
-						{/*                                    <Typography key={val.id}*/}
-						{/*                                                variant="body1"*/}
-						{/*                                                component="li"*/}
-						{/*                                                className="font-medium list-none">*/}
-						{/*                                        {val.name}*/}
-						{/*                                    </Typography>*/}
-						{/*                                )}*/}
-						{/*                            </ul>*/}
-						{/*                        </div>*/}
-						{/*                    </Grid>*/}
-
-						{/*                )*/}
-						{/*            })}*/}
-						{/*            {attrs.map(attr => {*/}
-						{/*                return(*/}
-						{/*                    <Grid key={attr.id} item xs={12} sm={6}>*/}
-						{/*                        <div className="flex justify-between">*/}
-						{/*                            <Typography variant="h6"><strong>{attr.name}:</strong></Typography>*/}
-						{/*                            <ul className="text-right m-0">*/}
-						{/*                                {attr.values.map(val =>*/}
-						{/*                                    <Typography key={val.id}*/}
-						{/*                                                variant="body1"*/}
-						{/*                                                component="li"*/}
-						{/*                                                className="font-medium list-none">*/}
-						{/*                                        {val.name}*/}
-						{/*                                    </Typography>*/}
-						{/*                                )}*/}
-						{/*                            </ul>*/}
-						{/*                        </div>*/}
-						{/*                    </Grid>*/}
-
-						{/*                )*/}
-						{/*            })}*/}
-						{/*        </Grid>*/}
-						{/*    </CardContent>*/}
-						{/*</TabPanel>*/}
 						<TabPanel value={tab} index={1} dir={theme.direction}>
 							<CardContent>
 								{reviews && (

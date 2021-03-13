@@ -12,7 +12,7 @@ export const getProductVariantsAttributes = (
 	product: ProductDetails_product | ProductWithVariants
 ): ProductDetails_product_variants_attributes_attribute[] => {
 	const attributes =
-		_.flatMapDeep(product?.variants.map((variant) => variant.attributes)) || []
+		product?.variants?.flatMap((variant) => variant.attributes) || []
 	const attributesValues = {}
 	attributes.forEach((attr) => {
 		const el = attributes.find((el) => el.attribute.id === attr.attribute.id)

@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import DOMPurify from 'dompurify'
 import { ssrMode } from '@temp/constants'
+import HomeIcon from '@material-ui/icons/Home'
 
 const Page: React.FC<{
 	page: Page_page | null
@@ -19,7 +20,9 @@ const Page: React.FC<{
 				<div className='mt-20 mb-10'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
 						<NextLink href={baseUrl} passHref>
-							<a color='inherit'>Главная</a>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
 						</NextLink>
 						<span>{page?.title}</span>
 					</Breadcrumbs>

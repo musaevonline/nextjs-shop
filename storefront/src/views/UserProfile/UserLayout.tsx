@@ -18,6 +18,7 @@ import CardContent from '@material-ui/core/CardContent'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ssrMode } from '@temp/constants'
+import HomeIcon from '@material-ui/icons/Home'
 
 enum BREADCRUMB_TITLE {
 	SETTINGS = 'Личные данные',
@@ -79,7 +80,9 @@ const UserLayout: React.FC = ({ children }) => {
 				<div className='my-20'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
 						<NextLink href={baseUrl} passHref>
-							<a color='inherit'>Главная</a>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
 						</NextLink>
 						<span>{getBreadcrumbName()}</span>
 					</Breadcrumbs>

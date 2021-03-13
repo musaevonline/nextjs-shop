@@ -21,6 +21,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
 import Avatar from '@material-ui/core/Avatar'
 import Loader from '@temp/components/Loader'
+import HomeIcon from '@material-ui/icons/Home'
 
 const Page: React.FC<{
 	order: Order_orderByToken | null
@@ -33,7 +34,9 @@ const Page: React.FC<{
 			<div className='mt-20 mb-10'>
 				<Breadcrumbs separator='/' aria-label='breadcrumb'>
 					<NextLink href={baseUrl}>
-						<a color='inherit'>Главная</a>
+						<a className='flex items-center' color='inherit'>
+							<HomeIcon fontSize='small' />
+						</a>
 					</NextLink>
 					<span>Заказ №{orderPk}</span>
 				</Breadcrumbs>

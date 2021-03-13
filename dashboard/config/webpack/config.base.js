@@ -27,7 +27,7 @@ module.exports = ({ sourceDir, distDir }) => ({
 		]
 	},
 	entry: {
-		dashboard: `${sourceDir}/[categorySlug].tsx`
+		dashboard: `${sourceDir}/index.tsx`
 	},
 	output: {
 		path: distDir,
