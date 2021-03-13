@@ -19,6 +19,7 @@ from ...account import models
 from ...checkout.utils import get_user_checkout
 from ..core.connection import CountableDjangoObjectType
 from ...core.permissions import AccountPermissions, OrderPermissions
+from ...core.utils import build_absolute_uri
 from ...product.templatetags.product_images import get_thumbnail
 
 
@@ -124,7 +125,7 @@ class User(CountableDjangoObjectType):
     def resolve_avatar(root: models.User, info, size='445x445', method='thumbnail', **_kwargs):
         if root.avatar:
             url = get_thumbnail(root.avatar, size, method=method, rendition_key_set='user_avatars')
-            return Image(alt=None, url=info.context.build_absolute_uri(url))
+            return Image(alt=None, url=build_absolute_uri(url))
 
     @staticmethod
     def resolve_editable_groups(root: models.User, _info, **_kwargs):

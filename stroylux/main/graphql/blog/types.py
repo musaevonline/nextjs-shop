@@ -8,6 +8,7 @@ from main.graphql.core.types.common import Image
 from main.product.templatetags.product_images import get_thumbnail
 from ..core.connection import CountableDjangoObjectType
 from ..core.enums import VersatileImageMethod
+from ...core.utils import build_absolute_uri
 
 
 @key(fields="id")
@@ -38,7 +39,7 @@ class BlogCategoryType(CountableDjangoObjectType):
     @graphene_django_optimizer.resolver_hints(only=["image"])
     def resolve_thumbnail(root: models.BlogCategory, info, size='800x450', method='crop_webp'):
         url = get_thumbnail(root.image, size, method=method, rendition_key_set='blog')
-        return Image(alt=root.name, url=info.context.build_absolute_uri(url))
+        return Image(alt=root.name, url=build_absolute_uri(url))
 
 
 @key(fields="id")
@@ -75,7 +76,7 @@ class BlogArticleType(CountableDjangoObjectType):
     @graphene_django_optimizer.resolver_hints(only=["image"])
     def resolve_thumbnail(self: models.BlogArticle, info, size='800x450', method='crop_webp'):
         url = get_thumbnail(self.image, size, method=method, rendition_key_set='blog')
-        return Image(alt=self.title, url=info.context.build_absolute_uri(url))
+        return Image(alt=self.title, url=build_absolute_uri(url))
 
     @graphene_django_optimizer.resolver_hints(select_related=["author"])
     def resolve_author_name(self: models.BlogArticle, info):

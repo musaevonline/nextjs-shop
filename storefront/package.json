@@ -163,6 +163,8 @@
     "download-schema": "apollo client:download-schema schema.graphql",
     "next-dev": "cross-env NODE_ENV=development API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ next dev",
     "next-build": "cross-env NODE_ENV=production API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ next build",
-    "next-start": "cross-env NODE_ENV=production API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ next start"
+    "next-start": "cross-env NODE_ENV=production API_URI=http://localhost:8000/graphql/ DASHBOARD_URL=http://localhost:9000/dashboard/ next start",
+    "next-build-prod": "cross-env NODE_ENV=production next build",
+    "next-start-prod": "cross-env NODE_ENV=production next start"
   }
 }

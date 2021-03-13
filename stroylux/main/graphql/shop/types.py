@@ -14,7 +14,7 @@ from ..core.types.common import CountryDisplay, Permission
 from ..decorators import permission_required
 from ..utils import format_permissions_for_display
 from ...core.permissions import SitePermissions, get_permissions
-from ...core.utils import get_client_ip, get_country_by_ip
+from ...core.utils import get_client_ip, get_country_by_ip, build_absolute_uri
 
 
 class AuthorizationKey(graphene.ObjectType):
@@ -49,7 +49,7 @@ class SiteBannerImage(CountableDjangoObjectType):
             url = get_thumbnail(root.image, size, method, rendition_key_set='shop_banner')
         else:
             url = root.image.url
-        return info.context.build_absolute_uri(url)
+        return build_absolute_uri(url)
 
     @staticmethod
     def __resolve_reference(root, _info, **_kwargs):
@@ -152,7 +152,7 @@ class Shop(graphene.ObjectType):
         return Domain(
             host=site.domain,
             ssl_enabled=settings.ENABLE_SSL,
-            url=info.context.build_absolute_uri("/"),
+            url=build_absolute_uri("/"),
         )
 
     @staticmethod

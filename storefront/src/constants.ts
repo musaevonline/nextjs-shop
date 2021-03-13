@@ -1,7 +1,9 @@
-export const apiUrl = process.env.API_URI || '/graphql/'
+export const ssrMode = typeof window === 'undefined'
+export const apiUrl = ssrMode
+	? process.env.SSR_API_URL
+	: process.env.API_URI || '/graphql/'
 export const STOREFRONT_URL =
 	process.env.STOREFRONT_URL || 'http://localhost:3000/'
-export const ssrMode = typeof window === 'undefined'
 export const MAX_CHECKOUT_VARIANT_LINES = 10000
 
 export const SIGNUP_REDIRECT_URL = STOREFRONT_URL + 'signup/confirm/'

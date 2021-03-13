@@ -8,6 +8,7 @@ from graphql import GraphQLError
 
 from main import settings
 from main.core.permissions import ProductPermissions
+from main.core.utils import build_absolute_uri
 from main.graphql.core.connection import DjangoPkInterface
 from main.graphql.core.fields import PrefetchingConnectionField, \
     FilterInputConnectionField
@@ -276,7 +277,7 @@ class Product(CountableDjangoObjectType):
             image = images[0] if images else None
             url = get_product_image_thumbnail(image, size, method=method)
             alt = image.alt if image else ''
-            return Image(alt=alt, url=info.context.build_absolute_uri(url))
+            return Image(alt=alt, url=build_absolute_uri(url))
 
         return (
             ImagesByProductIdLoader(info.context)
@@ -490,7 +491,7 @@ class Category(CountableDjangoObjectType):
                           method='thumbnail_webp'):
         url = get_thumbnail(root.background_image, size, method)
         return Image(alt=root.background_image_alt,
-                     url=info.context.build_absolute_uri(url))
+                     url=build_absolute_uri(url))
 
     @staticmethod
     def resolve_parent(root: models.Category, info):
@@ -526,7 +527,7 @@ class ProductImage(CountableDjangoObjectType):
             url = get_thumbnail(root.image, size, method="thumbnail")
         else:
             url = root.image.url
-        return info.context.build_absolute_uri(url)
+        return build_absolute_uri(url)
 
     @staticmethod
     def __resolve_reference(root, _info, **_kwargs):
@@ -536,7 +537,7 @@ class ProductImage(CountableDjangoObjectType):
     def resolve_thumbnail(root: models.ProductImage, info, size='540x540',
                           method='thumbnail_webp'):
         url = get_thumbnail(root.image, size, method=method)
-        return info.context.build_absolute_uri(url)
+        return build_absolute_uri(url)
 
 
 class Stock(CountableDjangoObjectType):
@@ -599,5 +600,5 @@ class ProductReview(CountableDjangoObjectType):
         image = root.user.avatar
         if image:
             url = get_thumbnail(image, size, method="thumbnail")
-            return info.context.build_absolute_uri(url)
+            return build_absolute_uri(url)
         return None
