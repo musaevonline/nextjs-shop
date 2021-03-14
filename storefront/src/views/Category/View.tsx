@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import Loader from '@temp/components/Loader'
 import { MetaWrapper } from '@temp/components'
-import { useParams } from 'react-router'
 import { getGraphqlIdFromDBId } from '@temp/core/utils'
 import { useQuery } from '@apollo/client'
 import { productsCardQuery } from '@sdk/queries/product'
@@ -22,6 +21,9 @@ import {
 } from 'use-query-params'
 import { OrderDirection, ProductOrderField } from '@temp/types/globalTypes'
 import { cleanTextForMeta } from '@temp/misc'
+import { useRouter } from 'next/router'
+import { STOREFRONT_URL } from '@temp/constants'
+import { getCategoryUrl } from '@temp/app/routes'
 
 const PAGINATE_BY = 20
 
@@ -55,9 +57,11 @@ const getSortBy = (
 }
 
 const View: React.FC = () => {
-	const { pk } = useParams<{ pk: string }>()
-	const id = getGraphqlIdFromDBId(pk, 'Category')
-
+	const router = useRouter()
+	const pk = router.query?.id as string
+	const id = useMemo(() => getGraphqlIdFromDBId(pk, 'Category'), [
+		router.query?.id
+	])
 	const [query, setQuery] = useQueryParams({
 		sortBy: StringParam as PRODUCTS_SORT_BY_ENUM | any,
 		attributes: JsonParam,
@@ -67,7 +71,6 @@ const View: React.FC = () => {
 		Category,
 		CategoryVariables
 	>(categoryQuery, { variables: { id } })
-	const [products, setProducts] = useState<ProductsCardDetails | null>(null)
 
 	const { data: productsResponse, fetchMore, loading } = useQuery<
 		ProductsCardDetails,
@@ -86,8 +89,7 @@ const View: React.FC = () => {
 			sortBy: getSortBy(query.sortBy),
 			includeCategory: false
 		},
-		onCompleted: setProducts,
-		fetchPolicy: 'cache-and-network',
+		fetchPolicy: 'cache-first',
 		nextFetchPolicy: 'cache-first',
 		notifyOnNetworkStatusChange: true
 		// skip:
@@ -100,13 +102,12 @@ const View: React.FC = () => {
 		variables: {
 			first: 15,
 			filter: { inCategory: id }
-		}
+		},
+		fetchPolicy: 'cache-first',
+		nextFetchPolicy: 'cache-first'
 		// skip:
 		// 	!!categoryLoading || !!categoryResponse?.category?.children?.edges.length
 	})
-	useEffect(() => {
-		setProducts(productsResponse)
-	}, [pk])
 	const setFilters = (values: TUrlQuery): void => {
 		setQuery({ ...query, ...values })
 	}
@@ -130,14 +131,21 @@ const View: React.FC = () => {
 				title: categoryResponse?.category?.name,
 				type: 'product.category',
 				custom: [
-					<link key='canonical' rel='canonical' href={window.location.href} />
+					<link
+						key='canonical'
+						rel='canonical'
+						href={
+							STOREFRONT_URL +
+							getCategoryUrl(router.query?.slug as string, id).slice(1)
+						}
+					/>
 				]
 			}}
 		>
 			{!categoryResponse && <Loader full={true} />}
 			{categoryResponse && (
 				<Page
-					products={products?.products}
+					products={productsResponse?.products}
 					category={categoryResponse.category}
 					attributes={categoryAttributesData?.attributes}
 					loadMore={loadMore}

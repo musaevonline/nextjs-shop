@@ -16,7 +16,7 @@ import React from 'react'
 // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 // import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
 // import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
-// import Link from '@ckeditor/ckeditor5-link/src/link';
+// import NextLink from '@ckeditor/ckeditor5-link/src/link';
 // import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
 // import Table from '@ckeditor/ckeditor5-table/src/table';
 // import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
@@ -69,7 +69,7 @@ const editorOpts = {
 	//   },
 	//   {
 	//     name: 'links',
-	//     items: ['Link', 'Unlink']
+	//     items: ['NextLink', 'Unlink']
 	//   },
 	//   {
 	//     name: 'paragraph',
@@ -191,7 +191,7 @@ const RichCKEditor: React.FC<RichCKEditorProps> = ({
 			{/*        plugins: [*/}
 			{/*            Alignment, Essentials, Paragraph, Bold, Italic, Heading, Font, Highlight,*/}
 			{/*            Image, ImageInsert, ImageToolbar, ImageStyle, ImageResize, LinkImage,*/}
-			{/*            ListStyle, Link, AutoLink,*/}
+			{/*            ListStyle, NextLink, AutoLink,*/}
 			{/*            Table, TableToolbar,*/}
 			{/*            ImageUploadAdapterPlugin*/}
 			{/*        ]*/}

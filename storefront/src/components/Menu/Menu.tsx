@@ -1,8 +1,8 @@
-import './scss/index.scss'
+import './scss/Menu.scss'
 
 import React from 'react'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { getCategoryUrl } from '@temp/app/routes'
 import { Categories_categories } from '@sdk/queries/types/Categories'
 import { Button } from '@material-ui/core'
@@ -214,25 +214,26 @@ const Menu: React.FC<MenuProps> = ({ categories }) => {
 								const node = edge.node
 								return (
 									<li key={i}>
-										<Link
-											to={getCategoryUrl(node.slug, node.id)}
-											className={`${classes.menuCategoriesLink} ${
-												i === activeIndex ? 'active' : ''
-											} flex`}
-											onMouseEnter={(e) => setActiveIndex(i)}
-											onClick={handleClickLink}
-										>
-											<span className={classes.menuCategoriesIcon}>
-												<img
-													src={node.thumbnailXs?.url || CategoryPlaceHolder}
-													alt={node.name}
-													className='flex items-center w-20 h-20'
-												/>
-											</span>
-											<span className='flex-1'>{node.name}</span>
-											{node.children.edges.length > 0 && (
-												<ChevronRightIcon className={classes.chevronRight} />
-											)}
+										<Link href={getCategoryUrl(node.slug, node.id)}>
+											<a
+												className={`${classes.menuCategoriesLink} ${
+													i === activeIndex ? 'active' : ''
+												} flex`}
+												onMouseEnter={(e) => setActiveIndex(i)}
+												onClick={handleClickLink}
+											>
+												<span className={classes.menuCategoriesIcon}>
+													<img
+														src={node.thumbnailXs?.url || CategoryPlaceHolder}
+														alt={node.name}
+														className='flex items-center w-20 h-20'
+													/>
+												</span>
+												<span className='flex-1'>{node.name}</span>
+												{node.children.edges.length > 0 && (
+													<ChevronRightIcon className={classes.chevronRight} />
+												)}
+											</a>
 										</Link>
 										{node.children.edges.length > 0 && (
 											<div
@@ -248,14 +249,17 @@ const Menu: React.FC<MenuProps> = ({ categories }) => {
 																return (
 																	<li key={i}>
 																		<Link
-																			to={getCategoryUrl(
+																			href={getCategoryUrl(
 																				childNode1.slug,
 																				childNode1.id
 																			)}
-																			className={classes.subCategoriesTitle}
-																			onClick={handleClickLink}
 																		>
-																			{childNode1.name}
+																			<a
+																				className={classes.subCategoriesTitle}
+																				onClick={handleClickLink}
+																			>
+																				{childNode1.name}
+																			</a>
 																		</Link>
 																		{!!childNode1.children.edges.length && (
 																			<ul
@@ -267,16 +271,19 @@ const Menu: React.FC<MenuProps> = ({ categories }) => {
 																						return (
 																							<li key={i}>
 																								<Link
-																									to={getCategoryUrl(
+																									href={getCategoryUrl(
 																										childNode2.slug,
 																										childNode2.id
 																									)}
-																									className={
-																										classes.submenuLink
-																									}
-																									onClick={handleClickLink}
 																								>
-																									{childNode2.name}
+																									<a
+																										className={
+																											classes.submenuLink
+																										}
+																										onClick={handleClickLink}
+																									>
+																										{childNode2.name}
+																									</a>
 																								</Link>
 																							</li>
 																						)
@@ -290,12 +297,13 @@ const Menu: React.FC<MenuProps> = ({ categories }) => {
 														</ul>
 													</div>
 													<div className='h-40 flex items-center'>
-														<Link
-															onClick={handleClickLink}
-															to={getCategoryUrl(node.slug, node.id)}
-															className={classes.subCategoriesTitle}
-														>
-															Все категории
+														<Link href={getCategoryUrl(node.slug, node.id)}>
+															<a
+																onClick={handleClickLink}
+																className={classes.subCategoriesTitle}
+															>
+																Все категории
+															</a>
 														</Link>
 													</div>
 												</div>

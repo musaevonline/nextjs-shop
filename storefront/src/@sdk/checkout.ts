@@ -1,8 +1,9 @@
+import {ssrMode} from "@temp/constants";
 
 export const CHECKOUT_EVENT = 'checkout';
 
-export const checkoutTokenEvent = new Event("checkoutToken");
-export const checkoutEvent = new Event(CHECKOUT_EVENT);
+export const checkoutTokenEvent = !ssrMode ? new Event("checkoutToken") : null;
+export const checkoutEvent = !ssrMode ? new Event(CHECKOUT_EVENT) : null;
 
 export function getCheckoutToken(): string | null {
   try {

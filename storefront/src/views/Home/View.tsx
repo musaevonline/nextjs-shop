@@ -1,4 +1,4 @@
-import './scss/index.scss'
+import './scss/Home.scss'
 
 import * as React from 'react'
 
@@ -8,11 +8,11 @@ import { productsCardQuery } from '@sdk/queries/product'
 import {
 	BlogArticleOrderField,
 	OrderDirection,
-	ProductOrderField,
+	ProductOrderField
 } from '@temp/types/globalTypes'
 import {
 	ProductsCardDetails,
-	ProductsCardDetailsVariables,
+	ProductsCardDetailsVariables
 } from '@sdk/queries/types/ProductsCardDetails'
 import { useQuery } from '@apollo/client'
 import { useBlogArticleListQuery } from '@sdk/queries/blog'
@@ -29,10 +29,11 @@ const View: React.FC = () => {
 		variables: {
 			first: PAGINATE_BY,
 			sortBy: { direction: OrderDirection.DESC, field: ProductOrderField.DATE },
-			includeCategory: false,
+			includeCategory: false
 		},
 		fetchPolicy: 'cache-and-network',
-		nextFetchPolicy: 'cache-first',
+		nextFetchPolicy: 'cache-first'
+		// ssr: false
 	})
 	const { data: popularProductsData } = useQuery<
 		ProductsCardDetails,
@@ -42,25 +43,26 @@ const View: React.FC = () => {
 			first: PAGINATE_BY,
 			sortBy: {
 				direction: OrderDirection.DESC,
-				field: ProductOrderField.ORDER_COUNT,
+				field: ProductOrderField.ORDER_COUNT
 			},
-			includeCategory: false,
+			includeCategory: false
 		},
 		fetchPolicy: 'cache-and-network',
-		nextFetchPolicy: 'cache-first',
+		nextFetchPolicy: 'cache-first'
+		// ssr: false
 	})
 	const {
 		data: articlesData,
-		loading: articlesLoading,
+		loading: articlesLoading
 	} = useBlogArticleListQuery({
 		variables: {
 			first: PAGINATE_BY,
 			filter: { isPublished: true },
 			sortBy: {
 				direction: OrderDirection.DESC,
-				field: BlogArticleOrderField.DATE,
-			},
-		},
+				field: BlogArticleOrderField.DATE
+			}
+		}
 	})
 	return (
 		<MetaWrapper meta={{}}>

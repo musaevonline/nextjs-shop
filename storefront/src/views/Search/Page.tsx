@@ -4,7 +4,7 @@ import { ProductsCardDetails_products } from '@sdk/queries/types/ProductsCardDet
 import { Container, useTheme } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
-import { Link } from 'react-router-dom'
+import NextLink from 'next/link'
 import { baseUrl } from '@temp/app/routes'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
@@ -13,7 +13,6 @@ import { TUrlQuery } from '@temp/views/Category/View'
 import { makeStyles } from '@material-ui/core/styles'
 import { PRODUCTS_SORT_BY_ENUM } from '@temp/views/Category/Page'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import Hidden from '@material-ui/core/Hidden'
 import { ProductsFilter } from '@temp/components/ProductsFilter'
 import { BsFilter, BsGrid3X3Gap, BsListUl } from 'react-icons/bs'
 import SwapVertIcon from '@material-ui/icons/SwapVert'
@@ -30,25 +29,26 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Divider from '@material-ui/core/Divider'
+import HomeIcon from '@material-ui/icons/Home'
 
 const useStyles = makeStyles((theme) => ({
 	filterBtn: {
 		[theme.breakpoints.up('md')]: {
-			display: 'none',
+			display: 'none'
 		},
 		[theme.breakpoints.down('xs')]: {
 			'& .MuiButton-startIcon': {
-				marginRight: 0,
-			},
-		},
+				marginRight: 0
+			}
+		}
 	},
 	sortByBtn: {
 		[theme.breakpoints.down('xs')]: {
 			'& .MuiButton-startIcon': {
-				marginRight: 0,
-			},
-		},
-	},
+				marginRight: 0
+			}
+		}
+	}
 }))
 
 const getSortByLabel = (sortBy: PRODUCTS_SORT_BY_ENUM | string): string => {
@@ -75,6 +75,9 @@ const Page: React.FC<{
 	const classes = useStyles()
 	const theme = useTheme()
 	const sm = useMediaQuery(theme.breakpoints.down('sm'))
+	const xsDown = useMediaQuery(theme.breakpoints.down('xs'))
+	const smUp = useMediaQuery(theme.breakpoints.up('sm'))
+	const mdUp = useMediaQuery(theme.breakpoints.up('md'))
 	const [anchorElSort, setAnchorElSort] = useState<HTMLButtonElement | null>(
 		null
 	)
@@ -88,9 +91,11 @@ const Page: React.FC<{
 			<Container maxWidth='lg' disableGutters={sm}>
 				<div className='my-20'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
-						<Link color='inherit' to={baseUrl}>
-							Главная
-						</Link>
+						<NextLink href={baseUrl}>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
+						</NextLink>
 						<span>Поиск</span>
 					</Breadcrumbs>
 				</div>
@@ -98,7 +103,7 @@ const Page: React.FC<{
 					<Typography variant='h2'>Поиск</Typography>
 				</div>
 				<div className='inline-block w-full'>
-					<Hidden smDown>
+					{!sm && (
 						<div className='xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5 pr-20 float-left clear-both'>
 							<ProductsFilter
 								initialCollapsed={true}
@@ -107,11 +112,16 @@ const Page: React.FC<{
 								setFilters={setFilters}
 							/>
 						</div>
-					</Hidden>
+					)}
 
 					<div className='float-none inline-block xs:w-full sm:w-full md:w-3/4 lg:w-4/5'>
+						<LinearProgress
+							color='secondary'
+							className={!loading ? 'opacity-0' : ''}
+							variant='indeterminate'
+						/>
 						<Card>
-							<div className='p-10 flex justify-end items-center'>
+							<div className='p-20 flex justify-end items-center'>
 								<div className='flex w-full xs:justify-between md:justify-end items-center'>
 									<Button
 										variant='outlined'
@@ -122,6 +132,11 @@ const Page: React.FC<{
 										<BsFilter className='text-2xl' />
 									</Button>
 									<div className='flex justify-end items-center'>
+										{products && !xsDown && (
+											<span className='mr-10 font-semibold'>
+												Найдено: {products.totalCount}
+											</span>
+										)}
 										<div className='relative mr-20'>
 											<Button
 												variant='outlined'
@@ -171,6 +186,7 @@ const Page: React.FC<{
 												</ClickAwayListener>
 											</Popper>
 										</div>
+
 										<ButtonGroup variant='outlined' size='medium'>
 											<Button
 												variant='contained'
@@ -186,13 +202,27 @@ const Page: React.FC<{
 									</div>
 								</div>
 							</div>
+							{products && (
+								<div className='text-center'>
+									<Divider />
+									{!smUp && (
+										<div className='py-10 font-semibold'>
+											Найдено: {products.totalCount}
+										</div>
+									)}
+								</div>
+							)}
 						</Card>
-						<LinearProgress
-							color='secondary'
-							className={!loading ? 'opacity-0' : ''}
-							variant='indeterminate'
-						/>
 					</div>
+					{!loading && !products?.edges.length && (
+						<Card>
+							<div className='p-20'>
+								<Typography variant='h3' className='text-center'>
+									Список товаров пуст
+								</Typography>
+							</div>
+						</Card>
+					)}
 					{products &&
 						products?.edges.map((item, i) => {
 							return (
@@ -222,7 +252,7 @@ const Page: React.FC<{
 					)}
 				</div>
 			</Container>
-			<Hidden mdUp>
+			{!mdUp && (
 				<SwipeableDrawer
 					open={isOpenFilterDrawer}
 					elevation={0}
@@ -267,7 +297,7 @@ const Page: React.FC<{
 						</Button>
 					</div>
 				</SwipeableDrawer>
-			</Hidden>
+			)}
 		</div>
 	)
 }

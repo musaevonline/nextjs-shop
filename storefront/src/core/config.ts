@@ -1,5 +1,5 @@
+import { STOREFRONT_URL } from '@temp/constants'
 import { generatePageUrl } from './utils'
-import { STOREFRONT_URL } from '@temp/core/constants'
 import Logo from 'images/logo.svg'
 
 export const BASE_URL = '/'
@@ -23,7 +23,7 @@ export const META_DEFAULTS = {
 	custom: [],
 	description: 'СтройЛюкс - магазин строительных материалов.',
 	image: `${STOREFRONT_URL}${Logo.slice(1)}`,
-	title: 'СтройЛюкс - магазин строительных материалов',
+	title: 'СтройЛюкс',
 	type: 'website',
 	url: STOREFRONT_URL
 }

@@ -240,7 +240,7 @@ MAX_CHECKOUT_LINE_QUANTITY = int(
     os.environ.get("MAX_CHECKOUT_LINE_QUANTITY", 10000))
 
 ALLOWED_HOSTS = get_list(
-    os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
+    os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,api"))
 ALLOWED_GRAPHQL_ORIGINS = os.environ.get("ALLOWED_GRAPHQL_ORIGINS", "*")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -406,7 +406,7 @@ CKEDITOR_CONFIGS = {
         'toolbar': [
             ['Undo', 'Redo',
              '-', 'Bold', 'Italic', 'Underline',
-             '-', 'Link', 'Unlink', 'Anchor',
+             '-', 'NextLink', 'Unlink', 'Anchor',
              '-', 'Format',
              '-', 'SpellChecker', 'Scayt',
              '-', 'Maximize',

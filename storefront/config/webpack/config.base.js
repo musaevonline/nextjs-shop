@@ -13,21 +13,21 @@ const isDev = process.env.NODE_ENV === 'develop'
 module.exports = ({ sourceDir, distDir }) => ({
 	resolve: {
 		alias: {
-			'react-dom': '@hot-loader/react-dom',
+			'react-dom': '@hot-loader/react-dom'
 		},
 		extensions: ['.ts', '.tsx', '.js', '.jsx'],
 		plugins: [
 			new TsconfigPathsPlugin({
-				configFile: './tsconfig.json',
-			}),
-		],
+				configFile: './tsconfig.json'
+			})
+		]
 	},
 	entry: {
-		app: `${sourceDir}/index.tsx`,
+		app: `${sourceDir}/[categorySlug].tsx`
 	},
 	output: {
 		path: distDir,
-		publicPath: '/',
+		publicPath: '/'
 	},
 	devtool: 'source-map',
 	module: {
@@ -38,8 +38,8 @@ module.exports = ({ sourceDir, distDir }) => ({
 				exclude: /node_modules/,
 				options: {
 					experimentalWatchApi: true,
-					transpileOnly: true,
-				},
+					transpileOnly: true
+				}
 			},
 			{
 				test: /\.(woff2?|ttf|eot)$/,
@@ -49,10 +49,10 @@ module.exports = ({ sourceDir, distDir }) => ({
 						options: {
 							name: '[name].[ext]',
 							outputPath: 'fonts/',
-							publicPath: '/fonts/',
-						},
-					},
-				],
+							publicPath: '/fonts/'
+						}
+					}
+				]
 			},
 			{
 				test: /\.(gif|jpg|png|svg)$/,
@@ -62,9 +62,9 @@ module.exports = ({ sourceDir, distDir }) => ({
 						options: {
 							name: '[name].[ext]',
 							outputPath: 'images/',
-							publicPath: '/images/',
-						},
-					},
+							publicPath: '/images/'
+						}
+					}
 					// {
 					//   loader: "image-webpack-loader",
 					//   options: {
@@ -84,45 +84,45 @@ module.exports = ({ sourceDir, distDir }) => ({
 					//     },
 					//   },
 					// },
-				],
-			},
-		],
+				]
+			}
+		]
 	},
 	plugins: [
 		new webpack.ProgressPlugin(),
 		new CleanWebpackPlugin({
 			// dry: isDev,
-			cleanOnceBeforeBuildPatterns: distDir,
+			cleanOnceBeforeBuildPatterns: distDir
 		}),
 		new HtmlWebpackPlugin({
 			filename: `${distDir}/index.html`,
-			template: `${sourceDir}/index.html`,
+			template: `${sourceDir}/index.html`
 		}),
 		new ForkTsCheckerWebpackPlugin({
 			eslint: {
-				files: './src/**/*.{ts,tsx,js,jsx}',
+				files: './src/**/*.{ts,tsx,js,jsx}'
 			},
-			async: false,
+			async: false
 		}),
 		// PWA plugins
 		new FaviconsWebpackPlugin({
 			logo: `${sourceDir}/images/favicon.png`,
 			prefix: 'images/favicons/',
 			mode: 'webapp', // optional can be 'webapp' or 'light' - 'webapp' by default
-			devMode: 'webapp',
+			devMode: 'webapp'
 		}),
 		new webpack.EnvironmentPlugin({
 			API_URI: 'http://localhost:8000/graphql/',
 			DASHBOARD_URL: 'http://localhost:9000/dashboard/',
-			GTM_ID: 'GTM-WSNK82H',
+			GTM_ID: 'GTM-WSNK82H'
 		}),
 		new LodashModuleReplacementPlugin({
-			chaining: true,
-		}),
+			chaining: true
+		})
 		// new webpack.DefinePlugin({ 'process.env.API_URI': JSON.stringify(process.env.API_URI) })
 	],
 	node: {
 		fs: 'empty',
-		module: 'empty',
-	},
+		module: 'empty'
+	}
 })

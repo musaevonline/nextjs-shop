@@ -1,4 +1,5 @@
 import useRouter from "use-react-router";
+import {ssrMode} from "@temp/constants";
 
 export type UseNavigatorResult = (
   url: string,
@@ -19,7 +20,9 @@ function useNavigator(): UseNavigatorResult {
       history.push(targetUrl);
     }
 
-    window.scrollTo({ behavior: "smooth", top: 0 });
+    if (!ssrMode) {
+      window.scrollTo({behavior: "smooth", top: 0});
+    }
   };
 }
 

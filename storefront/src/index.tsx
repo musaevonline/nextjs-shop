@@ -5,6 +5,7 @@ import { useAuth } from '@sdk/react'
 import { defaultTheme } from './themes'
 
 // import { persistCache } from "apollo-cache-persist";
+
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
@@ -29,7 +30,7 @@ import {
 	ApolloLink,
 	ApolloProvider,
 	defaultDataIdFromObject,
-	InMemoryCache,
+	InMemoryCache
 } from '@apollo/client'
 import { ErrorResponse, onError } from '@apollo/client/link/error'
 import { ShopProvider } from '@temp/components/Shop'
@@ -39,7 +40,7 @@ import { relayStylePagination } from '@apollo/client/utilities'
 
 async function initTagManager() {
 	TagManager.initialize({
-		gtmId: gtmId,
+		gtmId: gtmId
 	})
 }
 
@@ -63,7 +64,7 @@ const link = ApolloLink.from([
 	invalidTokenLink,
 	authLink,
 	new RetryLink(),
-	new BatchHttpLink({ uri: apiUrl }),
+	new BatchHttpLink({ uri: apiUrl })
 ])
 
 const cache = new InMemoryCache({
@@ -75,17 +76,17 @@ const cache = new InMemoryCache({
 					'attributes',
 					'price',
 					'sortBy',
-					'filter',
-				]),
-			},
-		},
+					'filter'
+				])
+			}
+		}
 	},
 	dataIdFromObject: (obj) => {
 		if (obj.__typename === 'Shop') {
 			return 'shop'
 		}
 		return defaultDataIdFromObject(obj)
-	},
+	}
 })
 
 const startApp = async () => {
@@ -96,7 +97,7 @@ const startApp = async () => {
 
 	const apolloClient = new ApolloClient({
 		cache,
-		link,
+		link
 	})
 
 	const Root = hot(module)(() => {
@@ -121,11 +122,11 @@ const startApp = async () => {
 			useAuth((authenticated: boolean) => {
 				if (authenticated) {
 					enqueueSnackbar('Вы вошли в свой аккаунт', {
-						variant: 'info',
+						variant: 'info'
 					})
 				} else {
 					enqueueSnackbar('Вы вышли из своего аккаунта', {
-						variant: 'info',
+						variant: 'info'
 					})
 				}
 			})
@@ -153,7 +154,6 @@ const startApp = async () => {
 								{({ checkoutContext }) => (
 									<UserProvider
 										refreshUser={true}
-										apolloClient={apolloClient}
 										onUserLogin={() => {
 											checkoutContext.findUserCheckout()
 										}}
@@ -194,7 +194,7 @@ const startApp = async () => {
 				autoHideDuration={3000}
 				anchorOrigin={{
 					vertical: 'bottom',
-					horizontal: 'left',
+					horizontal: 'left'
 				}}
 				// action={(key) => (
 				//     <IconButton onClick={() => closeSnackbar(key)}>

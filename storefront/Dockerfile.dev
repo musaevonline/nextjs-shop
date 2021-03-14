@@ -1,10 +1,20 @@
-FROM node:12.16.2
+FROM node:14 as builder
 WORKDIR /app
-COPY package.json /app/
-RUN npm install
-COPY ./ /app/
+RUN yarn global add pm2
+COPY package.json ./
+RUN yarn install
+COPY . .
 ARG API_URI
 ENV API_URI ${API_URI:-http://localhost:8000/graphql/}
+ARG GTM_ID
+ENV GTM_ID ${GTM_ID}
+ARG DASHBOARD_URL
+ENV DASHBOARD_URL ${DASHBOARD_URL}
+ARG STOREFRONT_URL
+ENV STOREFRONT_URL ${STOREFRONT_URL}
+ARG SSR_API_URL
+ENV SSR_API_URL ${SSR_API_URL}
+RUN API_URI=${API_URI} GTM_ID=${GTM_ID} DASHBOARD_URL=${DASHBOARD_URL} STOREFRONT_URL=${STOREFRONT_URL} SSR_API_URL=${SSR_API_URL} yarn run next-build-prod
 
 EXPOSE 3000
-CMD npm start -- --host 0.0.0.0
+#CMD ["/bin/sh", "-c", "pm2-runtime 'yarn run next-start-prod'"]

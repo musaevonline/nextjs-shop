@@ -3,7 +3,6 @@ import { MetaWrapper } from '@temp/components'
 import Page from '@temp/views/ProductDetails/Page'
 import { useQuery } from '@apollo/client'
 import { productQuery } from '@sdk/queries/product'
-import { useParams } from 'react-router'
 import { getGraphqlIdFromDBId } from '@temp/core/utils'
 import { TFormProductVariantData } from '@temp/components/Forms/ProductVariantForm/ProductVariantForm'
 import Loader from '@temp/components/Loader'
@@ -26,14 +25,18 @@ import {
 	CategoryProductsVariables
 } from '@sdk/queries/types/CategoryProducts'
 import { cleanTextForMeta } from '@temp/misc'
+import { useRouter } from 'next/router'
+import { STOREFRONT_URL } from '@temp/constants'
+import { getProductUrl } from '@temp/app/routes'
 
 const PAGINATE_BY_REVIEWS = 5
 
 const View: React.FC = () => {
 	const { enqueueSnackbar } = useSnackbar()
-	const { pk } = useParams<{ pk: string }>()
+	const router = useRouter()
+	// const { pk } = useParams<{ pk: string }>()
 	const checkout = useContext(CheckoutContext)
-	const id = getGraphqlIdFromDBId(pk, 'Product')
+	const id = getGraphqlIdFromDBId(router.query?.id as string, 'Product')
 	const { data, loading } = useQuery<ProductDetails, ProductDetailsVariables>(
 		productQuery,
 		{
@@ -113,19 +116,37 @@ const View: React.FC = () => {
 		150,
 		true
 	)
+	if (!data && loading) return null
 	return (
 		<MetaWrapper
 			meta={{
 				description: cleanTextFromDescription,
-				title: data?.product.name || ''
+				title: data?.product.name || '',
+				custom: [
+					<link
+						key='canonical'
+						rel='canonical'
+						href={
+							STOREFRONT_URL +
+							getProductUrl(router.query?.slug as string, id).slice(1)
+						}
+					/>
+				]
 			}}
 		>
 			{(!data || loading) && <Loader full={!data} absolute={!!data} />}
 			{data?.product && (
 				<>
-					<script className='structured-data-list' type='application/ld+json'>
-						{productStructuredData(data?.product, reviews?.productReviews)}
-					</script>
+					<script
+						className='structured-data-list'
+						dangerouslySetInnerHTML={{
+							__html: productStructuredData(
+								data?.product,
+								reviews?.productReviews
+							)
+						}}
+						type='application/ld+json'
+					/>
 					<Page
 						product={data.product}
 						addVariantToCheckoutSubmit={addVariantToCheckoutSubmit}

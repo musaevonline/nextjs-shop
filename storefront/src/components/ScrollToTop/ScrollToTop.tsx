@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from 'react'
+import { ssrMode } from '@temp/constants'
+import { useRouter } from 'next/router'
 
-const ScrollToTop:React.FC = () => {
-  const { pathname } = useLocation();
+const ScrollToTop: React.FC = () => {
+	const { pathname } = useRouter()
 
-  useEffect(() => {
-    window.scrollTo({
-      left: 0,
-      top: 0,
-      behavior: "smooth"
-    });
-  }, [pathname]);
+	useEffect(() => {
+		if (!ssrMode) {
+			window.scrollTo({
+				left: 0,
+				top: 0,
+				behavior: 'smooth'
+			})
+		}
+	}, [pathname])
 
-  return null;
-};
+	return null
+}
 
-export default ScrollToTop;
+export default ScrollToTop

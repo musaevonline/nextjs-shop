@@ -1,1 +1,1 @@
-export {default as Addresses} from "./View";
+export { default as AddressesPage } from './View'

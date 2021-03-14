@@ -1,5 +1,6 @@
 import graphene
 
+from main.core.utils import build_absolute_uri
 from main.product.templatetags.product_images import get_thumbnail
 from ..enums import (
     AccountErrorCode,
@@ -87,7 +88,7 @@ class Image(graphene.ObjectType):
             )
         else:
             url = image.url
-        url = info.context.build_absolute_uri(url)
+        url = build_absolute_uri(url)
         return Image(url, alt)
 
 

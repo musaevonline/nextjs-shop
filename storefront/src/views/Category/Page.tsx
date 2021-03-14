@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 
 import { Container, useTheme } from '@material-ui/core'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
-import { Link } from 'react-router-dom'
+import NextLink from 'next/link'
 import { baseUrl, getCategoryUrl } from '@temp/app/routes'
-// import {ProductList} from "@temp/components/ProductList";
-import Hidden from '@material-ui/core/Hidden'
 import { TUrlQuery } from '@temp/views/Category/View'
 import { ProductsFilter } from '@temp/components/ProductsFilter'
 import Card from '@material-ui/core/Card'
@@ -94,6 +92,9 @@ const Page: React.FC<{
 	const classes = useStyles()
 	const theme = useTheme()
 	const sm = useMediaQuery(theme.breakpoints.down('sm'))
+	const xsDown = useMediaQuery(theme.breakpoints.down('xs'))
+	const smUp = useMediaQuery(theme.breakpoints.up('sm'))
+	const mdUp = useMediaQuery(theme.breakpoints.up('md'))
 	const [anchorElSort, setAnchorElSort] = useState<HTMLButtonElement | null>(
 		null
 	)
@@ -108,29 +109,33 @@ const Page: React.FC<{
 			<Container maxWidth='lg' disableGutters={sm}>
 				<div className='my-10 px-10 md:px-0'>
 					<Breadcrumbs separator='/' aria-label='breadcrumb'>
-						<Link className='flex items-center' color='inherit' to={baseUrl}>
-							<HomeIcon fontSize='small' />
-						</Link>
+						<NextLink href={baseUrl} passHref>
+							<a className='flex items-center' color='inherit'>
+								<HomeIcon fontSize='small' />
+							</a>
+						</NextLink>
 						{category.parent?.parent && (
-							<Link
-								className='flex items-center'
-								color='inherit'
-								to={getCategoryUrl(
+							<NextLink
+								href={getCategoryUrl(
 									category.parent.parent.slug,
 									category.parent.parent.id
 								)}
+								passHref
 							>
-								{category.parent.parent.name}
-							</Link>
+								<a className='flex items-center' color='inherit'>
+									{category.parent.parent.name}
+								</a>
+							</NextLink>
 						)}
 						{category.parent && (
-							<Link
-								className='flex items-center'
-								color='inherit'
-								to={getCategoryUrl(category.parent.slug, category.parent.id)}
+							<NextLink
+								href={getCategoryUrl(category.parent.slug, category.parent.id)}
+								passHref
 							>
-								{category.parent.name}
-							</Link>
+								<a className='flex items-center' color='inherit'>
+									{category.parent.name}
+								</a>
+							</NextLink>
 						)}
 
 						<span>{category.name}</span>
@@ -159,7 +164,7 @@ const Page: React.FC<{
 					</div>
 				)}
 				<div className='inline-block w-full'>
-					<Hidden smDown>
+					{!sm && (
 						<div className='xs:w-full sm:w-1/2 md:w-1/4 lg:w-1/5 pr-20 float-left clear-both'>
 							<ProductsFilter
 								initialCollapsed={true}
@@ -168,7 +173,7 @@ const Page: React.FC<{
 								setFilters={setFilters}
 							/>
 						</div>
-					</Hidden>
+					)}
 					<div className='float-none inline-block xs:w-full sm:w-full md:w-3/4 lg:w-4/5'>
 						<LinearProgress
 							color='secondary'
@@ -187,12 +192,10 @@ const Page: React.FC<{
 										<BsFilter className='text-2xl' />
 									</Button>
 									<div className='flex justify-end items-center'>
-										{products && (
-											<Hidden xsDown>
-												<span className='mr-10 font-semibold'>
-													Найдено: {products.totalCount}
-												</span>
-											</Hidden>
+										{products && !xsDown && (
+											<span className='mr-10 font-semibold'>
+												Найдено: {products.totalCount}
+											</span>
 										)}
 										<div className='relative mr-20'>
 											<Button
@@ -262,11 +265,11 @@ const Page: React.FC<{
 							{products && (
 								<div className='text-center'>
 									<Divider />
-									<Hidden smUp>
+									{!smUp && (
 										<div className='py-10 font-semibold'>
 											Найдено: {products.totalCount}
 										</div>
-									</Hidden>
+									)}
 								</div>
 							)}
 						</Card>
@@ -309,7 +312,7 @@ const Page: React.FC<{
 					)}
 				</div>
 			</Container>
-			<Hidden mdUp>
+			{!mdUp && (
 				<SwipeableDrawer
 					open={isOpenFilterDrawer}
 					elevation={0}
@@ -354,7 +357,7 @@ const Page: React.FC<{
 						</Button>
 					</div>
 				</SwipeableDrawer>
-			</Hidden>
+			)}
 		</div>
 	)
 }

@@ -1,62 +1,59 @@
-import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import React from 'react'
 import {
-  InnerOverlayContextInterface,
-  OverlayContext,
-  OverlayContextInterface,
-  OverlayTheme,
-  OverlayType
-} from "./context";
+	InnerOverlayContextInterface,
+	OverlayContext,
+	OverlayTheme,
+	OverlayType
+} from './context'
+import { useCallback, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
-class Provider extends React.Component<
-  RouteComponentProps<{}>,
-  OverlayContextInterface
-> {
-  notificationCloseDelay = 2500;
-  constructor(props) {
-    super(props);
-    this.state = {
-      context: null,
-      hide: this.hide,
-      show: this.show,
-      theme: null,
-      type: null,
-    };
-  }
+const NOTIFICATION_CLOSE_DELAY = 2500
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.location.pathname !== prevProps.location.pathname &&
-      this.state.type !== OverlayType.message
-    ) {
-      this.hide();
-    }
-  }
+const OverlayProvider: React.FC = ({ children }) => {
+	const router = useRouter()
+	const [context, setContext] = useState(null)
+	const [theme, setTheme] = useState(null)
+	const [type, setType] = useState(null)
+	useEffect(() => {
+		if (type !== OverlayType.message) {
+			setType(null)
+		}
+	}, [router.pathname])
 
-  show = (
-    type: OverlayType,
-    theme?: OverlayTheme,
-    context?: InnerOverlayContextInterface
-  ) => {
-    this.setState({ type, theme, context });
-    // document.body.style.overflow = type !== OverlayType.message ? "hidden" : "";
-    if (type === OverlayType.message) {
-      setTimeout(this.hide, this.notificationCloseDelay);
-    }
-  };
-
-  hide = () => {
-    this.setState({ type: null });
-    // document.body.style.overflow = "";
-  };
-
-  render() {
-    return (
-      <OverlayContext.Provider value={this.state}>
-        {this.props.children}
-      </OverlayContext.Provider>
-    );
-  }
+	const handleShow = useCallback(
+		(
+			type: OverlayType,
+			theme?: OverlayTheme,
+			context?: InnerOverlayContextInterface
+		) => {
+			setType(type)
+			setTheme(theme)
+			setContext(context)
+			if (type === OverlayType.message) {
+				setTimeout(() => {
+					setType(null)
+				}, NOTIFICATION_CLOSE_DELAY)
+			}
+		},
+		[]
+	)
+	const handleHide = useCallback(() => {
+		setType(null)
+	}, [])
+	return (
+		<OverlayContext.Provider
+			value={{
+				context,
+				type,
+				show: handleShow,
+				hide: handleHide,
+				theme
+			}}
+		>
+			{children}
+		</OverlayContext.Provider>
+	)
 }
 
-export default withRouter(Provider);
+export default OverlayProvider

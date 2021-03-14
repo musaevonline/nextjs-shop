@@ -3,9 +3,10 @@ import { Category_category_children_edges_node } from '@sdk/queries/types/Catego
 import PlaceHolder from 'images/placeholder.svg'
 import { makeStyles, Theme, withStyles } from '@material-ui/core'
 import { getCategoryUrl } from '@temp/app/routes'
-import { Link } from 'react-router-dom'
+import NextLink from 'next/link'
 import DOMPurify from 'dompurify'
 import Tooltip from '@material-ui/core/Tooltip'
+import { ssrMode } from '@temp/constants'
 // import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
@@ -97,7 +98,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
 						<div
 							className={classes.categoryDescription}
 							dangerouslySetInnerHTML={{
-								__html: DOMPurify.sanitize(category.description)
+								__html: ssrMode
+									? category.description
+									: DOMPurify.sanitize(category.description)
 							}}
 						/>
 					</React.Fragment>
@@ -110,22 +113,27 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
 			>
 				<div className={classes.card}>
 					<div className={classes.imgWrapper}>
-						<Link to={getCategoryUrl(category.slug, category.id)}>
-							<img
-								className='max-w-full'
-								src={category.thumbnailSm?.url || PlaceHolder}
-								alt={category.name}
-							/>
-						</Link>
+						<NextLink
+							href={getCategoryUrl(category.slug, category.id)}
+							passHref
+						>
+							<a>
+								<img
+									className='max-w-full'
+									src={category.thumbnailSm?.url || PlaceHolder}
+									alt={category.name}
+								/>
+							</a>
+						</NextLink>
 					</div>
 
 					<div className='text-center'>
-						<Link
-							to={getCategoryUrl(category.slug, category.id)}
-							className={classes.title}
+						<NextLink
+							href={getCategoryUrl(category.slug, category.id)}
+							passHref
 						>
-							{category.name}
-						</Link>
+							<a className={classes.title}>{category.name}</a>
+						</NextLink>
 					</div>
 				</div>
 			</HtmlTooltip>
