@@ -1,5 +1,6 @@
 FROM node:14 as builder
 WORKDIR /app
+RUN yarn global add pm2
 COPY package.json ./
 RUN yarn install
 COPY . .
@@ -9,9 +10,10 @@ ARG GTM_ID
 ENV GTM_ID ${GTM_ID}
 ARG DASHBOARD_URL
 ENV DASHBOARD_URL ${DASHBOARD_URL}
-RUN API_URI=${API_URI} GTM_ID=${GTM_ID} DASHBOARD_URL=${DASHBOARD_URL} yarn run build
+ARG STOREFRONT_URL
+ENV STOREFRONT_URL ${STOREFRONT_URL}
+ARG SSR_API_URL
+ENV SSR_API_URL ${SSR_API_URL}
+RUN API_URI=${API_URI} GTM_ID=${GTM_ID} DASHBOARD_URL=${DASHBOARD_URL} STOREFRONT_URL=${STOREFRONT_URL} SSR_API_URL=${SSR_API_URL} yarn run next-build-prod
 
-FROM nginx:stable
-WORKDIR /app
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist/ /app/
+EXPOSE 3000
